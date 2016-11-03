@@ -32,12 +32,20 @@ import ReactNative from 'react-native';
 import FloatingActionButtonInterface from '../interfaces/floating-action-button-interface';
 
 /* load button icons */
-import editdIcon from '../../../assets/icons/png/edit-3x.png';
+import editIcon from '../../../assets/icons/png/edit-3x.png';
+import starIcon from '../../../assets/icons/png/star-3x.png';
 
 const FloatingActionButtonComponentPreset = {
     EditButton: FloatingActionButtonInterface({
         name: `edit-button`,
-        icon: editdIcon
+        icon: editIcon
+    }).registerComponentLib({
+        React,
+        ReactNative
+    }).toPureComponent(),
+    StarButton: FloatingActionButtonInterface({
+        name: `edit-button`,
+        icon: starIcon
     }).registerComponentLib({
         React,
         ReactNative
