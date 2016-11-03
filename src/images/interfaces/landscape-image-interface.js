@@ -131,6 +131,8 @@ const LandscapeImageInterface = Hf.Interface.augment({
             animationSpeed: `normal`
         }).of(property);
         const animated = animation !== `none`;
+        let animationType;
+        let animationDuration;
         let adjustedStyle = DEFAULT_LANDSCAPE_IMAGE_STYLE[size];
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;

@@ -141,6 +141,8 @@ const IconImageInterface = Hf.Interface.augment({
             animationSpeed: `normal`
         }).of(property);
         const animated = animation !== `none`;
+        let animationType;
+        let animationDuration;
         let adjustedStyle = Hf.merge(DEFAULT_ICON_IMAGE_STYLE[size]).with({
             tintColor: Hf.isEmpty(customColor) ? theme.icon[color][shade] : customColor,
             backgroundColor: `transparent`

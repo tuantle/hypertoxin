@@ -117,11 +117,13 @@ const AvatarImageInterface = Hf.Interface.augment({
             defaultSource,
             style
         } = Hf.fallback({
-            size: `normal`
-            animation: `none`
+            size: `normal`,
+            animation: `none`,
             animationSpeed: `normal`
         }).of(property);
         const animated = animation !== `none`;
+        let animationType;
+        let animationDuration;
         let adjustedStyle = DEFAULT_AVATAR_IMAGE_STYLE[size];
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
