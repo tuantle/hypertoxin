@@ -93,7 +93,7 @@ const init = function init ({
 } = {}) {
     if (Ht === null) {
         const HtProperty = {
-            VERSION: `0.1.0-alpha1`,
+            VERSION: `0.1.0-alpha2`,
             View: {
                 ScreenView: ScreenViewComponent,
                 HeaderView: HeaderViewComponent,
@@ -153,6 +153,7 @@ const init = function init ({
             Theme: defaultTheme
             // Icon: defaultIcon
         };
+
         // HtProperty.Preset = Hf.isObject(customPreset) ? Hf.merge(HtProperty.Preset).with(customPreset) : HtProperty.Preset;
         HtProperty.Theme = Hf.isObject(customTheme) ? Hf.merge(HtProperty.Theme).with(customTheme) : HtProperty.Theme;
         // HtProperty.Icon = Hf.isObject(customIcon) ? Hf.merge(HtProperty.Icon).with(customIcon) : HtProperty.Icon;

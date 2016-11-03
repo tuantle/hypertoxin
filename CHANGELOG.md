@@ -12,3 +12,12 @@ Breaking Changes:
 Improvements:
 Bug fixes:
 ```
+**Development Alpha Version 0.1.0-alpha2 (11/3/2016)**
+```
+Notes: Updated license.
+New Features:
+Breaking Changes:
+Improvements:
+Bug fixes:
+    - Set React Native as a peer dependency in package.json.
+```
