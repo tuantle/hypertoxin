@@ -36,6 +36,10 @@ import checkIcon from '../../../assets/icons/png/check-3x.png';
 import expandIcon from '../../../assets/icons/png/expand-3x.png';
 import collapseIcon from '../../../assets/icons/png/collapse-3x.png';
 
+import facebookIcon from '../../../assets/icons/base64/socials/facebook-3x';
+import googlePlusIcon from '../../../assets/icons/base64/socials/google-plus-3x';
+import twitterIcon from '../../../assets/icons/base64/socials/twitter-3x';
+
 const IconImageComponentPreset = {
     CheckIconImage: IconImageInterface({
         name: `check-icon-image`,
@@ -54,6 +58,27 @@ const IconImageComponentPreset = {
     CollapseIconImage: IconImageInterface({
         name: `collaspe-icon-image`,
         source: collapseIcon
+    }).registerComponentLib({
+        React,
+        ReactNative
+    }).toPureComponent(),
+    FacebookIconImage: IconImageInterface({
+        name: `facebook-icon-image`,
+        source: facebookIcon
+    }).registerComponentLib({
+        React,
+        ReactNative
+    }).toPureComponent(),
+    GooglePlusIconImage: IconImageInterface({
+        name: `google-plus-icon-image`,
+        source: googlePlusIcon
+    }).registerComponentLib({
+        React,
+        ReactNative
+    }).toPureComponent(),
+    TwitterIconImage: IconImageInterface({
+        name: `twitter-icon-image`,
+        source: twitterIcon
     }).registerComponentLib({
         React,
         ReactNative
