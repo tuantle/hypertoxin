@@ -46,6 +46,10 @@ import infoIcon from '../../../assets/icons/png/info-3x.png';
 import socialShareIcon from '../../../assets/icons/png/social-share-3x.png';
 import cameraIcon from '../../../assets/icons/png/camera-3x.png';
 
+import facebookIcon from '../../../assets/icons/base64/socials/facebook-3x';
+import googlePlusIcon from '../../../assets/icons/base64/socials/google-plus-3x';
+import twitterIcon from '../../../assets/icons/base64/socials/twitter-3x';
+
 const IconButtonComponentPreset = {
     MenuButton: IconButtonInterface({
         name: `menu-button`,
@@ -134,6 +138,27 @@ const IconButtonComponentPreset = {
     CameraButton: IconButtonInterface({
         name: `camera-button`,
         icon: cameraIcon
+    }).registerComponentLib({
+        React,
+        ReactNative
+    }).toPureComponent(),
+    FacebookShareButton: IconButtonInterface({
+        name: `facebook-share-button`,
+        icon: facebookIcon
+    }).registerComponentLib({
+        React,
+        ReactNative
+    }).toPureComponent(),
+    GooglePlusShareButton: IconButtonInterface({
+        name: `google-plus-share-button`,
+        icon: googlePlusIcon
+    }).registerComponentLib({
+        React,
+        ReactNative
+    }).toPureComponent(),
+    TwitterShareButton: IconButtonInterface({
+        name: `twitter-share-button`,
+        icon: twitterIcon
     }).registerComponentLib({
         React,
         ReactNative
