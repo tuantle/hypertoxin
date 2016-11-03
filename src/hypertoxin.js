@@ -153,7 +153,6 @@ const init = function init ({
             Theme: defaultTheme
             // Icon: defaultIcon
         };
-
         // HtProperty.Preset = Hf.isObject(customPreset) ? Hf.merge(HtProperty.Preset).with(customPreset) : HtProperty.Preset;
         HtProperty.Theme = Hf.isObject(customTheme) ? Hf.merge(HtProperty.Theme).with(customTheme) : HtProperty.Theme;
         // HtProperty.Icon = Hf.isObject(customIcon) ? Hf.merge(HtProperty.Icon).with(customIcon) : HtProperty.Icon;

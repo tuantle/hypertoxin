@@ -1,7 +1,7 @@
 {
     "name": "hypertoxin",
     "version": "0.1.0-alpha1",
-    "description": "A client native app component library (built using ReactNative & Hyperflow).",
+    "description": "A client native app component library (built using React Native & Hyperflow).",
     "authors": [
         "Tuan Le <tuan.t.lei@gmail.com> (https://github.com/tuantle)"
     ],
