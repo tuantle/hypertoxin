@@ -77,8 +77,7 @@ examples/
 # Tests folder
 
 tests/
+__tests__/
 
 #####
 # Misc folders
-
-examples/

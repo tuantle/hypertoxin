@@ -1,5 +1,5 @@
 #####
-# OS X temporary files that should never be committed
+# Ignore OS X temporary files that should never be committed
 
 .DS_Store
 *.DS_Store
@@ -8,21 +8,19 @@
 profile
 
 #####
-# Windows image file caches
+# Ignore Windows image file caches
 
 Thumbs.db
 ehthumbs.db
-_desktop.ini
 
 #####
-# Log files that should never be committed
+# Ignore Log files that should never be committed
 
 *.log
 
 #####
-# Xcode
+# Ignore Xcode
 
-build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -40,61 +38,38 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-# Android/IJ
-#
-*.iml
+#####
+# Ignore Android/IJ
+
 .idea
 .gradle
 local.properties
 
 #####
-# Ignore sdks folder
-
-sdks/
-
-#####
-# Ignore browserify/webpack *bundle.js
+# Ignore compiled *bundle.js
 
 *bundle.js
 
 #####
-# Ignore babel, jspm configs, and platform io ens
+# Ignore Node or jspm modules folder should never be committed
 
-config.js
-.babelrc
-.pioenvs
-.clang_complete
-.gcc-flags.json
-
-#####
-# Node modules and bower components folders should never be committed
-
-bower_components/
 node_modules/
 jspm_packages/
 
+#####
+# Ignore ulysses files
+
+.Ulysses*
+
 ####
-# DB folder
+# Ignore DB folder
 
 db/
 
 ####
-# Compiled build folder
+# Ignore Compiled build folder
 
 build/
 
 #####
-# Ignore Android stuff for now
-
-android/
-index.android.*
-
-#####
-# Buck
-buck-out/
-\.buckd/
-android/app/libs
-android/keystores/debug.keystore
-
-#####
-# Misc folder
+# Ignore Misc folder
