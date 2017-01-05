@@ -1,6 +1,6 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-alpha5",
+    "version": "0.1.0-alpha6",
     "description": "A client native app component library (built using React Native & Hyperflow).",
     "authors": [
         "Tuan Le <tuan.t.lei@gmail.com> (https://github.com/tuantle)"
@@ -10,15 +10,17 @@
         "node": ">=7.x",
         "npm": ">=4.x"
     },
+    "directories": {
+        "lib": "src"
+    },
     "peerDependencies": {
-        "react": "15.4.1",
-        "react-native": "0.39.0"
+        "react": "latest",
+        "react-native": "latest"
     },
     "dependencies": {
         "hyperflow": "latest",
 
         "react-addons-create-fragment": "latest",
-
         "react-native-animatable": "latest",
         "react-native-material-kit": "latest",
         "react-native-blur": "latest"
@@ -40,12 +42,11 @@
         "eslint-plugin-react-native": "latest"
     },
     "scripts": {
-        "start-unit-tests": "NODE_ENV=development node ./__tests__/test-suites",
-        "start-jest-unit-tests": "jest"
+        "start-unit-tests": "NODE_ENV=development node ./__tests__/test-suites"
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://tuantle@bitbucket.org/tuantle/hypertoxin/hypertoxin.git"
+        "url": "https://tuantle@bitbucket.org/tuantle/hypertoxin/hypertoxin.git"
     },
     "modulePathIgnorePatterns": [
         "/node_modules/"
