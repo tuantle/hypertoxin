@@ -37,4 +37,4 @@ const WallpaperImageComponent = WallpaperImageInterface({
     ReactNative
 }).toPureComponent();
 
-export default WallpaperImageComponent;
+export { WallpaperImageComponent };

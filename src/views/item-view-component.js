@@ -37,4 +37,4 @@ const ItemViewComponent = ItemViewInterface({
     ReactNative
 }).toPureComponent();
 
-export default ItemViewComponent;
+export { ItemViewComponent };

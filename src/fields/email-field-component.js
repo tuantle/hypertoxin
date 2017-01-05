@@ -38,4 +38,4 @@ const EmailFieldComponent = EmailFieldInterface({
     ReactNative
 }).toPureComponent();
 
-export default EmailFieldComponent;
+export { EmailFieldComponent };

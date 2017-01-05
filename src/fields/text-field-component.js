@@ -38,4 +38,4 @@ const TextFieldComponent = TextFieldInterface({
     ReactNative
 }).toPureComponent();
 
-export default TextFieldComponent;
+export { TextFieldComponent };

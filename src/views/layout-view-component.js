@@ -37,4 +37,4 @@ const LayoutViewComponent = LayoutViewInterface({
     ReactNative
 }).toPureComponent();
 
-export default LayoutViewComponent;
+export { LayoutViewComponent };

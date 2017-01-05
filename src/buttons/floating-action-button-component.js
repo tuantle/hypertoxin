@@ -38,4 +38,4 @@ const FloatingActionButtonComponent = FloatingActionButtonInterface({
     ReactNative
 }).toPureComponent();
 
-export default FloatingActionButtonComponent;
+export { FloatingActionButtonComponent };

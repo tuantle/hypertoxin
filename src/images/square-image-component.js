@@ -37,4 +37,4 @@ const SquareImageComponent = SquareImageInterface({
     ReactNative
 }).toPureComponent();
 
-export default SquareImageComponent;
+export { SquareImageComponent };

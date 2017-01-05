@@ -37,4 +37,4 @@ const DividerViewComponent = DividerViewInterface({
     ReactNative
 }).toPureComponent();
 
-export default DividerViewComponent;
+export { DividerViewComponent };

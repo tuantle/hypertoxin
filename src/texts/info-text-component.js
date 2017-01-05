@@ -37,4 +37,4 @@ const InfoTextComponent = InfoTextInterface({
     ReactNative
 }).toPureComponent();
 
-export default InfoTextComponent;
+export { InfoTextComponent };

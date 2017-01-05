@@ -7,7 +7,7 @@
  *
  * http://opensource.org/licenses/mit-license.html
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless = required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -23,49 +23,54 @@
 /* @flow */
 'use strict'; // eslint-disable-line
 
-/* load Hf */
-import { Hf } from 'hyperflow';
+/* load and initialize hyperflow */
+const Hf = require('hyperflow').init({ // eslint-disable-line
+    target: `client-native`,
+    enableProductionMode: process.env.NODE_ENV === `production` // eslint-disable-line
+});
 
 /* load view components */
-import ScreenViewComponent from './views/screen-view-component';
-import HeaderViewComponent from './views/header-view-component';
-import BodyViewComponent from './views/body-view-component';
-import LayoutViewComponent from './views/layout-view-component';
-import CardViewComponent from './views/card-view-component';
-import ItemViewComponent from './views/item-view-component';
-import DividerViewComponent from './views/divider-view-component';
+/* eslint-disable */
+const { ScreenViewComponent } = require('./views/screen-view-component');
+const { HeaderViewComponent } = require('./views/header-view-component');
+const { BodyViewComponent } = require('./views/body-view-component');
+const { LayoutViewComponent } = require('./views/layout-view-component');
+const { CardViewComponent } = require('./views/card-view-component');
+const { ItemViewComponent } = require('./views/item-view-component');
+const { DividerViewComponent } = require('./views/divider-view-component');
 
 /* load text components */
-import HeadlineTextComponent from './texts/headline-text-component';
-import TitleTextComponent from './texts/title-text-component';
-import SubtitleTextComponent from './texts/subtitle-text-component';
-import InfoTextComponent from './texts/info-text-component';
-import CaptionTextComponent from './texts/caption-text-component';
+const { HeadlineTextComponent } = require('./texts/headline-text-component');
+const { TitleTextComponent } = require('./texts/title-text-component');
+const { SubtitleTextComponent } = require('./texts/subtitle-text-component');
+const { InfoTextComponent } = require('./texts/info-text-component');
+const { CaptionTextComponent } = require('./texts/caption-text-component');
 
 /* load font style template */
-import FontStyleTemplate from './styles/templates/font-style-template';
+const { FontStyleTemplate } = require('./styles/templates/font-style-template');
 
 /* load image components */
-import AvatarImageComponent from './images/avatar-image-component';
-import IconImageComponent from './images/icon-image-component';
-import LandscapeImageComponent from './images/landscape-image-component';
-import PortraitImageComponent from './images/portrait-image-component';
-import SquareImageComponent from './images/square-image-component';
-import WallpaperImageComponent from './images/wallpaper-image-component';
+const { AvatarImageComponent } = require('./images/avatar-image-component');
+const { IconImageComponent } = require('./images/icon-image-component');
+const { LandscapeImageComponent } = require('./images/landscape-image-component');
+const { PortraitImageComponent } = require('./images/portrait-image-component');
+const { SquareImageComponent } = require('./images/square-image-component');
+const { WallpaperImageComponent } = require('./images/wallpaper-image-component');
 
 /* load button components */
-import FlatButtonComponent from './buttons/flat-button-component';
-import IconButtonComponent from './buttons/icon-button-component';
-import RaisedButtonComponent from './buttons/raised-button-component';
-import FloatingActionButtonComponent from './buttons/floating-action-button-component';
+const { FlatButtonComponent } = require('./buttons/flat-button-component');
+const { IconButtonComponent } = require('./buttons/icon-button-component');
+const { RaisedButtonComponent } = require('./buttons/raised-button-component');
+const { FloatingActionButtonComponent } = require('./buttons/floating-action-button-component');
 
 /* load field components */
-import TextFieldComponent from './fields/text-field-component';
-import SecuredTextFieldComponent from './fields/secured-text-field-component';
-import EmailFieldComponent from './fields/email-field-component';
-import NumberFieldComponent from './fields/number-field-component';
+const { TextFieldComponent } = require('./fields/text-field-component');
+const { SecuredTextFieldComponent } = require('./fields/secured-text-field-component');
+const { EmailFieldComponent } = require('./fields/email-field-component');
+const { NumberFieldComponent } = require('./fields/number-field-component');
+/* eslint-enable */
 
-import defaultTheme from './styles/theme';
+import theme from './styles/theme';
 
 /* hypertoxin global object */
 let Ht = null;
@@ -82,7 +87,7 @@ const init = function init ({
 } = {}) {
     if (Ht === null) {
         const HtProperty = {
-            VERSION: `0.1.0-alpha5`,
+            VERSION: `0.1.0-beta1`,
             View: {
                 ScreenView: ScreenViewComponent,
                 HeaderView: HeaderViewComponent,
@@ -113,16 +118,13 @@ const init = function init ({
                 WallpaperImage: WallpaperImageComponent
             },
             Text: {
-                FontStyle: {
-                    ...FontStyleTemplate
-                },
                 HeadlineText: HeadlineTextComponent,
                 TitleText: TitleTextComponent,
                 SubtitleText: SubtitleTextComponent,
                 InfoText: InfoTextComponent,
                 CaptionText: CaptionTextComponent
             },
-            Theme: defaultTheme
+            Theme: theme
         };
 
         HtProperty.Theme = Hf.isObject(customTheme) ? Hf.merge(HtProperty.Theme).with(customTheme) : HtProperty.Theme;

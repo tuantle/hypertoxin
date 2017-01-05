@@ -38,4 +38,4 @@ const NumberFieldComponent = NumberFieldInterface({
     ReactNative
 }).toPureComponent();
 
-export default NumberFieldComponent;
+export { NumberFieldComponent };

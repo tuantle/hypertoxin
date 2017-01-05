@@ -1,6 +1,6 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-alpha7",
+    "version": "0.1.0-beta1",
     "registry": "github",
     "description": "A client native app component library (built using React Native & Hyperflow).",
     "authors": [
@@ -22,6 +22,9 @@
     "main": "src/hypertoxin.js",
     "directories": {
         "lib": "src"
+    },
+    "jest": {
+        "preset": "react-native"
     },
     "peerDependencies": {
         "react": "latest",
@@ -52,7 +55,7 @@
         "eslint-plugin-react-native": "latest"
     },
     "scripts": {
-        "start-unit-tests": "NODE_ENV=development node ./__tests__/test-suites"
+        "start-unit-tests": "NODE_ENV=development jest ./__tests__/test-suites"
     },
     "modulePathIgnorePatterns": [
         "/node_modules/"

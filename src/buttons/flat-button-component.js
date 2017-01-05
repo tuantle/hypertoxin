@@ -38,4 +38,4 @@ const FlatButtonComponent = FlatButtonInterface({
     ReactNative
 }).toPureComponent();
 
-export default FlatButtonComponent;
+export { FlatButtonComponent };

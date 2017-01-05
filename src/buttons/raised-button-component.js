@@ -38,4 +38,4 @@ const RaisedButtonComponent = RaisedButtonInterface({
     ReactNative
 }).toPureComponent();
 
-export default RaisedButtonComponent;
+export { RaisedButtonComponent };

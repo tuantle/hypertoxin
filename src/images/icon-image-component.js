@@ -37,4 +37,4 @@ const IconImageComponent = IconImageInterface({
     ReactNative
 }).toPureComponent();
 
-export default IconImageComponent;
+export { IconImageComponent };

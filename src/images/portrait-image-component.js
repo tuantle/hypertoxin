@@ -37,4 +37,4 @@ const PortraitImageComponent = PortraitImageInterface({
     ReactNative
 }).toPureComponent();
 
-export default PortraitImageComponent;
+export { PortraitImageComponent };

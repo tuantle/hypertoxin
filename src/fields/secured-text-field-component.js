@@ -38,4 +38,4 @@ const SecuredTextFieldComponent = SecuredTextFieldInterface({
     ReactNative
 }).toPureComponent();
 
-export default SecuredTextFieldComponent;
+export { SecuredTextFieldComponent };

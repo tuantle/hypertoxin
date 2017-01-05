@@ -37,4 +37,4 @@ const CaptionTextComponent = CaptionTextInterface({
     ReactNative
 }).toPureComponent();
 
-export default CaptionTextComponent;
+export { CaptionTextComponent };

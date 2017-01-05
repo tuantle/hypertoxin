@@ -37,4 +37,4 @@ const SubtitleTextComponent = SubtitleTextInterface({
     ReactNative
 }).toPureComponent();
 
-export default SubtitleTextComponent;
+export { SubtitleTextComponent };

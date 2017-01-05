@@ -37,4 +37,4 @@ const BodyViewComponent = BodyViewInterface({
     ReactNative
 }).toPureComponent();
 
-export default BodyViewComponent;
+export { BodyViewComponent };

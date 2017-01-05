@@ -37,4 +37,4 @@ const AvatarImageComponent = AvatarImageInterface({
     ReactNative
 }).toPureComponent();
 
-export default AvatarImageComponent;
+export { AvatarImageComponent };

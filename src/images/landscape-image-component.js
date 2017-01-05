@@ -37,4 +37,4 @@ const LandscapeImageComponent = LandscapeImageInterface({
     ReactNative
 }).toPureComponent();
 
-export default LandscapeImageComponent;
+export { LandscapeImageComponent };

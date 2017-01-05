@@ -37,4 +37,4 @@ const ScreenViewComponent = ScreenViewInterface({
     ReactNative
 }).toPureComponent();
 
-export default ScreenViewComponent;
+export { ScreenViewComponent };

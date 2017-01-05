@@ -37,4 +37,4 @@ const CardViewComponent = CardViewInterface({
     ReactNative
 }).toPureComponent();
 
-export default CardViewComponent;
+export { CardViewComponent };

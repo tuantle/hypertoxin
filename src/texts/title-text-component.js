@@ -37,4 +37,4 @@ const TitleTextComponent = TitleTextInterface({
     ReactNative
 }).toPureComponent();
 
-export default TitleTextComponent;
+export { TitleTextComponent };

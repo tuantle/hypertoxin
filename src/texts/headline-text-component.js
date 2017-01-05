@@ -28,13 +28,13 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import HeadLineTextInterface from './interfaces/headline-text-interface';
+import HeadlineTextInterface from './interfaces/headline-text-interface';
 
-const HeadLineTextComponent = HeadLineTextInterface({
+const HeadlineTextComponent = HeadlineTextInterface({
     name: `headline-text`
 }).registerComponentLib({
     React,
     ReactNative
 }).toPureComponent();
 
-export default HeadLineTextComponent;
+export { HeadlineTextComponent };

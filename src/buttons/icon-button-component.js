@@ -38,4 +38,4 @@ const IconButtonComponent = IconButtonInterface({
     ReactNative
 }).toPureComponent();
 
-export default IconButtonComponent;
+export { IconButtonComponent };

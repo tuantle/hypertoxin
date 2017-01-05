@@ -37,4 +37,4 @@ const HeaderViewComponent = HeaderViewInterface({
     ReactNative
 }).toPureComponent();
 
-export default HeaderViewComponent;
+export { HeaderViewComponent };
