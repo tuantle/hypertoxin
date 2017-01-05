@@ -4,9 +4,8 @@
         "/src",
         "/__tests__"
     ],
-   "presets": [
-        "node7",
-        "react"
+    "presets": [
+        "react-native"
     ],
     "plugins": [
         "transform-strict-mode"
