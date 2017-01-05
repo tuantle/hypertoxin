@@ -1,15 +1,25 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-alpha6",
+    "version": "0.1.0-alpha7",
+    "registry": "github",
     "description": "A client native app component library (built using React Native & Hyperflow).",
     "authors": [
         "Tuan Le <tuan.t.lei@gmail.com> (https://github.com/tuantle)"
     ],
     "license": "MIT",
+    "homepage": "https://github.com/tuantle/hypertoxin",
+    "repository": {
+        "type": "git",
+        "url": "https://tuantle@bitbucket.org/tuantle/hypertoxin/hypertoxin.git"
+    },
+    "bugs": {
+        "url": "https://github.com/tuantle/hypertoxin/issues"
+    },
     "engines": {
         "node": ">=7.x",
         "npm": ">=4.x"
     },
+    "main": "src/hypertoxin.js",
     "directories": {
         "lib": "src"
     },
@@ -43,10 +53,6 @@
     },
     "scripts": {
         "start-unit-tests": "NODE_ENV=development node ./__tests__/test-suites"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://tuantle@bitbucket.org/tuantle/hypertoxin/hypertoxin.git"
     },
     "modulePathIgnorePatterns": [
         "/node_modules/"
