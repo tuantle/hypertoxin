@@ -36,35 +36,47 @@ import theme from '../../styles/theme';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
 
+const {
+    Text,
+    View
+} = ReactNative;
+
 const DEFAULT_TEXT_FIELD_STYLE = {
     container: {
+        flexGrow: 1,
         flexDirection: `column`,
         alignItems: `stretch`,
         justifyContent: `center`,
         backgroundColor: `transparent`,
-        margin: 8,
-        padding: 8
+        marginHorizontal: 8,
+        paddingHorizontal: 8,
+        marginVertical: 3,
+        paddingVertical: 3
     },
     floating: {
-        height: 48
+        height: 48,
+        marginTop: 10
     },
     status: {
         ...fontStyleTemplate.italic,
         textAlign: `left`,
-        color: theme.palette.red
+        color: theme.color.palette.red
     },
     textField: {
         small: {
             ...fontStyleTemplate.normal,
-            textAlign: `left`
+            textAlign: `left`,
+            height: 24
         },
         normal: {
             ...fontStyleTemplate.normalLarge,
-            textAlign: `left`
+            textAlign: `left`,
+            height: 26
         },
         large: {
             ...fontStyleTemplate.normalLarger,
-            textAlign: `left`
+            textAlign: `left`,
+            height: 28
         }
     }
 };
@@ -77,6 +89,7 @@ const TextFieldInterface = Hf.Interface.augment({
             value: `none`,
             oneOf: [
                 `none`,
+                `item-media`,
                 `card-media`, `card-body`
             ],
             stronglyTyped: true
@@ -102,7 +115,7 @@ const TextFieldInterface = Hf.Interface.augment({
         },
         returnKeyType: {
             value: `default`,
-            oneOf: [ `default`, `next`, `done` ],
+            oneOf: [ `default`, `next`, `done`, `search` ],
             stronglyTyped: true
         },
         editable: {
@@ -135,7 +148,7 @@ const TextFieldInterface = Hf.Interface.augment({
         componentRef: {
             value: null
         },
-        onSubmitEdit: {
+        onDoneEdit: {
             value: () => {},
             stronglyTyped: true
         },
@@ -150,10 +163,6 @@ const TextFieldInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Text,
-            View
-        } = ReactNative;
-        const {
             shade,
             color,
             customColor,
@@ -167,7 +176,7 @@ const TextFieldInterface = Hf.Interface.augment({
             status,
             style,
             componentRef,
-            onSubmitEdit,
+            onDoneEdit,
             onFocus,
             onBlur
         } = Hf.fallback({
@@ -183,35 +192,31 @@ const TextFieldInterface = Hf.Interface.augment({
             defaultValue: ``,
             status: ``
         }).of(property);
-        let adjustedStyle = Hf.merge(DEFAULT_TEXT_FIELD_STYLE).with({
-            textField: {
-                small: {
-                    color: Hf.isEmpty(customColor) ? theme.text[color][shade] : customColor
-                },
-                normal: {
-                    color: Hf.isEmpty(customColor) ? theme.text[color][shade] : customColor
-                },
-                large: {
-                    color: Hf.isEmpty(customColor) ? theme.text[color][shade] : customColor
-                }
-            }
-        });
+        let adjustedStyle = {
+            container: DEFAULT_TEXT_FIELD_STYLE.container,
+            floating: Hf.merge(DEFAULT_TEXT_FIELD_STYLE.floating).with({
+                height: multiline ? DEFAULT_TEXT_FIELD_STYLE.floating.height * 4 : DEFAULT_TEXT_FIELD_STYLE.floating.height
+            }),
+            status: DEFAULT_TEXT_FIELD_STYLE.status,
+            textField: Hf.merge(DEFAULT_TEXT_FIELD_STYLE.textField[size]).with({
+                color: Hf.isEmpty(customColor) ? theme.color.text[color][shade] : customColor,
+                height: multiline ? DEFAULT_TEXT_FIELD_STYLE.textField[size].height * 4 : DEFAULT_TEXT_FIELD_STYLE.textField[size].height
+            })
+        };
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         const Textfield = MKTextField.textfieldWithFloatingLabel()
-                                     .withPassword(false)
                                      .withMultiline(multiline)
                                      .withFloatingLabelEnabled(Hf.isEmpty(defaultValue))
                                      .withPlaceholder(placeholder)
                                      .withDefaultValue(defaultValue)
                                      .withStyle(adjustedStyle.floating)
-                                     .withTextInputStyle(adjustedStyle.textField[size])
-                                     .withHighlightColor(adjustedStyle.textField[size].color)
-                                     .withFloatingLabelFont(adjustedStyle.textField[size])
+                                     .withTextInputStyle(adjustedStyle.textField)
+                                     .withHighlightColor(adjustedStyle.textField.color)
+                                     .withFloatingLabelFont(adjustedStyle.textField)
                                      .withUnderlineSize(1)
-                                     .withOnEndEditing((event) => onSubmitEdit(event.nativeEvent.text))
-                                     .withOnSubmitEditing((event) => onSubmitEdit(event.nativeEvent.text))
+                                     .withOnEndEditing((event) => onDoneEdit(event.nativeEvent.text))
                                      .withOnFocus(onFocus)
                                      .withOnBlur(onBlur)
                                      .build();
@@ -223,6 +228,7 @@ const TextFieldInterface = Hf.Interface.augment({
                     editable = { editable }
                     focus = { focus }
                     keyboardType = 'default'
+                    clearButtonMode = 'while-editing'
                     returnKeyType = { returnKeyType }
                 />
                 <Text style = { adjustedStyle.status }>{ status }</Text>

@@ -28,9 +28,11 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative, { Platform, Dimensions } from 'react-native';
+import ReactNative, { Dimensions } from 'react-native';
 
 import createFragment from 'react-addons-create-fragment';
+
+import * as Animatable from 'react-native-animatable';
 
 import { BlurView } from 'react-native-blur';
 
@@ -38,68 +40,123 @@ import theme from '../../styles/theme';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
 
-import dropShadowStyle from '../../styles/templates/drop-shadow-style-template';
+import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
+
+const {
+    Text,
+    View
+} = ReactNative;
+
+const AnimatedView = Animatable.View;
+const AnimatedBlurView = Animatable.createAnimatableComponent(BlurView);
+
+const STATUS_BAR_HEIGHT = 25;
+const NAVIGATION_BAR_HEIGHT = 56;
+const HEADER_BAR_OVERSIZE_HEIGHT = 148;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
-const DEFSULT_HEADER_VIEW_STYLE = {
-    container: {
-        normal: {
-            ...dropShadowStyle,
-            flexDirection: `column`,
-            alignItems: `stretch`,
-            justifyContent: `center`,
-            width: DEVICE_WIDTH,
-            height: Platform.OS === `ios` ? 68 : 80,
-            marginBottom: 6
+Animatable.initializeRegistryWithDefinitions({
+    headerSideIn: {
+        from: {
+            height: 0,
+            translateY: -100
         },
-        extended: {
-            ...dropShadowStyle,
-            flexDirection: `column`,
-            alignItems: `stretch`,
-            justifyContent: `center`,
-            width: DEVICE_WIDTH,
-            height: 148
+        to: {
+            height: NAVIGATION_BAR_HEIGHT,
+            translateY: 0
         }
     },
-    content: {
-        wrapper: {
-            flexDirection: `row`,
-            alignItems: `stretch`,
-            justifyContent: `space-between`,
-            width: DEVICE_WIDTH,
-            backgroundColor: `transparent`
+    headerSideOut: {
+        from: {
+            height: NAVIGATION_BAR_HEIGHT,
+            translateY: 0
         },
+        to: {
+            height: 0,
+            translateY: -100
+        }
+    },
+    headerFadeIn: {
+        from: {
+            opacity: 0,
+            height: 0,
+            translateY: -100
+        },
+        to: {
+            opacity: 1,
+            height: NAVIGATION_BAR_HEIGHT,
+            translateY: 0
+        }
+    },
+    headerFadeOut: {
+        from: {
+            opacity: 1,
+            height: NAVIGATION_BAR_HEIGHT,
+            translateY: 0
+        },
+        to: {
+            opacity: 0,
+            height: 0,
+            translateY: -100
+        }
+    }
+});
+
+const DEFAULT_HEADER_VIEW_STYLE = {
+    container: {
+        flexDirection: `column`,
+        alignItems: `stretch`,
+        justifyContent: `flex-start`,
+        width: DEVICE_WIDTH,
+        backgroundColor: `transparent`,
+        overflow: `hidden`
+    },
+    navigation: {
+        flexDirection: `row`,
+        alignItems: `stretch`,
+        justifyContent: `space-between`,
+        height: NAVIGATION_BAR_HEIGHT,
+        marginTop: STATUS_BAR_HEIGHT,
+        marginBottom: 6
+    },
+    room: {
         left: {
             flexDirection: `row`,
-            alignItems: `center`,
-            justifyContent: `space-between`,
+            alignItems: `flex-start`,
+            justifyContent: `center`,
             minWidth: 46,
             backgroundColor: `transparent`
         },
         center: {
             flexDirection: `column`,
-            alignItems: `center`,
+            alignSelf: `center`,
+            alignItems: `flex-start`,
             justifyContent: `center`,
             minWidth: 46,
             backgroundColor: `transparent`
         },
         right: {
             flexDirection: `row`,
-            alignItems: `center`,
+            alignItems: `flex-start`,
             justifyContent: `center`,
             minWidth: 46,
+            backgroundColor: `transparent`
+        },
+        filler: {
+            width: 46,
+            height: 46,
             backgroundColor: `transparent`
         }
     },
     status: {
-        height: Platform.OS === `ios` ? 24 : 25
+        position: `absolute`,
+        width: DEVICE_WIDTH,
+        height: STATUS_BAR_HEIGHT,
+        top: 0,
+        left: 0
     },
-    filler: {
-        width: 46,
-        backgroundColor: `transparent`
-    },
-    label: fontStyleTemplate.bold
+    label: fontStyleTemplate.boldLarge
 };
 
 const HeaderViewInterface = Hf.Interface.augment({
@@ -107,6 +164,9 @@ const HeaderViewInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
+        animatableComponentRef: {
+            value: null
+        },
         shade: {
             value: `light`,
             oneOf: [ `light`, `dark` ],
@@ -117,12 +177,26 @@ const HeaderViewInterface = Hf.Interface.augment({
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
             stronglyTyped: true
         },
-        extended: {
+        oversize: {
             value: false,
             stronglyTyped: true
         },
         dropShadow: {
             value: false,
+            stronglyTyped: true
+        },
+        animation: {
+            value: `none`,
+            oneOf: [
+                `none`,
+                `slide-in`, `slide-out`,
+                `fade-in`, `fade-out`
+            ],
+            stronglyTyped: true
+        },
+        animationSpeed: {
+            value: `normal`,
+            oneOf: [ `slow`, `normal`, `fast` ],
             stronglyTyped: true
         },
         label: {
@@ -135,77 +209,86 @@ const HeaderViewInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Text,
-            View
-        } = ReactNative;
-        const {
+            animatableComponentRef,
             shade,
             overlay,
-            extended,
+            oversize,
             dropShadow,
+            animation,
+            animationSpeed,
             label,
             style,
             children
         } = Hf.fallback({
             shade: `light`,
             overlay: `opaque`,
-            extended: false,
+            oversize: false,
             dropShadow: false,
+            animation: `none`,
+            animationSpeed: `normal`,
             label: ``
         }).of(property);
-        let frosted = false;
-        let adjustedStyle = Hf.merge(DEFSULT_HEADER_VIEW_STYLE).with({
-            container: {
-                normal: {
-                    shadowColor: dropShadow ? `black` : `transparent`,
-                    backgroundColor: (() => {
-                        switch (overlay) { // eslint-disable-line
-                        case `opaque`:
-                            return theme.header.container[shade];
-                        case `translucent-clear`:
-                            return `${theme.header.container[shade]}${theme.opacity}`;
-                        case `translucent-frosted`:
-                            frosted = true;
-                            return `transparent`;
-                        case `transparent`:
-                            return `transparent`;
-                        }
-                    })()
-                },
-                extended: {
-                    shadowColor: dropShadow ? `black` : `transparent`,
-                    backgroundColor: (() => {
-                        switch (overlay) { // eslint-disable-line
-                        case `opaque`:
-                            return theme.header.container[shade];
-                        case `translucent-clear`:
-                            return `${theme.header.container[shade]}${theme.opacity}`;
-                        case `translucent-frosted`:
-                            frosted = true;
-                            return `transparent`;
-                        case `transparent`:
-                            return `transparent`;
-                        }
-                    })()
+        const animated = animation !== `none`;
+        const frosted = overlay === `translucent-frosted`;
+        let animationType;
+        let animationDuration;
+        let adjustedStyle = Hf.merge(DEFAULT_HEADER_VIEW_STYLE).with({
+            navigation: (() => {
+                let backgroundColor;
+
+                switch (overlay) { // eslint-disable-line
+                case `opaque`:
+                    backgroundColor = theme.color.header.container[shade];
+                    break;
+                case `translucent-clear`:
+                    backgroundColor = `${theme.color.header.container[shade]}${theme.color.opacity}`;
+                    break;
+                case `translucent-frosted`:
+                    backgroundColor = `transparent`;
+                    break;
+                case `transparent`:
+                    backgroundColor = `transparent`;
+                    break;
+                }
+                return dropShadow ? {
+                    ...dropShadowStyleTemplate,
+                    height: oversize ? HEADER_BAR_OVERSIZE_HEIGHT : DEFAULT_HEADER_VIEW_STYLE.room.height,
+                    backgroundColor
+                } : {
+                    height: oversize ? HEADER_BAR_OVERSIZE_HEIGHT : DEFAULT_HEADER_VIEW_STYLE.room.height,
+                    backgroundColor
+                };
+            })(),
+            room: {
+                center: {
+                    alignSelf: oversize ? `flex-start` : `center`
                 }
             },
-            status: {
-                backgroundColor: (() => {
-                    switch (overlay) { // eslint-disable-line
-                    case `opaque`:
-                        return theme.header.status[shade];
-                    case `translucent-clear`:
-                        return `${theme.header.status[shade]}${theme.opacity}`;
-                    case `translucent-frosted`:
-                        frosted = true;
-                        return `transparent`;
-                    case `transparent`:
-                        return `transparent`;
-                    }
-                })()
-            },
+            status: (() => {
+                let backgroundColor;
+                switch (overlay) { // eslint-disable-line
+                case `opaque`:
+                    backgroundColor = theme.color.header.status[shade];
+                    break;
+                case `translucent-clear`:
+                    backgroundColor = `${theme.color.header.status[shade]}${theme.color.opacity}`;
+                    break;
+                case `translucent-frosted`:
+                    backgroundColor = `transparent`;
+                    break;
+                case `transparent`:
+                    backgroundColor = `transparent`;
+                    break;
+                }
+                return dropShadow ? {
+                    ...dropShadowStyleTemplate,
+                    backgroundColor
+                } : {
+                    backgroundColor
+                };
+            })(),
             label: {
-                color: theme.header.label[shade]
+                color: theme.color.header.label[shade]
             }
         });
         let headerLeftChildren = null;
@@ -214,13 +297,13 @@ const HeaderViewInterface = Hf.Interface.augment({
         let interfaceFragment = {
             header: {
                 left: {
-                    part: (<View style = { adjustedStyle.filler }/>)
+                    part: (<View style = { adjustedStyle.room.filler }/>)
                 },
                 center: {
                     part: (<Text style = { adjustedStyle.label }>{ label }</Text>)
                 },
                 right: {
-                    part: (<View style = { adjustedStyle.filler }/>)
+                    part: (<View style = { adjustedStyle.room.filler }/>)
                 }
             }
         };
@@ -256,55 +339,143 @@ const HeaderViewInterface = Hf.Interface.augment({
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
-        if (frosted) {
-            return (
-                <BlurView
-                    blurType = { shade }
-                    style = { extended ? adjustedStyle.container.extended : adjustedStyle.container.normal }
-                >
-                    <View style = { adjustedStyle.status }/>
-                    <View style = { adjustedStyle.content.wrapper }>
-                        <View style = { adjustedStyle.content.left }>
-                        {
-                            headerLeftChildren
-                        }
-                            <View style = { adjustedStyle.content.center }>
+        switch (animation) { // eslint-disable-line
+        case `slide-in`:
+            animationType = `headerSlideIn`;
+            break;
+        case `slide-out`:
+            animationType = `headerSlideOut`;
+            break;
+        case `fade-in`:
+            animationType = `headerFadeIn`;
+            break;
+        case `fade-out`:
+            animationType = `headerFadeOut`;
+            break;
+        }
+
+        switch (animationSpeed) { // eslint-disable-line
+        case `slow`:
+            animationDuration = 500;
+            break;
+        case `normal`:
+            animationDuration = 300;
+            break;
+        case `fast`:
+            animationDuration = 200;
+            break;
+        }
+
+        if (animated) {
+            if (frosted) {
+                return (
+                    <View style = { adjustedStyle.container }>
+                        <AnimatedBlurView
+                            ref = { animatableComponentRef }
+                            style = { adjustedStyle.navigation }
+                            duration = { animationDuration }
+                            animation = { animationType }
+                            blurType = { shade }
+                        >
+                            <View style = { adjustedStyle.room.left }>
                             {
-                                headerCenterChildren
+                                headerLeftChildren
+                            }
+                                <View style = { adjustedStyle.room.center }>
+                                {
+                                    headerCenterChildren
+                                }
+                                </View>
+                            </View>
+                            <View style = { adjustedStyle.room.right }>
+                            {
+                                headerRightChildren
                             }
                             </View>
-                        </View>
-                        <View style = { adjustedStyle.content.right }>
-                        {
-                            headerRightChildren
-                        }
-                        </View>
+                        </AnimatedBlurView>
+                        <View style = { adjustedStyle.status }/>
                     </View>
-                </BlurView>
-            );
+                );
+            } else {
+                return (
+                    <View style = { adjustedStyle.container }>
+                        <AnimatedView
+                            ref = { animatableComponentRef }
+                            style = { adjustedStyle.navigation }
+                            duration = { animationDuration }
+                            animation = { animationType }
+                        >
+                            <View style = { adjustedStyle.room.left }>
+                            {
+                                headerLeftChildren
+                            }
+                                <View style = { adjustedStyle.room.center }>
+                                {
+                                    headerCenterChildren
+                                }
+                                </View>
+                            </View>
+                            <View style = { adjustedStyle.room.right }>
+                            {
+                                headerRightChildren
+                            }
+                            </View>
+                        </AnimatedView>
+                        <View style = { adjustedStyle.status }/>
+                    </View>
+                );
+            }
         } else {
-            return (
-                <View style = { extended ? adjustedStyle.container.extended : adjustedStyle.container.normal }>
-                    <View style = { adjustedStyle.status }/>
-                    <View style = { adjustedStyle.content.wrapper }>
-                        <View style = { adjustedStyle.content.left }>
-                        {
-                            headerLeftChildren
-                        }
-                            <View style = { adjustedStyle.content.center }>
+            if (frosted) {
+                return (
+                    <View style = { adjustedStyle.container }>
+                        <BlurView
+                            style = { adjustedStyle.navigation }
+                            blurType = { shade }
+                        >
+                            <View style = { adjustedStyle.room.left }>
                             {
-                                headerCenterChildren
+                                headerLeftChildren
+                            }
+                                <View style = { adjustedStyle.room.center }>
+                                {
+                                    headerCenterChildren
+                                }
+                                </View>
+                            </View>
+                            <View style = { adjustedStyle.room.right }>
+                            {
+                                headerRightChildren
+                            }
+                            </View>
+                        </BlurView>
+                        <View style = { adjustedStyle.status }/>
+                    </View>
+                );
+            } else {
+                return (
+                    <View style = { adjustedStyle.container }>
+                        <View style = { adjustedStyle.navigation } >
+                            <View style = { adjustedStyle.room.left }>
+                            {
+                                headerLeftChildren
+                            }
+                                <View style = { adjustedStyle.room.center }>
+                                {
+                                    headerCenterChildren
+                                }
+                                </View>
+                            </View>
+                            <View style = { adjustedStyle.room.right }>
+                            {
+                                headerRightChildren
                             }
                             </View>
                         </View>
-                        <View style = { adjustedStyle.content.right }>
-                        {
-                            headerRightChildren
-                        }
-                        </View>
+                        <View style = { adjustedStyle.status }/>
                     </View>
-                </View>
-            );
+                );
+            }
         }
     }
 });

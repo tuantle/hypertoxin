@@ -34,10 +34,14 @@ import theme from '../../styles/theme';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
 
+const {
+    Text
+} = ReactNative;
+
 const DEFAULT_CAPTION_TEXT_STYLE = {
-    small: fontStyleTemplate.italicSmallest,
-    normal: fontStyleTemplate.italicSmaller,
-    large: fontStyleTemplate.italicSmall
+    small: fontStyleTemplate.italicSmaller,
+    normal: fontStyleTemplate.italicSmall,
+    large: fontStyleTemplate.italic
 };
 
 const CaptionTextInterface = Hf.Interface.augment({
@@ -50,6 +54,7 @@ const CaptionTextInterface = Hf.Interface.augment({
             oneOf: [
                 `none`,
                 `header-center`,
+                `item-media`,
                 `card-header-left`, `card-header-right`,
                 `card-media`, `card-overlay`,
                 `card-body`
@@ -91,9 +96,6 @@ const CaptionTextInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Text
-        } = ReactNative;
-        const {
             shade,
             color,
             customColor,
@@ -110,11 +112,12 @@ const CaptionTextInterface = Hf.Interface.augment({
             alignment: `center`,
             decoration: `none`
         }).of(property);
+        const themeTextColor = theme.color.text[color][shade];
         let adjustedStyle = Hf.merge(DEFAULT_CAPTION_TEXT_STYLE[size]).with({
             flexWrap: `wrap`,
             textAlign: alignment,
             textDecorationLine: decoration,
-            color: Hf.isEmpty(customColor) ? theme.text[color][shade] : customColor,
+            color: Hf.isEmpty(customColor) ? themeTextColor : customColor,
             backgroundColor: `transparent`
         });
 
@@ -124,7 +127,7 @@ const CaptionTextInterface = Hf.Interface.augment({
             <Text
                 style = { adjustedStyle }
                 ellipsizeMode = 'tail'
-                numberOfLines = { 1 }
+                numberOfLines = { 1028 }
             >
             {
                 children

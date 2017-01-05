@@ -28,43 +28,58 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative from 'react-native';
+import ReactNative, { Dimensions } from 'react-native';
 
 import createFragment from 'react-addons-create-fragment';
 
 import { BlurView } from 'react-native-blur';
 
-import dropShadowStyle from '../../styles/templates/drop-shadow-style-template';
+import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
 
 import theme from '../../styles/theme';
 
-const DEVICE_WIDTH = ReactNative.Dimensions.get(`window`).width;
-const DEVICE_HEIGHT = ReactNative.Dimensions.get(`window`).height;
+const {
+    View,
+    TouchableWithoutFeedback
+} = ReactNative;
 
-const DEFSULT_ITEM_VIEW_STYLE = {
+const DEVICE_WIDTH = Dimensions.get(`window`).width;
+
+const DEFAULT_ITEM_VIEW_STYLE = {
     container: {
-        ...dropShadowStyle,
-        flexShrink: 1,
-        flexDirection: `column`,
+        flexDirection: `row`,
         alignItems: `stretch`,
         justifyContent: `space-between`,
         maxWidth: DEVICE_WIDTH,
         margin: 3,
         padding: 3,
-        borderRadius: 2
-    },
-    content: {
-        flexGrow: 1,
-        flexDirection: `row`,
-        alignItems: `center`,
-        justifyContent: `space-between`,
-        maxWidth: DEVICE_WIDTH,
+        borderWidth: 1,
+        borderRadius: 2,
         backgroundColor: `transparent`
     },
-    filler: {
-        width: 0,
-        height: 0,
-        backgroundColor: `transparent`
+    room: {
+        media: {
+            flexShrink: 1,
+            flexDirection: `column`,
+            alignSelf: `center`,
+            alignItems: `center`,
+            justifyContent: `center`,
+            maxWidth: DEVICE_WIDTH,
+            backgroundColor: `transparent`
+        },
+        action: {
+            flexShrink: 1,
+            flexDirection: `column`,
+            alignSelf: `center`,
+            alignItems: `center`,
+            justifyContent: `center`,
+            maxWidth: DEVICE_WIDTH,
+            backgroundColor: `transparent`
+        },
+        filler: {
+            width: 0,
+            backgroundColor: `transparent`
+        }
     }
 };
 
@@ -83,6 +98,10 @@ const ItemViewInterface = Hf.Interface.augment({
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
             stronglyTyped: true
         },
+        outlined: {
+            value: false,
+            stronglyTyped: true
+        },
         dropShadow: {
             value: false,
             stronglyTyped: true
@@ -97,12 +116,9 @@ const ItemViewInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            View,
-            TouchableHighlight
-        } = ReactNative;
-        const {
             shade,
             overlay,
+            outlined,
             dropShadow,
             onPress,
             style,
@@ -110,18 +126,37 @@ const ItemViewInterface = Hf.Interface.augment({
         } = Hf.fallback({
             shade: `light`,
             overlay: `opaque`,
+            outlined: true,
             dropShadow: false
         }).of(property);
         let frosted = false;
-        let adjustedStyle = Hf.merge(DEFSULT_ITEM_VIEW_STYLE).with({
+        let adjustedStyle = dropShadow ? Hf.merge(DEFAULT_ITEM_VIEW_STYLE).with({
             container: {
-                shadowColor: dropShadow ? `black` : `transparent`,
+                ...dropShadowStyleTemplate,
+                borderColor: outlined ? theme.color.divider : `transparent`,
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.item[shade];
+                        return theme.color.item[shade];
                     case `translucent-clear`:
-                        return `${theme.item[shade]}${theme.opacity}`;
+                        return `${theme.color.item[shade]}${theme.color.opacity}`;
+                    case `translucent-frosted`:
+                        frosted = true;
+                        return `transparent`;
+                    case `transparent`:
+                        return `transparent`;
+                    }
+                })()
+            }
+        }) : Hf.merge(DEFAULT_ITEM_VIEW_STYLE).with({
+            container: {
+                borderColor: outlined ? theme.color.divider : `transparent`,
+                backgroundColor: (() => {
+                    switch (overlay) { // eslint-disable-line
+                    case `opaque`:
+                        return theme.color.item[shade];
+                    case `translucent-clear`:
+                        return `${theme.color.item[shade]}${theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
@@ -131,11 +166,14 @@ const ItemViewInterface = Hf.Interface.augment({
                 })()
             }
         });
-        let itemChildren = null;
         let interfaceFragment = {
             item: {
-                mediaPart: (<View style = { adjustedStyle.filler }/>),
-                actionPart: (<View style = { adjustedStyle.filler }/>)
+                media: {
+                    part: (<View style = { adjustedStyle.room.filler }/>)
+                },
+                action: {
+                    part: (<View style = { adjustedStyle.room.filler }/>)
+                }
             }
         };
         if (React.Children.count(children) > 0) {
@@ -148,10 +186,10 @@ const ItemViewInterface = Hf.Interface.augment({
                 } else {
                     switch (room) { // eslint-disable-line
                     case `item-media`:
-                        _interfaceFragment.item.mediaPart = child;
+                        _interfaceFragment.item.media.part = child;
                         break;
                     case `item-action`:
-                        _interfaceFragment.item.actionPart = child;
+                        _interfaceFragment.item.action.part = child;
                         break;
                     case `none`:
                         break;
@@ -161,42 +199,47 @@ const ItemViewInterface = Hf.Interface.augment({
             }, interfaceFragment);
         }
 
-        itemChildren = createFragment(interfaceFragment.item);
+        const itemMediaChildren = createFragment(interfaceFragment.item.media);
+        const itemActionChildren = createFragment(interfaceFragment.item.action);
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         if (frosted) {
             return (
-                <TouchableHighlight
-                    underlayColor = 'transparent'
-                    onPress = { onPress }
-                >
+                <TouchableWithoutFeedback onPress = { onPress }>
                     <BlurView
                         blurType = { shade }
                         style = { adjustedStyle.container }
                     >
-                        <View style = { adjustedStyle.content }>
+                        <View style = { adjustedStyle.room.media }>
                         {
-                            itemChildren
+                            itemMediaChildren
+                        }
+                        </View>
+                        <View style = { adjustedStyle.room.action }>
+                        {
+                            itemActionChildren
                         }
                         </View>
                     </BlurView>
-                </TouchableHighlight>
+                </TouchableWithoutFeedback>
             );
         } else {
             return (
-                <TouchableHighlight
-                    underlayColor = 'transparent'
-                    onPress = { onPress }
-                >
+                <TouchableWithoutFeedback onPress = { onPress }>
                     <View style = { adjustedStyle.container }>
-                        <View style = { adjustedStyle.content }>
+                        <View style = { adjustedStyle.room.media }>
                         {
-                            itemChildren
+                            itemMediaChildren
                         }
                         </View>
+                        <View style = { adjustedStyle.room.action }>
+                        {
+                            itemActionChildren
+                        }
                     </View>
-                </TouchableHighlight>
+                    </View>
+                </TouchableWithoutFeedback>
             );
         }
     }

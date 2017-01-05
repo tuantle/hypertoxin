@@ -36,25 +36,27 @@ import { BlurView } from 'react-native-blur';
 
 import theme from '../../styles/theme';
 
-import dropShadowStyle from '../../styles/templates/drop-shadow-style-template';
+import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
+
+const {
+    View
+} = ReactNative;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
-const DEFSULT_CARD_VIEW_STYLE = {
+const DEFAULT_CARD_VIEW_STYLE = {
     container: {
-        ...dropShadowStyle,
-        flexShrink: 1,
         flexDirection: `column`,
         alignItems: `stretch`,
         justifyContent: `center`,
         maxWidth: DEVICE_WIDTH,
         margin: 3,
         padding: 3,
+        borderWidth: 1,
         borderRadius: 2
     },
-    content: {
+    room: {
         header: {
-            flexGrow: 1,
             flexDirection: `row`,
             alignItems: `stretch`,
             justifyContent: `space-between`,
@@ -62,7 +64,6 @@ const DEFSULT_CARD_VIEW_STYLE = {
             backgroundColor: `transparent`
         },
         media: {
-            flexGrow: 1,
             flexDirection: `column`,
             alignItems: `flex-start`,
             justifyContent: `flex-start`,
@@ -70,16 +71,14 @@ const DEFSULT_CARD_VIEW_STYLE = {
             backgroundColor: `transparent`
         },
         overlay: {
-            flexGrow: 1,
             flexDirection: `row`,
+            alignSelf: `stretch`,
             alignItems: `flex-start`,
             justifyContent: `flex-start`,
-            minHeight: 36,
             maxWidth: DEVICE_WIDTH,
-            backgroundColor: `${theme.palette.black}${theme.opacity}`
+            backgroundColor: `${theme.color.palette.black}${theme.color.opacity}`
         },
         body: {
-            flexGrow: 1,
             flexDirection: `column`,
             alignItems: `flex-start`,
             justifyContent: `flex-start`,
@@ -87,17 +86,17 @@ const DEFSULT_CARD_VIEW_STYLE = {
             backgroundColor: `transparent`
         },
         action: {
-            flexGrow: 1,
             flexDirection: `row`,
             alignItems: `flex-start`,
             justifyContent: `center`,
-            maxWidth: DEVICE_WIDTH
+            maxWidth: DEVICE_WIDTH,
+            backgroundColor: `transparent`
+        },
+        filler: {
+            width: 0,
+            height: 0,
+            backgroundColor: `transparent`
         }
-    },
-    filler: {
-        width: 0,
-        height: 0,
-        backgroundColor: `transparent`
     }
 };
 
@@ -106,6 +105,14 @@ const CardViewInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
+        room: {
+            value: `none`,
+            oneOf: [
+                `none`,
+                `item-media`
+            ],
+            stronglyTyped: true
+        },
         shade: {
             value: `light`,
             oneOf: [ `light`, `dark` ],
@@ -114,6 +121,10 @@ const CardViewInterface = Hf.Interface.augment({
         overlay: {
             value: `opaque`,
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
+            stronglyTyped: true
+        },
+        outlined: {
+            value: false,
             stronglyTyped: true
         },
         dropShadow: {
@@ -126,29 +137,46 @@ const CardViewInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            View
-        } = ReactNative;
-        const {
             shade,
             overlay,
+            outlined,
             dropShadow,
             style,
             children
         } = Hf.fallback({
             shade: `light`,
             overlay: `opaque`,
+            outlined: false,
             dropShadow: false
         }).of(property);
         let frosted = false;
-        let adjustedStyle = Hf.merge(DEFSULT_CARD_VIEW_STYLE).with({
+        let adjustedStyle = dropShadow ? Hf.merge(DEFAULT_CARD_VIEW_STYLE).with({
             container: {
-                shadowColor: dropShadow ? `black` : `transparent`,
+                ...dropShadowStyleTemplate,
+                borderColor: outlined ? theme.color.divider : `transparent`,
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.card.container[shade];
+                        return theme.color.card.container[shade];
                     case `translucent-clear`:
-                        return `${theme.card.container[shade]}${theme.opacity}`;
+                        return `${theme.color.card.container[shade]}${theme.color.opacity}`;
+                    case `translucent-frosted`:
+                        frosted = true;
+                        return `transparent`;
+                    case `transparent`:
+                        return `transparent`;
+                    }
+                })()
+            }
+        }) : Hf.merge(DEFAULT_CARD_VIEW_STYLE).with({
+            container: {
+                borderColor: outlined ? theme.color.divider : `transparent`,
+                backgroundColor: (() => {
+                    switch (overlay) { // eslint-disable-line
+                    case `opaque`:
+                        return theme.color.card.container[shade];
+                    case `translucent-clear`:
+                        return `${theme.color.card.container[shade]}${theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
@@ -166,21 +194,21 @@ const CardViewInterface = Hf.Interface.augment({
         let interfaceFragment = {
             card: {
                 header: {
-                    leftPart: (<View style = { adjustedStyle.filler }/>),
-                    rightPart: (<View style = { adjustedStyle.filler }/>)
+                    leftPart: (<View style = { adjustedStyle.room.filler }/>),
+                    rightPart: (<View style = { adjustedStyle.room.filler }/>)
                 },
                 media: {
-                    part: (<View style = { adjustedStyle.filler }/>)
+                    part: (<View style = { adjustedStyle.room.filler }/>)
                 },
                 overlay: {
-                    part: (<View style = { adjustedStyle.filler }/>)
+                    part: (<View style = { adjustedStyle.room.filler }/>)
                 },
                 body: {
-                    part: (<View style = { adjustedStyle.filler }/>)
+                    part: (<View style = { adjustedStyle.room.filler }/>)
                 },
                 action: {
-                    primaryPart: (<View style = { adjustedStyle.filler }/>),
-                    secondaryPart: (<View style = { adjustedStyle.filler }/>)
+                    primaryPart: (<View style = { adjustedStyle.room.filler }/>),
+                    secondaryPart: (<View style = { adjustedStyle.room.filler }/>)
                 }
             }
         };
@@ -206,13 +234,14 @@ const CardViewInterface = Hf.Interface.augment({
                         _interfaceFragment.card.media.part = child;
                         break;
                     case `card-overlay`:
-                        _interfaceFragment.card.overlay.part = (
-                            <View style = { adjustedStyle.content.overlay }>
-                            {
-                                child
-                            }
-                            </View>
-                        );
+                        _interfaceFragment.card.overlay.part = child;
+                        // _interfaceFragment.card.overlay.part = (
+                        //     <View style = { adjustedStyle.room.overlay }>
+                        //     {
+                        //         child
+                        //     }
+                        //     </View>
+                        // );
                         break;
                     case `card-body`:
                         _interfaceFragment.card.body.part = child;
@@ -232,20 +261,21 @@ const CardViewInterface = Hf.Interface.augment({
         }
 
         cardHeaderChildren = createFragment(interfaceFragment.card.header);
+        cardOverlayChildren = createFragment(interfaceFragment.card.overlay);
+        cardMediaChildren = createFragment(interfaceFragment.card.media);
+        // cardMediaChildren = React.Children.map(createFragment(interfaceFragment.card.media), (child) => {
+        //     if (Hf.isDefined(child.props.children)) {
+        //         return React.cloneElement(child, {
+        //             children: [ ...child.props.children, ...cardOverlayChildren ]
+        //         });
+        //     } else {
+        //         return React.cloneElement(child, {
+        //             children: [ ...cardOverlayChildren ]
+        //         });
+        //     }
+        // });
         cardBodyChildren = createFragment(interfaceFragment.card.body);
         cardActionChildren = createFragment(interfaceFragment.card.action);
-        cardOverlayChildren = createFragment(interfaceFragment.card.overlay);
-        cardMediaChildren = React.Children.map(createFragment(interfaceFragment.card.media), (child) => {
-            if (Hf.isDefined(child.props.children)) {
-                return React.cloneElement(child, {
-                    children: [ ...child.props.children, ...cardOverlayChildren ]
-                });
-            } else {
-                return React.cloneElement(child, {
-                    children: [ ...cardOverlayChildren ]
-                });
-            }
-        });
 
         if (frosted) {
             return (
@@ -253,21 +283,26 @@ const CardViewInterface = Hf.Interface.augment({
                     blurType = { shade }
                     style = { adjustedStyle.container }
                 >
-                    <View style = { adjustedStyle.content.header }>
+                    <View style = { adjustedStyle.room.header }>
                     {
                         cardHeaderChildren
                     }
                     </View>
-                    <View style = { adjustedStyle.content.media }>
+                    <View style = { adjustedStyle.room.media }>
                     {
                         cardMediaChildren
                     }
+                        <View style = { adjustedStyle.room.overlay }>
+                        {
+                            cardOverlayChildren
+                        }
+                        </View>
                     </View>
-                    <View style = { adjustedStyle.content.body }>
+                    <View style = { adjustedStyle.room.body }>
                     {
                         cardBodyChildren
                     }
-                        <View style = { adjustedStyle.content.action }>
+                        <View style = { adjustedStyle.room.action }>
                         {
                             cardActionChildren
                         }
@@ -278,21 +313,26 @@ const CardViewInterface = Hf.Interface.augment({
         } else {
             return (
                 <View style = { adjustedStyle.container }>
-                    <View style = { adjustedStyle.content.header }>
+                    <View style = { adjustedStyle.room.header }>
                     {
                         cardHeaderChildren
                     }
                     </View>
-                    <View style = { adjustedStyle.content.media }>
+                    <View style = { adjustedStyle.room.media }>
                     {
                         cardMediaChildren
                     }
+                        <View style = { adjustedStyle.room.overlay }>
+                        {
+                            cardOverlayChildren
+                        }
+                        </View>
                     </View>
-                    <View style = { adjustedStyle.content.body }>
+                    <View style = { adjustedStyle.room.body }>
                     {
                         cardBodyChildren
                     }
-                        <View style = { adjustedStyle.content.action }>
+                        <View style = { adjustedStyle.room.action }>
                         {
                             cardActionChildren
                         }

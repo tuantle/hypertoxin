@@ -30,6 +30,8 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+import { View as AnimatedView } from 'react-native-animatable';
+
 import { MKButton } from 'react-native-material-kit';
 
 import theme from '../../styles/theme';
@@ -37,6 +39,13 @@ import theme from '../../styles/theme';
 import fontStyleTemplate from '../../styles/templates/font-style-template';
 
 import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
+
+const {
+    Text,
+    Image,
+    View,
+    ActivityIndicator
+} = ReactNative;
 
 const DEFAULT_RAISED_BUTTON_STYLE = {
     container: {
@@ -49,12 +58,26 @@ const DEFAULT_RAISED_BUTTON_STYLE = {
         borderRadius: 2
     },
     icon: {
-        width: 24,
-        height: 24
+        small: {
+            width: 16,
+            height: 16,
+            backgroundColor: `transparent`
+        },
+        normal: {
+            width: 24,
+            height: 24,
+            backgroundColor: `transparent`
+        },
+        large: {
+            width: 32,
+            height: 32,
+            backgroundColor: `transparent`
+        }
     },
     label: {
-        ...fontStyleTemplate.normal,
-        marginHorizontal: 8
+        ...fontStyleTemplate.normalLarge,
+        marginHorizontal: 8,
+        backgroundColor: `transparent`
     }
 };
 
@@ -63,12 +86,16 @@ const RaisedButtonInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
+        animatableComponentRef: {
+            value: null
+        },
         room: {
             value: `none`,
             oneOf: [
                 `none`,
                 `header-left`, `header-right`,
-                `card-action`
+                `item-action`,
+                `card-action-primary`, `card-action-secondary`
             ],
             stronglyTyped: true
         },
@@ -77,8 +104,32 @@ const RaisedButtonInterface = Hf.Interface.augment({
             oneOf: [ `default`, `primary`, `secondary` ],
             stronglyTyped: true
         },
+        customColor: {
+            value: ``,
+            stronglyTyped: true
+        },
+        shape: {
+            value: `square`,
+            oneOf: [ `square`, `round` ],
+            stronglyTyped: true
+        },
         disabled: {
             value: false,
+            stronglyTyped: true
+        },
+        animation: {
+            value: `none`,
+            oneOf: [
+                `none`,
+                `bounce`, `rubber-band`,
+                `slide-in-right`, `slide-out-right`,
+                `flip-in-y`, `flip-out-y`
+            ],
+            stronglyTyped: true
+        },
+        animationSpeed: {
+            value: `normal`,
+            oneOf: [ `slow`, `normal`, `fast` ],
             stronglyTyped: true
         },
         busy: {
@@ -89,7 +140,16 @@ const RaisedButtonInterface = Hf.Interface.augment({
             value: ``,
             stronglyTyped: true
         },
-        icon: {
+        iconPreset: {
+            value: ``,
+            stronglyTyped: true
+        },
+        iconSize: {
+            value: `normal`,
+            oneOf: [ `small`, `normal`, `large` ],
+            stronglyTyped: true
+        },
+        customIcon: {
             value: null
         },
         style: {
@@ -102,75 +162,167 @@ const RaisedButtonInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Text,
-            Image,
-            View,
-            ActivityIndicator
-        } = ReactNative;
-        const {
+            animatableComponentRef,
             color,
+            customColor,
+            shape,
             disabled,
+            animation,
+            animationSpeed,
             busy,
             label,
-            icon,
+            iconPreset,
+            iconSize,
+            customIcon,
             style,
             onPress
         } = Hf.fallback({
             shade: `dark`,
             color: `default`,
+            customColor: ``,
+            shape: `square`,
             disabled: false,
+            animation: `none`,
+            animationSpeed: `normal`,
             busy: false,
-            label: `Raised Button`
+            label: `Raised Button`,
+            iconPreset: ``,
+            iconSize: `normal`
         }).of(property);
-        let adjustedStyle = Hf.merge(DEFAULT_RAISED_BUTTON_STYLE).with({
-            container: {
-                backgroundColor: !disabled ? theme.button.raised.container[color] : theme.button.raised.container.disabled
-            },
-            label: {
-                color: !disabled ? theme.button.raised.label[color] : theme.button.raised.label.disabled,
-                backgroundColor: `transparent`
-            },
-            icon: {
-                tintColor: !disabled ? theme.button.raised.icon[color] : theme.button.raised.icon.disabled,
-                backgroundColor: `transparent`
-            }
-        });
+        const themedColor = !disabled ? theme.color.button.raised.container[color] : theme.color.button.raised.container.disabled;
+        const themedLabelColor = !disabled ? theme.color.button.raised.label[color] : theme.color.button.raised.label.disabled;
+        const themedIconColor = !disabled ? theme.color.button.raised.icon[color] : theme.color.button.raised.icon.disabled;
+        const animated = animation !== `none`;
+        let animationType;
+        let animationDuration;
+        let icon = customIcon;
+        let adjustedStyle = {
+            container: Hf.merge(DEFAULT_RAISED_BUTTON_STYLE.container).with({
+                borderRadius: shape === `square` ? 2 : 18,
+                backgroundColor: Hf.isEmpty(customColor) ? themedColor : customColor
+            }),
+            label: Hf.merge(DEFAULT_RAISED_BUTTON_STYLE.label).with({
+                color: themedLabelColor
+            }),
+            icon: Hf.merge(DEFAULT_RAISED_BUTTON_STYLE.icon[iconSize]).with({
+                tintColor: themedIconColor
+            })
+        };
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
-        const MKFlatButton = MKButton.accentColoredFlatButton()
-                                     .withStyle(adjustedStyle.container)
-                                     .withMaskBorderRadius(adjustedStyle.container.borderRadius)
-                                     .build();
+        switch (animation) { // eslint-disable-line
+        case `bounce`:
+            animationType = `bounce`;
+            break;
+        case `rubber-band`:
+            animationType = `bounce`;
+            break;
+        case `slide-in-right`:
+            animationType = `slideInRight`;
+            break;
+        case `slide-out-right`:
+            animationType = `slideOutRight`;
+            break;
+        case `flip-in-y`:
+            animationType = `flipInY`;
+            break;
+        case `flip-out-y`:
+            animationType = `flipOutY`;
+            break;
+        }
 
-        return (
-            <MKFlatButton onPress = { !disabled ? onPress : null }>
-            {
-                busy ? <ActivityIndicator size = 'small'/> :
-                <View
-                    style = {{
-                        flexDirection: `row`,
-                        alignItems: `center`,
-                        justifyContent: `space-between`
-                    }}
-                >
-                {
-                    icon === null ? null :
-                    <Image
-                        style = { adjustedStyle.icon }
-                        source = {
-                            Hf.isString(icon) ? {
-                                uri: icon
-                            } : icon
-                        }
-                        resizeMode = 'cover'
-                    />
-                }
-                    <Text style = { adjustedStyle.label }>{ label }</Text>
-                </View>
+        switch (animationSpeed) { // eslint-disable-line
+        case `slow`:
+            animationDuration = 500;
+            break;
+        case `normal`:
+            animationDuration = 300;
+            break;
+        case `fast`:
+            animationDuration = 200;
+            break;
+        }
+
+        if (!Hf.isEmpty(iconPreset) && icon === null) {
+            if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
+                icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
+            } else {
+                Hf.log(`warn1`, `RaisedButtonInterface - Icon preset:${iconPreset} is not found.`);
             }
-            </MKFlatButton>
-        );
+        }
+
+        const MKRaisedButton = MKButton.accentColoredFlatButton()
+                                       .withStyle(adjustedStyle.container)
+                                       .withMaskBorderRadius(adjustedStyle.container.borderRadius)
+                                       .build();
+        if (animated) {
+            return (
+                <AnimatedView
+                    ref = { animatableComponentRef }
+                    animation = { animationType }
+                    duration = { animationDuration }
+                >
+                    <MKRaisedButton onPress = { !disabled ? onPress : null }>
+                    {
+                        busy ? <ActivityIndicator size = 'small'/> :
+                        <View
+                            style = {{
+                                flexDirection: `row`,
+                                alignItems: `center`,
+                                justifyContent: `space-between`
+                            }}
+                        >
+                        {
+                            icon === null ? null :
+                            <Image
+                                style = { adjustedStyle.icon }
+                                source = {
+                                    Hf.isString(icon) ? {
+                                        uri: icon,
+                                        isStatic: true
+                                    } : icon
+                                }
+                                resizeMode = 'cover'
+                            />
+                        }
+                            <Text style = { adjustedStyle.label }>{ label }</Text>
+                        </View>
+                    }
+                    </MKRaisedButton>
+                </AnimatedView>
+            );
+        } else {
+            return (
+                <MKRaisedButton onPress = { !disabled ? onPress : null }>
+                {
+                    busy ? <ActivityIndicator size = 'small'/> :
+                    <View
+                        style = {{
+                            flexDirection: `row`,
+                            alignItems: `center`,
+                            justifyContent: `space-between`
+                        }}
+                    >
+                    {
+                        icon === null ? null :
+                        <Image
+                            style = { adjustedStyle.icon }
+                            source = {
+                                Hf.isString(icon) ? {
+                                    uri: icon,
+                                    isStatic: true
+                                } : icon
+                            }
+                            resizeMode = 'cover'
+                        />
+                    }
+                        <Text style = { adjustedStyle.label }>{ label }</Text>
+                    </View>
+                }
+                </MKRaisedButton>
+            );
+        }
     }
 });
 

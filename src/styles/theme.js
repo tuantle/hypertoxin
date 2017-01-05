@@ -24,115 +24,65 @@
 'use strict'; // eslint-disable-line
 
 import materialPalette from './palettes/material-palette';
+import materialIconPreset from './icons/material-icon-preset';
 
 export default {
-    palette: materialPalette,
-    opacity: `a6`,
-    accent: `#f2771d`,
-    divider: `#e0dada`,
-    body: {
-        container: {
-            dark: `#455a64`,
-            light: `#fdfdfd`
-        }
-    },
-    header: {
-        container: {
-            dark: `#607d8b`,
-            light: `#00bcd4`
+    icon: materialIconPreset,
+    color: {
+        palette: materialPalette,
+        opacity: `aa`,
+        accent: `#f2771d`,
+        divider: `#f1e7e7`,
+        body: {
+            container: {
+                dark: `#455a64`,
+                light: `#fdfdfd`
+            }
         },
-        status: {
-            dark: `#455a64`,
-            light: `#0097a7`
-        },
-        label: {
-            dark: `#fdfdfd`,
-            light: `#fdfdfd`
-        }
-    },
-    item: {
-        container: {
-            dark: `#455a64`,
-            light: `#fdfdfd`
-        }
-    },
-    card: {
-        container: {
-            dark: `#455a64`,
-            light: `#fdfdfd`
-        }
-    },
-    layout: {
-        container: {
-            dark: `#455a64`,
-            light: `#fdfdfd`
-        }
-    },
-    text: {
-        default: {
-            dark: `#5d5d5d`,
-            light: `#fdfdfd`
-        },
-        primary: {
-            dark: `#ff5722`,
-            light: `#ff5722`
-        },
-        secondary: {
-            dark: `#ffccbc`,
-            light: `#ffccbc`
-        }
-    },
-    icon: {
-        default: {
-            dark: `#5d5d5d`,
-            light: `#fdfdfd`
-        },
-        primary: {
-            dark: `#ff5722`,
-            light: `#ff5722`
-        },
-        secondary: {
-            dark: `#ffccbc`,
-            light: `#ffccbc`
-        }
-    },
-    button: {
-        flat: {
-            label: {
-                default: {
-                    dark: `#5d5d5d`,
-                    light: `#fdfdfd`
-                },
-                primary: {
-                    dark: `#ff5722`,
-                    light: `#ff5722`
-                },
-                secondary: {
-                    dark: `#ffccbc`,
-                    light: `#ffccbc`
-                },
-                disabled: {
-                    dark: `#bdbdbd`,
-                    light: `#bdbdbd`
-                }
+        header: {
+            container: {
+                dark: `#607d8b`,
+                light: `#00bcd4`
             },
-            icon: {
-                default: {
-                    dark: `#5d5d5d`,
-                    light: `#fdfdfd`
-                },
-                primary: {
-                    dark: `#ff5722`,
-                    light: `#ff5722`
-                },
-                secondary: {
-                    dark: `#ff5722`,
-                    light: `#ffccbc`
-                },
-                disabled: {
-                    dark: `#bdbdbd`,
-                    light: `#bdbdbd`
-                }
+            status: {
+                dark: `#455a64`,
+                light: `#0097a7`
+            },
+            label: {
+                dark: `#fdfdfd`,
+                light: `#fdfdfd`
+            }
+        },
+        item: {
+            container: {
+                dark: `#455a64`,
+                light: `#fdfdfd`
+            }
+        },
+        card: {
+            container: {
+                dark: `#455a64`,
+                light: `#fdfdfd`
+            }
+        },
+        layout: {
+            container: {
+                dark: `#455a64`,
+                light: `#fdfdfd`
+            }
+        },
+        text: {
+            default: {
+                dark: `#5d5d5d`,
+                light: `#fdfdfd`
+            },
+            primary: {
+                dark: `#ff5722`,
+                light: `#ff5722`
+            },
+            secondary: {
+                dark: `#85d5eb`,
+                light: `#85d5eb`
             }
         },
         icon: {
@@ -145,46 +95,100 @@ export default {
                 light: `#ff5722`
             },
             secondary: {
-                dark: `#ffccbc`,
-                light: `#ffccbc`
-            },
-            disabled: {
-                dark: `#bdbdbd`,
-                light: `#bdbdbd`
+                dark: `#85d5eb`,
+                light: `#85d5eb`
             }
         },
-        raised: {
-            container: {
-                default: `#f2771d`,
-                primary: `#ff5722`,
-                secondary: `#ffccbc`,
-                disabled: `#bdbdbd`
-            },
-            label: {
-                default: `#fdfdfd`,
-                primary: `#fdfdfd`,
-                secondary: `#c8c8c8`,
-                disabled: `#d8d8d8`
+        button: {
+            flat: {
+                label: {
+                    default: {
+                        dark: `#5d5d5d`,
+                        light: `#fdfdfd`
+                    },
+                    primary: {
+                        dark: `#ff5722`,
+                        light: `#ff5722`
+                    },
+                    secondary: {
+                        dark: `#85d5eb`,
+                        light: `#85d5eb`
+                    },
+                    disabled: {
+                        dark: `#bdbdbd`,
+                        light: `#bdbdbd`
+                    }
+                },
+                icon: {
+                    default: {
+                        dark: `#5d5d5d`,
+                        light: `#fdfdfd`
+                    },
+                    primary: {
+                        dark: `#ff5722`,
+                        light: `#ff5722`
+                    },
+                    secondary: {
+                        dark: `#85d5eb`,
+                        light: `#85d5eb`
+                    },
+                    disabled: {
+                        dark: `#bdbdbd`,
+                        light: `#bdbdbd`
+                    }
+                }
             },
             icon: {
-                default: `#fdfdfd`,
-                primary: `#fdfdfd`,
-                secondary: `#c8c8c8`,
-                disabled: `#d8d8d8`
-            }
-        },
-        floatingAction: {
-            container: {
-                default: `#f2771d`,
-                primary: `#ff5722`,
-                secondary: `#ffccbc`,
-                disabled: `#bdbdbd`
+                default: {
+                    dark: `#5d5d5d`,
+                    light: `#fdfdfd`
+                },
+                primary: {
+                    dark: `#ff5722`,
+                    light: `#ff5722`
+                },
+                secondary: {
+                    dark: `#85d5eb`,
+                    light: `#85d5eb`
+                },
+                disabled: {
+                    dark: `#bdbdbd`,
+                    light: `#bdbdbd`
+                }
             },
-            icon: {
-                default: `#fdfdfd`,
-                primary: `#fdfdfd`,
-                secondary: `#c8c8c8`,
-                disabled: `#d8d8d8`
+            raised: {
+                container: {
+                    default: `#f2771d`,
+                    primary: `#ff5722`,
+                    secondary: `#85d5eb`,
+                    disabled: `#bdbdbd`
+                },
+                label: {
+                    default: `#fdfdfd`,
+                    primary: `#fdfdfd`,
+                    secondary: `#fdfdfd`,
+                    disabled: `#d8d8d8`
+                },
+                icon: {
+                    default: `#fdfdfd`,
+                    primary: `#fdfdfd`,
+                    secondary: `#fdfdfd`,
+                    disabled: `#d8d8d8`
+                }
+            },
+            floatingAction: {
+                container: {
+                    default: `#f2771d`,
+                    primary: `#ff5722`,
+                    secondary: `#85d5eb`,
+                    disabled: `#bdbdbd`
+                },
+                icon: {
+                    default: `#fdfdfd`,
+                    primary: `#fdfdfd`,
+                    secondary: `#fdfdfd`,
+                    disabled: `#d8d8d8`
+                }
             }
         }
     }

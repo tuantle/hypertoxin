@@ -34,6 +34,10 @@ import theme from '../../styles/theme';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
 
+const {
+    Text
+} = ReactNative;
+
 const DEFAULT_INFO_TEXT_STYLE = {
     small: fontStyleTemplate.normalSmaller,
     normal: fontStyleTemplate.normalSmall,
@@ -50,6 +54,7 @@ const InfoTextInterface = Hf.Interface.augment({
             oneOf: [
                 `none`,
                 `header-center`,
+                `item-media`,
                 `card-header-left`, `card-header-right`,
                 `card-media`, `card-overlay`,
                 `card-body`
@@ -95,9 +100,6 @@ const InfoTextInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Text
-        } = ReactNative;
-        const {
             shade,
             color,
             customColor,
@@ -116,12 +118,13 @@ const InfoTextInterface = Hf.Interface.augment({
             decoration: `none`,
             indentation: 0
         }).of(property);
+        const themeTextColor = theme.color.text[color][shade];
         let adjustedStyle = Hf.merge(DEFAULT_INFO_TEXT_STYLE[size]).with({
             flexWrap: `wrap`,
             textAlign: alignment,
             textDecorationLine: decoration,
             paddingLeft: indentation,
-            color: Hf.isEmpty(customColor) ? theme.text[color][shade] : customColor,
+            color: Hf.isEmpty(customColor) ? themeTextColor : customColor,
             backgroundColor: `transparent`
         });
 

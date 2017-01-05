@@ -53,20 +53,11 @@ import PortraitImageComponent from './images/portrait-image-component';
 import SquareImageComponent from './images/square-image-component';
 import WallpaperImageComponent from './images/wallpaper-image-component';
 
-/* load icon image presets */
-import IconImageComponentPreset from './images/presets/icon-image-component-preset';
-
 /* load button components */
 import FlatButtonComponent from './buttons/flat-button-component';
 import IconButtonComponent from './buttons/icon-button-component';
 import RaisedButtonComponent from './buttons/raised-button-component';
 import FloatingActionButtonComponent from './buttons/floating-action-button-component';
-
-/* load button presets */
-import FlatButtonComponentPreset from './buttons/presets/flat-button-component-preset';
-import RaisedButtonComponentPreset from './buttons/presets/raised-button-component-preset';
-import IconButtonComponentPreset from './buttons/presets/icon-button-component-preset';
-import FloatingActionButtonComponentPreset from './buttons/presets/floating-action-button-component-preset';
 
 /* load field components */
 import TextFieldComponent from './fields/text-field-component';
@@ -88,12 +79,10 @@ let Ht = null;
  */
 const init = function init ({
     customTheme
-    // customPreset,
-    // customIcon
 } = {}) {
     if (Ht === null) {
         const HtProperty = {
-            VERSION: `0.1.0-alpha4`,
+            VERSION: `0.1.0-alpha5`,
             View: {
                 ScreenView: ScreenViewComponent,
                 HeaderView: HeaderViewComponent,
@@ -133,30 +122,10 @@ const init = function init ({
                 InfoText: InfoTextComponent,
                 CaptionText: CaptionTextComponent
             },
-            Preset: {
-                FlatButton: {
-                    ...FlatButtonComponentPreset
-                },
-                RaisedButton: {
-                    ...RaisedButtonComponentPreset
-                },
-                IconButton: {
-                    ...IconButtonComponentPreset
-                },
-                FloatingActionButton: {
-                    ...FloatingActionButtonComponentPreset
-                },
-                IconImage: {
-                    ...IconImageComponentPreset
-                }
-            },
             Theme: defaultTheme
-            // Icon: defaultIcon
         };
 
-        // HtProperty.Preset = Hf.isObject(customPreset) ? Hf.merge(HtProperty.Preset).with(customPreset) : HtProperty.Preset;
         HtProperty.Theme = Hf.isObject(customTheme) ? Hf.merge(HtProperty.Theme).with(customTheme) : HtProperty.Theme;
-        // HtProperty.Icon = Hf.isObject(customIcon) ? Hf.merge(HtProperty.Icon).with(customIcon) : HtProperty.Icon;
 
         /* create an Ht object */
         Ht = Object.freeze(HtProperty);

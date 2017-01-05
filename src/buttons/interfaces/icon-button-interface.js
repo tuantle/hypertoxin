@@ -32,7 +32,15 @@ import ReactNative from 'react-native';
 
 import { MKButton } from 'react-native-material-kit';
 
+import { View as AnimatedView } from 'react-native-animatable';
+
+import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
+
 import theme from '../../styles/theme';
+
+const {
+    Image
+} = ReactNative;
 
 const DEFAULT_ICON_BUTTON_STYLE = {
     container: {
@@ -42,11 +50,25 @@ const DEFAULT_ICON_BUTTON_STYLE = {
         width: 36,
         margin: 8,
         padding: 8,
-        borderRadius: 18
+        borderRadius: 18,
+        backgroundColor: `transparent`
     },
     icon: {
-        width: 24,
-        height: 24
+        small: {
+            width: 16,
+            height: 16,
+            backgroundColor: `transparent`
+        },
+        normal: {
+            width: 24,
+            height: 24,
+            backgroundColor: `transparent`
+        },
+        large: {
+            width: 32,
+            height: 32,
+            backgroundColor: `transparent`
+        }
     }
 };
 
@@ -60,7 +82,9 @@ const IconButtonInterface = Hf.Interface.augment({
             oneOf: [
                 `none`,
                 `header-left`, `header-right`,
-                `card-action`
+                `item-action`,
+                `card-header-left`, `card-header-right`,
+                `card-action-primary`, `card-action-secondary`
             ],
             stronglyTyped: true
         },
@@ -74,11 +98,43 @@ const IconButtonInterface = Hf.Interface.augment({
             oneOf: [ `default`, `primary`, `secondary` ],
             stronglyTyped: true
         },
+        customColor: {
+            value: ``,
+            stronglyTyped: true
+        },
         disabled: {
             value: false,
             stronglyTyped: true
         },
-        icon: {
+        dropShadowIcon: {
+            value: true,
+            stronglyTyped: true
+        },
+        animation: {
+            value: `none`,
+            oneOf: [
+                `none`,
+                `bounce`, `rubber-band`,
+                `slide-in-right`, `slide-out-right`,
+                `flip-in-y`, `flip-out-y`
+            ],
+            stronglyTyped: true
+        },
+        animationSpeed: {
+            value: `normal`,
+            oneOf: [ `slow`, `normal`, `fast` ],
+            stronglyTyped: true
+        },
+        iconPreset: {
+            value: ``,
+            stronglyTyped: true
+        },
+        iconSize: {
+            value: `normal`,
+            oneOf: [ `small`, `normal`, `large` ],
+            stronglyTyped: true
+        },
+        customIcon: {
             value: null
         },
         style: {
@@ -91,31 +147,86 @@ const IconButtonInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Image
-        } = ReactNative;
-        const {
             shade,
             color,
+            customColor,
             disabled,
-            icon,
+            dropShadowIcon,
+            animation,
+            animationSpeed,
+            iconPreset,
+            iconSize,
+            customIcon,
             style,
             onPress
         } = Hf.fallback({
             shade: `dark`,
             color: `default`,
-            disabled: false
+            customColor: ``,
+            disabled: false,
+            dropShadowIcon: true,
+            animation: `none`,
+            animationSpeed: `normal`,
+            iconPreset: ``,
+            iconSize: `normal`
         }).of(property);
-        let adjustedStyle = Hf.merge(DEFAULT_ICON_BUTTON_STYLE).with({
-            container: {
-                backgroundColor: `transparent`
-            },
-            icon: {
-                tintColor: !disabled ? theme.button.icon[color][shade] : theme.button.icon.disabled[shade],
-                backgroundColor: `transparent`
-            }
-        });
+        const themedIconColor = !disabled ? theme.color.button.icon[color][shade] : theme.color.button.icon.disabled[shade];
+        const animated = animation !== `none`;
+        let animationType;
+        let animationDuration;
+        let icon = customIcon;
+        let adjustedStyle = {
+            container: DEFAULT_ICON_BUTTON_STYLE.container,
+            icon: dropShadowIcon ? Hf.merge(DEFAULT_ICON_BUTTON_STYLE.icon[iconSize]).with({
+                ...dropShadowStyleTemplate,
+                tintColor: Hf.isEmpty(customColor) ? themedIconColor : customColor
+            }) : Hf.merge(DEFAULT_ICON_BUTTON_STYLE.icon[iconSize]).with({
+                tintColor: Hf.isEmpty(customColor) ? themedIconColor : customColor
+            })
+        };
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
+
+        switch (animation) { // eslint-disable-line
+        case `bounce`:
+            animationType = `bounce`;
+            break;
+        case `rubber-band`:
+            animationType = `bounce`;
+            break;
+        case `slide-in-right`:
+            animationType = `slideInRight`;
+            break;
+        case `slide-out-right`:
+            animationType = `slideOutRight`;
+            break;
+        case `flip-in-y`:
+            animationType = `flipInY`;
+            break;
+        case `flip-out-y`:
+            animationType = `flipOutY`;
+            break;
+        }
+
+        switch (animationSpeed) { // eslint-disable-line
+        case `slow`:
+            animationDuration = 500;
+            break;
+        case `normal`:
+            animationDuration = 300;
+            break;
+        case `fast`:
+            animationDuration = 200;
+            break;
+        }
+
+        if (!Hf.isEmpty(iconPreset) && icon === null) {
+            if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
+                icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
+            } else {
+                Hf.log(`warn1`, `IconButtonInterface - Icon preset:${iconPreset} is not found.`);
+            }
+        }
 
         const MKIconButton = new MKButton.Builder()
                                          .withStyle(adjustedStyle.container)
@@ -124,19 +235,44 @@ const IconButtonInterface = Hf.Interface.augment({
                                          .withAccent(false)
                                          .withRippleLocation(`center`)
                                          .build();
-        return (
-            <MKIconButton onPress = { !disabled ? onPress : null }>
-                <Image
-                    style = { adjustedStyle.icon }
-                    source = {
-                        Hf.isString(icon) ? {
-                            uri: icon
-                        } : icon
-                    }
-                    resizeMode = 'cover'
-                />
-            </MKIconButton>
-        );
+
+        if (animated) {
+            return (
+                <AnimatedView
+                    ref = { animatableComponentRef }
+                    animation = { animationType }
+                    duration = { animationDuration }
+                >
+                    <MKIconButton onPress = { !disabled ? onPress : null }>
+                        <Image
+                            style = { adjustedStyle.icon }
+                            source = {
+                                Hf.isString(icon) ? {
+                                    uri: icon,
+                                    isStatic: true
+                                } : icon
+                            }
+                            resizeMode = 'cover'
+                        />
+                    </MKIconButton>
+                </AnimatedView>
+            );
+        } else {
+            return (
+                <MKIconButton onPress = { !disabled ? onPress : null }>
+                    <Image
+                        style = { adjustedStyle.icon }
+                        source = {
+                            Hf.isString(icon) ? {
+                                uri: icon,
+                                isStatic: true
+                            } : icon
+                        }
+                        resizeMode = 'cover'
+                    />
+                </MKIconButton>
+            );
+        }
     }
 });
 

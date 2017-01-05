@@ -28,18 +28,22 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative from 'react-native';
+import ReactNative, { Dimensions } from 'react-native';
 
 import theme from '../../styles/theme';
 
-const DEVICE_WIDTH = ReactNative.Dimensions.get(`window`).width;
+const {
+    View
+} = ReactNative;
 
-const DEFSULT_DIVIDER_VIEW_STYLE = {
+const DEVICE_WIDTH = Dimensions.get(`window`).width;
+
+const DEFAULT_DIVIDER_VIEW_STYLE = {
     container: {
         width: DEVICE_WIDTH,
         height: 1,
-        marginVertical: 8,
-        backgroundColor: theme.divider
+        marginVertical: 6,
+        backgroundColor: theme.color.divider
     }
 };
 
@@ -48,18 +52,28 @@ const DividerViewInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
+        thickness: {
+            value: 1,
+            stronglyTyped: true
+        },
         style: {
             value: null
         }
     },
     pureRender: function pureRender (property) {
         const {
-            View
-        } = ReactNative;
-        const {
+            thickness,
             style
-        } = property;
-        let adjustedStyle = Hf.isObject(style) ? Hf.merge(DEFSULT_DIVIDER_VIEW_STYLE).with(style) : DEFSULT_DIVIDER_VIEW_STYLE;
+        } = Hf.fallback({
+            thickness: 1
+        }).of(property);
+        let adjustedStyle = Hf.merge(DEFAULT_DIVIDER_VIEW_STYLE).with({
+            container: {
+                height: thickness
+            }
+        });
+
+        adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         return (
             <View style = { adjustedStyle.container }>

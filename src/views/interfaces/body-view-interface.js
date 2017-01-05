@@ -34,13 +34,17 @@ import { BlurView } from 'react-native-blur';
 
 import theme from '../../styles/theme';
 
+const {
+    View,
+    ScrollView
+} = ReactNative;
+
 const DEFAULT_BODY_VIEW_STYLE = {
     container: {
         flexShrink: 1,
         flexDirection: `column`,
         justifyContent: `flex-start`,
-        alignItems: `stretch`,
-        paddingHorizontal: 6
+        alignItems: `stretch`
     }
 };
 
@@ -72,10 +76,6 @@ const BodyViewInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            View,
-            ScrollView
-        } = ReactNative;
-        const {
             scollableComponentRef,
             shade,
             overlay,
@@ -93,9 +93,9 @@ const BodyViewInterface = Hf.Interface.augment({
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.body.container[shade];
+                        return theme.color.body.container[shade];
                     case `translucent-clear`:
-                        return `${theme.body.container[shade]}${theme.opacity}`;
+                        return `${theme.color.body.container[shade]}${theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
@@ -136,7 +136,6 @@ const BodyViewInterface = Hf.Interface.augment({
             if (frosted) {
                 return (
                     <BlurView
-                        ref = { scollableComponentRef }
                         blurType = { shade }
                         style = { adjustedStyle.container }
                     >
@@ -147,10 +146,7 @@ const BodyViewInterface = Hf.Interface.augment({
                 );
             } else {
                 return (
-                    <View
-                        ref = { scollableComponentRef }
-                        style = { adjustedStyle.container }
-                    >
+                    <View style = { adjustedStyle.container }>
                     {
                         children
                     }

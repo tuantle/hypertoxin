@@ -28,40 +28,44 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative from 'react-native';
+import ReactNative, { Dimensions } from 'react-native';
 
-import {
-    View as AnimatedView,
-    createAnimatableComponent
-} from 'react-native-animatable';
+import * as Animatable from 'react-native-animatable';
 
 import { BlurView } from 'react-native-blur';
 
-const AnimatedBlurView = createAnimatableComponent(BlurView);
+const {
+    View,
+    ScrollView
+} = ReactNative;
+
+const AnimatedView = Animatable.View;
+const AnimatedBlurView = Animatable.createAnimatableComponent(BlurView);
 
 import theme from '../../styles/theme';
 
-const DEFSULT_LAYOUT_VIEW_STYLE = {
+const DEVICE_WIDTH = Dimensions.get(`window`).width;
+
+const DEFAULT_LAYOUT_VIEW_STYLE = {
     container: {
         flexShrink: 1,
         flexDirection: `column`,
         justifyContent: `center`,
         alignItems: `stretch`,
-        overflow: `hidden`
-        // marginHorizontal: 3,
-        // paddingHorizontal: 3
+        overflow: `hidden`,
+        maxWidth: DEVICE_WIDTH
     },
-    content: {
-        horizontal: {
-            flexShrink: 1,
-            flexDirection: `column`,
-            backgroundColor: `transparent`
-        },
-        vertical: {
-            flexShrink: 1,
-            flexDirection: `row`,
-            backgroundColor: `transparent`
-        }
+    horizontal: {
+        flexShrink: 1,
+        flexDirection: `column`,
+        maxWidth: DEVICE_WIDTH,
+        backgroundColor: `transparent`
+    },
+    vertical: {
+        flexShrink: 1,
+        flexDirection: `row`,
+        maxWidth: DEVICE_WIDTH,
+        backgroundColor: `transparent`
     }
 };
 
@@ -80,10 +84,12 @@ const LayoutViewInterface = Hf.Interface.augment({
             value: `none`,
             oneOf: [
                 `none`,
-                `header-center`,
+                `header-left`, `header-center`, `header-right`,
+                `item-media`, `item-action`,
                 `card-header-left`, `card-header-right`,
                 `card-media`, `card-overlay`,
-                `card-body`
+                `card-body`,
+                `card-action-primary`, `card-action-secondary`
             ],
             stronglyTyped: true
         },
@@ -137,10 +143,6 @@ const LayoutViewInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            View,
-            ScrollView
-        } = ReactNative;
-        const {
             scollableComponentRef,
             animatableComponentRef,
             shade,
@@ -167,14 +169,14 @@ const LayoutViewInterface = Hf.Interface.augment({
         let animationType;
         let animationDuration;
         let frosted = false;
-        let adjustedStyle = Hf.merge(DEFSULT_LAYOUT_VIEW_STYLE).with({
+        let adjustedStyle = Hf.merge(DEFAULT_LAYOUT_VIEW_STYLE).with({
             container: {
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.layout.container[shade];
+                        return theme.color.layout.container[shade];
                     case `translucent-clear`:
-                        return `${theme.layout.container[shade]}${theme.opacity}`;
+                        return `${theme.color.layout.container[shade]}${theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
@@ -197,59 +199,57 @@ const LayoutViewInterface = Hf.Interface.augment({
                     }
                 })()
             },
-            content: {
-                horizontal: {
-                    justifyContent: (() => {
-                        switch (alignment) { // eslint-disable-line
-                        case `start`:
-                            return `flex-start`;
-                        case `center`:
-                            return `center`;
-                        case `end`:
-                            return `flex-end`;
-                        case `stretch`:
-                            return `space-between`;
-                        }
-                    })(),
-                    alignItems: (() => {
-                        switch (alignment) { // eslint-disable-line
-                        case `start`:
-                            return `flex-start`;
-                        case `center`:
-                            return `center`;
-                        case `end`:
-                            return `flex-end`;
-                        case `stretch`:
-                            return `stretch`;
-                        }
-                    })()
-                },
-                vertical: {
-                    justifyContent: (() => {
-                        switch (alignment) { // eslint-disable-line
-                        case `start`:
-                            return `flex-start`;
-                        case `center`:
-                            return `center`;
-                        case `end`:
-                            return `flex-end`;
-                        case `stretch`:
-                            return `space-between`;
-                        }
-                    })(),
-                    alignItems: (() => {
-                        switch (alignment) { // eslint-disable-line
-                        case `start`:
-                            return `flex-start`;
-                        case `center`:
-                            return `center`;
-                        case `end`:
-                            return `flex-end`;
-                        case `stretch`:
-                            return `stretch`;
-                        }
-                    })()
-                }
+            horizontal: {
+                justifyContent: (() => {
+                    switch (alignment) { // eslint-disable-line
+                    case `start`:
+                        return `flex-start`;
+                    case `center`:
+                        return `center`;
+                    case `end`:
+                        return `flex-end`;
+                    case `stretch`:
+                        return `space-between`;
+                    }
+                })(),
+                alignItems: (() => {
+                    switch (alignment) { // eslint-disable-line
+                    case `start`:
+                        return `flex-start`;
+                    case `center`:
+                        return `center`;
+                    case `end`:
+                        return `flex-end`;
+                    case `stretch`:
+                        return `stretch`;
+                    }
+                })()
+            },
+            vertical: {
+                justifyContent: (() => {
+                    switch (alignment) { // eslint-disable-line
+                    case `start`:
+                        return `flex-start`;
+                    case `center`:
+                        return `center`;
+                    case `end`:
+                        return `flex-end`;
+                    case `stretch`:
+                        return `space-between`;
+                    }
+                })(),
+                alignItems: (() => {
+                    switch (alignment) { // eslint-disable-line
+                    case `start`:
+                        return `flex-start`;
+                    case `center`:
+                        return `center`;
+                    case `end`:
+                        return `flex-end`;
+                    case `stretch`:
+                        return `stretch`;
+                    }
+                })()
             }
         });
 
@@ -300,7 +300,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                             blurType = { shade }
                         >
                             <ScrollView ref = { scollableComponentRef }>
-                                <View style = { adjustedStyle.content[orientation] }>
+                                <View style = { adjustedStyle[orientation] }>
                                 {
                                     children
                                 }
@@ -317,7 +317,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                         animation = { animationType }
                     >
                         <ScrollView ref = { scollableComponentRef }>
-                            <View style = { adjustedStyle.content[orientation] }>
+                            <View style = { adjustedStyle[orientation] }>
                             {
                                 children
                             }
@@ -333,7 +333,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                             blurType = { shade }
                         >
                             <ScrollView ref = { scollableComponentRef }>
-                                <View style = { adjustedStyle.content[orientation] }>
+                                <View style = { adjustedStyle[orientation] }>
                                 {
                                     children
                                 }
@@ -345,7 +345,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                 return (
                     <View style = { adjustedStyle.container }>
                         <ScrollView ref = { scollableComponentRef }>
-                            <View style = { adjustedStyle.content[orientation] }>
+                            <View style = { adjustedStyle[orientation] }>
                             {
                                 children
                             }
@@ -365,7 +365,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                             duration = { animationDuration }
                             blurType = { shade }
                         >
-                            <View style = { adjustedStyle.content[orientation] }>
+                            <View style = { adjustedStyle[orientation] }>
                             {
                                 children
                             }
@@ -380,7 +380,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                         animation = { animationType }
                         duration = { animationDuration }
                     >
-                        <View style = { adjustedStyle.content[orientation] }>
+                        <View style = { adjustedStyle[orientation] }>
                         {
                             children
                         }
@@ -394,7 +394,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                             style = { adjustedStyle.container }
                             blurType = { shade }
                         >
-                            <View style = { adjustedStyle.content[orientation] }>
+                            <View style = { adjustedStyle[orientation] }>
                             {
                                 children
                             }
@@ -404,7 +404,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                 }
                 return (
                     <View style = { adjustedStyle.container }>
-                        <View style = { adjustedStyle.content[orientation] }>
+                        <View style = { adjustedStyle[orientation] }>
                         {
                             children
                         }

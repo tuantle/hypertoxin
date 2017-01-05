@@ -36,35 +36,47 @@ import theme from '../../styles/theme';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
 
+const {
+    Text,
+    View
+} = ReactNative;
+
 const DEFAULT_TEXT_FIELD_STYLE = {
     container: {
+        flexGrow: 1,
         flexDirection: `column`,
         alignItems: `stretch`,
         justifyContent: `center`,
         backgroundColor: `transparent`,
-        margin: 8,
-        padding: 8
+        marginHorizontal: 8,
+        paddingHorizontal: 8,
+        marginVertical: 3,
+        paddingVertical: 3
     },
     floating: {
-        height: 48
+        height: 48,
+        marginTop: 10
     },
     status: {
-        ...fontStyleTemplate.italic,
+        ...fontStyleTemplate.italicSmall,
         textAlign: `left`,
-        color: theme.palette.red
+        color: theme.color.palette.red
     },
     textField: {
         small: {
-            ...fontStyleTemplate.normal,
-            textAlign: `left`
+            ...fontStyleTemplate.bold,
+            textAlign: `left`,
+            height: 24
         },
         normal: {
-            ...fontStyleTemplate.normalLarge,
-            textAlign: `left`
+            ...fontStyleTemplate.boldLarge,
+            textAlign: `left`,
+            height: 26
         },
         large: {
-            ...fontStyleTemplate.normalLarger,
-            textAlign: `left`
+            ...fontStyleTemplate.boldLarger,
+            textAlign: `left`,
+            height: 28
         }
     }
 };
@@ -77,6 +89,7 @@ const NumberFieldInterface = Hf.Interface.augment({
             value: `none`,
             oneOf: [
                 `none`,
+                `item-media`,
                 `card-media`, `card-body`
             ],
             stronglyTyped: true
@@ -101,8 +114,8 @@ const NumberFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         returnKeyType: {
-            value: `next`,
-            oneOf: [ `next`, `done` ],
+            value: `default`,
+            oneOf: [ `default`, `next`, `done` ],
             stronglyTyped: true
         },
         editable: {
@@ -135,7 +148,7 @@ const NumberFieldInterface = Hf.Interface.augment({
         componentRef: {
             value: null
         },
-        onSubmitEdit: {
+        onDoneEdit: {
             value: () => {},
             stronglyTyped: true
         },
@@ -150,10 +163,6 @@ const NumberFieldInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Text,
-            View
-        } = ReactNative;
-        const {
             shade,
             color,
             customColor,
@@ -167,7 +176,7 @@ const NumberFieldInterface = Hf.Interface.augment({
             status,
             style,
             componentRef,
-            onSubmitEdit,
+            onDoneEdit,
             onFocus,
             onBlur
         } = Hf.fallback({
@@ -175,7 +184,7 @@ const NumberFieldInterface = Hf.Interface.augment({
             color: `default`,
             customColor: ``,
             size: `normal`,
-            returnKeyType: `next`,
+            returnKeyType: `default`,
             editable: true,
             focus: false,
             monetary: false,
@@ -184,46 +193,36 @@ const NumberFieldInterface = Hf.Interface.augment({
             defaultValue: 0,
             status: ``
         }).of(property);
-        let adjustedStyle = Hf.merge(DEFAULT_TEXT_FIELD_STYLE).with({
-            textField: {
-                small: {
-                    color: Hf.isEmpty(customColor) ? theme.text[color][shade] : customColor
-                },
-                normal: {
-                    color: Hf.isEmpty(customColor) ? theme.text[color][shade] : customColor
-                },
-                large: {
-                    color: Hf.isEmpty(customColor) ? theme.text[color][shade] : customColor
-                }
-            }
-        });
+        let adjustedStyle = {
+            container: DEFAULT_TEXT_FIELD_STYLE.container,
+            floating: DEFAULT_TEXT_FIELD_STYLE.floating,
+            status: DEFAULT_TEXT_FIELD_STYLE.status,
+            textField: Hf.merge(DEFAULT_TEXT_FIELD_STYLE.textField[size]).with({
+                color: Hf.isEmpty(customColor) ? theme.color.text[color][shade] : customColor
+            })
+        };
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         const Textfield = MKTextField.textfieldWithFloatingLabel()
-                                     .withPassword(false)
                                      .withFloatingLabelEnabled(Hf.isEmpty(`${defaultValue}`))
                                      .withPlaceholder(monetary ? `$${placeholder.toFixed(2)}` : `${placeholder}`)
                                      .withDefaultValue(monetary ? `$${defaultValue.toFixed(2)}` : `${defaultValue}`)
                                      .withStyle(adjustedStyle.floating)
-                                     .withTextInputStyle(adjustedStyle.textField[size])
-                                     .withHighlightColor(adjustedStyle.textField[size].color)
-                                     .withFloatingLabelFont(adjustedStyle.textField[size])
+                                     .withTextInputStyle(adjustedStyle.textField)
+                                     .withHighlightColor(adjustedStyle.textField.color)
+                                     .withFloatingLabelFont(adjustedStyle.textField)
                                      .withUnderlineSize(1)
                                      .withOnEndEditing((event) => {
                                          const text = !Hf.isEmpty(event.nativeEvent.text) ? event.nativeEvent.text : `0`;
                                          if (monetary && text.charAt(0) === `$`) {
-                                             onSubmitEdit(parseFloat(text.substring(1)));
+                                             if (event.nativeEvent.text.length === 1) {
+                                                 onDoneEdit(0);
+                                             } else {
+                                                 onDoneEdit(parseFloat(text.substring(1)));
+                                             }
                                          } else {
-                                             onSubmitEdit(parseFloat(text));
-                                         }
-                                     })
-                                     .withOnSubmitEditing((event) => {
-                                         const text = !Hf.isEmpty(event.nativeEvent.text) ? event.nativeEvent.text : `0`;
-                                         if (monetary && text.charAt(0) === `$`) {
-                                             onSubmitEdit(parseFloat(text.substring(1)));
-                                         } else {
-                                             onSubmitEdit(parseFloat(text));
+                                             onDoneEdit(parseFloat(text));
                                          }
                                      })
                                      .withOnFocus(onFocus)
@@ -237,6 +236,7 @@ const NumberFieldInterface = Hf.Interface.augment({
                     editable = { editable }
                     focus = { focus }
                     keyboardType = 'numeric'
+                    clearButtonMode = 'while-editing'
                     returnKeyType = { returnKeyType }
                 />
                 <Text style = { adjustedStyle.status }>{ status }</Text>

@@ -32,12 +32,16 @@ import ReactNative, { Dimensions } from 'react-native';
 
 import theme from '../../styles/theme';
 
+const {
+    View
+} = ReactNative;
+
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 const DEVICE_HEIGHT = Dimensions.get(`window`).height;
 
 const DEFAULT_SCREEN_VIEW_STYLE = {
     container: {
-        flex: 1,
+        flexGrow: 1,
         width: DEVICE_WIDTH,
         height: DEVICE_HEIGHT
     }
@@ -59,9 +63,6 @@ const ScreenViewInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            View
-        } = ReactNative;
-        const {
             shade,
             style,
             children
@@ -70,7 +71,7 @@ const ScreenViewInterface = Hf.Interface.augment({
         }).of(property);
         let adjustedStyle = Hf.merge(DEFAULT_SCREEN_VIEW_STYLE).with({
             container: {
-                backgroundColor: theme.body.container[shade]
+                backgroundColor: theme.color.body.container[shade]
             }
         });
 

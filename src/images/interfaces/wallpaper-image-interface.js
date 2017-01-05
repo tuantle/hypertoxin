@@ -30,6 +30,10 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+const {
+    Image
+} = ReactNative;
+
 const DEVICE_WIDTH = ReactNative.Dimensions.get(`window`).width;
 const DEVICE_HEIGHT = ReactNative.Dimensions.get(`window`).height;
 
@@ -63,9 +67,6 @@ const WallpaperImageInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Image
-        } = ReactNative;
-        const {
             resizeMode,
             source,
             defaultSource,
@@ -83,7 +84,8 @@ const WallpaperImageInterface = Hf.Interface.augment({
                 style = { adjustedStyle }
                 source = {
                     Hf.isString(source) ? {
-                        uri: source
+                        uri: source,
+                        cache: `only-if-cached`
                     } : source
                 }
                 defaultSource = {

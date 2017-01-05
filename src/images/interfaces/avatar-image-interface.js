@@ -32,27 +32,37 @@ import ReactNative from 'react-native';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
+import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
+
+const {
+    Image,
+    View
+} = ReactNative;
+
 const DEFAULT_AVATAR_IMAGE_STYLE = {
     small: {
         width: 36,
         height: 36,
-        borderRadius: 18,
         margin: 3,
-        padding: 3
+        padding: 3,
+        borderRadius: 18,
+        backgroundColor: `transparent`
     },
     normal: {
         width: 48,
         height: 48,
-        borderRadius: 24,
         margin: 3,
-        padding: 3
+        padding: 3,
+        borderRadius: 24,
+        backgroundColor: `transparent`
     },
     large: {
         width: 56,
         height: 56,
-        borderRadius: 28,
         margin: 3,
-        padding: 3
+        padding: 3,
+        borderRadius: 28,
+        backgroundColor: `transparent`
     }
 };
 
@@ -68,8 +78,9 @@ const AvatarImageInterface = Hf.Interface.augment({
             value: `none`,
             oneOf: [
                 `none`,
-                `header-center`,
-                `card-header-left`,
+                `header-left`, `header-center`, `header-right`,
+                `item-media`, `item-action`,
+                `card-header-left`, `card-header-right`,
                 `card-media`, `card-overlay`, `card-body`
             ],
             stronglyTyped: true
@@ -77,6 +88,10 @@ const AvatarImageInterface = Hf.Interface.augment({
         size: {
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
+            stronglyTyped: true
+        },
+        dropShadow: {
+            value: true,
             stronglyTyped: true
         },
         animation: {
@@ -106,11 +121,9 @@ const AvatarImageInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Image
-        } = ReactNative;
-        const {
             animatableComponentRef,
             size,
+            dropShadow,
             animation,
             animationSpeed,
             source,
@@ -118,6 +131,7 @@ const AvatarImageInterface = Hf.Interface.augment({
             style
         } = Hf.fallback({
             size: `normal`,
+            dropShadow: true,
             animation: `none`,
             animationSpeed: `normal`
         }).of(property);
@@ -162,42 +176,91 @@ const AvatarImageInterface = Hf.Interface.augment({
         }
 
         if (animated) {
-            return (
-                <AnimatedImage
-                    ref = { animatableComponentRef }
-                    style = { adjustedStyle }
-                    source = {
-                        Hf.isString(source) ? {
-                            uri: source
-                        } : source
-                    }
-                    defaultSource = {
-                        Hf.isString(defaultSource) ? {
-                            uri: defaultSource
-                        } : defaultSource
-                    }
-                    resizeMode = 'cover'
-                    animation = { animationType }
-                    duration = { animationDuration }
-                />
-            );
+            if (dropShadow) {
+                return (
+                    <View style = {{ ...dropShadowStyleTemplate }}>
+                        <AnimatedImage
+                            ref = { animatableComponentRef }
+                            style = { adjustedStyle }
+                            source = {
+                                Hf.isString(source) ? {
+                                    uri: source,
+                                    cache: `only-if-cached`
+                                } : source
+                            }
+                            defaultSource = {
+                                Hf.isString(defaultSource) ? {
+                                    uri: defaultSource
+                                } : defaultSource
+                            }
+                            resizeMode = 'cover'
+                            animation = { animationType }
+                            duration = { animationDuration }
+                        />
+                    </View>
+                );
+            } else {
+                return (
+                    <AnimatedImage
+                        ref = { animatableComponentRef }
+                        style = { adjustedStyle }
+                        source = {
+                            Hf.isString(source) ? {
+                                uri: source,
+                                cache: `only-if-cached`
+                            } : source
+                        }
+                        defaultSource = {
+                            Hf.isString(defaultSource) ? {
+                                uri: defaultSource
+                            } : defaultSource
+                        }
+                        resizeMode = 'cover'
+                        animation = { animationType }
+                        duration = { animationDuration }
+                    />
+                );
+            }
         } else {
-            return (
-                <Image
-                    style = { adjustedStyle }
-                    source = {
-                        Hf.isString(source) ? {
-                            uri: source
-                        } : source
-                    }
-                    defaultSource = {
-                        Hf.isString(defaultSource) ? {
-                            uri: defaultSource
-                        } : defaultSource
-                    }
-                    resizeMode = 'cover'
-                />
-            );
+            if (dropShadow) {
+                return (
+                    <View style = {{ ...dropShadowStyleTemplate }}>
+                        <Image
+                            style = { adjustedStyle }
+                            source = {
+                                Hf.isString(source) ? {
+                                    uri: source,
+                                    cache: `only-if-cached`
+                                } : source
+                            }
+                            defaultSource = {
+                                Hf.isString(defaultSource) ? {
+                                    uri: defaultSource
+                                } : defaultSource
+                            }
+                            resizeMode = 'cover'
+                        />
+                    </View>
+                );
+            } else {
+                return (
+                    <Image
+                        style = { adjustedStyle }
+                        source = {
+                            Hf.isString(source) ? {
+                                uri: source,
+                                cache: `only-if-cached`
+                            } : source
+                        }
+                        defaultSource = {
+                            Hf.isString(defaultSource) ? {
+                                uri: defaultSource
+                            } : defaultSource
+                        }
+                        resizeMode = 'cover'
+                    />
+                );
+            }
         }
     }
 });

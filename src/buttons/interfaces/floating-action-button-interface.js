@@ -32,9 +32,15 @@ import ReactNative from 'react-native';
 
 import { MKButton } from 'react-native-material-kit';
 
+import { View as AnimatedView } from 'react-native-animatable';
+
 import theme from '../../styles/theme';
 
 import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
+
+const {
+    Image
+} = ReactNative;
 
 const DEFAULT_FLOATING_ACTION_BUTTON_STYLE = {
     container: {
@@ -46,22 +52,37 @@ const DEFAULT_FLOATING_ACTION_BUTTON_STYLE = {
             height: 40,
             margin: 8,
             padding: 8,
-            borderRadius: 20
+            borderRadius: 20,
+            backgroundColor: `transparent`
         },
         normal: {
             ...dropShadowStyleTemplate,
             justifyContent: `center`,
             alignItems: `center`,
-            width: 56,
-            height: 56,
+            width: 48,
+            height: 48,
             margin: 8,
             padding: 8,
-            borderRadius: 24
+            borderRadius: 24,
+            backgroundColor: `transparent`
         }
     },
     icon: {
-        width: 24,
-        height: 24
+        small: {
+            width: 16,
+            height: 16,
+            backgroundColor: `transparent`
+        },
+        normal: {
+            width: 24,
+            height: 24,
+            backgroundColor: `transparent`
+        },
+        large: {
+            width: 32,
+            height: 32,
+            backgroundColor: `transparent`
+        }
     }
 };
 
@@ -70,18 +91,26 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
+        animatableComponentRef: {
+            value: null
+        },
         room: {
             value: `none`,
             oneOf: [
                 `none`,
                 `header-left`, `header-right`,
-                `card-action`
+                `item-action`,
+                `card-action-primary`, `card-action-secondary`
             ],
             stronglyTyped: true
         },
         color: {
             value: `default`,
             oneOf: [ `default`, `primary`, `secondary` ],
+            stronglyTyped: true
+        },
+        customColor: {
+            value: ``,
             stronglyTyped: true
         },
         mini: {
@@ -92,7 +121,31 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             value: false,
             stronglyTyped: true
         },
-        icon: {
+        animation: {
+            value: `none`,
+            oneOf: [
+                `none`,
+                `bounce`, `rubber-band`,
+                `slide-in-right`, `slide-out-right`,
+                `flip-in-y`, `flip-out-y`
+            ],
+            stronglyTyped: true
+        },
+        animationSpeed: {
+            value: `normal`,
+            oneOf: [ `slow`, `normal`, `fast` ],
+            stronglyTyped: true
+        },
+        iconPreset: {
+            value: ``,
+            stronglyTyped: true
+        },
+        iconSize: {
+            value: `normal`,
+            oneOf: [ `small`, `normal`, `large` ],
+            stronglyTyped: true
+        },
+        customIcon: {
             value: null
         },
         style: {
@@ -105,58 +158,135 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Image
-        } = ReactNative;
-        const {
+            animatableComponentRef,
             color,
+            customColor,
             mini,
             disabled,
-            icon,
+            animation,
+            animationSpeed,
+            iconPreset,
+            iconSize,
+            customIcon,
             style,
             onPress
         } = Hf.fallback({
             color: `default`,
+            customColor: ``,
             mini: false,
-            disabled: false
+            disabled: false,
+            animation: `none`,
+            animationSpeed: `normal`,
+            iconPreset: ``,
+            iconSize: `normal`
         }).of(property);
-        let adjustedStyle = Hf.merge(DEFAULT_FLOATING_ACTION_BUTTON_STYLE).with({
-            container: {
-                backgroundColor: {
-                    mini: {
-                        backgroundColor: !disabled ? theme.button.floatingAction.container[color] : theme.button.floatingAction.container.disabled
-                    },
-                    mornal: {
-                        backgroundColor: !disabled ? theme.button.floatingAction.container[color] : theme.button.floatingAction.container.disabled
-                    }
-                }
-            },
-            icon: {
-                tintColor: !disabled ? theme.button.floatingAction.icon[color] : theme.button.floatingAction.icon.disabled,
-                backgroundColor: `transparent`
-            }
-        });
+        const themedColor = !disabled ? theme.color.button.floatingAction.container[color] : theme.color.button.floatingAction.container.disabled;
+        const themedIconColor = !disabled ? theme.color.button.floatingAction.icon[color] : theme.color.button.floatingAction.icon.disabled;
+        const animated = animation !== `none`;
+        let animationType;
+        let animationDuration;
+        let icon = customIcon;
+        let adjustedStyle = {
+            container: mini ? DEFAULT_FLOATING_ACTION_BUTTON_STYLE.container.mini : DEFAULT_FLOATING_ACTION_BUTTON_STYLE.container.normal,
+            icon: Hf.merge(DEFAULT_FLOATING_ACTION_BUTTON_STYLE.icon[iconSize]).with({
+                tintColor: themedIconColor
+            })
+        };
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
-        const MKIconButton = new MKButton.Builder()
-                                         .withStyle(mini ? adjustedStyle.container.mini : adjustedStyle.container.normal)
-                                         .withFab(true)
-                                         .withAccent(true)
-                                         .withRippleLocation(`center`)
-                                         .build();
-        return (
-            <MKIconButton onPress = { !disabled ? onPress : null }>
-                <Image
-                    style = { adjustedStyle.icon }
-                    source = {
-                        Hf.isString(icon) ? {
-                            uri: icon
-                        } : icon
-                    }
-                    resizeMode = 'cover'
-                />
-            </MKIconButton>
-        );
+        switch (animation) { // eslint-disable-line
+        case `bounce`:
+            animationType = `bounce`;
+            break;
+        case `rubber-band`:
+            animationType = `bounce`;
+            break;
+        case `slide-in-right`:
+            animationType = `slideInRight`;
+            break;
+        case `slide-out-right`:
+            animationType = `slideOutRight`;
+            break;
+        case `flip-in-y`:
+            animationType = `flipInY`;
+            break;
+        case `flip-out-y`:
+            animationType = `flipOutY`;
+            break;
+        }
+
+        switch (animationSpeed) { // eslint-disable-line
+        case `slow`:
+            animationDuration = 500;
+            break;
+        case `normal`:
+            animationDuration = 300;
+            break;
+        case `fast`:
+            animationDuration = 200;
+            break;
+        }
+
+        if (!Hf.isEmpty(iconPreset) && icon === null) {
+            if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
+                icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
+            } else {
+                Hf.log(`warn1`, `FloatingActionButtonInterface - Icon preset:${iconPreset} is not found.`);
+            }
+        }
+
+        if (animated) {
+            const MKFABButton = new MKButton.Builder()
+                                            .withBackgroundColor(Hf.isEmpty(customColor) ? themedColor : customColor)
+                                            .withFab(true)
+                                            .withAccent(true)
+                                            .withRippleLocation(`center`)
+                                            .build();
+            return (
+                <AnimatedView
+                    ref = { animatableComponentRef }
+                    style = { adjustedStyle.container }
+                    animation = { animationType }
+                    duration = { animationDuration }
+                >
+                    <MKFABButton onPress = { !disabled ? onPress : null }>
+                        <Image
+                            style = { adjustedStyle.icon }
+                            source = {
+                                Hf.isString(icon) ? {
+                                    uri: icon,
+                                    isStatic: true
+                                } : icon
+                            }
+                            resizeMode = 'cover'
+                        />
+                    </MKFABButton>
+                </AnimatedView>
+            );
+        } else {
+            const MKFABButton = new MKButton.Builder()
+                                            .withStyle(adjustedStyle.container)
+                                            .withBackgroundColor(Hf.isEmpty(customColor) ? themedColor : customColor)
+                                            .withFab(true)
+                                            .withAccent(true)
+                                            .withRippleLocation(`center`)
+                                            .build();
+            return (
+                <MKFABButton onPress = { !disabled ? onPress : null }>
+                    <Image
+                        style = { adjustedStyle.icon }
+                        source = {
+                            Hf.isString(icon) ? {
+                                uri: icon,
+                                isStatic: true
+                            } : icon
+                        }
+                        resizeMode = 'cover'
+                    />
+                </MKFABButton>
+            );
+        }
     }
 });
 

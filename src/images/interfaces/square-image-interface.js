@@ -32,27 +32,62 @@ import ReactNative, { Dimensions } from 'react-native';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
+import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
+
+const {
+    Image,
+    View
+} = ReactNative;
+
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
 const DEFAULT_SQUARE_IMAGE_STYLE = {
+    smallest: {
+        flexDirection: `column`,
+        alignItems: `stretch`,
+        justifyContent: `center`,
+        width: DEVICE_WIDTH * 0.1425,
+        height: DEVICE_WIDTH * 0.1425
+    },
+    smaller: {
+        flexDirection: `column`,
+        alignItems: `stretch`,
+        justifyContent: `center`,
+        width: DEVICE_WIDTH * 0.2,
+        height: DEVICE_WIDTH * 0.2
+    },
     small: {
         flexDirection: `column`,
         alignItems: `stretch`,
-        justifyContent: `flex-end`,
-        width: DEVICE_WIDTH / 3,
-        height: DEVICE_WIDTH / 3
+        justifyContent: `center`,
+        width: DEVICE_WIDTH * 0.3375,
+        height: DEVICE_WIDTH * 0.3375
     },
     normal: {
         flexDirection: `column`,
         alignItems: `stretch`,
-        justifyContent: `flex-end`,
-        width: DEVICE_WIDTH / 2,
-        height: DEVICE_WIDTH / 2
+        justifyContent: `center`,
+        width: DEVICE_WIDTH * 0.5,
+        height: DEVICE_WIDTH * 0.5
     },
     large: {
         flexDirection: `column`,
         alignItems: `stretch`,
-        justifyContent: `flex-end`,
+        justifyContent: `center`,
+        width: DEVICE_WIDTH * 0.675,
+        height: DEVICE_WIDTH * 0.675
+    },
+    larger: {
+        flexDirection: `column`,
+        alignItems: `stretch`,
+        justifyContent: `center`,
+        width: DEVICE_WIDTH * 0.75,
+        height: DEVICE_WIDTH * 0.75
+    },
+    largest: {
+        flexDirection: `column`,
+        alignItems: `stretch`,
+        justifyContent: `center`,
         width: DEVICE_WIDTH,
         height: DEVICE_WIDTH
     }
@@ -70,18 +105,23 @@ const SquareImageInteface = Hf.Interface.augment({
             value: `none`,
             oneOf: [
                 `none`,
+                `item-media`,
                 `card-media`
             ],
             stronglyTyped: true
         },
         size: {
             value: `normal`,
-            oneOf: [ `small`, `normal`, `large` ],
+            oneOf: [ `smallest`, `smaller`, `small`, `normal`, `large`, `larger`, `largest` ],
             stronglyTyped: true
         },
         resizeMode: {
             value: `cover`,
             oneOf: [ `cover`, `contain`, `stretch`, `repeat`, `center` ],
+            stronglyTyped: true
+        },
+        dropShadow: {
+            value: true,
             stronglyTyped: true
         },
         animation: {
@@ -111,12 +151,10 @@ const SquareImageInteface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Image
-        } = ReactNative;
-        const {
             animatableComponentRef,
             size,
             resizeMode,
+            dropShadow,
             animation,
             animationSpeed,
             source,
@@ -126,6 +164,7 @@ const SquareImageInteface = Hf.Interface.augment({
         } = Hf.fallback({
             size: `normal`,
             resizeMode: `cover`,
+            dropShadow: false,
             animation: `none`,
             animationSpeed: `normal`
         }).of(property);
@@ -170,50 +209,106 @@ const SquareImageInteface = Hf.Interface.augment({
         }
 
         if (animated) {
-            return (
-                <AnimatedImage
-                    ref = { animatableComponentRef }
-                    style = { adjustedStyle }
-                    source = {
-                        Hf.isString(source) ? {
-                            uri: source
-                        } : source
+            if (dropShadow) {
+                return (
+                    <View style = {{ ...dropShadowStyleTemplate }}>
+                        <AnimatedImage
+                            ref = { animatableComponentRef }
+                            style = { adjustedStyle }
+                            source = {
+                                Hf.isString(source) ? {
+                                    uri: source,
+                                    cache: `only-if-cached`
+                                } : source
+                            }
+                            defaultSource = {
+                                Hf.isString(defaultSource) ? {
+                                    uri: defaultSource
+                                } : defaultSource
+                            }
+                            resizeMode = { resizeMode }
+                            animation = { animationType }
+                            duration = { animationDuration }
+                        >
+                        {
+                            children
+                        }
+                        </AnimatedImage>
+                    </View>
+                );
+            } else {
+                return (
+                    <AnimatedImage
+                        ref = { animatableComponentRef }
+                        style = { adjustedStyle }
+                        source = {
+                            Hf.isString(source) ? {
+                                uri: source,
+                                cache: `only-if-cached`
+                            } : source
+                        }
+                        defaultSource = {
+                            Hf.isString(defaultSource) ? {
+                                uri: defaultSource
+                            } : defaultSource
+                        }
+                        resizeMode = { resizeMode }
+                        animation = { animationType }
+                        duration = { animationDuration }
+                    >
+                    {
+                        children
                     }
-                    defaultSource = {
-                        Hf.isString(defaultSource) ? {
-                            uri: defaultSource
-                        } : defaultSource
-                    }
-                    resizeMode = { resizeMode }
-                    animation = { animationType }
-                    duration = { animationDuration }
-                >
-                {
-                    children
-                }
-                </AnimatedImage>
-            );
+                    </AnimatedImage>
+                );
+            }
         } else {
-            return (
-                <Image
-                    style = { adjustedStyle }
-                    source = {
-                        Hf.isString(source) ? {
-                            uri: source
-                        } : source
+            if (dropShadow) {
+                return (
+                    <View style = {{ ...dropShadowStyleTemplate }}>
+                        <Image
+                            style = { adjustedStyle }
+                            source = {
+                                Hf.isString(source) ? {
+                                    uri: source,
+                                    cache: `only-if-cached`
+                                } : source
+                            }
+                            defaultSource = {
+                                Hf.isString(defaultSource) ? {
+                                    uri: defaultSource
+                                } : defaultSource
+                            }
+                            resizeMode = { resizeMode }
+                        >
+                        {
+                            children
+                        }
+                        </Image>
+                    </View>
+                );
+            } else {
+                return (
+                    <Image
+                        style = { adjustedStyle }
+                        source = {
+                            Hf.isString(source) ? {
+                                uri: source
+                            } : source
+                        }
+                        defaultSource = {
+                            Hf.isString(defaultSource) ? {
+                                uri: defaultSource
+                            } : defaultSource
+                        }
+                        resizeMode = { resizeMode }
+                    >
+                    {
+                        children
                     }
-                    defaultSource = {
-                        Hf.isString(defaultSource) ? {
-                            uri: defaultSource
-                        } : defaultSource
-                    }
-                    resizeMode = { resizeMode }
-                >
-                {
-                    children
-                }
-                </Image>
-            );
+                    </Image>
+                );
+            }
         }
     }
 });

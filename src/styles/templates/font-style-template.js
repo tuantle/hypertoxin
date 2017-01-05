@@ -24,17 +24,10 @@
 
 'use strict'; //eslint-disable-line
 
-import { Dimensions, PixelRatio } from 'react-native';
-
-// const DEVICE_WIDTH = Dimensions.get(`window`).width;
-// const DEVICE_HEIGHT = Dimensions.get(`window`).height;
-
-/* calculating ratio from iPhone breakpoints */
-// const RATIO_X = DEVICE_WIDTH < 375 ? (DEVICE_WIDTH < 320 ? 0.75 : 0.875) : 1 ; // eslint-disable-line
-// const RATIO_Y = DEVICE_HEIGHT < 568 ? (DEVICE_HEIGHT < 480 ? 0.75 : 0.875) : 1 ; //eslint-disable-line
+import { PixelRatio } from 'react-native';
 
 /* base font size value */
-const BASE_FONT_SCALING_UNIT = 8;
+const BASE_FONT_SCALING_UNIT = PixelRatio.get() >= 3 ? 8 : 6;
 
 /* changing font size according to ratio */
 const FONT_SCALING_UNIT = BASE_FONT_SCALING_UNIT * PixelRatio.get();

@@ -30,28 +30,37 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import { Image as AnimatedImage } from 'react-native-animatable';
+import { Imagw as AnimatedImage } from 'react-native-animatable';
+
+import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
 
 import theme from '../../styles/theme';
+
+const {
+    Image
+} = ReactNative;
 
 const DEFAULT_ICON_IMAGE_STYLE = {
     small: {
         width: 16,
         height: 16,
         margin: 3,
-        padding: 3
+        padding: 3,
+        backgroundColor: `transparent`
     },
     normal: {
         width: 24,
         height: 24,
         margin: 3,
-        padding: 3
+        padding: 3,
+        backgroundColor: `transparent`
     },
     large: {
-        width: 36,
-        height: 36,
+        width: 32,
+        height: 32,
         margin: 3,
-        padding: 3
+        padding: 3,
+        backgroundColor: `transparent`
     }
 };
 
@@ -67,7 +76,8 @@ const IconImageInterface = Hf.Interface.augment({
             value: `none`,
             oneOf: [
                 `none`,
-                `header-center`,
+                `header-left`, `header-center`, `header-right`,
+                `item-media`, `item-action`,
                 `card-header-left`, `card-header-right`,
                 `card-media`, `card-overlay`, `card-body`
             ],
@@ -92,6 +102,10 @@ const IconImageInterface = Hf.Interface.augment({
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
+        dropShadow: {
+            value: true,
+            stronglyTyped: true
+        },
         animation: {
             value: `none`,
             oneOf: [
@@ -107,10 +121,11 @@ const IconImageInterface = Hf.Interface.augment({
             oneOf: [ `slow`, `normal`, `fast` ],
             stronglyTyped: true
         },
-        source: {
-            value: null
+        iconPreset: {
+            value: ``,
+            stronglyTyped: true
         },
-        defaultSource: {
+        customIcon: {
             value: null
         },
         style: {
@@ -119,36 +134,48 @@ const IconImageInterface = Hf.Interface.augment({
     },
     pureRender: function pureRender (property) {
         const {
-            Image
-        } = ReactNative;
-        const {
             animatableComponentRef,
             shade,
             color,
             customColor,
             size,
+            dropShadow,
             animation,
             animationSpeed,
-            source,
-            defaultSource,
+            iconPreset,
+            customIcon,
             style
         } = Hf.fallback({
             shade: `dark`,
             color: `default`,
             customColor: ``,
             size: `normal`,
+            dropShadow: true,
             animation: `none`,
-            animationSpeed: `normal`
+            animationSpeed: `normal`,
+            iconPreset: ``
         }).of(property);
         const animated = animation !== `none`;
+        const themedIconColor = theme.color.icon[color][shade];
         let animationType;
         let animationDuration;
-        let adjustedStyle = Hf.merge(DEFAULT_ICON_IMAGE_STYLE[size]).with({
-            tintColor: Hf.isEmpty(customColor) ? theme.icon[color][shade] : customColor,
-            backgroundColor: `transparent`
+        let icon = customIcon;
+        let adjustedStyle = dropShadow ? Hf.merge(DEFAULT_ICON_IMAGE_STYLE[size]).with({
+            ...dropShadowStyleTemplate,
+            tintColor: Hf.isEmpty(customColor) ? themedIconColor : customColor
+        }) : Hf.merge(DEFAULT_ICON_IMAGE_STYLE[size]).with({
+            tintColor: Hf.isEmpty(customColor) ? themedIconColor : customColor
         });
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
+
+        if (!Hf.isEmpty(iconPreset) && icon === null) {
+            if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
+                icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
+            } else {
+                Hf.log(`warn1`, `IconImageInterface - Icon preset:${iconPreset} is not found.`);
+            }
+        }
 
         switch (animation) { // eslint-disable-line
         case `bounce`:
@@ -189,14 +216,10 @@ const IconImageInterface = Hf.Interface.augment({
                     ref = { animatableComponentRef }
                     style = { adjustedStyle }
                     source = {
-                        Hf.isString(source) ? {
-                            uri: source
-                        } : source
-                    }
-                    defaultSource = {
-                        Hf.isString(defaultSource) ? {
-                            uri: defaultSource
-                        } : defaultSource
+                        Hf.isString(icon) ? {
+                            uri: icon,
+                            isStatic: true
+                        } : icon
                     }
                     resizeMode = 'cover'
                     animation = { animationType }
@@ -208,14 +231,10 @@ const IconImageInterface = Hf.Interface.augment({
                 <Image
                     style = { adjustedStyle }
                     source = {
-                        Hf.isString(source) ? {
-                            uri: source
-                        } : source
-                    }
-                    defaultSource = {
-                        Hf.isString(defaultSource) ? {
-                            uri: defaultSource
-                        } : defaultSource
+                        Hf.isString(icon) ? {
+                            uri: icon,
+                            isStatic: true
+                        } : icon
                     }
                     resizeMode = 'cover'
                 />
