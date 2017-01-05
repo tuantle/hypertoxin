@@ -1,23 +1,21 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-alpha4",
+    "version": "0.1.0-alpha5",
     "description": "A client native app component library (built using React Native & Hyperflow).",
     "authors": [
         "Tuan Le <tuan.t.lei@gmail.com> (https://github.com/tuantle)"
     ],
     "license": "MIT",
     "engines": {
-        "node": ">=5.x",
-        "npm": ">=3.x"
-    },
-    "babel": {
-        "babelrc": false
+        "node": ">=7.x",
+        "npm": ">=4.x"
     },
     "peerDependencies": {
-        "react-native": "latest",
-        "hyperflow": "latest"
+        "react": "15.4.1",
+        "react-native": "0.39.0"
     },
     "dependencies": {
+        "hyperflow": "latest",
 
         "react-addons-create-fragment": "latest",
 
@@ -26,12 +24,24 @@
         "react-native-blur": "latest"
     },
     "devDependencies": {
+        "babel-core": "latest",
+        "babel-preset-node7": "latest",
+        "babel-preset-react": "latest",
+        "babel-plugin-transform-strict-mode": "latest",
+
+        "babel-jest": "latest",
+        "jest": "latest",
+        "jest-react-native": "latest",
+        "react-test-renderer": "latest",
+
         "eslint": "latest",
         "babel-eslint": "latest",
         "eslint-plugin-react": "latest",
         "eslint-plugin-react-native": "latest"
     },
     "scripts": {
+        "start-unit-tests": "NODE_ENV=development node ./__tests__/test-suites",
+        "start-jest-unit-tests": "jest"
     },
     "repository": {
         "type": "git",
@@ -39,5 +49,8 @@
     },
     "modulePathIgnorePatterns": [
         "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+        "/tests/"
     ]
 }
