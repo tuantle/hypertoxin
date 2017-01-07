@@ -91,9 +91,6 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
-        animatableComponentRef: {
-            value: null
-        },
         room: {
             value: `none`,
             oneOf: [
@@ -144,16 +141,6 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
-        },
-        customIcon: {
-            value: null
-        },
-        style: {
-            value: null
-        },
-        onPress: {
-            value: () => {},
-            stronglyTyped: true
         }
     },
     pureRender: function pureRender (property) {
@@ -178,7 +165,8 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             animation: `none`,
             animationSpeed: `normal`,
             iconPreset: ``,
-            iconSize: `normal`
+            iconSize: `normal`,
+            customIcon: null
         }).of(property);
         const themedColor = !disabled ? theme.color.button.floatingAction.container[color] : theme.color.button.floatingAction.container.disabled;
         const themedIconColor = !disabled ? theme.color.button.floatingAction.icon[color] : theme.color.button.floatingAction.icon.disabled;

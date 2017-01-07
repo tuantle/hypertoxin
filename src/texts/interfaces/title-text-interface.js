@@ -89,9 +89,6 @@ const TitleTextInterface = Hf.Interface.augment({
             value: `none`,
             oneOf: [ `none`, `underline`, `line-through` ],
             stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

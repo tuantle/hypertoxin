@@ -53,9 +53,6 @@ const BodyViewInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
-        scollableComponentRef: {
-            value: null
-        },
         shade: {
             value: `light`,
             oneOf: [ `light`, `dark` ],
@@ -69,9 +66,6 @@ const BodyViewInterface = Hf.Interface.augment({
         scrollable: {
             value: false,
             stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

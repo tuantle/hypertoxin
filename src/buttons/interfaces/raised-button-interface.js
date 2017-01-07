@@ -86,9 +86,6 @@ const RaisedButtonInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
-        animatableComponentRef: {
-            value: null
-        },
         room: {
             value: `none`,
             oneOf: [
@@ -148,16 +145,6 @@ const RaisedButtonInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
-        },
-        customIcon: {
-            value: null
-        },
-        style: {
-            value: null
-        },
-        onPress: {
-            value: () => {},
-            stronglyTyped: true
         }
     },
     pureRender: function pureRender (property) {
@@ -187,7 +174,8 @@ const RaisedButtonInterface = Hf.Interface.augment({
             busy: false,
             label: `Raised Button`,
             iconPreset: ``,
-            iconSize: `normal`
+            iconSize: `normal`,
+            customIcon: null
         }).of(property);
         const themedColor = !disabled ? theme.color.button.raised.container[color] : theme.color.button.raised.container.disabled;
         const themedLabelColor = !disabled ? theme.color.button.raised.label[color] : theme.color.button.raised.label.disabled;

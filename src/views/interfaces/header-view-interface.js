@@ -164,9 +164,6 @@ const HeaderViewInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
-        animatableComponentRef: {
-            value: null
-        },
         shade: {
             value: `light`,
             oneOf: [ `light`, `dark` ],
@@ -202,9 +199,6 @@ const HeaderViewInterface = Hf.Interface.augment({
         label: {
             value: ``,
             stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

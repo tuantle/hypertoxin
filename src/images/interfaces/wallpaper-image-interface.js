@@ -54,15 +54,6 @@ const WallpaperImageInterface = Hf.Interface.augment({
             value: `cover`,
             oneOf: [ `cover`, `contain`, `stretch`, `repeat`, `center` ],
             stronglyTyped: true
-        },
-        source: {
-            value: null
-        },
-        defaultSource: {
-            value: null
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {
@@ -73,7 +64,9 @@ const WallpaperImageInterface = Hf.Interface.augment({
             style,
             children
         } = Hf.fallback({
-            resizeMode: `cover`
+            resizeMode: `cover`,
+            source: null,
+            defaultSource: null
         }).of(property);
         let adjustedStyle = DEFAULT_WALLPAPER_IMAGE_STYLE;
 

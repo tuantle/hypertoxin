@@ -93,9 +93,6 @@ const InfoTextInterface = Hf.Interface.augment({
         indentation: {
             value: 0,
             stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

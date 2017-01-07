@@ -55,9 +55,6 @@ const DividerViewInterface = Hf.Interface.augment({
         thickness: {
             value: 1,
             stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

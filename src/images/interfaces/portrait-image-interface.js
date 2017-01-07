@@ -99,9 +99,6 @@ const PortraitImageInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
-        animatableComponentRef: {
-            value: null
-        },
         room: {
             value: `none`,
             oneOf: [
@@ -139,27 +136,18 @@ const PortraitImageInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `slow`, `normal`, `fast` ],
             stronglyTyped: true
-        },
-        source: {
-            value: null
-        },
-        defaultSource: {
-            value: null
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {
         const {
             animatableComponentRef,
             size,
-            source,
-            defaultSource,
             resizeMode,
             dropShadow,
             animation,
             animationSpeed,
+            source,
+            defaultSource,
             style,
             children
         } = Hf.fallback({
@@ -167,7 +155,9 @@ const PortraitImageInterface = Hf.Interface.augment({
             resizeMode: `cover`,
             dropShadow: false,
             animation: `none`,
-            animationSpeed: `normal`
+            animationSpeed: `normal`,
+            source: null,
+            defaultSource: null
         }).of(property);
         const animated = animation !== `none`;
         let animationType;

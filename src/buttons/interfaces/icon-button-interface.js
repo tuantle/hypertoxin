@@ -133,20 +133,11 @@ const IconButtonInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
-        },
-        customIcon: {
-            value: null
-        },
-        style: {
-            value: null
-        },
-        onPress: {
-            value: () => {},
-            stronglyTyped: true
         }
     },
     pureRender: function pureRender (property) {
         const {
+            animatableComponentRef,
             shade,
             color,
             customColor,
@@ -168,7 +159,8 @@ const IconButtonInterface = Hf.Interface.augment({
             animation: `none`,
             animationSpeed: `normal`,
             iconPreset: ``,
-            iconSize: `normal`
+            iconSize: `normal`,
+            customIcon: null
         }).of(property);
         const themedIconColor = !disabled ? theme.color.button.icon[color][shade] : theme.color.button.icon.disabled[shade];
         const animated = animation !== `none`;

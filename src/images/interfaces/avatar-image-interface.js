@@ -71,9 +71,6 @@ const AvatarImageInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
-        animatableComponentRef: {
-            value: null
-        },
         room: {
             value: `none`,
             oneOf: [
@@ -108,15 +105,6 @@ const AvatarImageInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `slow`, `normal`, `fast` ],
             stronglyTyped: true
-        },
-        source: {
-            value: null
-        },
-        defaultSource: {
-            value: null
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {
@@ -133,7 +121,9 @@ const AvatarImageInterface = Hf.Interface.augment({
             size: `normal`,
             dropShadow: true,
             animation: `none`,
-            animationSpeed: `normal`
+            animationSpeed: `normal`,
+            source: null,
+            defaultSource: null
         }).of(property);
         const animated = animation !== `none`;
         let animationType;

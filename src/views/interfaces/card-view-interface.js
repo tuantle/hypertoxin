@@ -130,9 +130,6 @@ const CardViewInterface = Hf.Interface.augment({
         dropShadow: {
             value: false,
             stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

@@ -69,9 +69,6 @@ const IconImageInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
-        animatableComponentRef: {
-            value: null
-        },
         room: {
             value: `none`,
             oneOf: [
@@ -124,12 +121,6 @@ const IconImageInterface = Hf.Interface.augment({
         iconPreset: {
             value: ``,
             stronglyTyped: true
-        },
-        customIcon: {
-            value: null
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {
@@ -153,7 +144,8 @@ const IconImageInterface = Hf.Interface.augment({
             dropShadow: true,
             animation: `none`,
             animationSpeed: `normal`,
-            iconPreset: ``
+            iconPreset: ``,
+            customIcon: null
         }).of(property);
         const animated = animation !== `none`;
         const themedIconColor = theme.color.icon[color][shade];

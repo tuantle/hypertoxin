@@ -56,9 +56,6 @@ const ScreenViewInterface = Hf.Interface.augment({
             value: `light`,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

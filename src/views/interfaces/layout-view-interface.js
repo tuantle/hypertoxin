@@ -74,12 +74,6 @@ const LayoutViewInterface = Hf.Interface.augment({
         Hf.React.ComponentComposite
     ],
     state: {
-        scollableComponentRef: {
-            value: null
-        },
-        animatableComponentRef: {
-            value: null
-        },
         room: {
             value: `none`,
             oneOf: [
@@ -136,9 +130,6 @@ const LayoutViewInterface = Hf.Interface.augment({
         scrollable: {
             value: false,
             stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

@@ -105,13 +105,6 @@ const ItemViewInterface = Hf.Interface.augment({
         dropShadow: {
             value: false,
             stronglyTyped: true
-        },
-        onPress: {
-            value: () => {},
-            stronglyTyped: true
-        },
-        style: {
-            value: null
         }
     },
     pureRender: function pureRender (property) {

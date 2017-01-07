@@ -158,20 +158,11 @@ const FlatButtonInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
-        },
-        customIcon: {
-            value: null
-        },
-        style: {
-            value: null
-        },
-        onPress: {
-            value: () => {},
-            stronglyTyped: true
         }
     },
     pureRender: function pureRender (property) {
         const {
+            animatableComponentRef,
             shade,
             color,
             customColor,
@@ -201,7 +192,8 @@ const FlatButtonInterface = Hf.Interface.augment({
             animationSpeed: `normal`,
             label: `Flat Button`,
             iconPreset: ``,
-            iconSize: `normal`
+            iconSize: `normal`,
+            customIcon: null
         }).of(property);
         const themedLabelColor = !disabled ? theme.color.button.flat.label[color][shade] : theme.color.button.flat.label.disabled[shade];
         const themedIconColor = !disabled ? theme.color.button.flat.label[color][shade] : theme.color.button.flat.label.disabled[shade];

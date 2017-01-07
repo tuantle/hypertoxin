@@ -137,28 +137,11 @@ const SecureTextFieldInterface = Hf.Interface.augment({
         status: {
             value: ``,
             stronglyTyped: true
-        },
-        style: {
-            value: null
-        },
-        componentRef: {
-            value: null
-        },
-        onDoneEdit: {
-            value: () => {},
-            stronglyTyped: true
-        },
-        onFocus: {
-            value: () => {},
-            stronglyTyped: true
-        },
-        onBlur: {
-            value: () => {},
-            stronglyTyped: true
         }
     },
     pureRender: function pureRender (property) {
         const {
+            componentRef,
             shade,
             color,
             customColor,
@@ -170,7 +153,6 @@ const SecureTextFieldInterface = Hf.Interface.augment({
             defaultValue,
             status,
             style,
-            componentRef,
             onDoneEdit,
             onFocus,
             onBlur
