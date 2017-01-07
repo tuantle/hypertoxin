@@ -1,9 +1,5 @@
 {
     "comments": false,
-    "only": [
-        "/src",
-        "/__tests__"
-    ],
     "presets": [
         "react-native"
     ],
