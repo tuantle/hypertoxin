@@ -87,7 +87,7 @@ const init = function init ({
 } = {}) {
     if (Ht === null) {
         const HtProperty = {
-            VERSION: `0.1.0-beta1`,
+            VERSION: `0.1.0-beta2`,
             View: {
                 ScreenView: ScreenViewComponent,
                 HeaderView: HeaderViewComponent,

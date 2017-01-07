@@ -47,3 +47,12 @@ Breaking Changes:
 Improvements:
 Bug fixes:
 ```
+**Development Beta Version 0.1.0-beta2 (01/07/2017)**
+```
+Notes:
+New Features:
+Breaking Changes:
+Improvements:
+    - Code cleanups.
+Bug fixes:
+```

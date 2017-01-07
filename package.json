@@ -1,6 +1,6 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-beta1",
+    "version": "0.1.0-beta2",
     "registry": "github",
     "description": "A client native app component library (built using React Native & Hyperflow).",
     "authors": [
@@ -27,32 +27,33 @@
         "preset": "react-native"
     },
     "peerDependencies": {
-        "react": "latest",
-        "react-native": "latest"
+        "react": "~15.4.1",
+		"react-native": "^0.39.0",
     },
     "dependencies": {
-        "hyperflow": "latest",
+        "hyperflow": "^0.1.0-beta20",
 
-        "react-addons-create-fragment": "latest",
-        "react-native-animatable": "latest",
-        "react-native-material-kit": "latest",
-        "react-native-blur": "latest"
+        "react-addons-create-fragment": "^15.4.1",
+        "react-native-animatable": "^1.1.0",
+        "react-native-material-kit": "^0.3.4",
+        "react-native-blur": "^2.0.0"
     },
     "devDependencies": {
-        "babel-core": "latest",
-        "babel-preset-node7": "latest",
-        "babel-preset-react": "latest",
-        "babel-plugin-transform-strict-mode": "latest",
+        "babel-core": "^6.21.0",
+        "babel-preset-node7": "^1.4.0",
+        "babel-preset-react": "^6.16.0",
+        "babel-preset-react-native": "^1.9.1",
+        "babel-plugin-transform-strict-mode": "^6.18.0",
 
-        "babel-jest": "latest",
-        "jest": "latest",
-        "jest-react-native": "latest",
-        "react-test-renderer": "latest",
+        "babel-jest": "^18.0.0",
+        "jest": "^18.1.0",
+        "jest-react-native": "^18.0.0",
+        "react-test-renderer": "^15.4.1",
 
-        "eslint": "latest",
-        "babel-eslint": "latest",
-        "eslint-plugin-react": "latest",
-        "eslint-plugin-react-native": "latest"
+        "eslint": "^3.13.0",
+        "babel-eslint": "^7.1.1",
+        "eslint-plugin-react": "^6.8.0",
+        "eslint-plugin-react-native": "^2.2.1"
     },
     "scripts": {
         "start-unit-tests": "NODE_ENV=development jest ./__tests__/test-suites"
