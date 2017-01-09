@@ -56,3 +56,14 @@ Improvements:
     - Code cleanups.
 Bug fixes:
 ```
+**Development Beta Version 0.1.0-beta3 (01/08/2017)**
+```
+Notes:
+    - Update dependencies:
+        Hyperflow to 0.1.0-beta21
+        React Native to 0.40.0
+New Features:
+Breaking Changes:
+Improvements:
+Bug fixes:
+```
