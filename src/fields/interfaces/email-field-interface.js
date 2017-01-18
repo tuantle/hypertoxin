@@ -30,7 +30,7 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import { MKTextField } from 'react-native-material-kit';
+import TextField from 'react-native-md-textinput';
 
 import theme from '../../styles/theme';
 
@@ -53,30 +53,55 @@ const DEFAULT_TEXT_FIELD_STYLE = {
         marginVertical: 3,
         paddingVertical: 3
     },
-    floating: {
-        height: 48,
-        marginTop: 10
-    },
     status: {
-        ...fontStyleTemplate.italicSmall,
+        ...fontStyleTemplate.italic,
         textAlign: `left`,
         color: theme.color.palette.red
+    },
+    label: {
+        small: {
+            ...fontStyleTemplate.normal,
+            textAlign: `left`,
+            textAlignVertical: `top`,
+            height: 28,
+            lineHeight: 8
+        },
+        normal: {
+            ...fontStyleTemplate.normalLarge,
+            textAlign: `left`,
+            textAlignVertical: `top`,
+            height: 34,
+            lineHeight: 12
+        },
+        large: {
+            ...fontStyleTemplate.normalLarger,
+            textAlign: `left`,
+            textAlignVertical: `top`,
+            height: 40,
+            lineHeight: 14
+        }
     },
     textField: {
         small: {
             ...fontStyleTemplate.normal,
             textAlign: `left`,
-            height: 24
+            textAlignVertical: `top`,
+            height: 28,
+            lineHeight: 8
         },
         normal: {
             ...fontStyleTemplate.normalLarge,
             textAlign: `left`,
-            height: 26
+            textAlignVertical: `top`,
+            height: 34,
+            lineHeight: 12
         },
         large: {
             ...fontStyleTemplate.normalLarger,
             textAlign: `left`,
-            height: 28
+            textAlignVertical: `top`,
+            height: 40,
+            lineHeight: 14
         }
     }
 };
@@ -108,6 +133,10 @@ const EmailFieldInterface = Hf.Interface.augment({
             value: ``,
             stronglyTyped: true
         },
+        customHighlightColor: {
+            value: ``,
+            stronglyTyped: true
+        },
         size: {
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
@@ -115,7 +144,7 @@ const EmailFieldInterface = Hf.Interface.augment({
         },
         returnKeyType: {
             value: `default`,
-            oneOf: [ `default`, `next`, `done` ],
+            oneOf: [ `default`, `next`, `done`, `search` ],
             stronglyTyped: true
         },
         editable: {
@@ -126,16 +155,24 @@ const EmailFieldInterface = Hf.Interface.augment({
             value: false,
             stronglyTyped: true
         },
-        placeholder: {
-            value: ``,
-            stronglyTyped: true
-        },
-        defaultValue: {
-            value: ``,
+        label: {
+            value: `Email`,
             stronglyTyped: true
         },
         status: {
             value: ``,
+            stronglyTyped: true
+        },
+        onDoneEdit: {
+            value: () => {},
+            stronglyTyped: true
+        },
+        onFocus: {
+            value: () => {},
+            stronglyTyped: true
+        },
+        onBlur: {
+            value: () => {},
             stronglyTyped: true
         }
     },
@@ -145,12 +182,12 @@ const EmailFieldInterface = Hf.Interface.augment({
             shade,
             color,
             customColor,
+            customHighlightColor,
             size,
             returnKeyType,
             editable,
             focus,
-            placeholder,
-            defaultValue,
+            label,
             status,
             style,
             onDoneEdit,
@@ -164,14 +201,13 @@ const EmailFieldInterface = Hf.Interface.augment({
             returnKeyType: `default`,
             editable: true,
             focus: false,
-            placeholder: ``,
-            defaultValue: ``,
+            label: `Email`,
             status: ``
         }).of(property);
         let adjustedStyle = {
             container: DEFAULT_TEXT_FIELD_STYLE.container,
-            floating: DEFAULT_TEXT_FIELD_STYLE.floating,
             status: DEFAULT_TEXT_FIELD_STYLE.status,
+            label: DEFAULT_TEXT_FIELD_STYLE.label[size],
             textField: Hf.merge(DEFAULT_TEXT_FIELD_STYLE.textField[size]).with({
                 color: Hf.isEmpty(customColor) ? theme.color.text[color][shade] : customColor
             })
@@ -179,29 +215,23 @@ const EmailFieldInterface = Hf.Interface.augment({
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
-        const Textfield = MKTextField.textfieldWithFloatingLabel()
-                                     .withFloatingLabelEnabled(Hf.isEmpty(defaultValue))
-                                     .withPlaceholder(placeholder)
-                                     .withDefaultValue(defaultValue)
-                                     .withStyle(adjustedStyle.floating)
-                                     .withTextInputStyle(adjustedStyle.textField)
-                                     .withHighlightColor(adjustedStyle.textField.color)
-                                     .withFloatingLabelFont(adjustedStyle.textField)
-                                     .withUnderlineSize(1)
-                                     .withOnEndEditing((event) => onDoneEdit(event.nativeEvent.text))
-                                     .withOnFocus(onFocus)
-                                     .withOnBlur(onBlur)
-                                     .build();
-
         return (
             <View style = { adjustedStyle.container }>
-                <Textfield
+                <TextField
                     ref = { componentRef }
+                    multiline = { false }
+                    autoGrow = { false }
                     editable = { editable }
                     focus = { focus }
+                    label = { label }
                     keyboardType = 'email-address'
                     clearButtonMode = 'while-editing'
                     returnKeyType = { returnKeyType }
+                    highlightColor = { Hf.isEmpty(customHighlightColor) ? theme.color.accent : customHighlightColor }
+                    inputStyle = { adjustedStyle.textField }
+                    onEndEditing = { ((event) => onDoneEdit(event.nativeEvent.text)) }
+                    onFocus = { onFocus }
+                    onBlur = { onBlur }
                 />
                 <Text style = { adjustedStyle.status }>{ status }</Text>
             </View>
