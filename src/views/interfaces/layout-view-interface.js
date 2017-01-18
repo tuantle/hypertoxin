@@ -289,6 +289,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                             animation = { animationType }
                             duration = { animationDuration }
                             blurType = { shade }
+                            useNativeDriver = { true }
                         >
                             <ScrollView ref = { scollableComponentRef }>
                                 <View style = { adjustedStyle[orientation] }>
@@ -306,6 +307,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                         style = { adjustedStyle.container }
                         duration = { animationDuration }
                         animation = { animationType }
+                        useNativeDriver = { true }
                     >
                         <ScrollView ref = { scollableComponentRef }>
                             <View style = { adjustedStyle[orientation] }>
@@ -355,6 +357,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                             animation = { animationType }
                             duration = { animationDuration }
                             blurType = { shade }
+                            useNativeDriver = { true }
                         >
                             <View style = { adjustedStyle[orientation] }>
                             {
@@ -370,6 +373,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                         style = { adjustedStyle.container }
                         animation = { animationType }
                         duration = { animationDuration }
+                        useNativeDriver = { true }
                     >
                         <View style = { adjustedStyle[orientation] }>
                         {
