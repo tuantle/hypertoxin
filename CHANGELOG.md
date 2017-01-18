@@ -67,3 +67,20 @@ Breaking Changes:
 Improvements:
 Bug fixes:
 ```
+**Development Beta Version 0.1.0-beta4 (01/18/2017)**
+```
+Notes:
+    - Update dependencies:
+        Hyperflow to 0.1.0-beta22
+New Features:
+	- Added new restore icon.
+    - Added SearchBar applet. WIP.
+    - Added Form applet. WIP.
+Breaking Changes:
+Improvements:
+	- Use native driver flag for animated components.
+    - Fix padding and margining for font style.
+	- Removed react-native-material-kit dependency for button components.
+	- Removed react-native-material-kit dependency for field components. Temporary using react-native-md-textinput as a replacement. WIP.
+Bug fixes:
+```

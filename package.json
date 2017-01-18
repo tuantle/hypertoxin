@@ -1,6 +1,6 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-beta3",
+    "version": "0.1.0-beta4",
     "registry": "github",
     "description": "A client native app component library (built using React Native & Hyperflow).",
     "authors": [
@@ -27,19 +27,22 @@
         "preset": "react-native"
     },
     "peerDependencies": {
-        "react": "=15.4.1",
+        "react": "=15.4.2",
 		"react-native": "=0.40.0"
     },
     "dependencies": {
-        "hyperflow": "=0.1.0-beta21",
+        "hyperflow": "=0.1.0-beta22",
 
-        "react-addons-create-fragment": "=15.4.1",
+        "react-addons-create-fragment": "=15.4.2",
 
+        "react-native-md-textinput": "^2.0.4",
         "react-native-animatable": "^1.1.0",
-        "react-native-material-kit": "^0.3.4",
         "react-native-blur": "^2.0.0"
     },
     "devDependencies": {
+        "react": "=15.4.2",
+        "react-native": "=0.40.0",
+
         "babel-core": "^6.21.0",
         "babel-preset-node7": "^1.4.0",
         "babel-preset-react": "^6.16.0",
@@ -49,7 +52,7 @@
         "babel-jest": "^18.0.0",
         "jest": "^18.1.0",
         "jest-react-native": "^18.0.0",
-        "react-test-renderer": "^15.4.1",
+        "react-test-renderer": "^15.4.2",
 
         "eslint": "^3.13.0",
         "babel-eslint": "^7.1.1",

@@ -29,8 +29,14 @@ const Hf = require('hyperflow').init({ // eslint-disable-line
     enableProductionMode: process.env.NODE_ENV === `production` // eslint-disable-line
 });
 
-/* load view components */
 /* eslint-disable */
+/* load search bar applet component */
+const { SearchBarApplet } = require('./applets/search-bar/search-bar-applet');
+
+/* load form applet components */
+// const { TextFieldApplet } = require('./applets/form/text-field-applet');
+
+/* load view components */
 const { ScreenViewComponent } = require('./views/screen-view-component');
 const { HeaderViewComponent } = require('./views/header-view-component');
 const { BodyViewComponent } = require('./views/body-view-component');
@@ -87,7 +93,21 @@ const init = function init ({
 } = {}) {
     if (Ht === null) {
         const HtProperty = {
-            VERSION: `0.1.0-beta3`,
+            VERSION: `0.1.0-beta4`,
+            Applet: {
+                SearchBar: (() => {
+                    return SearchBarApplet({
+                        name: `search-bar`
+                    }).toStandaloneComponent();
+                })()
+                // Form: {
+                //     TextField: (() => {
+                //         return TextFieldApplet({
+                //             name: `text-field`
+                //         }).toStandaloneComponent();
+                //     })(),
+                // }
+            },
             View: {
                 ScreenView: ScreenViewComponent,
                 HeaderView: HeaderViewComponent,
