@@ -57,6 +57,7 @@ import signoutIcon from '../../../assets/icons/png/signout-3x.png';
 import markerIcon from '../../../assets/icons/png/marker-3x.png';
 import notificationIcon from '../../../assets/icons/png/notification-3x.png';
 import lockIcon from '../../../assets/icons/png/lock-3x.png';
+import restoreIcon from '../../../assets/icons/png/restore-3x.png';
 import chatIcon from '../../../assets/icons/png/chat-3x.png';
 
 export default {
@@ -93,5 +94,6 @@ export default {
     marker: markerIcon,
     notification: notificationIcon,
     lock: lockIcon,
+    restore: restoreIcon,
     chat: chatIcon
 };
