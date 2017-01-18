@@ -40,185 +40,245 @@ const FONT_SIZE_LARGE = FONT_SCALING_UNIT * 1.25;
 const FONT_SIZE_LARGER = FONT_SCALING_UNIT * 1.5;
 const FONT_SIZE_LARGEST = FONT_SCALING_UNIT * 1.75;
 
+const FONT_WEIGHT_THIN = `200`;
+const FONT_WEIGHT_NORMAL = `400`;
+const FONT_WEIGHT_BOLD = `600`;
+
+const thinFontSmallestTemplate = {
+    fontSize: FONT_SIZE_SMALLEST,
+    fontWeight: FONT_WEIGHT_THIN,
+    marginVertical: 3,
+    paddingVertical: 3
+};
+
 const normalFontSmallestTemplate = {
     fontSize: FONT_SIZE_SMALLEST,
-    fontWeight: `200`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_NORMAL,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const boldFontSmallestTemplate = {
     fontSize: FONT_SIZE_SMALLEST,
-    fontWeight: `500`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_BOLD,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const italicFontSmallestTemplate = {
     fontSize: FONT_SIZE_SMALLEST,
-    fontWeight: `200`,
+    fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    margin: 3,
-    padding: 3
+    marginVertical: 3,
+    paddingVertical: 3
+};
+
+const thinFontSmallerTemplate = {
+    fontSize: FONT_SIZE_SMALLER,
+    fontWeight: FONT_WEIGHT_THIN,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const normalFontSmallerTemplate = {
     fontSize: FONT_SIZE_SMALLER,
-    fontWeight: `200`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_NORMAL,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const boldFontSmallerTemplate = {
     fontSize: FONT_SIZE_SMALLER,
-    fontWeight: `500`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_BOLD,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const italicFontSmallerTemplate = {
     fontSize: FONT_SIZE_SMALLER,
-    fontWeight: `200`,
+    fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    margin: 3,
-    padding: 3
+    marginVertical: 3,
+    paddingVertical: 3
+};
+
+const thinFontSmallTemplate = {
+    fontSize: FONT_SIZE_SMALL,
+    fontWeight: FONT_WEIGHT_THIN,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const normalFontSmallTemplate = {
     fontSize: FONT_SIZE_SMALL,
-    fontWeight: `200`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_NORMAL,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const boldFontSmallTemplate = {
     fontSize: FONT_SIZE_SMALL,
-    fontWeight: `500`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_BOLD,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const italicFontSmallTemplate = {
     fontSize: FONT_SIZE_SMALL,
-    fontWeight: `200`,
+    fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    margin: 3,
-    padding: 3
+    marginVertical: 3,
+    paddingVertical: 3
+};
+
+const thinFontTemplate = {
+    fontSize: FONT_SIZE,
+    fontWeight: FONT_WEIGHT_THIN,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const normalFontTemplate = {
     fontSize: FONT_SIZE,
-    fontWeight: `200`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_NORMAL,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const boldFontTemplate = {
     fontSize: FONT_SIZE,
-    fontWeight: `500`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_BOLD,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const italicFontTemplate = {
     fontSize: FONT_SIZE,
-    fontWeight: `200`,
+    fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    margin: 3,
-    padding: 3
+    marginVertical: 3,
+    paddingVertical: 3
+};
+
+const thinFontLargeTemplate = {
+    fontSize: FONT_SIZE_LARGE,
+    fontWeight: FONT_WEIGHT_THIN,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const normalFontLargeTemplate = {
     fontSize: FONT_SIZE_LARGE,
-    fontWeight: `200`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_NORMAL,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const boldFontLargeTemplate = {
     fontSize: FONT_SIZE_LARGE,
-    fontWeight: `500`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_BOLD,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const italicFontLargeTemplate = {
     fontSize: FONT_SIZE_LARGE,
-    fontWeight: `200`,
+    fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    margin: 3,
-    padding: 3
+    marginVertical: 3,
+    paddingVertical: 3
+};
+
+const thinFontLargerTemplate = {
+    fontSize: FONT_SIZE_LARGER,
+    fontWeight: FONT_WEIGHT_THIN,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const normalFontLargerTemplate = {
     fontSize: FONT_SIZE_LARGER,
-    fontWeight: `200`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_NORMAL,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const boldFontLargerTemplate = {
     fontSize: FONT_SIZE_LARGER,
-    fontWeight: `500`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_BOLD,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const italicFontLargerTemplate = {
     fontSize: FONT_SIZE_LARGER,
-    fontWeight: `200`,
+    fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    margin: 3,
-    padding: 3
+    marginVertical: 3,
+    paddingVertical: 3
+};
+
+const thinFontLargestTemplate = {
+    fontSize: FONT_SIZE_LARGEST,
+    fontWeight: FONT_WEIGHT_THIN,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const normalFontLargestTemplate = {
     fontSize: FONT_SIZE_LARGEST,
-    fontWeight: `200`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_NORMAL,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const boldFontLargestTemplate = {
     fontSize: FONT_SIZE_LARGEST,
-    fontWeight: `500`,
-    margin: 3,
-    padding: 3
+    fontWeight: FONT_WEIGHT_BOLD,
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 const italicFontLargestTemplate = {
     fontSize: FONT_SIZE_LARGEST,
-    fontWeight: `200`,
+    fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    margin: 3,
-    padding: 3
+    marginVertical: 3,
+    paddingVertical: 3
 };
 
 export default {
+    thinSmallest: thinFontSmallestTemplate,
     normalSmallest: normalFontSmallestTemplate,
     boldSmallest: boldFontSmallestTemplate,
     italicSmallest: italicFontSmallestTemplate,
 
+    thinSmaller: thinFontSmallerTemplate,
     normalSmaller: normalFontSmallerTemplate,
     boldSmaller: boldFontSmallerTemplate,
     italicSmaller: italicFontSmallerTemplate,
 
+    thinSmall: thinFontSmallTemplate,
     normalSmall: normalFontSmallTemplate,
     boldSmall: boldFontSmallTemplate,
     italicSmall: italicFontSmallTemplate,
 
+    thin: thinFontTemplate,
     normal: normalFontTemplate,
     bold: boldFontTemplate,
     italic: italicFontTemplate,
 
+    thinLarge: thinFontLargeTemplate,
     normalLarge: normalFontLargeTemplate,
     boldLarge: boldFontLargeTemplate,
     italicLarge: italicFontLargeTemplate,
 
+    thinLarger: thinFontLargerTemplate,
     normalLarger: normalFontLargerTemplate,
     boldLarger: boldFontLargerTemplate,
     italicLarger: italicFontLargerTemplate,
 
+    thinLargest: thinFontLargestTemplate,
     normalLargest: normalFontLargestTemplate,
     boldLargest: boldFontLargestTemplate,
     italicLargest: italicFontLargestTemplate
