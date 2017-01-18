@@ -32,8 +32,6 @@ import ReactNative from 'react-native';
 
 import { View as AnimatedView } from 'react-native-animatable';
 
-import { MKButton } from 'react-native-material-kit';
-
 import theme from '../../styles/theme';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
@@ -44,12 +42,14 @@ const {
     Text,
     Image,
     View,
-    ActivityIndicator
+    ActivityIndicator,
+    TouchableOpacity
 } = ReactNative;
 
 const DEFAULT_RAISED_BUTTON_STYLE = {
     container: {
         ...dropShadowStyleTemplate,
+        flexDirection: `row`,
         justifyContent: `center`,
         alignItems: `center`,
         height: 36,
@@ -144,6 +144,10 @@ const RaisedButtonInterface = Hf.Interface.augment({
         iconSize: {
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
+            stronglyTyped: true
+        },
+        onPress: {
+            value: () => {},
             stronglyTyped: true
         }
     },
@@ -240,27 +244,18 @@ const RaisedButtonInterface = Hf.Interface.augment({
             }
         }
 
-        const MKRaisedButton = MKButton.accentColoredFlatButton()
-                                       .withStyle(adjustedStyle.container)
-                                       .withMaskBorderRadius(adjustedStyle.container.borderRadius)
-                                       .build();
         if (animated) {
             return (
                 <AnimatedView
                     ref = { animatableComponentRef }
                     animation = { animationType }
                     duration = { animationDuration }
+                    useNativeDriver = { true }
                 >
-                    <MKRaisedButton onPress = { !disabled ? onPress : null }>
+                    <TouchableOpacity onPress = { !disabled ? onPress : null }>
                     {
                         busy ? <ActivityIndicator size = 'small'/> :
-                        <View
-                            style = {{
-                                flexDirection: `row`,
-                                alignItems: `center`,
-                                justifyContent: `space-between`
-                            }}
-                        >
+                        <View style = { adjustedStyle.container }>
                         {
                             icon === null ? null :
                             <Image
@@ -277,21 +272,15 @@ const RaisedButtonInterface = Hf.Interface.augment({
                             <Text style = { adjustedStyle.label }>{ label }</Text>
                         </View>
                     }
-                    </MKRaisedButton>
+                    </TouchableOpacity>
                 </AnimatedView>
             );
         } else {
             return (
-                <MKRaisedButton onPress = { !disabled ? onPress : null }>
+                <TouchableOpacity onPress = { !disabled ? onPress : null }>
                 {
                     busy ? <ActivityIndicator size = 'small'/> :
-                    <View
-                        style = {{
-                            flexDirection: `row`,
-                            alignItems: `center`,
-                            justifyContent: `space-between`
-                        }}
-                    >
+                    <View style = { adjustedStyle.container }>
                     {
                         icon === null ? null :
                         <Image
@@ -308,7 +297,7 @@ const RaisedButtonInterface = Hf.Interface.augment({
                         <Text style = { adjustedStyle.label }>{ label }</Text>
                     </View>
                 }
-                </MKRaisedButton>
+                </TouchableOpacity>
             );
         }
     }

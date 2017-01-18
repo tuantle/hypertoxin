@@ -30,8 +30,6 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import { MKButton } from 'react-native-material-kit';
-
 import { View as AnimatedView } from 'react-native-animatable';
 
 import theme from '../../styles/theme';
@@ -44,11 +42,13 @@ const {
     Text,
     Image,
     View,
-    ActivityIndicator
+    ActivityIndicator,
+    TouchableOpacity
 } = ReactNative;
 
 const DEFAULT_FLAT_BUTTON_STYLE = {
     container: {
+        flexDirection: `row`,
         justifyContent: `center`,
         alignItems: `center`,
         height: 36,
@@ -158,6 +158,10 @@ const FlatButtonInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
+        },
+        onPress: {
+            value: () => {},
+            stronglyTyped: true
         }
     },
     pureRender: function pureRender (property) {
@@ -261,28 +265,18 @@ const FlatButtonInterface = Hf.Interface.augment({
             }
         }
 
-        const MKFlatButton = MKButton.accentColoredFlatButton()
-                                     .withStyle(adjustedStyle.container)
-                                     .withMaskBorderRadius(adjustedStyle.container.borderRadius)
-                                     .build();
-
         if (animated) {
             return (
                 <AnimatedView
                     ref = { animatableComponentRef }
                     animation = { animationType }
                     duration = { animationDuration }
+                    useNativeDriver = { true }
                 >
-                    <MKFlatButton onPress = { !disabled ? onPress : null }>
+                    <TouchableOpacity onPress = { !disabled ? onPress : null }>
                     {
                         busy ? <ActivityIndicator size = 'small'/> :
-                        <View
-                            style = {{
-                                flexDirection: `row`,
-                                alignItems: `center`,
-                                justifyContent: `space-between`
-                            }}
-                        >
+                        <View style = { adjustedStyle.container }>
                         {
                             icon === null ? null :
                             <Image
@@ -299,21 +293,15 @@ const FlatButtonInterface = Hf.Interface.augment({
                             <Text style = { adjustedStyle.label }>{ label }</Text>
                         </View>
                     }
-                    </MKFlatButton>
+                    </TouchableOpacity>
                 </AnimatedView>
             );
         } else {
             return (
-                <MKFlatButton onPress = { !disabled ? onPress : null }>
+                <TouchableOpacity onPress = { !disabled ? onPress : null }>
                 {
                     busy ? <ActivityIndicator size = 'small'/> :
-                    <View
-                        style = {{
-                            flexDirection: `row`,
-                            alignItems: `center`,
-                            justifyContent: `space-between`
-                        }}
-                    >
+                    <View style = { adjustedStyle.container }>
                     {
                         icon === null ? null :
                         <Image
@@ -330,7 +318,7 @@ const FlatButtonInterface = Hf.Interface.augment({
                         <Text style = { adjustedStyle.label }>{ label }</Text>
                     </View>
                 }
-                </MKFlatButton>
+                </TouchableOpacity>
             );
         }
     }

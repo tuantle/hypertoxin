@@ -30,8 +30,6 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import { MKButton } from 'react-native-material-kit';
-
 import { View as AnimatedView } from 'react-native-animatable';
 
 import theme from '../../styles/theme';
@@ -39,7 +37,9 @@ import theme from '../../styles/theme';
 import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
 
 const {
-    Image
+    Image,
+    View,
+    TouchableOpacity
 } = ReactNative;
 
 const DEFAULT_FLOATING_ACTION_BUTTON_STYLE = {
@@ -141,6 +141,10 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
+        },
+        onPress: {
+            value: () => {},
+            stronglyTyped: true
         }
     },
     pureRender: function pureRender (property) {
@@ -175,7 +179,11 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
         let animationDuration;
         let icon = customIcon;
         let adjustedStyle = {
-            container: mini ? DEFAULT_FLOATING_ACTION_BUTTON_STYLE.container.mini : DEFAULT_FLOATING_ACTION_BUTTON_STYLE.container.normal,
+            container: mini ? Hf.merge(DEFAULT_FLOATING_ACTION_BUTTON_STYLE.container.mini).with({
+                backgroundColor: Hf.isEmpty(customColor) ? themedColor : customColor
+            }) : Hf.merge(DEFAULT_FLOATING_ACTION_BUTTON_STYLE.container.normal).with({
+                backgroundColor: Hf.isEmpty(customColor) ? themedColor : customColor
+            }),
             icon: Hf.merge(DEFAULT_FLOATING_ACTION_BUTTON_STYLE.icon[iconSize]).with({
                 tintColor: themedIconColor
             })
@@ -225,20 +233,34 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
         }
 
         if (animated) {
-            const MKFABButton = new MKButton.Builder()
-                                            .withBackgroundColor(Hf.isEmpty(customColor) ? themedColor : customColor)
-                                            .withFab(true)
-                                            .withAccent(true)
-                                            .withRippleLocation(`center`)
-                                            .build();
             return (
                 <AnimatedView
                     ref = { animatableComponentRef }
                     style = { adjustedStyle.container }
                     animation = { animationType }
                     duration = { animationDuration }
+                    useNativeDriver = { true }
                 >
-                    <MKFABButton onPress = { !disabled ? onPress : null }>
+                    <TouchableOpacity onPress = { !disabled ? onPress : null }>
+                        <View style = { adjustedStyle.container }>
+                            <Image
+                                style = { adjustedStyle.icon }
+                                source = {
+                                    Hf.isString(icon) ? {
+                                        uri: icon,
+                                        isStatic: true
+                                    } : icon
+                                }
+                                resizeMode = 'cover'
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </AnimatedView>
+            );
+        } else {
+            return (
+                <TouchableOpacity onPress = { !disabled ? onPress : null }>
+                    <View style = { adjustedStyle.container }>
                         <Image
                             style = { adjustedStyle.icon }
                             source = {
@@ -249,30 +271,8 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
                             }
                             resizeMode = 'cover'
                         />
-                    </MKFABButton>
-                </AnimatedView>
-            );
-        } else {
-            const MKFABButton = new MKButton.Builder()
-                                            .withStyle(adjustedStyle.container)
-                                            .withBackgroundColor(Hf.isEmpty(customColor) ? themedColor : customColor)
-                                            .withFab(true)
-                                            .withAccent(true)
-                                            .withRippleLocation(`center`)
-                                            .build();
-            return (
-                <MKFABButton onPress = { !disabled ? onPress : null }>
-                    <Image
-                        style = { adjustedStyle.icon }
-                        source = {
-                            Hf.isString(icon) ? {
-                                uri: icon,
-                                isStatic: true
-                            } : icon
-                        }
-                        resizeMode = 'cover'
-                    />
-                </MKFABButton>
+                    </View>
+                </TouchableOpacity>
             );
         }
     }

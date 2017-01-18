@@ -30,8 +30,6 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import { MKButton } from 'react-native-material-kit';
-
 import { View as AnimatedView } from 'react-native-animatable';
 
 import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
@@ -39,7 +37,9 @@ import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-te
 import theme from '../../styles/theme';
 
 const {
-    Image
+    Image,
+    View,
+    TouchableOpacity
 } = ReactNative;
 
 const DEFAULT_ICON_BUTTON_STYLE = {
@@ -133,6 +133,10 @@ const IconButtonInterface = Hf.Interface.augment({
             value: `normal`,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
+        },
+        onPress: {
+            value: () => {},
+            stronglyTyped: true
         }
     },
     pureRender: function pureRender (property) {
@@ -220,22 +224,34 @@ const IconButtonInterface = Hf.Interface.augment({
             }
         }
 
-        const MKIconButton = new MKButton.Builder()
-                                         .withStyle(adjustedStyle.container)
-                                         .withBackgroundColor(`transparent`)
-                                         .withFab(true)
-                                         .withAccent(false)
-                                         .withRippleLocation(`center`)
-                                         .build();
-
         if (animated) {
             return (
                 <AnimatedView
                     ref = { animatableComponentRef }
                     animation = { animationType }
                     duration = { animationDuration }
+                    useNativeDriver = { true }
                 >
-                    <MKIconButton onPress = { !disabled ? onPress : null }>
+                    <TouchableOpacity onPress = { !disabled ? onPress : null }>
+                        <View style = { adjustedStyle.container }>
+                            <Image
+                                style = { adjustedStyle.icon }
+                                source = {
+                                    Hf.isString(icon) ? {
+                                        uri: icon,
+                                        isStatic: true
+                                    } : icon
+                                }
+                                resizeMode = 'cover'
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </AnimatedView>
+            );
+        } else {
+            return (
+                <TouchableOpacity onPress = { !disabled ? onPress : null }>
+                    <View style = { adjustedStyle.container }>
                         <Image
                             style = { adjustedStyle.icon }
                             source = {
@@ -246,23 +262,8 @@ const IconButtonInterface = Hf.Interface.augment({
                             }
                             resizeMode = 'cover'
                         />
-                    </MKIconButton>
-                </AnimatedView>
-            );
-        } else {
-            return (
-                <MKIconButton onPress = { !disabled ? onPress : null }>
-                    <Image
-                        style = { adjustedStyle.icon }
-                        source = {
-                            Hf.isString(icon) ? {
-                                uri: icon,
-                                isStatic: true
-                            } : icon
-                        }
-                        resizeMode = 'cover'
-                    />
-                </MKIconButton>
+                    </View>
+                </TouchableOpacity>
             );
         }
     }
