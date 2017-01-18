@@ -370,6 +370,7 @@ const HeaderViewInterface = Hf.Interface.augment({
                             duration = { animationDuration }
                             animation = { animationType }
                             blurType = { shade }
+                            useNativeDriver = { true }
                         >
                             <View style = { adjustedStyle.room.left }>
                             {
@@ -398,6 +399,7 @@ const HeaderViewInterface = Hf.Interface.augment({
                             style = { adjustedStyle.navigation }
                             duration = { animationDuration }
                             animation = { animationType }
+                            useNativeDriver = { true }
                         >
                             <View style = { adjustedStyle.room.left }>
                             {
