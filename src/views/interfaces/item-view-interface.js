@@ -40,7 +40,7 @@ import theme from '../../styles/theme';
 
 const {
     View,
-    TouchableWithoutFeedback
+    TouchableOpacity
 } = ReactNative;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
@@ -199,7 +199,7 @@ const ItemViewInterface = Hf.Interface.augment({
 
         if (frosted) {
             return (
-                <TouchableWithoutFeedback onPress = { onPress }>
+                <TouchableOpacity onPress = { onPress }>
                     <BlurView
                         blurType = { shade }
                         style = { adjustedStyle.container }
@@ -215,11 +215,11 @@ const ItemViewInterface = Hf.Interface.augment({
                         }
                         </View>
                     </BlurView>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
             );
         } else {
             return (
-                <TouchableWithoutFeedback onPress = { onPress }>
+                <TouchableOpacity onPress = { onPress }>
                     <View style = { adjustedStyle.container }>
                         <View style = { adjustedStyle.room.media }>
                         {
@@ -230,9 +230,9 @@ const ItemViewInterface = Hf.Interface.augment({
                         {
                             itemActionChildren
                         }
+                        </View>
                     </View>
-                    </View>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
             );
         }
     }
