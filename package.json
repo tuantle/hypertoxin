@@ -28,44 +28,34 @@
     },
     "peerDependencies": {
         "react": "=15.4.2",
-		"react-native": "=0.40.0"
+		"react-native": "=0.41.2"
     },
     "dependencies": {
-        "hyperflow": "=0.1.0-beta22",
+        "hyperflow": "=0.1.0-beta26",
 
         "react-addons-create-fragment": "=15.4.2",
 
-        "react-native-md-textinput": "^2.0.4",
         "react-native-animatable": "^1.1.0",
         "react-native-blur": "^2.0.0"
     },
     "devDependencies": {
-        "react": "=15.4.2",
-        "react-native": "=0.40.0",
-
-        "babel-core": "^6.21.0",
-        "babel-preset-node7": "^1.4.0",
-        "babel-preset-react": "^6.16.0",
+        "babel-core": "^6.22.1",
+        "babel-preset-node7": "^1.5.0",
+        "babel-preset-react": "^6.22.0",
         "babel-preset-react-native": "^1.9.1",
-        "babel-plugin-transform-strict-mode": "^6.18.0",
+        "babel-plugin-transform-strict-mode": "^6.22.0",
 
         "babel-jest": "^18.0.0",
         "jest": "^18.1.0",
         "jest-react-native": "^18.0.0",
         "react-test-renderer": "^15.4.2",
 
-        "eslint": "^3.13.0",
+        "eslint": "^3.15.0",
         "babel-eslint": "^7.1.1",
         "eslint-plugin-react": "^6.8.0",
         "eslint-plugin-react-native": "^2.2.1"
     },
     "scripts": {
         "start-unit-tests": "NODE_ENV=development jest ./__tests__/test-suites"
-    },
-    "modulePathIgnorePatterns": [
-        "/node_modules/"
-    ],
-    "testPathIgnorePatterns": [
-        "/tests/"
-    ]
+    }
 }

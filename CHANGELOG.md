@@ -3,6 +3,51 @@
 
 ----
 
+**Development Beta Version 0.1.0-beta4 (02/10/2017)**
+```
+Notes:
+    - Code refactored and restructured.
+    - Update dependencies:
+        Hyperflow to 0.1.0-beta26
+New Features:
+	- Added new restore icon.
+    - Added SuggestionSearch applet.
+    - Added Field applets:
+        TextField
+        NumberField
+        PhoneNumberField
+        EmailField
+        CreditCardField
+    - Added HeaderView applet.
+Breaking Changes:
+Improvements:
+    - Updated theme color palette.
+	- Use native driver flag for animated components.
+	- Removed react-native-material-kit dependency for button components.
+	- Removed react-native-material-kit dependency for text field components.
+Bug fixes:
+    - Fix padding and margining for font style.
+```
+**Development Beta Version 0.1.0-beta3 (01/08/2017)**
+```
+Notes:
+    - Update dependencies:
+        Hyperflow to 0.1.0-beta21
+        React Native to 0.40.0
+New Features:
+Breaking Changes:
+Improvements:
+Bug fixes:
+```
+**Development Beta Version 0.1.0-beta2 (01/07/2017)**
+```
+Notes:
+New Features:
+Breaking Changes:
+Improvements:
+    - Code cleanups.
+Bug fixes:
+```
 **Development Beta Version 0.1.0-beta1 (01/05/2017)**
 ```
 Notes:
@@ -45,42 +90,5 @@ Notes:
 New Features:
 Breaking Changes:
 Improvements:
-Bug fixes:
-```
-**Development Beta Version 0.1.0-beta2 (01/07/2017)**
-```
-Notes:
-New Features:
-Breaking Changes:
-Improvements:
-    - Code cleanups.
-Bug fixes:
-```
-**Development Beta Version 0.1.0-beta3 (01/08/2017)**
-```
-Notes:
-    - Update dependencies:
-        Hyperflow to 0.1.0-beta21
-        React Native to 0.40.0
-New Features:
-Breaking Changes:
-Improvements:
-Bug fixes:
-```
-**Development Beta Version 0.1.0-beta4 (01/18/2017)**
-```
-Notes:
-    - Update dependencies:
-        Hyperflow to 0.1.0-beta22
-New Features:
-	- Added new restore icon.
-    - Added SearchBar applet. WIP.
-    - Added Form applet. WIP.
-Breaking Changes:
-Improvements:
-	- Use native driver flag for animated components.
-    - Fix padding and margining for font style.
-	- Removed react-native-material-kit dependency for button components.
-	- Removed react-native-material-kit dependency for field components. Temporary using react-native-md-textinput as a replacement. WIP.
 Bug fixes:
 ```
