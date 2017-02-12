@@ -23,12 +23,13 @@
  */
 'use strict'; // eslint-disable-line
 
-import profileIcon from '../../../assets/icons/png/profile-3x.png';
 import socialShareIcon from '../../../assets/icons/png/social-share-3x.png';
 import facebookIcon from '../../../assets/icons/base64/socials/facebook-3x';
 import googlePlusIcon from '../../../assets/icons/base64/socials/google-plus-3x';
 import twitterIcon from '../../../assets/icons/base64/socials/twitter-3x';
 
+import profileIcon from '../../../assets/icons/png/profile-3x.png';
+import emailIcon from '../../../assets/icons/png/email-3x.png';
 import editIcon from '../../../assets/icons/png/edit-3x.png';
 import starIcon from '../../../assets/icons/png/star-3x.png';
 import menuIcon from '../../../assets/icons/png/menu-3x.png';
@@ -57,15 +58,17 @@ import signoutIcon from '../../../assets/icons/png/signout-3x.png';
 import markerIcon from '../../../assets/icons/png/marker-3x.png';
 import notificationIcon from '../../../assets/icons/png/notification-3x.png';
 import lockIcon from '../../../assets/icons/png/lock-3x.png';
-import restoreIcon from '../../../assets/icons/png/restore-3x.png';
+import historyIcon from '../../../assets/icons/png/history-3x.png';
+import recallIcon from '../../../assets/icons/png/recall-3x.png';
 import chatIcon from '../../../assets/icons/png/chat-3x.png';
 
 export default {
-    profile: profileIcon,
     socialShare: socialShareIcon,
     facebook: facebookIcon,
     googlePlus: googlePlusIcon,
     twitter: twitterIcon,
+    profile: profileIcon,
+    email: emailIcon,
     edit: editIcon,
     star: starIcon,
     menu: menuIcon,
@@ -94,6 +97,7 @@ export default {
     marker: markerIcon,
     notification: notificationIcon,
     lock: lockIcon,
-    restore: restoreIcon,
+    history: historyIcon,
+    recall: recallIcon,
     chat: chatIcon
 };

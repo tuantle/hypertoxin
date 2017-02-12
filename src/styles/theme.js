@@ -33,6 +33,7 @@ export default {
         opacity: `aa`,
         accent: `#f2771d`,
         divider: `#f1e7e7`,
+        border: `#f1e7e7`,
         body: {
             container: {
                 dark: `#455a64`,
@@ -83,11 +84,62 @@ export default {
             secondary: {
                 dark: `#85d5eb`,
                 light: `#85d5eb`
+            },
+            disabled: {
+                dark: `#bdbdbd`,
+                light: `#bdbdbd`
+            }
+        },
+        textField: {
+            helper: `#9b9b9b`,
+            hint: `#9b9b9b`,
+            status: `#ff5252`,
+            label: {
+                focused: {
+                    dark: `#f2771d`,
+                    light: `#f2771d`
+                },
+                blurred: {
+                    dark: `#9b9b9b`,
+                    light: `#fdfdfd`
+                },
+                disabled: {
+                    dark: `#bdbdbd`,
+                    light: `#bdbdbd`
+                }
+            },
+            icon: {
+                focused: {
+                    dark: `#f2771d`,
+                    light: `#f2771d`
+                },
+                blurred: {
+                    dark: `#737373`,
+                    light: `#fdfdfd`
+                },
+                disabled: {
+                    dark: `#bdbdbd`,
+                    light: `#bdbdbd`
+                }
+            },
+            underline: {
+                focused: {
+                    dark: `#f2771d`,
+                    light: `#f2771d`
+                },
+                blurred: {
+                    dark: `#9b9b9b`,
+                    light: `#9b9b9b`
+                },
+                disabled: {
+                    dark: `#bdbdbd`,
+                    light: `#bdbdbd`
+                }
             }
         },
         icon: {
             default: {
-                dark: `#5d5d5d`,
+                dark: `#737373`,
                 light: `#fdfdfd`
             },
             primary: {
@@ -97,6 +149,10 @@ export default {
             secondary: {
                 dark: `#85d5eb`,
                 light: `#85d5eb`
+            },
+            disabled: {
+                dark: `#bdbdbd`,
+                light: `#bdbdbd`
             }
         },
         button: {
@@ -121,7 +177,7 @@ export default {
                 },
                 icon: {
                     default: {
-                        dark: `#5d5d5d`,
+                        dark: `#737373`,
                         light: `#fdfdfd`
                     },
                     primary: {
@@ -140,7 +196,7 @@ export default {
             },
             icon: {
                 default: {
-                    dark: `#5d5d5d`,
+                    dark: `#737373`,
                     light: `#fdfdfd`
                 },
                 primary: {
@@ -158,36 +214,96 @@ export default {
             },
             raised: {
                 container: {
-                    default: `#f2771d`,
-                    primary: `#ff5722`,
-                    secondary: `#85d5eb`,
-                    disabled: `#bdbdbd`
+                    default: {
+                        dark: `#f2771d`,
+                        light: `#f2771d`
+                    },
+                    primary: {
+                        dark: `#ff5722`,
+                        light: `#ff5722`
+                    },
+                    secondary: {
+                        dark: `#85d5eb`,
+                        light: `#85d5eb`
+                    },
+                    disabled: {
+                        dark: `#bdbdbd`,
+                        light: `#bdbdbd`
+                    }
                 },
                 label: {
-                    default: `#fdfdfd`,
-                    primary: `#fdfdfd`,
-                    secondary: `#fdfdfd`,
-                    disabled: `#d8d8d8`
+                    default: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    primary: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    secondary: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    disabled: {
+                        dark: `#bdbdbd`,
+                        light: `#bdbdbd`
+                    }
                 },
                 icon: {
-                    default: `#fdfdfd`,
-                    primary: `#fdfdfd`,
-                    secondary: `#fdfdfd`,
-                    disabled: `#d8d8d8`
+                    default: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    primary: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    secondary: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    disabled: {
+                        dark: `#bdbdbd`,
+                        light: `#bdbdbd`
+                    }
                 }
             },
             floatingAction: {
                 container: {
-                    default: `#f2771d`,
-                    primary: `#ff5722`,
-                    secondary: `#85d5eb`,
-                    disabled: `#bdbdbd`
+                    default: {
+                        dark: `#f2771d`,
+                        light: `#f2771d`
+                    },
+                    primary: {
+                        dark: `#ff5722`,
+                        light: `#ff5722`
+                    },
+                    secondary: {
+                        dark: `#85d5eb`,
+                        light: `#85d5eb`
+                    },
+                    disabled: {
+                        dark: `#bdbdbd`,
+                        light: `#bdbdbd`
+                    }
                 },
                 icon: {
-                    default: `#fdfdfd`,
-                    primary: `#fdfdfd`,
-                    secondary: `#fdfdfd`,
-                    disabled: `#d8d8d8`
+                    default: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    primary: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    secondary: {
+                        dark: `#fdfdfd`,
+                        light: `#fdfdfd`
+                    },
+                    disabled: {
+                        dark: `#bdbdbd`,
+                        light: `#bdbdbd`
+                    }
                 }
             }
         }
