@@ -30,13 +30,11 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import theme from '../../styles/theme';
+import { Text as AnimatedText } from 'react-native-animatable';
+
+import { Ht } from '../../hypertoxin';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
-
-const {
-    Text
-} = ReactNative;
 
 const DEFAULT_CAPTION_TEXT_STYLE = {
     small: fontStyleTemplate.italicSmaller,
@@ -90,7 +88,36 @@ const CaptionTextInterface = Hf.Interface.augment({
             stronglyTyped: true
         }
     },
-    pureRender: function pureRender (property) {
+    // bounce: function bounce () {
+    //
+    // },
+    animate: function animate (definition) {
+        const component = this;
+        const [
+            animatedText
+        ] = component.lookupComponentRefs(
+            `animatedText`
+        );
+        const {
+            from,
+            to,
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: 300,
+            easing: `ease`
+        }).of(definition);
+
+        if (Hf.isDefined(animatedText)) {
+            if (Hf.isObject(from) && Hf.isObject(to)) {
+                animatedText.transition(from, to, duration, easing);
+            } else if (!Hf.isObject(from) && Hf.isObject(to)) {
+                animatedText.transitionTo(to, duration, easing);
+            }
+        }
+    },
+    render: function redner () {
+        const component = this;
         const {
             shade,
             color,
@@ -100,19 +127,12 @@ const CaptionTextInterface = Hf.Interface.augment({
             indentation,
             style,
             children
-        } = Hf.fallback({
-            shade: `dark`,
-            color: `default`,
-            size: `normal`,
-            alignment: `center`,
-            decoration: `none`,
-            indentation: 0
-        }).of(property);
+        } = component.props;
         let themeTextColor;
         let adjustedStyle;
 
-        if (theme.color.text.hasOwnProperty(color)) {
-            themeTextColor = theme.color.text[color][shade];
+        if (Ht.Theme.color.text.hasOwnProperty(color)) {
+            themeTextColor = Ht.Theme.color.text[color][shade];
         } else {
             themeTextColor = color;
         }
@@ -129,15 +149,17 @@ const CaptionTextInterface = Hf.Interface.augment({
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         return (
-            <Text
+            <AnimatedText
+                ref = { component.assignComponentRef(`animatedText`) }
                 style = { adjustedStyle }
+                useNativeDriver = { true }
                 ellipsizeMode = 'tail'
                 numberOfLines = { 1028 }
             >
             {
                 children
             }
-            </Text>
+            </AnimatedText>
         );
     }
 });
@@ -147,6 +169,10 @@ const CaptionTextComponent = CaptionTextInterface({
 }).registerComponentLib({
     React,
     ReactNative
-}).toPureComponent();
+}).toComponent(null, {
+    componentMethodAndPropertyInclusions: [
+        `animate`
+    ]
+});
 
 export default CaptionTextComponent;

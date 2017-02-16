@@ -15,14 +15,13 @@
  *
  *------------------------------------------------------------------------
  *
- * @module TitleTextComponent
- * @description - Title text component.
+ * @module HeadLineTextComponent
+ * @description - Headline text component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
  *------------------------------------------------------------------------
  */
-'use strict'; // eslint-disable-line
 'use strict'; // eslint-disable-line
 
 import { Hf } from 'hyperflow';
@@ -31,21 +30,19 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import theme from '../../styles/theme';
+import { Text as AnimatedText } from 'react-native-animatable';
+
+import { Ht } from '../../hypertoxin';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
 
-const {
-    Text
-} = ReactNative;
-
-const DEFAULT_TITLE_TEXT_STYLE = {
-    small: fontStyleTemplate.boldSmall,
-    normal: fontStyleTemplate.bold,
-    large: fontStyleTemplate.boldLarge
+const DEFAULT_HEADLINE_TEXT_STYLE = {
+    small: fontStyleTemplate.normalLarge,
+    normal: fontStyleTemplate.normalLarger,
+    large: fontStyleTemplate.normalLargest
 };
 
-const TitleTextInterface = Hf.Interface.augment({
+const HeadlineTextInterface = Hf.Interface.augment({
     composites: [
         Hf.React.ComponentComposite
     ],
@@ -87,7 +84,36 @@ const TitleTextInterface = Hf.Interface.augment({
             stronglyTyped: true
         }
     },
-    pureRender: function pureRender (property) {
+    // bounce: function bounce () {
+    //
+    // },
+    animate: function animate (definition) {
+        const component = this;
+        const [
+            animatedText
+        ] = component.lookupComponentRefs(
+            `animatedText`
+        );
+        const {
+            from,
+            to,
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: 300,
+            easing: `ease`
+        }).of(definition);
+
+        if (Hf.isDefined(animatedText)) {
+            if (Hf.isObject(from) && Hf.isObject(to)) {
+                animatedText.transition(from, to, duration, easing);
+            } else if (!Hf.isObject(from) && Hf.isObject(to)) {
+                animatedText.transitionTo(to, duration, easing);
+            }
+        }
+    },
+    render: function render () {
+        const component = this;
         const {
             shade,
             color,
@@ -96,23 +122,17 @@ const TitleTextInterface = Hf.Interface.augment({
             decoration,
             style,
             children
-        } = Hf.fallback({
-            shade: `dark`,
-            color: `default`,
-            size: `normal`,
-            alignment: `center`,
-            decoration: `none`
-        }).of(property);
+        } = component.props;
         let themeTextColor;
         let adjustedStyle;
 
-        if (theme.color.text.hasOwnProperty(color)) {
-            themeTextColor = theme.color.text[color][shade];
+        if (Ht.Theme.color.text.hasOwnProperty(color)) {
+            themeTextColor = Ht.Theme.color.text[color][shade];
         } else {
             themeTextColor = color;
         }
 
-        adjustedStyle = Hf.merge(DEFAULT_TITLE_TEXT_STYLE[size]).with({
+        adjustedStyle = Hf.merge(DEFAULT_HEADLINE_TEXT_STYLE[size]).with({
             flexWrap: `wrap`,
             textAlign: alignment,
             textDecorationLine: decoration,
@@ -123,24 +143,30 @@ const TitleTextInterface = Hf.Interface.augment({
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         return (
-            <Text
+            <AnimatedText
+                ref = { component.assignComponentRef(`animatedText`) }
                 style = { adjustedStyle }
+                useNativeDriver = { true }
                 ellipsizeMode = 'tail'
                 numberOfLines = { 1 }
             >
             {
                 children
             }
-            </Text>
+            </AnimatedText>
         );
     }
 });
 
-const TitleTextComponent = TitleTextInterface({
-    name: `title-text`
+const HeadlineTextComponent = HeadlineTextInterface({
+    name: `headline-text`
 }).registerComponentLib({
     React,
     ReactNative
-}).toPureComponent();
+}).toComponent(null, {
+    componentMethodAndPropertyInclusions: [
+        `animate`
+    ]
+});
 
-export default TitleTextComponent;
+export default HeadlineTextComponent;
