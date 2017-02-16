@@ -34,6 +34,8 @@ import * as Animatable from 'react-native-animatable';
 
 import { BlurView } from 'react-native-blur';
 
+import { Ht } from '../../hypertoxin';
+
 const {
     View,
     ScrollView
@@ -41,8 +43,6 @@ const {
 
 const AnimatedView = Animatable.View;
 const AnimatedBlurView = Animatable.createAnimatableComponent(BlurView);
-
-import theme from '../../styles/theme';
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
@@ -117,10 +117,59 @@ const LayoutViewInterface = Hf.Interface.augment({
             stronglyTyped: true
         }
     },
-    pureRender: function pureRender (property) {
+    animate: function animate (definition) {
+        const component = this;
+        const [
+            animatedView
+        ] = component.lookupComponentRefs(
+            `animatedView`
+        );
         const {
-            scrollableRef,
-            animatableRef,
+            from,
+            to,
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: 300,
+            easing: `ease`
+        }).of(definition);
+
+        if (Hf.isDefined(animatedView)) {
+            if (Hf.isObject(from) && Hf.isObject(to)) {
+                animatedView.transition(from, to, duration, easing);
+            } else if (!Hf.isObject(from) && Hf.isObject(to)) {
+                animatedView.transitionTo(to, duration, easing);
+            }
+        }
+    },
+    scrollTo: function scrollTo (destination) {
+        const component = this;
+        const [
+            scrollView
+        ] = component.lookupComponentRefs(
+            `scrollView`
+        );
+        const {
+            x,
+            y,
+            animated
+        } = Hf.fallback({
+            x: 0,
+            y: 0,
+            animated: true
+        }).of(destination);
+
+        if (Hf.isDefined(scrollView)) {
+            scrollView.scrollTo({
+                x,
+                y,
+                animated
+            });
+        }
+    },
+    render: function render () {
+        const component = this;
+        const {
             shade,
             overlay,
             orientation,
@@ -129,24 +178,16 @@ const LayoutViewInterface = Hf.Interface.augment({
             scrollable,
             style,
             children
-        } = Hf.fallback({
-            shade: `light`,
-            overlay: `opaque`,
-            orientation: `horizontal`,
-            selfAlignment: `auto`,
-            alignment: `center`,
-            scrollable: false
-        }).of(property);
-        const animated = false;
+        } = component.props;
         let frosted = false;
         let adjustedStyle = Hf.merge(DEFAULT_LAYOUT_VIEW_STYLE).with({
             container: {
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.color.layout.container[shade];
+                        return Ht.Theme.color.layout.container[shade];
                     case `translucent-clear`:
-                        return `${theme.color.layout.container[shade]}${theme.color.opacity}`;
+                        return `${Ht.Theme.color.layout.container[shade]}${Ht.Theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
@@ -226,94 +267,48 @@ const LayoutViewInterface = Hf.Interface.augment({
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         if (scrollable) {
-            if (animated) {
-                if (frosted) {
-                    return (
-                        <AnimatedBlurView
-                            ref = { animatableRef }
-                            style = { adjustedStyle.container }
-                            blurType = { shade }
-                            blurAmount = { 95 }
-                            useNativeDriver = { true }
-                        >
-                            <ScrollView ref = { scrollableRef }>
-                                <View style = { adjustedStyle[orientation] }>
-                                {
-                                    children
-                                }
-                                </View>
-                            </ScrollView>
-                        </AnimatedBlurView>
-                    );
-                }
+            if (frosted) {
                 return (
-                    <AnimatedView
-                        ref = { animatableRef }
+                    <AnimatedBlurView
+                        ref = { component.assignComponentRef(`animatedView`) }
                         style = { adjustedStyle.container }
+                        blurType = { shade }
+                        blurAmount = { 95 }
                         useNativeDriver = { true }
                     >
-                        <ScrollView ref = { scrollableRef }>
+                        <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
                             <View style = { adjustedStyle[orientation] }>
                             {
                                 children
                             }
                             </View>
                         </ScrollView>
-                    </AnimatedView>
-                );
-            } else {
-                if (frosted) {
-                    return (
-                        <BlurView
-                            style = { adjustedStyle.container }
-                            blurType = { shade }
-                            blurAmount = { 95 }
-                        >
-                            <ScrollView ref = { scrollableRef }>
-                                <View style = { adjustedStyle[orientation] }>
-                                {
-                                    children
-                                }
-                                </View>
-                            </ScrollView>
-                        </BlurView>
-                    );
-                }
-                return (
-                    <View style = { adjustedStyle.container }>
-                        <ScrollView ref = { scrollableRef }>
-                            <View style = { adjustedStyle[orientation] }>
-                            {
-                                children
-                            }
-                            </View>
-                        </ScrollView>
-                    </View>
+                    </AnimatedBlurView>
                 );
             }
+            return (
+                <AnimatedView
+                    ref = { component.assignComponentRef(`animatedView`) }
+                    style = { adjustedStyle.container }
+                    useNativeDriver = { true }
+                >
+                    <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
+                        <View style = { adjustedStyle[orientation] }>
+                        {
+                            children
+                        }
+                        </View>
+                    </ScrollView>
+                </AnimatedView>
+            );
         } else {
-            if (animated) {
-                if (frosted) {
-                    return (
-                        <AnimatedBlurView
-                            ref = { animatableRef }
-                            style = { adjustedStyle.container }
-                            blurType = { shade }
-                            blurAmount = { 95 }
-                            useNativeDriver = { true }
-                        >
-                            <View style = { adjustedStyle[orientation] }>
-                            {
-                                children
-                            }
-                            </View>
-                        </AnimatedBlurView>
-                    );
-                }
+            if (frosted) {
                 return (
-                    <AnimatedView
-                        ref = { animatableRef }
+                    <AnimatedBlurView
+                        ref = { component.assignComponentRef(`animatedView`) }
                         style = { adjustedStyle.container }
+                        blurType = { shade }
+                        blurAmount = { 95 }
                         useNativeDriver = { true }
                     >
                         <View style = { adjustedStyle[orientation] }>
@@ -321,34 +316,22 @@ const LayoutViewInterface = Hf.Interface.augment({
                             children
                         }
                         </View>
-                    </AnimatedView>
-                );
-            } else {
-                if (frosted) {
-                    return (
-                        <BlurView
-                            style = { adjustedStyle.container }
-                            blurType = { shade }
-                            blurAmount = { 95 }
-                        >
-                            <View style = { adjustedStyle[orientation] }>
-                            {
-                                children
-                            }
-                            </View>
-                        </BlurView>
-                    );
-                }
-                return (
-                    <View style = { adjustedStyle.container }>
-                        <View style = { adjustedStyle[orientation] }>
-                        {
-                            children
-                        }
-                        </View>
-                    </View>
+                    </AnimatedBlurView>
                 );
             }
+            return (
+                <AnimatedView
+                    ref = { component.assignComponentRef(`animatedView`) }
+                    style = { adjustedStyle.container }
+                    useNativeDriver = { true }
+                >
+                    <View style = { adjustedStyle[orientation] }>
+                    {
+                        children
+                    }
+                    </View>
+                </AnimatedView>
+            );
         }
     }
 });
@@ -358,6 +341,11 @@ const LayoutViewComponent = LayoutViewInterface({
 }).registerComponentLib({
     React,
     ReactNative
-}).toPureComponent();
+}).toComponent(null, {
+    componentMethodAndPropertyInclusions: [
+        `animate`,
+        `scrollTo`
+    ]
+});
 
 export default LayoutViewComponent;
