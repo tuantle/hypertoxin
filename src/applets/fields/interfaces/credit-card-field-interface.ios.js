@@ -15,8 +15,8 @@
  *
  *------------------------------------------------------------------------
  *
- * @module TextFieldInterface
- * @description - Text field input interface.
+ * @module CreditCardFieldInterface
+ * @description - Credit card field input interface.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -145,7 +145,7 @@ const DEFAULT_TEXT_FIELD_ICON_STYLE = {
     }
 };
 
-const TextFieldInterface = Hf.Interface.augment({
+const CreditCardFieldInterface = Hf.Interface.augment({
     composites: [
         Hf.React.ComponentComposite
     ],
@@ -221,36 +221,24 @@ const TextFieldInterface = Hf.Interface.augment({
             value: false,
             stronglyTyped: true
         },
-        autoCorrect: {
-            value: true,
-            stronglyTyped: true
-        },
-        secured: {
-            value: false,
-            stronglyTyped: true
-        },
-        multiline: {
-            value: false,
-            stronglyTyped: true
-        },
         disabled: {
             value: false,
             stronglyTyped: true
         },
-        charLimit: {
-            value: -1,
-            stronglyTyped: true
-        },
         initialValue: {
-            value: ``,
-            stronglyTyped: true
+            value: NaN
         },
         hint: {
             value: ``,
             stronglyTyped: true
         },
         label: {
-            value: ``,
+            value: `Credit Card`,
+            stronglyTyped: true
+        },
+        cardType: {
+            value: `visa`,
+            oneOf: [ `visa`, `master-card`, `discover`, `american-express` ],
             stronglyTyped: true
         },
         returnKeyType: {
@@ -259,10 +247,43 @@ const TextFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         onValidate: {
-            value: () => {
+            value: (value, cardType) => {
+                const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/;
+                const masterCardRegex = /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/;
+                const discoverRegex = /^6(?:011|5[0-9]{2})[0-9]{12}$/;
+                const americanExpressRegex = /^3[47][0-9]{13}$/;
+
+                let status = ``;
+                let validated = false;
+
+                if (!Hf.isNumeric(value)) {
+                    status = `Credit card number is invalid`;
+                } else {
+                    switch (cardType) {
+                    case `visa`:
+                        validated = visaRegex.test(`${value}`);
+                        status = validated ? `` : `Visa credit card number is invalid`;
+                        break;
+                    case `master-card`:
+                        validated = masterCardRegex.test(`${value}`);
+                        status = validated ? `` : `Master credit card number is invalid`;
+                        break;
+                    case `discover`:
+                        validated = discoverRegex.test(`${value}`);
+                        status = validated ? `` : `Discover credit card number is invalid`;
+                        break;
+                    case `american-express`:
+                        validated = americanExpressRegex.test(`${value}`);
+                        status = validated ? `` : `American Express credit card number is invalid`;
+                        break;
+                    default:
+                        validated = false;
+                    }
+                }
+
                 return {
-                    validated: false,
-                    status: ``
+                    validated,
+                    status
                 };
             },
             stronglyTyped: true
@@ -292,17 +313,17 @@ const TextFieldInterface = Hf.Interface.augment({
         });
 
         intf.postMountStage((component) => {
-            const {
-                initialValue
-            } = component.props;
             const [
                 fieldInput
             ] = component.lookupComponentRefs(
                 `fieldInput`
             );
+            const {
+                initialValue
+            } = component.props;
 
-            if (!Hf.isEmpty(initialValue)) {
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => initialValue);
+            if (Hf.isNumeric(initialValue)) {
+                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => `${initialValue}`);
             }
 
             requestAnimationFrame(() => {
@@ -321,9 +342,6 @@ const TextFieldInterface = Hf.Interface.augment({
             } = component.props;
 
             if (!fixedFloatingLabel && !Hf.isEmpty(label)) {
-                const {
-                    fieldInput
-                } = component.state;
                 const [
                     animatedLabel,
                     animatedUnderline
@@ -331,6 +349,10 @@ const TextFieldInterface = Hf.Interface.augment({
                     `animatedLabel`,
                     `animatedUnderline`
                 );
+                const {
+                    fieldInput
+                } = component.state;
+
                 if (fieldInput.focused) {
                     animatedLabel.transitionTo({
                         top: -12,
@@ -393,7 +415,6 @@ const TextFieldInterface = Hf.Interface.augment({
         } = component.props;
 
         if (!disabled) {
-            const intf = component.getInterface();
             const [
                 fieldTextInput
             ] = component.lookupComponentRefs(
@@ -402,10 +423,10 @@ const TextFieldInterface = Hf.Interface.augment({
 
             if (Hf.isDefined(fieldTextInput)) {
                 fieldTextInput.clear();
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => ``);
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => false);
-                intf.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => ``);
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => false);
+                component.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
             }
         }
     },
@@ -454,9 +475,6 @@ const TextFieldInterface = Hf.Interface.augment({
     renderStatusAndHelper: function renderStatusAndHelper (adjustedStyle) {
         const component = this;
         const {
-            charLimit
-        } = component.props;
-        const {
             fieldInput
         } = component.state;
 
@@ -476,27 +494,15 @@ const TextFieldInterface = Hf.Interface.augment({
                     fieldInput.validated ? null : <Text style = { adjustedStyle.statusText }>{ fieldInput.status }</Text>
                 }
                 </View>
-                <View style = {{
-                    alignItems: `flex-end`,
-                    justifyContent: `center`,
-                    backgroundColor: `transparent`
-                }}>
-                {
-                    charLimit === -1 ? null : <Text style = { adjustedStyle.helperText }>{ `${fieldInput.value.length} / ${charLimit}` }</Text>
-                }
-                </View>
             </View>
         );
     },
     renderFieldInput: function renderFieldInput (adjustedStyle) {
         const component = this;
-        const intf = component.getInterface();
         const {
-            autoCorrect,
-            secured,
             multiline,
             disabled,
-            charLimit,
+            cardType,
             hint,
             label,
             returnKeyType,
@@ -519,49 +525,61 @@ const TextFieldInterface = Hf.Interface.augment({
                 <TextInput
                     ref = { component.assignComponentRef(`fieldTextInput`) }
                     style = { adjustedStyle.fieldInputText }
-                    keyboardType = 'default'
-                    autoCorrect = { autoCorrect }
-                    secureTextEntry = { secured }
+                    keyboardType = 'numeric'
                     multiline = { multiline }
                     editable = { !disabled }
-                    maxLength = { charLimit }
                     defaultValue = { fieldInput.value }
                     placeholder = { Hf.isEmpty(label) ? hint : `` }
                     placeholderTextColor = { adjustedStyle.hintText.color }
                     returnKeyType = { returnKeyType }
                     onFocus = {() => {
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => true);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => true);
                         onFocus();
                     }}
                     onBlur = {() => {
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => false);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => false);
                         onBlur();
                     }}
                     onChange = {(event) => {
                         if (multiline && !Hf.isEmpty(event.nativeEvent.text)) {
-                            intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => {
+                            component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => {
                                 return DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height * Math.ceil(event.nativeEvent.contentSize.height / DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
                             });
                         } else {
-                            intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
+                            component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
                         }
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => event.nativeEvent.text);
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => !Hf.isEmpty(event.nativeEvent.text));
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => event.nativeEvent.text);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => !Hf.isEmpty(event.nativeEvent.text));
 
                         if (Hf.isEmpty(event.nativeEvent.text)) {
-                            intf.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
+                            component.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
+                        } else {
+                            onEditing(parseInt(event.nativeEvent.text, 10));
                         }
-
-                        onEditing(event.nativeEvent.text);
+                    }}
+                    onEndEditing = {(event) => {
+                        if (!Hf.isEmpty(event.nativeEvent.text)) {
+                            const [
+                                fieldTextInput
+                            ] = component.lookupComponentRefs(
+                                `fieldTextInput`
+                            );
+                            fieldTextInput.setNativeProps({
+                                text: `${parseInt(event.nativeEvent.text, 10)}`
+                            });
+                        }
                     }}
                     onSubmitEditing = {(event) => {
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALIDATION).emit(() => {
-                            return {
-                                value: event.nativeEvent.text,
-                                validate: onValidate
-                            };
-                        });
-                        onDoneEdit(event.nativeEvent.text);
+                        if (!Hf.isEmpty(event.nativeEvent.text)) {
+                            component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALIDATION).emit(() => {
+                                return {
+                                    cardType,
+                                    value: parseInt(event.nativeEvent.text, 10),
+                                    validate: onValidate
+                                };
+                            });
+                            onDoneEdit(parseInt(event.nativeEvent.text, 10));
+                        }
                     }}
                 />
                 {
@@ -667,7 +685,7 @@ const TextFieldInterface = Hf.Interface.augment({
             if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
                 icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
             } else {
-                Hf.log(`warn1`, `TextFieldInterface - Icon preset:${iconPreset} is not found.`);
+                Hf.log(`warn1`, `CreditCardFieldInterface - Icon preset:${iconPreset} is not found.`);
             }
         }
 
@@ -702,7 +720,7 @@ const TextFieldInterface = Hf.Interface.augment({
                 focused: {
                     color: themedLabelFocusedColor
                 },
-                blurred: Hf.isEmpty(initialValue) ? {
+                blurred: !Hf.isNumeric(initialValue) ? {
                     color: themedLabelBlurredColor
                 } : {
                     top: -12,
@@ -776,4 +794,4 @@ const TextFieldInterface = Hf.Interface.augment({
     }
 });
 
-export default TextFieldInterface;
+export default CreditCardFieldInterface;

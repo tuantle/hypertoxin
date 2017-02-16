@@ -55,20 +55,4 @@ const SuggestiveSearchApplet = Hf.App.augment({
     }
 });
 
-export default function SuggestiveSearch (property) {
-    const Component = SuggestiveSearchApplet({
-        name: `suggestive-search`
-    }).getTopComponent({
-        doConvertToStandaloneComponent: true,
-        componentMethodAndPropertyInclusions: [
-            `show`,
-            `hide`,
-            `clear`,
-            `clearSearchSuggestion`
-            // `addSearchSuggestionItems`
-        ]
-    });
-    return (
-        <Component { ...property } />
-    );
-}
+export default SuggestiveSearchApplet;

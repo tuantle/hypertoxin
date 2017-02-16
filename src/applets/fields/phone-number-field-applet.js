@@ -55,20 +55,4 @@ const PhoneNumberFieldApplet = Hf.App.augment({
     }
 });
 
-export default function PhoneNumberField (property) {
-    const Component = PhoneNumberFieldApplet({
-        name: `phone-number-field`
-    }).getTopComponent({
-        doConvertToStandaloneComponent: true,
-        componentMethodAndPropertyInclusions: [
-            `isValidated`,
-            `focus`,
-            `blur`,
-            `clear`
-        ]
-    });
-
-    return (
-        <Component { ...property } />
-    );
-}
+export default PhoneNumberFieldApplet;

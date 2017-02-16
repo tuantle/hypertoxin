@@ -55,20 +55,4 @@ const TextFieldApplet = Hf.App.augment({
     }
 });
 
-export default function TextField (property) {
-    const Component = TextFieldApplet({
-        name: `text-field`
-    }).getTopComponent({
-        doConvertToStandaloneComponent: true,
-        componentMethodAndPropertyInclusions: [
-            `isValidated`,
-            `focus`,
-            `blur`,
-            `clear`
-        ]
-    });
-
-    return (
-        <Component { ...property } />
-    );
-}
+export default TextFieldApplet;

@@ -55,18 +55,4 @@ const HeaderViewApplet = Hf.App.augment({
     }
 });
 
-export default function HeaderView (property) {
-    const Component = HeaderViewApplet({
-        name: `header-view`
-    }).getTopComponent({
-        doConvertToStandaloneComponent: true,
-        componentMethodAndPropertyInclusions: [
-            `minimize`,
-            `maximize`
-        ]
-    });
-
-    return (
-        <Component { ...property } />
-    );
-}
+export default HeaderViewApplet;

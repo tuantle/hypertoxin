@@ -55,20 +55,4 @@ const CreditCardFieldApplet = Hf.App.augment({
     }
 });
 
-export default function CreditCardField (property) {
-    const Component = CreditCardFieldApplet({
-        name: `credit-card-field`
-    }).getTopComponent({
-        doConvertToStandaloneComponent: true,
-        componentMethodAndPropertyInclusions: [
-            `isValidated`,
-            `focus`,
-            `blur`,
-            `clear`
-        ]
-    });
-
-    return (
-        <Component { ...property } />
-    );
-}
+export default CreditCardFieldApplet;

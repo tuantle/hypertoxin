@@ -15,8 +15,8 @@
  *
  *------------------------------------------------------------------------
  *
- * @module PhoneNumberFieldInterface
- * @description - Phone number field input interface.
+ * @module TextFieldInterface
+ * @description - Text field input interface.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -145,7 +145,7 @@ const DEFAULT_TEXT_FIELD_ICON_STYLE = {
     }
 };
 
-const PhoneNumberFieldInterface = Hf.Interface.augment({
+const TextFieldInterface = Hf.Interface.augment({
     composites: [
         Hf.React.ComponentComposite
     ],
@@ -221,19 +221,36 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
             value: false,
             stronglyTyped: true
         },
+        autoCorrect: {
+            value: true,
+            stronglyTyped: true
+        },
+        secured: {
+            value: false,
+            stronglyTyped: true
+        },
+        multiline: {
+            value: false,
+            stronglyTyped: true
+        },
         disabled: {
             value: false,
             stronglyTyped: true
         },
+        charLimit: {
+            value: -1,
+            stronglyTyped: true
+        },
         initialValue: {
-            value: NaN
+            value: ``,
+            stronglyTyped: true
         },
         hint: {
             value: ``,
             stronglyTyped: true
         },
         label: {
-            value: `Phone`,
+            value: ``,
             stronglyTyped: true
         },
         returnKeyType: {
@@ -242,22 +259,10 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         onValidate: {
-            value: (value) => {
-                const regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-
-                let status = ``;
-                let validated = false;
-
-                if (!Hf.isNumeric(value)) {
-                    status = `Phone number is invalid`;
-                } else {
-                    validated = regex.test(`${value}`);
-                    status = validated ? `` : `Phone number is invalid`;
-                }
-
+            value: () => {
                 return {
-                    validated,
-                    status
+                    validated: false,
+                    status: ``
                 };
             },
             stronglyTyped: true
@@ -287,17 +292,17 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
         });
 
         intf.postMountStage((component) => {
-            const {
-                initialValue
-            } = component.props;
             const [
                 fieldInput
             ] = component.lookupComponentRefs(
                 `fieldInput`
             );
+            const {
+                initialValue
+            } = component.props;
 
-            if (Hf.isNumeric(initialValue)) {
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => `${initialValue}`);
+            if (!Hf.isEmpty(initialValue)) {
+                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => initialValue);
             }
 
             requestAnimationFrame(() => {
@@ -316,9 +321,6 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
             } = component.props;
 
             if (!fixedFloatingLabel && !Hf.isEmpty(label)) {
-                const {
-                    fieldInput
-                } = component.state;
                 const [
                     animatedLabel,
                     animatedUnderline
@@ -326,6 +328,10 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
                     `animatedLabel`,
                     `animatedUnderline`
                 );
+                const {
+                    fieldInput
+                } = component.state;
+
                 if (fieldInput.focused) {
                     animatedLabel.transitionTo({
                         top: -12,
@@ -388,7 +394,6 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
         } = component.props;
 
         if (!disabled) {
-            const intf = component.getInterface();
             const [
                 fieldTextInput
             ] = component.lookupComponentRefs(
@@ -397,10 +402,10 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
 
             if (Hf.isDefined(fieldTextInput)) {
                 fieldTextInput.clear();
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => ``);
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => false);
-                intf.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => ``);
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => false);
+                component.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
             }
         }
     },
@@ -449,6 +454,9 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
     renderStatusAndHelper: function renderStatusAndHelper (adjustedStyle) {
         const component = this;
         const {
+            charLimit
+        } = component.props;
+        const {
             fieldInput
         } = component.state;
 
@@ -468,15 +476,26 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
                     fieldInput.validated ? null : <Text style = { adjustedStyle.statusText }>{ fieldInput.status }</Text>
                 }
                 </View>
+                <View style = {{
+                    alignItems: `flex-end`,
+                    justifyContent: `center`,
+                    backgroundColor: `transparent`
+                }}>
+                {
+                    charLimit === -1 ? null : <Text style = { adjustedStyle.helperText }>{ `${fieldInput.value.length} / ${charLimit}` }</Text>
+                }
+                </View>
             </View>
         );
     },
     renderFieldInput: function renderFieldInput (adjustedStyle) {
         const component = this;
-        const intf = component.getInterface();
         const {
+            autoCorrect,
+            secured,
             multiline,
             disabled,
+            charLimit,
             hint,
             label,
             returnKeyType,
@@ -499,60 +518,49 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
                 <TextInput
                     ref = { component.assignComponentRef(`fieldTextInput`) }
                     style = { adjustedStyle.fieldInputText }
-                    keyboardType = 'phone-pad'
+                    keyboardType = 'default'
+                    autoCorrect = { autoCorrect }
+                    secureTextEntry = { secured }
                     multiline = { multiline }
                     editable = { !disabled }
+                    maxLength = { charLimit }
                     defaultValue = { fieldInput.value }
                     placeholder = { Hf.isEmpty(label) ? hint : `` }
                     placeholderTextColor = { adjustedStyle.hintText.color }
                     returnKeyType = { returnKeyType }
                     onFocus = {() => {
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => true);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => true);
                         onFocus();
                     }}
                     onBlur = {() => {
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => false);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => false);
                         onBlur();
                     }}
                     onChange = {(event) => {
                         if (multiline && !Hf.isEmpty(event.nativeEvent.text)) {
-                            intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => {
+                            component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => {
                                 return DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height * Math.ceil(event.nativeEvent.contentSize.height / DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
                             });
                         } else {
-                            intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
+                            component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
                         }
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => event.nativeEvent.text);
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => !Hf.isEmpty(event.nativeEvent.text));
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => event.nativeEvent.text);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => !Hf.isEmpty(event.nativeEvent.text));
 
                         if (Hf.isEmpty(event.nativeEvent.text)) {
-                            intf.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
-                        } else {
-                            onEditing(parseInt(event.nativeEvent.text, 10));
+                            component.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
                         }
-                    }}
-                    onEndEditing = {(event) => {
-                        if (!Hf.isEmpty(event.nativeEvent.text)) {
-                            const [
-                                fieldTextInput
-                            ] = component.lookupComponentRefs(
-                                `fieldTextInput`
-                            );
-                            fieldTextInput.setNativeProps({
-                                text: `${parseInt(event.nativeEvent.text, 10)}`
-                            });
-                        }
+
+                        onEditing(event.nativeEvent.text);
                     }}
                     onSubmitEditing = {(event) => {
-                        if (!Hf.isEmpty(event.nativeEvent.text)) {
-                            intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALIDATION).emit(() => {
-                                return {
-                                    value: parseInt(event.nativeEvent.text, 10),
-                                    validate: onValidate
-                                };
-                            });
-                            onDoneEdit(parseInt(event.nativeEvent.text, 10));
-                        }
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALIDATION).emit(() => {
+                            return {
+                                value: event.nativeEvent.text,
+                                validate: onValidate
+                            };
+                        });
+                        onDoneEdit(event.nativeEvent.text);
                     }}
                 />
                 {
@@ -658,7 +666,7 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
             if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
                 icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
             } else {
-                Hf.log(`warn1`, `PhoneNumberFieldInterface - Icon preset:${iconPreset} is not found.`);
+                Hf.log(`warn1`, `TextFieldInterface - Icon preset:${iconPreset} is not found.`);
             }
         }
 
@@ -693,7 +701,7 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
                 focused: {
                     color: themedLabelFocusedColor
                 },
-                blurred: !Hf.isNumeric(initialValue) ? {
+                blurred: Hf.isEmpty(initialValue) ? {
                     color: themedLabelBlurredColor
                 } : {
                     top: -12,
@@ -767,4 +775,4 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
     }
 });
 
-export default PhoneNumberFieldInterface;
+export default TextFieldInterface;

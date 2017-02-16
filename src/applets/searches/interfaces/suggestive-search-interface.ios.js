@@ -283,6 +283,14 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
 
         done();
     },
+    isHidden: function isHidden () {
+        const component = this;
+        const {
+            visible
+        } = component.state;
+
+        return !visible;
+    },
     hide: function hide () {
         const component = this;
         component.onHide();
@@ -301,7 +309,6 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
     },
     onHide: function onHide () {
         const component = this;
-        const intf = component.getInterface();
         const {
             onHidden
         } = component.props;
@@ -311,25 +318,24 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
             `searchTextInput`
         );
 
-        intf.outgoing(
+        component.outgoing(
             EVENT.ON.UPDATE_VISIBILITY,
             EVENT.ON.UPDATE_SEARCH_SUGGESTION_VISIBILITY,
             EVENT.ON.UPDATE_SEARCH_INPUT_FOCUS,
             EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED
         ).emit(() => false);
-        intf.outgoing(EVENT.ON.CLEAR_NON_HISTORY_ITEMS_FROM_SEARCH_SUGGESTION).emit();
+        component.outgoing(EVENT.ON.CLEAR_NON_HISTORY_ITEMS_FROM_SEARCH_SUGGESTION).emit();
         component.onDismissKeyboard();
         searchTextInput.clear();
         onHidden();
     },
     onShow: function onShow () {
         const component = this;
-        const intf = component.getInterface();
         const {
             onVisible
         } = component.props;
 
-        intf.outgoing(
+        component.outgoing(
             EVENT.ON.UPDATE_VISIBILITY,
             EVENT.ON.UPDATE_SEARCH_INPUT_FOCUS
         ).emit(() => true);
@@ -337,13 +343,11 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
     },
     onClearSearchSuggestion: function onClearSearchSuggestion () {
         const component = this;
-        const intf = component.getInterface();
 
-        intf.outgoing(EVENT.ON.CLEAR_ALL_ITEMS_FROM_SEARCH_SUGGESTION).emit();
+        component.outgoing(EVENT.ON.CLEAR_ALL_ITEMS_FROM_SEARCH_SUGGESTION).emit();
     },
     onClearSearchInput: function onClearSearchInput () {
         const component = this;
-        const intf = component.getInterface();
         const [
             searchTextInput
         ] = component.lookupComponentRefs(
@@ -352,20 +356,18 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
 
         if (Hf.isDefined(searchTextInput)) {
             searchTextInput.clear();
-            intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).emit(() => ``);
-            intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED).emit(() => false);
+            component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).emit(() => ``);
+            component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED).emit(() => false);
         }
     },
     onDismissKeyboard: function onDismissKeyboard () {
         const component = this;
-        const intf = component.getInterface();
 
-        intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_FOCUS).emit(() => false);
+        component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_FOCUS).emit(() => false);
         dismissKeyboard();
     },
     renderSearchInput: function renderSearchInput (adjustedStyle) {
         const component = this;
-        const intf = component.getInterface();
         const {
             shade,
             hintTextColor,
@@ -425,7 +427,7 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
                         onChange = {(event) => {
                             const searchSuggestions = onGetSearchSuggestions();
                             if (Hf.isNonEmptyArray(searchSuggestions)) {
-                                intf.outgoing(EVENT.ON.ADD_ITEMS_TO_SEARCH_SUGGESTION).emit(() => {
+                                component.outgoing(EVENT.ON.ADD_ITEMS_TO_SEARCH_SUGGESTION).emit(() => {
                                     return searchSuggestions.filter((text) => Hf.isString(text)).map((text) => {
                                         return {
                                             historyType: false,
@@ -434,9 +436,9 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
                                     });
                                 });
                             }
-                            intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).emit(() => event.nativeEvent.text);
-                            intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_FOCUS).emit(() => true);
-                            intf.outgoing(
+                            component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).emit(() => event.nativeEvent.text);
+                            component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_FOCUS).emit(() => true);
+                            component.outgoing(
                                 EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED,
                                 EVENT.ON.UPDATE_SEARCH_SUGGESTION_VISIBILITY
                             ).emit(() => !Hf.isEmpty(event.nativeEvent.text));
@@ -444,19 +446,19 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
                         }}
                         onSubmitEditing = {(event) => {
                             if (!Hf.isEmpty(event.nativeEvent.text)) {
-                                intf.outgoing(EVENT.ON.ADD_ITEMS_TO_SEARCH_SUGGESTION).delay(SEARCH_SUGGESTION_UPDATE_DELAY_IN_MS).emit(() => {
+                                component.outgoing(EVENT.ON.ADD_ITEMS_TO_SEARCH_SUGGESTION).delay(SEARCH_SUGGESTION_UPDATE_DELAY_IN_MS).emit(() => {
                                     return [{
                                         historyType: true,
-                                        text: event.nativeEvent.text,
+                                        value: event.nativeEvent.text,
                                         timestamp: new Date().getTime()
                                     }];
                                 });
                             }
-                            intf.outgoing(
+                            component.outgoing(
                                 EVENT.ON.UPDATE_SEARCH_INPUT_FOCUS,
                                 EVENT.ON.UPDATE_SEARCH_SUGGESTION_VISIBILITY
                             ).emit(() => false);
-                            intf.outgoing(EVENT.ON.CLEAR_NON_HISTORY_ITEMS_FROM_SEARCH_SUGGESTION).emit();
+                            component.outgoing(EVENT.ON.CLEAR_NON_HISTORY_ITEMS_FROM_SEARCH_SUGGESTION).emit();
                             onSearch(event.nativeEvent.text);
                         }}
                     />
@@ -490,7 +492,6 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
     },
     renderSuggestions: function renderSuggestions (adjustedStyle) {
         const component = this;
-        const intf = component.getInterface();
         const {
             onSearchChange,
             onSearch
@@ -530,13 +531,13 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
                                     searchTextInput.setNativeProps({
                                         text: item.value
                                     });
-                                    intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).emit(() => item.value);
-                                    intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED).emit(() => true);
-                                    intf.outgoing(
+                                    component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).emit(() => item.value);
+                                    component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED).emit(() => true);
+                                    component.outgoing(
                                         EVENT.ON.UPDATE_SEARCH_INPUT_FOCUS,
                                         EVENT.ON.UPDATE_SEARCH_SUGGESTION_VISIBILITY
                                     ).emit(() => false);
-                                    intf.outgoing(EVENT.ON.CLEAR_NON_HISTORY_ITEMS_FROM_SEARCH_SUGGESTION).emit();
+                                    component.outgoing(EVENT.ON.CLEAR_NON_HISTORY_ITEMS_FROM_SEARCH_SUGGESTION).emit();
                                     onSearchChange(item.value);
                                     onSearch(item.value);
                                 }}>
@@ -578,8 +579,8 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
                                                 text: item.value
                                             });
                                             searchTextInput.focus();
-                                            intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).emit(() => item.value);
-                                            intf.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED).emit(() => true);
+                                            component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).emit(() => item.value);
+                                            component.outgoing(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED).emit(() => true);
                                         }}>
                                             <Image
                                                 resizeMode = 'cover'

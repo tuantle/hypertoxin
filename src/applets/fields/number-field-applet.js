@@ -55,20 +55,4 @@ const NumberFieldApplet = Hf.App.augment({
     }
 });
 
-export default function NumberField (property) {
-    const Component = NumberFieldApplet({
-        name: `number-field`
-    }).getTopComponent({
-        doConvertToStandaloneComponent: true,
-        componentMethodAndPropertyInclusions: [
-            `isValidated`,
-            `focus`,
-            `blur`,
-            `clear`
-        ]
-    });
-
-    return (
-        <Component { ...property } />
-    );
-}
+export default NumberFieldApplet;

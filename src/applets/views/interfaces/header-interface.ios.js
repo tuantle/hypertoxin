@@ -203,17 +203,21 @@ const HeaderViewInterface = Hf.Interface.augment({
 
         done();
     },
-    minimize: function hide () {
+    isMinimized: function isMinimized () {
         const component = this;
-        const intf = component.getInterface();
+        const {
+            minimized
+        } = component.state;
 
-        intf.outgoing(EVENT.ON.UPDATE_MINIMIZATION).emit(() => true);
+        return minimized;
     },
-    maximize: function show () {
+    minimize: function minimize () {
         const component = this;
-        const intf = component.getInterface();
-
-        intf.outgoing(EVENT.ON.UPDATE_MINIMIZATION).emit(() => false);
+        component.outgoing(EVENT.ON.UPDATE_MINIMIZATION).emit(() => true);
+    },
+    maximize: function minimize () {
+        const component = this;
+        component.outgoing(EVENT.ON.UPDATE_MINIMIZATION).emit(() => false);
     },
     render: function render () {
         const component = this;

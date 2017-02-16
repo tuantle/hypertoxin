@@ -298,14 +298,14 @@ const EmailFieldInterface = Hf.Interface.augment({
         });
 
         intf.postMountStage((component) => {
-            const {
-                initialValue
-            } = component.props;
             const [
                 fieldInput
             ] = component.lookupComponentRefs(
                 `fieldInput`
             );
+            const {
+                initialValue
+            } = component.props;
 
             if (!Hf.isEmpty(initialValue)) {
                 intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => initialValue);
@@ -327,9 +327,6 @@ const EmailFieldInterface = Hf.Interface.augment({
             } = component.props;
 
             if (!fixedFloatingLabel && !Hf.isEmpty(label)) {
-                const {
-                    fieldInput
-                } = component.state;
                 const [
                     animatedLabel,
                     animatedUnderline
@@ -337,6 +334,10 @@ const EmailFieldInterface = Hf.Interface.augment({
                     `animatedLabel`,
                     `animatedUnderline`
                 );
+                const {
+                    fieldInput
+                } = component.state;
+
                 if (fieldInput.focused) {
                     animatedLabel.transitionTo({
                         top: -12,
@@ -399,7 +400,6 @@ const EmailFieldInterface = Hf.Interface.augment({
         } = component.props;
 
         if (!disabled) {
-            const intf = component.getInterface();
             const [
                 fieldTextInput
             ] = component.lookupComponentRefs(
@@ -408,10 +408,10 @@ const EmailFieldInterface = Hf.Interface.augment({
 
             if (Hf.isDefined(fieldTextInput)) {
                 fieldTextInput.clear();
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => ``);
-                intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => false);
-                intf.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => ``);
+                component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => false);
+                component.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
             }
         }
     },
@@ -496,7 +496,6 @@ const EmailFieldInterface = Hf.Interface.augment({
     },
     renderFieldInput: function renderFieldInput (adjustedStyle) {
         const component = this;
-        const intf = component.getInterface();
         const {
             autoCorrect,
             multiline,
@@ -534,32 +533,32 @@ const EmailFieldInterface = Hf.Interface.augment({
                     placeholderTextColor = { adjustedStyle.hintText.color }
                     returnKeyType = { returnKeyType }
                     onFocus = {() => {
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => true);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => true);
                         onFocus();
                     }}
                     onBlur = {() => {
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => false);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_FOCUS).emit(() => false);
                         onBlur();
                     }}
                     onChange = {(event) => {
                         if (multiline && !Hf.isEmpty(event.nativeEvent.text)) {
-                            intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => {
+                            component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => {
                                 return DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height * Math.ceil(event.nativeEvent.contentSize.height / DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
                             });
                         } else {
-                            intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
+                            component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_HEIGHT).emit(() => DEFAULT_TEXT_FIELD_STYLE.fieldInputText.height);
                         }
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => event.nativeEvent.text);
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => !Hf.isEmpty(event.nativeEvent.text));
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE).emit(() => event.nativeEvent.text);
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALUE_CHANGED).emit(() => !Hf.isEmpty(event.nativeEvent.text));
 
                         if (Hf.isEmpty(event.nativeEvent.text)) {
-                            intf.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
+                            component.outgoing(EVENT.ON.CLEAR_FIELD_INPUT_VALIDATION_STATUS).emit();
                         }
 
                         onEditing(event.nativeEvent.text);
                     }}
                     onSubmitEditing = {(event) => {
-                        intf.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALIDATION).emit(() => {
+                        component.outgoing(EVENT.ON.UPDATE_FIELD_INPUT_VALIDATION).emit(() => {
                             return {
                                 value: event.nativeEvent.text,
                                 validate: onValidate
