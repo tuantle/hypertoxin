@@ -30,7 +30,7 @@ import React from 'react';
 
 import ReactNative, { Dimensions } from 'react-native';
 
-import theme from '../../styles/theme';
+import { Ht } from '../../hypertoxin';
 
 const {
     View
@@ -68,7 +68,7 @@ const ScreenViewInterface = Hf.Interface.augment({
         }).of(property);
         let adjustedStyle = Hf.merge(DEFAULT_SCREEN_VIEW_STYLE).with({
             container: {
-                backgroundColor: theme.color.body.container[shade]
+                backgroundColor: Ht.Theme.color.body.container[shade]
             }
         });
 

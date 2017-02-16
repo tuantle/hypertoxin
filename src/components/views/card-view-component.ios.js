@@ -34,7 +34,7 @@ import createFragment from 'react-addons-create-fragment';
 
 import { BlurView } from 'react-native-blur';
 
-import theme from '../../styles/theme';
+import { Ht } from '../../hypertoxin';
 
 import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
 
@@ -76,7 +76,7 @@ const DEFAULT_CARD_VIEW_STYLE = {
             alignItems: `flex-start`,
             justifyContent: `flex-start`,
             maxWidth: DEVICE_WIDTH,
-            backgroundColor: `${theme.color.palette.black}${theme.color.opacity}`
+            backgroundColor: `${Ht.Theme.color.palette.black}${Ht.Theme.color.opacity}`
         },
         body: {
             flexDirection: `column`,
@@ -150,13 +150,13 @@ const CardViewInterface = Hf.Interface.augment({
         let adjustedStyle = dropShadow ? Hf.merge(DEFAULT_CARD_VIEW_STYLE).with({
             container: {
                 ...dropShadowStyleTemplate,
-                borderColor: outlined ? theme.color.divider : `transparent`,
+                borderColor: outlined ? Ht.Theme.color.divider : `transparent`,
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.color.card.container[shade];
+                        return Ht.Theme.color.card.container[shade];
                     case `translucent-clear`:
-                        return `${theme.color.card.container[shade]}${theme.color.opacity}`;
+                        return `${Ht.Theme.color.card.container[shade]}${Ht.Theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
@@ -167,13 +167,13 @@ const CardViewInterface = Hf.Interface.augment({
             }
         }) : Hf.merge(DEFAULT_CARD_VIEW_STYLE).with({
             container: {
-                borderColor: outlined ? theme.color.divider : `transparent`,
+                borderColor: outlined ? Ht.Theme.color.divider : `transparent`,
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.color.card.container[shade];
+                        return Ht.Theme.color.card.container[shade];
                     case `translucent-clear`:
-                        return `${theme.color.card.container[shade]}${theme.color.opacity}`;
+                        return `${Ht.Theme.color.card.container[shade]}${Ht.Theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;

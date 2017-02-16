@@ -34,9 +34,9 @@ import createFragment from 'react-addons-create-fragment';
 
 import { BlurView } from 'react-native-blur';
 
-import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
+import { Ht } from '../../hypertoxin';
 
-import theme from '../../styles/theme';
+import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
 
 const {
     View,
@@ -126,13 +126,13 @@ const ItemViewInterface = Hf.Interface.augment({
         let adjustedStyle = dropShadow ? Hf.merge(DEFAULT_ITEM_VIEW_STYLE).with({
             container: {
                 ...dropShadowStyleTemplate,
-                borderColor: outlined ? theme.color.divider : `transparent`,
+                borderColor: outlined ? Ht.Theme.color.divider : `transparent`,
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.color.item[shade];
+                        return Ht.Theme.color.item[shade];
                     case `translucent-clear`:
-                        return `${theme.color.item[shade]}${theme.color.opacity}`;
+                        return `${Ht.Theme.color.item[shade]}${Ht.Theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
@@ -143,13 +143,13 @@ const ItemViewInterface = Hf.Interface.augment({
             }
         }) : Hf.merge(DEFAULT_ITEM_VIEW_STYLE).with({
             container: {
-                borderColor: outlined ? theme.color.divider : `transparent`,
+                borderColor: outlined ? Ht.Theme.color.divider : `transparent`,
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.color.item[shade];
+                        return Ht.Theme.color.item[shade];
                     case `translucent-clear`:
-                        return `${theme.color.item[shade]}${theme.color.opacity}`;
+                        return `${Ht.Theme.color.item[shade]}${Ht.Theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
