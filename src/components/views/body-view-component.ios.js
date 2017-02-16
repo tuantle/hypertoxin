@@ -32,7 +32,7 @@ import ReactNative from 'react-native';
 
 import { BlurView } from 'react-native-blur';
 
-import theme from '../../styles/theme';
+import { Ht } from '../../hypertoxin';
 
 const {
     View,
@@ -68,28 +68,49 @@ const BodyViewInterface = Hf.Interface.augment({
             stronglyTyped: true
         }
     },
-    pureRender: function pureRender (property) {
+    scrollTo: function scrollTo (destination) {
+        const component = this;
+        const [
+            scrollView
+        ] = component.lookupComponentRefs(
+            `scrollView`
+        );
         const {
-            scrollableRef,
+            x,
+            y,
+            animated
+        } = Hf.fallback({
+            x: 0,
+            y: 0,
+            animated: true
+        }).of(destination);
+
+        if (Hf.isDefined(scrollView)) {
+            scrollView.scrollTo({
+                x,
+                y,
+                animated
+            });
+        }
+    },
+    render: function render () {
+        const component = this;
+        const {
             shade,
             overlay,
             scrollable,
             style,
             children
-        } = Hf.fallback({
-            shade: `light`,
-            overlay: `opaque`,
-            scrollable: false
-        }).of(property);
+        } = component.props;
         let frosted = false;
         let adjustedStyle = Hf.merge(DEFAULT_BODY_VIEW_STYLE).with({
             container: {
                 backgroundColor: (() => {
                     switch (overlay) { // eslint-disable-line
                     case `opaque`:
-                        return theme.color.body.container[shade];
+                        return Ht.Theme.color.body.container[shade];
                     case `translucent-clear`:
-                        return `${theme.color.body.container[shade]}${theme.color.opacity}`;
+                        return `${Ht.Theme.color.body.container[shade]}${Ht.Theme.color.opacity}`;
                     case `translucent-frosted`:
                         frosted = true;
                         return `transparent`;
@@ -110,7 +131,7 @@ const BodyViewInterface = Hf.Interface.augment({
                         blurType = { shade }
                         blurAmount = { 95 }
                     >
-                        <ScrollView ref = { scrollableRef }>
+                        <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
                         {
                             children
                         }
@@ -120,7 +141,7 @@ const BodyViewInterface = Hf.Interface.augment({
             }
             return (
                 <View style = { adjustedStyle.container }>
-                    <ScrollView ref = { scrollableRef }>
+                    <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
                     {
                         children
                     }
@@ -158,6 +179,10 @@ const BodyViewComponent = BodyViewInterface({
 }).registerComponentLib({
     React,
     ReactNative
-}).toPureComponent();
+}).toComponent(null, {
+    componentMethodAndPropertyInclusions: [
+        `scrollTo`
+    ]
+});
 
 export default BodyViewComponent;
