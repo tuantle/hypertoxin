@@ -3,6 +3,21 @@
 
 ----
 
+**Development Beta Version 0.1.0-beta5 (02/15/2017)**
+```
+Notes:
+    - Code refactored and restructured.
+    - Added .ios to filename for IOS platform.
+    - Update dependencies:
+        Hyperflow to 0.1.0-beta28
+New Features:
+Breaking Changes:
+Improvements:
+    - Updated applet implementations.
+    - Added animation hook to button/text/image/layout view components.
+    - Added scrollable hook to layout and body view components.
+Bug fixes:
+```
 **Development Beta Version 0.1.0-beta4 (02/10/2017)**
 ```
 Notes:

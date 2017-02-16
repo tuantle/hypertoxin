@@ -46,8 +46,25 @@ const init = function init ({
     customTheme
 } = {}) {
     if (Ht === null) {
+        Ht = {
+            VERSION: `0.1.0-beta5`,
+            Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
+        };
+
+        const HtApplet = {
+            /* load field applet components */
+            EmailField: require(`./applets/fields/email-field-applet`).default,
+            CreditCardField: require(`./applets/fields/credit-card-field-applet`).default,
+            PhoneNumberField: require(`./applets/fields/phone-number-field-applet`).default,
+            NumberField: require(`./applets/fields/number-field-applet`).default,
+            TextField: require(`./applets/fields/text-field-applet`).default,
+            /* SuggestiveSearch applet component */
+            SuggestiveSearch: require(`./applets/searches/suggestive-search-applet`).default,
+            /* load view applet component */
+            HeaderView: require(`./applets/views/header-view-applet`).default
+        };
+
         const HtProperty = {
-            VERSION: `0.1.0-beta4`,
             Divider: require(`./components/divider/divider-component`).default,
             /* load button components */
             Button: {
@@ -64,14 +81,6 @@ const init = function init ({
                 InfoText: require(`./components/texts/info-text-component`).default,
                 CaptionText: require(`./components/texts/caption-text-component`).default
             },
-            /* load field applet components */
-            Field: {
-                EmailField: require(`./applets/fields/email-field-applet`).default,
-                CreditCardField: require(`./applets/fields/credit-card-field-applet`).default,
-                PhoneNumberField: require(`./applets/fields/phone-number-field-applet`).default,
-                NumberField: require(`./applets/fields/number-field-applet`).default,
-                TextField: require(`./applets/fields/text-field-applet`).default
-            },
             /* load image components */
             Image: {
                 AvatarImage: require(`./components/images/avatar-image-component`).default,
@@ -84,8 +93,6 @@ const init = function init ({
             /* load view components */
             View: {
                 ScreenView: require(`./components/views/screen-view-component`).default,
-                /* load header view applet component */
-                HeaderView: require(`./applets/views/header-view-applet`).default,
                 BodyView: require(`./components/views/body-view-component`).default,
                 LayoutView: require(`./components/views/layout-view-component`).default,
                 CardView: require(`./components/views/card-view-component`).default,
@@ -93,13 +100,140 @@ const init = function init ({
                 // DrawerView: require(`./components/views/drawer-view-component`).default,
                 // BadgeView: require(`./components/views/badge-view-component`).default
             },
-            /* SuggestiveSearch applet component */
-            SuggestiveSearch: require(`./applets/searches/suggestive-search-applet`).default,
-            Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
+            Field: {}
         };
 
+        Object.defineProperty(HtProperty, `SuggestiveSearch`, {
+            get: function get () {
+                return HtApplet.SuggestiveSearch({
+                    name: `suggestive-search`
+                }).getTopComponent({
+                    doConvertToStandaloneComponent: true,
+                    componentMethodAndPropertyInclusions: [
+                        `isHidden`,
+                        `show`,
+                        `hide`,
+                        `clear`,
+                        `clearSearchSuggestion`
+                        // `addSearchSuggestionItems`
+                    ]
+                });
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.View, `HeaderView`, {
+            get: function get () {
+                return HtApplet.HeaderView({
+                    name: `header-view`
+                }).getTopComponent({
+                    doConvertToStandaloneComponent: true,
+                    componentMethodAndPropertyInclusions: [
+                        `isMinimized`,
+                        `minimize`,
+                        `maximize`
+                    ]
+                });
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Field, `CreditCardField`, {
+            get: function get () {
+                return HtApplet.CreditCardField({
+                    name: `credit-card-field`
+                }).getTopComponent({
+                    doConvertToStandaloneComponent: true,
+                    componentMethodAndPropertyInclusions: [
+                        `isValidated`,
+                        `focus`,
+                        `blur`,
+                        `clear`
+                    ]
+                });
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Field, `EmailField`, {
+            get: function get () {
+                return HtApplet.EmailField({
+                    name: `email-field`
+                }).getTopComponent({
+                    doConvertToStandaloneComponent: true,
+                    componentMethodAndPropertyInclusions: [
+                        `isValidated`,
+                        `focus`,
+                        `blur`,
+                        `clear`
+                    ]
+                });
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Field, `NumberField`, {
+            get: function get () {
+                return HtApplet.NumberField({
+                    name: `number-field`
+                }).getTopComponent({
+                    doConvertToStandaloneComponent: true,
+                    componentMethodAndPropertyInclusions: [
+                        `isValidated`,
+                        `focus`,
+                        `blur`,
+                        `clear`
+                    ]
+                });
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Field, `PhoneNumberField`, {
+            get: function get () {
+                return HtApplet.PhoneNumberField({
+                    name: `phone-number-field`
+                }).getTopComponent({
+                    doConvertToStandaloneComponent: true,
+                    componentMethodAndPropertyInclusions: [
+                        `isValidated`,
+                        `focus`,
+                        `blur`,
+                        `clear`
+                    ]
+                });
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Field, `TextField`, {
+            get: function get () {
+                return HtApplet.TextField({
+                    name: `text-field`
+                }).getTopComponent({
+                    doConvertToStandaloneComponent: true,
+                    componentMethodAndPropertyInclusions: [
+                        `isValidated`,
+                        `focus`,
+                        `blur`,
+                        `clear`
+                    ]
+                });
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Ht = Hf.mix(Ht).with(HtProperty);
+
         /* create an Ht object */
-        Ht = Object.freeze(HtProperty);
+        Ht = Object.freeze(Ht);
     }
     return Ht;
 };
