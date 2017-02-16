@@ -32,7 +32,7 @@ import ReactNative from 'react-native';
 
 import { View as AnimatedView } from 'react-native-animatable';
 
-import theme from '../../styles/theme';
+import { Ht } from '../../hypertoxin';
 
 import fontStyleTemplate from '../../styles/templates/font-style-template';
 
@@ -41,7 +41,6 @@ import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-te
 const {
     Text,
     Image,
-    View,
     ActivityIndicator,
     TouchableOpacity
 } = ReactNative;
@@ -49,7 +48,7 @@ const {
 const DEFAULT_RAISED_BUTTON_STYLE = {
     container: {
         ...dropShadowStyleTemplate,
-        flexDirection: `row`,
+        flexDirection: `column`,
         justifyContent: `center`,
         alignItems: `center`,
         height: 36,
@@ -147,9 +146,37 @@ const RaisedButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         }
     },
-    pureRender: function pureRender (property) {
+    // bounce: function bounce () {
+    //
+    // },
+    animate: function animate (definition) {
+        const component = this;
+        const [
+            animatedView
+        ] = component.lookupComponentRefs(
+            `animatedView`
+        );
         const {
-            animatableRef,
+            from,
+            to,
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: 300,
+            easing: `ease`
+        }).of(definition);
+
+        if (Hf.isDefined(animatedView)) {
+            if (Hf.isObject(from) && Hf.isObject(to)) {
+                animatedView.transition(from, to, duration, easing);
+            } else if (!Hf.isObject(from) && Hf.isObject(to)) {
+                animatedView.transitionTo(to, duration, easing);
+            }
+        }
+    },
+    render: function render () {
+        const component = this;
+        const {
             shade,
             shape,
             disabled,
@@ -163,42 +190,29 @@ const RaisedButtonInterface = Hf.Interface.augment({
             customIcon,
             style,
             onPress
-        } = Hf.fallback({
-            shade: `dark`,
-            shape: `square`,
-            disabled: false,
-            busy: false,
-            label: `Raised Button`,
-            color: `default`,
-            labelColor: `default`,
-            iconColor: `default`,
-            iconPreset: ``,
-            iconSize: `normal`,
-            customIcon: null
-        }).of(property);
-        const animated = false;
-        let icon = customIcon;
+        } = component.props;
+        let icon = Hf.isDefined(customIcon) ? customIcon : null;
         let themedColor;
         let themedLabelColor;
         let themedIconColor;
         let adjustedStyle;
 
-        if (theme.color.button.raised.container.hasOwnProperty(color)) {
-            themedColor = !disabled ? theme.color.button.raised.container[color][shade] : theme.color.button.raised.container.disabled[shade];
+        if (Ht.Theme.color.button.raised.container.hasOwnProperty(color)) {
+            themedColor = !disabled ? Ht.Theme.color.button.raised.container[color][shade] : Ht.Theme.color.button.raised.container.disabled[shade];
         } else {
-            themedColor = !disabled ? color : theme.color.button.raised.container.disabled[shade];
+            themedColor = !disabled ? color : Ht.Theme.color.button.raised.container.disabled[shade];
         }
 
-        if (theme.color.button.raised.label.hasOwnProperty(labelColor)) {
-            themedLabelColor = !disabled ? theme.color.button.raised.label[labelColor][shade] : theme.color.button.raised.label.disabled[shade];
+        if (Ht.Theme.color.button.raised.label.hasOwnProperty(labelColor)) {
+            themedLabelColor = !disabled ? Ht.Theme.color.button.raised.label[labelColor][shade] : Ht.Theme.color.button.raised.label.disabled[shade];
         } else {
-            themedLabelColor = !disabled ? labelColor : theme.color.button.raised.label.disabled[shade];
+            themedLabelColor = !disabled ? labelColor : Ht.Theme.color.button.raised.label.disabled[shade];
         }
 
-        if (theme.color.button.raised.icon.hasOwnProperty(iconColor)) {
-            themedIconColor = !disabled ? theme.color.button.raised.icon[iconColor][shade] : theme.color.button.raised.icon.disabled[shade];
+        if (Ht.Theme.color.button.raised.icon.hasOwnProperty(iconColor)) {
+            themedIconColor = !disabled ? Ht.Theme.color.button.raised.icon[iconColor][shade] : Ht.Theme.color.button.raised.icon.disabled[shade];
         } else {
-            themedIconColor = !disabled ? iconColor : theme.color.button.raised.icon.disabled[shade];
+            themedIconColor = !disabled ? iconColor : Ht.Theme.color.button.raised.icon.disabled[shade];
         }
 
         adjustedStyle = Hf.merge(DEFAULT_RAISED_BUTTON_STYLE).with({
@@ -217,80 +231,47 @@ const RaisedButtonInterface = Hf.Interface.augment({
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         if (!Hf.isEmpty(iconPreset) && icon === null) {
-            if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
-                icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
+            if (Ht.Theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
+                icon = Ht.Theme.icon[Hf.dashToCamelcase(iconPreset)];
             } else {
                 Hf.log(`warn1`, `RaisedButtonInterface - Icon preset:${iconPreset} is not found.`);
             }
         }
 
-        if (animated) {
-            return (
-                <AnimatedView
-                    ref = { animatableRef }
-                    style = { adjustedStyle.container }
-                    useNativeDriver = { true }
+        return (
+            <AnimatedView
+                ref = { component.assignComponentRef(`animatedView`) }
+                style = { adjustedStyle.container }
+                useNativeDriver = { true }
+            >
+            {
+                busy ? <ActivityIndicator size = 'small'/> :
+                <TouchableOpacity
+                    style = {{
+                        flexDirection: `row`,
+                        justifyContent: `center`,
+                        alignItems: `center`
+                    }}
+                    onPress = { !disabled ? onPress : null }
                 >
                 {
-                    busy ? <ActivityIndicator size = 'small'/> :
-                    <TouchableOpacity
-                        style = {{
-                            flexDirection: `row`,
-                            justifyContent: `center`,
-                            alignItems: `center`
-                        }}
-                        onPress = { !disabled ? onPress : null }
-                    >
-                    {
-                        icon === null ? null :
-                        <Image
-                            style = { adjustedStyle.icon }
-                            source = {
-                                Hf.isString(icon) ? {
-                                    uri: icon,
-                                    isStatic: true
-                                } : icon
-                            }
-                            resizeMode = 'cover'
-                        />
-                    }
-                        <Text style = { adjustedStyle.label }>{ label }</Text>
-                    </TouchableOpacity>
+                    icon === null ? null :
+                    <Image
+                        style = { adjustedStyle.icon }
+                        source = {
+                            Hf.isString(icon) ? {
+                                uri: icon,
+                                isStatic: true
+                            } : icon
+                        }
+                        resizeMode = 'cover'
+                    />
                 }
-                </AnimatedView>
-            );
-        } else {
-            return (
-                <View style = { adjustedStyle.container }>
-                {
-                    busy ? <ActivityIndicator size = 'small'/> :
-                    <TouchableOpacity
-                        style = {{
-                            flexDirection: `row`,
-                            justifyContent: `center`,
-                            alignItems: `center`
-                        }}
-                        onPress = { !disabled ? onPress : null }
-                    >
-                    {
-                        icon === null ? null :
-                        <Image
-                            style = { adjustedStyle.icon }
-                            source = {
-                                Hf.isString(icon) ? {
-                                    uri: icon,
-                                    isStatic: true
-                                } : icon
-                            }
-                            resizeMode = 'cover'
-                        />
-                    }
-                        <Text style = { adjustedStyle.label }>{ label }</Text>
-                    </TouchableOpacity>
-                }
-                </View>
-            );
-        }
+                    <Text style = { adjustedStyle.label }>{ label }</Text>
+                </TouchableOpacity>
+            }
+            </AnimatedView>
+        );
     }
 });
 
@@ -299,6 +280,10 @@ const RaisedButtonComponent = RaisedButtonInterface({
 }).registerComponentLib({
     React,
     ReactNative
-}).toPureComponent();
+}).toComponent(null, {
+    componentMethodAndPropertyInclusions: [
+        `animate`
+    ]
+});
 
 export default RaisedButtonComponent;

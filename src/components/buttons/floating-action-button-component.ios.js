@@ -32,13 +32,12 @@ import ReactNative from 'react-native';
 
 import { View as AnimatedView } from 'react-native-animatable';
 
-import theme from '../../styles/theme';
+import { Ht } from '../../hypertoxin';
 
 import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
 
 const {
     Image,
-    View,
     TouchableOpacity
 } = ReactNative;
 
@@ -139,9 +138,37 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         }
     },
-    pureRender: function pureRender (property) {
+    // bounce: function bounce () {
+    //
+    // },
+    animate: function animate (definition) {
+        const component = this;
+        const [
+            animatedView
+        ] = component.lookupComponentRefs(
+            `animatedView`
+        );
         const {
-            animatableRef,
+            from,
+            to,
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: 300,
+            easing: `ease`
+        }).of(definition);
+
+        if (Hf.isDefined(animatedView)) {
+            if (Hf.isObject(from) && Hf.isObject(to)) {
+                animatedView.transition(from, to, duration, easing);
+            } else if (!Hf.isObject(from) && Hf.isObject(to)) {
+                animatedView.transitionTo(to, duration, easing);
+            }
+        }
+    },
+    render: function render () {
+        const component = this;
+        const {
             shade,
             mini,
             disabled,
@@ -152,37 +179,27 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             customIcon,
             style,
             onPress
-        } = Hf.fallback({
-            shade: `light`,
-            mini: false,
-            disabled: false,
-            color: `default`,
-            iconColor: `default`,
-            iconPreset: ``,
-            iconSize: `normal`,
-            customIcon: null
-        }).of(property);
-        const animated = false;
-        let icon = customIcon;
+        } = component.props;
+        let icon = Hf.isDefined(customIcon) ? customIcon : null;
         let themedColor;
         let themedIconColor;
         let adjustedStyle;
 
-        if (theme.color.button.floatingAction.container.hasOwnProperty(color)) {
-            themedColor = !disabled ? theme.color.button.floatingAction.container[color][shade] : theme.color.button.floatingAction.container.disabled[shade];
+        if (Ht.Theme.color.button.floatingAction.container.hasOwnProperty(color)) {
+            themedColor = !disabled ? Ht.Theme.color.button.floatingAction.container[color][shade] : Ht.Theme.color.button.floatingAction.container.disabled[shade];
         } else {
-            themedColor = !disabled ? color : theme.color.button.floatingAction.container.disabled[shade];
+            themedColor = !disabled ? color : Ht.Theme.color.button.floatingAction.container.disabled[shade];
         }
 
-        if (theme.color.button.floatingAction.icon.hasOwnProperty(iconColor)) {
-            themedIconColor = !disabled ? theme.color.button.floatingAction.icon[color][shade] : theme.color.button.floatingAction.icon.disabled[shade];
+        if (Ht.Theme.color.button.floatingAction.icon.hasOwnProperty(iconColor)) {
+            themedIconColor = !disabled ? Ht.Theme.color.button.floatingAction.icon[color][shade] : Ht.Theme.color.button.floatingAction.icon.disabled[shade];
         } else {
-            themedIconColor = !disabled ? iconColor : theme.color.button.floatingAction.icon.disabled[shade];
+            themedIconColor = !disabled ? iconColor : Ht.Theme.color.button.floatingAction.icon.disabled[shade];
         }
 
         if (!Hf.isEmpty(iconPreset) && icon === null) {
-            if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
-                icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
+            if (Ht.Theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
+                icon = Ht.Theme.icon[Hf.dashToCamelcase(iconPreset)];
             } else {
                 Hf.log(`warn1`, `FloatingActionButtonInterface - Icon preset:${iconPreset} is not found.`);
             }
@@ -201,57 +218,32 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
-        if (animated) {
-            return (
-                <AnimatedView
-                    ref = { animatableRef }
-                    style = { adjustedStyle.container }
-                    useNativeDriver = { true }
+        return (
+            <AnimatedView
+                ref = { component.assignComponentRef(`animatedView`) }
+                style = { adjustedStyle.container }
+                useNativeDriver = { true }
+            >
+                <TouchableOpacity
+                    style = {{
+                        justifyContent: `center`,
+                        alignItems: `center`
+                    }}
+                    onPress = { !disabled ? onPress : null }
                 >
-                    <TouchableOpacity
-                        style = {{
-                            justifyContent: `center`,
-                            alignItems: `center`
-                        }}
-                        onPress = { !disabled ? onPress : null }
-                    >
-                        <Image
-                            style = { adjustedStyle.icon }
-                            source = {
-                                Hf.isString(icon) ? {
-                                    uri: icon,
-                                    isStatic: true
-                                } : icon
-                            }
-                            resizeMode = 'cover'
-                        />
-                    </TouchableOpacity>
-                </AnimatedView>
-            );
-        } else {
-            return (
-                <View style = { adjustedStyle.container }>
-                    <TouchableOpacity
-                        style = {{
-                            justifyContent: `center`,
-                            alignItems: `center`
-                        }}
-                        onPress = { !disabled ? onPress : null }
-                    >
-                        <Image
-                            style = { adjustedStyle.icon }
-                            source = {
-                                Hf.isString(icon) ? {
-                                    uri: icon,
-                                    isStatic: true
-                                } : icon
-                            }
-                            resizeMode = 'cover'
-                        />
-                    </TouchableOpacity>
-                </View>
-            );
-        }
+                    <Image
+                        style = { adjustedStyle.icon }
+                        source = {
+                            Hf.isString(icon) ? {
+                                uri: icon,
+                                isStatic: true
+                            } : icon
+                        }
+                        resizeMode = 'cover'
+                    />
+                </TouchableOpacity>
+            </AnimatedView>
+        );
     }
 });
 
@@ -260,6 +252,10 @@ const FloatingActionButtonComponent = FloatingActionButtonInterface({
 }).registerComponentLib({
     React,
     ReactNative
-}).toPureComponent();
+}).toComponent(null, {
+    componentMethodAndPropertyInclusions: [
+        `animate`
+    ]
+});
 
 export default FloatingActionButtonComponent;
