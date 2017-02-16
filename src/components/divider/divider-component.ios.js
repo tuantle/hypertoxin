@@ -30,7 +30,7 @@ import React from 'react';
 
 import ReactNative, { Dimensions } from 'react-native';
 
-import theme from '../../styles/theme';
+import { Ht } from '../../hypertoxin';
 
 const {
     View
@@ -43,7 +43,7 @@ const DEFAULT_DIVIDER_VIEW_STYLE = {
         width: DEVICE_WIDTH,
         height: 1,
         marginVertical: 6,
-        backgroundColor: theme.color.divider
+        backgroundColor: Ht.Theme.color.divider
     }
 };
 
