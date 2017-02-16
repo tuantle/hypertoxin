@@ -32,13 +32,9 @@ import ReactNative from 'react-native';
 
 import { Imagw as AnimatedImage } from 'react-native-animatable';
 
+import { Ht } from '../../hypertoxin';
+
 import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
-
-import theme from '../../styles/theme';
-
-const {
-    Image
-} = ReactNative;
 
 const DEFAULT_ICON_IMAGE_STYLE = {
     small: {
@@ -103,9 +99,37 @@ const IconImageInterface = Hf.Interface.augment({
             stronglyTyped: true
         }
     },
-    pureRender: function pureRender (property) {
+    // bounce: function bounce () {
+    //
+    // },
+    animate: function animate (definition) {
+        const component = this;
+        const [
+            animatedImage
+        ] = component.lookupComponentRefs(
+            `animatedImage`
+        );
         const {
-            animatableRef,
+            from,
+            to,
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: 300,
+            easing: `ease`
+        }).of(definition);
+
+        if (Hf.isDefined(animatedImage)) {
+            if (Hf.isObject(from) && Hf.isObject(to)) {
+                animatedImage.transition(from, to, duration, easing);
+            } else if (!Hf.isObject(from) && Hf.isObject(to)) {
+                animatedImage.transitionTo(to, duration, easing);
+            }
+        }
+    },
+    render: function render () {
+        const component = this;
+        const {
             shade,
             size,
             dropShadow,
@@ -113,28 +137,20 @@ const IconImageInterface = Hf.Interface.augment({
             iconPreset,
             customIcon,
             style
-        } = Hf.fallback({
-            shade: `dark`,
-            size: `normal`,
-            dropShadow: true,
-            iconColor: `default`,
-            iconPreset: ``,
-            customIcon: null
-        }).of(property);
-        const animated = false;
-        let icon = customIcon;
+        } = component.props;
+        let icon = Hf.isDefined(customIcon) ? customIcon : null;
         let themedIconColor;
         let adjustedStyle;
 
-        if (theme.color.icon.hasOwnProperty(iconColor)) {
-            themedIconColor = theme.color.icon[iconColor][shade];
+        if (Ht.Theme.color.icon.hasOwnProperty(iconColor)) {
+            themedIconColor = Ht.Theme.color.icon[iconColor][shade];
         } else {
             themedIconColor = iconColor;
         }
 
         if (!Hf.isEmpty(iconPreset) && !Hf.isDefined(icon)) {
-            if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
-                icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
+            if (Ht.Theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
+                icon = Ht.Theme.icon[Hf.dashToCamelcase(iconPreset)];
             } else {
                 Hf.log(`warn1`, `IconImageInterface - Icon preset:${iconPreset} is not found.`);
             }
@@ -149,35 +165,20 @@ const IconImageInterface = Hf.Interface.augment({
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
-        if (animated) {
-            return (
-                <AnimatedImage
-                    ref = { animatableRef }
-                    style = { adjustedStyle }
-                    source = {
-                        Hf.isString(icon) ? {
-                            uri: icon,
-                            isStatic: true
-                        } : icon
-                    }
-                    resizeMode = 'cover'
-                    useNativeDriver = { true }
-                />
-            );
-        } else {
-            return (
-                <Image
-                    style = { adjustedStyle }
-                    source = {
-                        Hf.isString(icon) ? {
-                            uri: icon,
-                            isStatic: true
-                        } : icon
-                    }
-                    resizeMode = 'cover'
-                />
-            );
-        }
+        return (
+            <AnimatedImage
+                ref = { component.assignComponentRef(`animatedImage`) }
+                style = { adjustedStyle }
+                source = {
+                    Hf.isString(icon) ? {
+                        uri: icon,
+                        isStatic: true
+                    } : icon
+                }
+                resizeMode = 'cover'
+                useNativeDriver = { true }
+            />
+        );
     }
 });
 
@@ -186,6 +187,10 @@ const IconImageComponent = IconImageInterface({
 }).registerComponentLib({
     React,
     ReactNative
-}).toPureComponent();
+}).toComponent(null, {
+    componentMethodAndPropertyInclusions: [
+        `animate`
+    ]
+});
 
 export default IconImageComponent;

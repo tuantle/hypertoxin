@@ -33,13 +33,6 @@ import ReactNative, { Dimensions } from 'react-native';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
-import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
-
-const {
-    Image,
-    View
-} = ReactNative;
-
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 const DEVICE_HEIGHT = Dimensions.get(`window`).height;
 
@@ -118,133 +111,73 @@ const LandscapeImageInterface = Hf.Interface.augment({
             value: `cover`,
             oneOf: [ `cover`, `contain`, `stretch`, `repeat`, `center` ],
             stronglyTyped: true
-        },
-        dropShadow: {
-            value: false,
-            stronglyTyped: true
         }
     },
-    pureRender: function pureRender (property) {
+    // bounce: function bounce () {
+    //
+    // },
+    animate: function animate (definition) {
+        const component = this;
+        const [
+            animatedImage
+        ] = component.lookupComponentRefs(
+            `animatedImage`
+        );
         const {
-            animatableRef,
+            from,
+            to,
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: 300,
+            easing: `ease`
+        }).of(definition);
+
+        if (Hf.isDefined(animatedImage)) {
+            if (Hf.isObject(from) && Hf.isObject(to)) {
+                animatedImage.transition(from, to, duration, easing);
+            } else if (!Hf.isObject(from) && Hf.isObject(to)) {
+                animatedImage.transitionTo(to, duration, easing);
+            }
+        }
+    },
+    render: function render () {
+        const component = this;
+        const {
             size,
             resizeMode,
-            dropShadow,
             source,
             defaultSource,
             style,
             children
-        } = Hf.fallback({
-            size: `normal`,
-            resizeMode: `cover`,
-            dropShadow: false
-        }).of(property);
-        const animated = false;
+        } = component.props;
         let adjustedStyle = DEFAULT_LANDSCAPE_IMAGE_STYLE[size];
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
-        if (animated) {
-            if (dropShadow) {
-                return (
-                    <View style = {{ ...dropShadowStyleTemplate }}>
-                        <AnimatedImage
-                            ref = { animatableRef }
-                            style = { adjustedStyle }
-                            source = {
-                                Hf.isString(source) ? {
-                                    uri: source,
-                                    cache: `only-if-cached`
-                                } : source
-                            }
-                            defaultSource = {
-                                Hf.isString(defaultSource) ? {
-                                    uri: defaultSource
-                                } : defaultSource
-                            }
-                            resizeMode = { resizeMode }
-                            useNativeDriver = { true }
-                        >
-                        {
-                            children
-                        }
-                        </AnimatedImage>
-                    </View>
-                );
-            } else {
-                return (
-                    <AnimatedImage
-                        ref = { animatableRef }
-                        style = { adjustedStyle }
-                        source = {
-                            Hf.isString(source) ? {
-                                uri: source,
-                                cache: `only-if-cached`
-                            } : source
-                        }
-                        defaultSource = {
-                            Hf.isString(defaultSource) ? {
-                                uri: defaultSource
-                            } : defaultSource
-                        }
-                        resizeMode = { resizeMode }
-                        useNativeDriver = { true }
-                    >
-                    {
-                        children
-                    }
-                    </AnimatedImage>
-                );
+        return (
+            <AnimatedImage
+                ref = { component.assignComponentRef(`animatedImage`) }
+                style = { adjustedStyle }
+                source = {
+                    Hf.isString(source) ? {
+                        uri: source,
+                        cache: `only-if-cached`
+                    } : source
+                }
+                defaultSource = {
+                    Hf.isString(defaultSource) ? {
+                        uri: defaultSource
+                    } : defaultSource
+                }
+                resizeMode = { resizeMode }
+                useNativeDriver = { true }
+            >
+            {
+                children
             }
-        } else {
-            if (dropShadow) {
-                return (
-                    <View style = {{ ...dropShadowStyleTemplate }}>
-                        <Image
-                            style = { adjustedStyle }
-                            source = {
-                                Hf.isString(source) ? {
-                                    uri: source,
-                                    cache: `only-if-cached`
-                                } : source
-                            }
-                            defaultSource = {
-                                Hf.isString(defaultSource) ? {
-                                    uri: defaultSource
-                                } : defaultSource
-                            }
-                            resizeMode = { resizeMode }
-                        >
-                        {
-                            children
-                        }
-                        </Image>
-                    </View>
-                );
-            } else {
-                return (
-                    <Image
-                        style = { adjustedStyle }
-                        source = {
-                            Hf.isString(source) ? {
-                                uri: source,
-                                cache: `only-if-cached`
-                            } : source
-                        }
-                        defaultSource = {
-                            Hf.isString(defaultSource) ? {
-                                uri: defaultSource
-                            } : defaultSource
-                        }
-                        resizeMode = { resizeMode }
-                    >
-                    {
-                        children
-                    }
-                    </Image>
-                );
-            }
-        }
+            </AnimatedImage>
+        );
     }
 });
 
@@ -253,6 +186,10 @@ const LandscapeImageComponent = LandscapeImageInterface({
 }).registerComponentLib({
     React,
     ReactNative
-}).toPureComponent();
+}).toComponent(null, {
+    componentMethodAndPropertyInclusions: [
+        `animate`
+    ]
+});
 
 export default LandscapeImageComponent;
