@@ -2,7 +2,19 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
-
+**Development Beta Version 0.1.0-beta6 (03/08/2017)**
+```
+Notes:
+- Update dependencies:
+    Hyperflow to 0.1.0-beta29
+New Features:
+Breaking Changes:
+Improvements:
+Bug fixes:
+    - Fixed FlatButton and RaisedButton decorations when showing busy indicator.
+    - Fixed theme import for applets.
+    - Added alwaysUpdateAsParent = true option to component with children.
+```
 **Development Beta Version 0.1.0-beta5 (02/15/2017)**
 ```
 Notes:
