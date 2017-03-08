@@ -202,15 +202,15 @@ const FlatButtonInterface = Hf.Interface.augment({
         let adjustedStyle;
 
         if (Ht.Theme.color.button.flat.label.hasOwnProperty(labelColor)) {
-            themedLabelColor = !disabled ? Ht.Theme.color.button.flat.label[labelColor][shade] : Ht.Theme.color.button.flat.label.disabled[shade];
+            themedLabelColor = busy || disabled ? Ht.Theme.color.button.flat.label.disabled[shade] : Ht.Theme.color.button.flat.label[labelColor][shade];
         } else {
-            themedLabelColor = !disabled ? labelColor : Ht.Theme.color.button.flat.label.disabled[shade];
+            themedLabelColor = busy || disabled ? Ht.Theme.color.button.flat.label.disabled[shade] : labelColor;
         }
 
         if (Ht.Theme.color.button.flat.icon.hasOwnProperty(iconColor)) {
-            themedIconColor = !disabled ? Ht.Theme.color.button.flat.icon[iconColor][shade] : Ht.Theme.color.button.flat.icon.disabled[shade];
+            themedIconColor = busy || disabled ? Ht.Theme.color.button.flat.icon.disabled[shade] : Ht.Theme.color.button.flat.icon[iconColor][shade];
         } else {
-            themedIconColor = !disabled ? iconColor : Ht.Theme.color.button.flat.icon.disabled[shade];
+            themedIconColor = busy || disabled ? Ht.Theme.color.button.flat.icon.disabled[shade] : iconColor;
         }
 
         if (!Hf.isEmpty(iconPreset) && icon === null) {
@@ -246,15 +246,14 @@ const FlatButtonInterface = Hf.Interface.augment({
                 style = { adjustedStyle.container }
                 useNativeDriver = { true }
             >
-            {
-                busy ? <ActivityIndicator size = 'small'/> :
                 <TouchableOpacity
                     style = {{
                         flexDirection: `row`,
                         justifyContent: `center`,
                         alignItems: `center`
                     }}
-                    onPress = { !disabled ? onPress : null }
+                    disabled = { busy || disabled }
+                    onPress = { busy || disabled ? null : onPress }
                 >
                 {
                     icon === null ? null :
@@ -270,8 +269,10 @@ const FlatButtonInterface = Hf.Interface.augment({
                     />
                 }
                     <Text style = { adjustedStyle.label }>{ label }</Text>
+                {
+                    busy ? <ActivityIndicator size = 'small'/> : null
+                }
                 </TouchableOpacity>
-            }
             </AnimatedView>
         );
     }
