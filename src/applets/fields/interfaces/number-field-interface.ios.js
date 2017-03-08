@@ -32,7 +32,7 @@ import ReactNative from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 
-import theme from '../../../styles/theme';
+import { Ht } from '../../../hypertoxin';
 
 import fontStyleTemplate from '../../../styles/templates/font-style-template';
 
@@ -491,7 +491,7 @@ const NumberFieldInterface = Hf.Interface.augment({
         const {
             fieldInput
         } = component.state;
-        const clearIcon = theme.icon[`close`];
+        const clearIcon = Ht.Theme.icon[`close`];
 
         return (
             <View
@@ -640,40 +640,40 @@ const NumberFieldInterface = Hf.Interface.augment({
         let themedIconBlurredColor;
 
         if (disabled) {
-            themedFieldInputTextColor = theme.color.text.disabled[shade === `light` ? `dark` : `light`];
+            themedFieldInputTextColor = Ht.Theme.color.text.disabled[shade === `light` ? `dark` : `light`];
 
-            themedLabelFocusedColor = theme.color.textField.label.disabled[shade === `light` ? `dark` : `light`];
+            themedLabelFocusedColor = Ht.Theme.color.textField.label.disabled[shade === `light` ? `dark` : `light`];
             themedLabelBlurredColor = themedLabelFocusedColor;
 
-            themedUnderlineFocusedColor = theme.color.textField.underline.disabled[shade === `light` ? `dark` : `light`];
+            themedUnderlineFocusedColor = Ht.Theme.color.textField.underline.disabled[shade === `light` ? `dark` : `light`];
             themedUnderlineBlurredColor = themedUnderlineFocusedColor;
 
-            themedIconFocusedColor = theme.color.textField.icon.disabled[shade === `light` ? `dark` : `light`];
+            themedIconFocusedColor = Ht.Theme.color.textField.icon.disabled[shade === `light` ? `dark` : `light`];
             themedIconBlurredColor = themedIconFocusedColor;
         } else {
-            if (theme.color.text.hasOwnProperty(fieldInputTextColor)) {
-                themedFieldInputTextColor = theme.color.text[fieldInputTextColor][shade === `light` ? `dark` : `light`];
+            if (Ht.Theme.color.text.hasOwnProperty(fieldInputTextColor)) {
+                themedFieldInputTextColor = Ht.Theme.color.text[fieldInputTextColor][shade === `light` ? `dark` : `light`];
             } else {
                 themedFieldInputTextColor = fieldInputTextColor;
             }
 
-            themedLabelFocusedColor = Hf.isEmpty(labelFocusedColor) ? theme.color.textField.label.focused[shade === `light` ? `dark` : `light`] : labelFocusedColor;
-            themedLabelBlurredColor = Hf.isEmpty(labelBlurredColor) ? theme.color.textField.label.blurred[shade === `light` ? `dark` : `light`] : labelBlurredColor;
+            themedLabelFocusedColor = Hf.isEmpty(labelFocusedColor) ? Ht.Theme.color.textField.label.focused[shade === `light` ? `dark` : `light`] : labelFocusedColor;
+            themedLabelBlurredColor = Hf.isEmpty(labelBlurredColor) ? Ht.Theme.color.textField.label.blurred[shade === `light` ? `dark` : `light`] : labelBlurredColor;
 
-            themedUnderlineFocusedColor = Hf.isEmpty(underlineFocusedColor) ? theme.color.textField.underline.focused[shade === `light` ? `dark` : `light`] : underlineFocusedColor;
-            themedUnderlineBlurredColor = Hf.isEmpty(underlineBlurredColor) ? theme.color.textField.underline.blurred[shade === `light` ? `dark` : `light`] : underlineBlurredColor;
+            themedUnderlineFocusedColor = Hf.isEmpty(underlineFocusedColor) ? Ht.Theme.color.textField.underline.focused[shade === `light` ? `dark` : `light`] : underlineFocusedColor;
+            themedUnderlineBlurredColor = Hf.isEmpty(underlineBlurredColor) ? Ht.Theme.color.textField.underline.blurred[shade === `light` ? `dark` : `light`] : underlineBlurredColor;
 
-            themedIconFocusedColor = Hf.isEmpty(iconFocusedColor) ? theme.color.textField.icon.focused[shade === `light` ? `dark` : `light`] : iconFocusedColor;
-            themedIconBlurredColor = Hf.isEmpty(iconBlurredColor) ? theme.color.textField.icon.blurred[shade === `light` ? `dark` : `light`] : iconBlurredColor;
+            themedIconFocusedColor = Hf.isEmpty(iconFocusedColor) ? Ht.Theme.color.textField.icon.focused[shade === `light` ? `dark` : `light`] : iconFocusedColor;
+            themedIconBlurredColor = Hf.isEmpty(iconBlurredColor) ? Ht.Theme.color.textField.icon.blurred[shade === `light` ? `dark` : `light`] : iconBlurredColor;
         }
 
-        themedHelperTextColor = Hf.isEmpty(helperTextColor) ? theme.color.textField.helper : helperTextColor;
-        themedHintTextColor = Hf.isEmpty(hintTextColor) ? theme.color.textField.hint : hintTextColor;
-        themedStatusTextColor = Hf.isEmpty(statusTextColor) ? theme.color.textField.status : statusTextColor;
+        themedHelperTextColor = Hf.isEmpty(helperTextColor) ? Ht.Theme.color.textField.helper : helperTextColor;
+        themedHintTextColor = Hf.isEmpty(hintTextColor) ? Ht.Theme.color.textField.hint : hintTextColor;
+        themedStatusTextColor = Hf.isEmpty(statusTextColor) ? Ht.Theme.color.textField.status : statusTextColor;
 
         if (!Hf.isEmpty(iconPreset) && icon === null) {
-            if (theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
-                icon = theme.icon[Hf.dashToCamelcase(iconPreset)];
+            if (Ht.Theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
+                icon = Ht.Theme.icon[Hf.dashToCamelcase(iconPreset)];
             } else {
                 Hf.log(`warn1`, `NumberFieldInterface - Icon preset:${iconPreset} is not found.`);
             }

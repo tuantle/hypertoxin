@@ -36,7 +36,7 @@ import { View as AnimatedView } from 'react-native-animatable';
 
 import { BlurView } from 'react-native-blur';
 
-import theme from '../../../styles/theme';
+import { Ht } from '../../../hypertoxin';
 
 import fontStyleTemplate from '../../../styles/templates/font-style-template';
 
@@ -243,10 +243,10 @@ const HeaderViewInterface = Hf.Interface.augment({
 
                 switch (overlay) { // eslint-disable-line
                 case `opaque`:
-                    backgroundColor = theme.color.header.container[shade];
+                    backgroundColor = Ht.Theme.color.header.container[shade];
                     break;
                 case `translucent-clear`:
-                    backgroundColor = `${theme.color.header.container[shade]}${theme.color.opacity}`;
+                    backgroundColor = `${Ht.Theme.color.header.container[shade]}${Ht.Theme.color.opacity}`;
                     break;
                 case `translucent-frosted`:
                     backgroundColor = `transparent`;
@@ -279,10 +279,10 @@ const HeaderViewInterface = Hf.Interface.augment({
                 let backgroundColor;
                 switch (overlay) { // eslint-disable-line
                 case `opaque`:
-                    backgroundColor = theme.color.header.status[shade];
+                    backgroundColor = Ht.Theme.color.header.status[shade];
                     break;
                 case `translucent-clear`:
-                    backgroundColor = `${theme.color.header.status[shade]}${theme.color.opacity}`;
+                    backgroundColor = `${Ht.Theme.color.header.status[shade]}${Ht.Theme.color.opacity}`;
                     break;
                 case `translucent-frosted`:
                     backgroundColor = `transparent`;
@@ -299,7 +299,7 @@ const HeaderViewInterface = Hf.Interface.augment({
                 };
             })(),
             label: {
-                color: theme.color.header.label[shade]
+                color: Ht.Theme.color.header.label[shade]
             }
         });
         let headerLeftChildren = null;

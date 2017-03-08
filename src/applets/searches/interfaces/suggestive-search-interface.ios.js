@@ -34,7 +34,7 @@ import { View as AnimatedView } from 'react-native-animatable';
 
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
-import theme from '../../../styles/theme';
+import { Ht } from '../../../hypertoxin';
 
 import fontStyleTemplate from '../../../styles/templates/font-style-template';
 
@@ -382,11 +382,11 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
         const {
             searchInput
         } = component.state;
-        const hideIcon = theme.icon[`goBack`];
-        const clearIcon = theme.icon[`close`];
+        const hideIcon = Ht.Theme.icon[`goBack`];
+        const clearIcon = Ht.Theme.icon[`close`];
         let themedhintTextColor;
 
-        themedhintTextColor = Hf.isEmpty(hintTextColor) ? theme.color.text.disabled[shade === `light` ? `dark` : `light`] : hintTextColor;
+        themedhintTextColor = Hf.isEmpty(hintTextColor) ? Ht.Theme.color.text.disabled[shade === `light` ? `dark` : `light`] : hintTextColor;
 
         return (
             <View style = { adjustedStyle.searchInput }>
@@ -500,9 +500,9 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
             searchInput,
             searchSuggestion
         } = component.state;
-        const searchIcon = theme.icon[`search`];
-        const historyIcon = theme.icon[`history`];
-        const recallIcon = theme.icon[`recall`];
+        const searchIcon = Ht.Theme.icon[`search`];
+        const historyIcon = Ht.Theme.icon[`history`];
+        const recallIcon = Ht.Theme.icon[`recall`];
 
         return (
             <AnimatedView
@@ -619,20 +619,20 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
         let themedSearchSuggestionTextColor;
         let themedIconColor;
 
-        if (theme.color.text.hasOwnProperty(searchInputTextColor)) {
-            themedSearchInputTextColor = theme.color.text[searchInputTextColor][shade === `light` ? `dark` : `light`];
+        if (Ht.Theme.color.text.hasOwnProperty(searchInputTextColor)) {
+            themedSearchInputTextColor = Ht.Theme.color.text[searchInputTextColor][shade === `light` ? `dark` : `light`];
         } else {
             themedSearchInputTextColor = searchInputTextColor;
         }
 
-        if (theme.color.text.hasOwnProperty(searchSuggestionTextColor)) {
-            themedSearchSuggestionTextColor = theme.color.text[searchSuggestionTextColor][shade === `light` ? `dark` : `light`];
+        if (Ht.Theme.color.text.hasOwnProperty(searchSuggestionTextColor)) {
+            themedSearchSuggestionTextColor = Ht.Theme.color.text[searchSuggestionTextColor][shade === `light` ? `dark` : `light`];
         } else {
             themedSearchSuggestionTextColor = searchSuggestionTextColor;
         }
 
-        if (theme.color.button.icon.hasOwnProperty(iconColor)) {
-            themedIconColor = theme.color.button.icon[iconColor][shade === `light` ? `dark` : `light`];
+        if (Ht.Theme.color.button.icon.hasOwnProperty(iconColor)) {
+            themedIconColor = Ht.Theme.color.button.icon[iconColor][shade === `light` ? `dark` : `light`];
         } else {
             themedIconColor = iconColor;
         }
@@ -667,13 +667,13 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
                 }]
             },
             searchInput: {
-                backgroundColor: theme.color.body.container[shade]
+                backgroundColor: Ht.Theme.color.body.container[shade]
             },
             searchSuggestion: dropShadow ? {
                 ...dropShadowStyleTemplate,
-                backgroundColor: theme.color.body.container[shade]
+                backgroundColor: Ht.Theme.color.body.container[shade]
             } : {
-                backgroundColor: theme.color.body.container[shade]
+                backgroundColor: Ht.Theme.color.body.container[shade]
             },
             searchInputText: {
                 flexGrow: 1,
