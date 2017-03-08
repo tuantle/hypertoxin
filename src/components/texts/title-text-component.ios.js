@@ -165,6 +165,7 @@ const TitleTextComponent = TitleTextInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`
     ]

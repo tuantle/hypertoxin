@@ -165,6 +165,7 @@ const SubtitleTextComponent = SubtitleTextInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`
     ]

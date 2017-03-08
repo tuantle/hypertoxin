@@ -180,6 +180,7 @@ const BodyViewComponent = BodyViewInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `scrollTo`
     ]

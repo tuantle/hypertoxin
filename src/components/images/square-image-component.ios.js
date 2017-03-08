@@ -186,6 +186,7 @@ const SquareImageComponent = SquareImageInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`
     ]

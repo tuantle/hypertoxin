@@ -342,6 +342,7 @@ const LayoutViewComponent = LayoutViewInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`,
         `scrollTo`

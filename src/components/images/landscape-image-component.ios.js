@@ -187,6 +187,7 @@ const LandscapeImageComponent = LandscapeImageInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`
     ]

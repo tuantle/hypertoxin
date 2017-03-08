@@ -170,6 +170,7 @@ const InfoTextComponent = InfoTextInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`
     ]

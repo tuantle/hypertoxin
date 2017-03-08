@@ -164,6 +164,7 @@ const HeadlineTextComponent = HeadlineTextInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`
     ]

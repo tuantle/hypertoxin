@@ -187,6 +187,7 @@ const PortraitImageComponent = PortraitImageInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`
     ]

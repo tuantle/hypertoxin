@@ -170,6 +170,7 @@ const CaptionTextComponent = CaptionTextInterface({
     React,
     ReactNative
 }).toComponent(null, {
+    alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [
         `animate`
     ]
