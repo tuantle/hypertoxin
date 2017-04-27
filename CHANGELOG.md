@@ -2,6 +2,27 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
+**Development Beta Version 0.1.0-beta7 (04/26/2017)**
+```
+Notes:
+- Update dependencies:
+    Hyperflow to 0.1.0-rc1
+New Features:
+Breaking Changes:
+Improvements:
+    - Improved stylings, allow to have better control over every style elements.
+Bug fixes:
+```
+**Development Beta Version 0.1.0-beta7 (04/03/2017)**
+```
+Notes:
+- Update dependencies:
+    Hyperflow to 0.1.0-beta30
+New Features:
+Breaking Changes:
+Improvements:
+Bug fixes:
+```
 **Development Beta Version 0.1.0-beta6 (03/08/2017)**
 ```
 Notes:
