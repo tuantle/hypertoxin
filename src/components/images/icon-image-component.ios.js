@@ -30,7 +30,7 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
-import { Imagw as AnimatedImage } from 'react-native-animatable';
+import { Image as AnimatedImage } from 'react-native-animatable';
 
 import { Ht } from '../../hypertoxin';
 
@@ -77,24 +77,24 @@ const IconImageInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.image.icon.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         size: {
-            value: `normal`,
+            value: Ht.Theme.image.icon.size,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         dropShadow: {
-            value: true,
+            value: Ht.Theme.image.icon.dropShadow,
             stronglyTyped: true
         },
-        iconColor: {
-            value: `default`,
+        color: {
+            value: Ht.Theme.image.icon.color,
             stronglyTyped: true
         },
-        iconPreset: {
+        preset: {
             value: ``,
             stronglyTyped: true
         }
@@ -133,34 +133,34 @@ const IconImageInterface = Hf.Interface.augment({
             shade,
             size,
             dropShadow,
-            iconColor,
-            iconPreset,
+            color,
+            preset,
             customIcon,
             style
         } = component.props;
         let icon = Hf.isDefined(customIcon) ? customIcon : null;
-        let themedIconColor;
+        let themedColor;
         let adjustedStyle;
 
-        if (Ht.Theme.color.icon.hasOwnProperty(iconColor)) {
-            themedIconColor = Ht.Theme.color.icon[iconColor][shade];
+        if (Ht.Theme.color.icon.hasOwnProperty(color)) {
+            themedColor = Ht.Theme.color.icon[color][shade];
         } else {
-            themedIconColor = iconColor;
+            themedColor = color;
         }
 
-        if (!Hf.isEmpty(iconPreset) && !Hf.isDefined(icon)) {
-            if (Ht.Theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
-                icon = Ht.Theme.icon[Hf.dashToCamelcase(iconPreset)];
+        if (!Hf.isEmpty(preset) && icon === null) {
+            if (Ht.Theme.icon.hasOwnProperty(Hf.dashToCamelcase(preset))) {
+                icon = Ht.Theme.icon[Hf.dashToCamelcase(preset)];
             } else {
-                Hf.log(`warn1`, `IconImageInterface - Icon preset:${iconPreset} is not found.`);
+                Hf.log(`warn1`, `IconImageInterface - Icon preset:${preset} is not found.`);
             }
         }
 
         adjustedStyle = dropShadow ? Hf.merge(DEFAULT_ICON_IMAGE_STYLE[size]).with({
             ...dropShadowStyleTemplate,
-            tintColor: themedIconColor
+            tintColor: themedColor
         }) : Hf.merge(DEFAULT_ICON_IMAGE_STYLE[size]).with({
-            tintColor: themedIconColor
+            tintColor: themedColor
         });
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;

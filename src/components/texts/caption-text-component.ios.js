@@ -60,31 +60,31 @@ const CaptionTextInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.text.caption.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         color: {
-            value: `default`,
+            value: Ht.Theme.text.caption.color,
             stronglyTyped: true
         },
         size: {
-            value: `normal`,
+            value: Ht.Theme.text.caption.size,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         alignment: {
-            value: `center`,
+            value: Ht.Theme.text.caption.alignment,
             oneOf: [ `left`, `center`, `right` ],
             stronglyTyped: true
         },
         decoration: {
-            value: `none`,
+            value: Ht.Theme.text.caption.decoration,
             oneOf: [ `none`, `underline`, `line-through` ],
             stronglyTyped: true
         },
         indentation: {
-            value: 0,
+            value: Ht.Theme.text.caption.indentation,
             stronglyTyped: true
         }
     },

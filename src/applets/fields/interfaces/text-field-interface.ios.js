@@ -160,12 +160,12 @@ const TextFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `light`,
+            value: Ht.Theme.field.text.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         fieldInputTextColor: {
-            value: `default`,
+            value: Ht.Theme.field.text.fieldInputTextColor,
             stronglyTyped: true
         },
         helperTextColor: {
@@ -209,12 +209,12 @@ const TextFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.field.text.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         dropShadowIcon: {
-            value: true,
+            value: Ht.Theme.field.text.dropShadowIcon,
             stronglyTyped: true
         },
         fixedFloatingLabel: {

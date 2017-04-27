@@ -160,12 +160,12 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `light`,
+            value: Ht.Theme.field.phoneNumber.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         fieldInputTextColor: {
-            value: `default`,
+            value: Ht.Theme.field.phoneNumber.fieldInputTextColor,
             stronglyTyped: true
         },
         helperTextColor: {
@@ -209,12 +209,12 @@ const PhoneNumberFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.field.phoneNumber.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         dropShadowIcon: {
-            value: true,
+            value: Ht.Theme.field.phoneNumber.dropShadowIcon,
             stronglyTyped: true
         },
         fixedFloatingLabel: {

@@ -32,6 +32,8 @@ import ReactNative from 'react-native';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
+import { Ht } from '../../hypertoxin';
+
 const DEFAULT_AVATAR_IMAGE_STYLE = {
     small: {
         width: 36,
@@ -76,7 +78,7 @@ const AvatarImageInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         size: {
-            value: `normal`,
+            value: Ht.Theme.image.avatar.size,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         }

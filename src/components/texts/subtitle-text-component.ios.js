@@ -61,26 +61,26 @@ const SubtitleTextInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.text.subtitle.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         color: {
-            value: `default`,
+            value: Ht.Theme.text.subtitle.color,
             stronglyTyped: true
         },
         size: {
-            value: `normal`,
+            value: Ht.Theme.text.subtitle.size,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         alignment: {
-            value: `center`,
+            value: Ht.Theme.text.subtitle.alignment,
             oneOf: [ `left`, `center`, `right` ],
             stronglyTyped: true
         },
         decoration: {
-            value: `none`,
+            value: Ht.Theme.text.subtitle.decoration,
             oneOf: [ `none`, `underline`, `line-through` ],
             stronglyTyped: true
         }

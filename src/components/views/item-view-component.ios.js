@@ -28,7 +28,7 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative, { Dimensions } from 'react-native';
+import ReactNative from 'react-native';
 
 import createFragment from 'react-addons-create-fragment';
 
@@ -40,7 +40,8 @@ import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-te
 
 const {
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } = ReactNative;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
@@ -89,21 +90,21 @@ const ItemViewInterface = Hf.Interface.augment({
     ],
     state: {
         shade: {
-            value: `light`,
+            value: Ht.Theme.view.item.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         overlay: {
-            value: `opaque`,
+            value: Ht.Theme.view.item.overlay,
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
             stronglyTyped: true
         },
         outlined: {
-            value: false,
+            value: Ht.Theme.view.item.outlined,
             stronglyTyped: true
         },
         dropShadow: {
-            value: false,
+            value: Ht.Theme.view.item.dropShadow,
             stronglyTyped: true
         }
     },
@@ -159,7 +160,9 @@ const ItemViewInterface = Hf.Interface.augment({
                 })()
             }
         });
-        let interfaceFragment = {
+        let itemMediaChildren = null;
+        let itemActionChildren = null;
+        let fragment = {
             item: {
                 media: {
                     part: (<View style = { adjustedStyle.room.filler }/>)
@@ -169,8 +172,9 @@ const ItemViewInterface = Hf.Interface.augment({
                 }
             }
         };
+
         if (React.Children.count(children) > 0) {
-            interfaceFragment = React.Children.toArray(children).reduce((_interfaceFragment, child) => {
+            fragment = React.Children.toArray(children).reduce((_fragment, child) => {
                 const {
                     room
                 } = child.props;
@@ -179,21 +183,23 @@ const ItemViewInterface = Hf.Interface.augment({
                 } else {
                     switch (room) { // eslint-disable-line
                     case `item-media`:
-                        _interfaceFragment.item.media.part = child;
+                        _fragment.item.media.part = child;
                         break;
                     case `item-action`:
-                        _interfaceFragment.item.action.part = child;
+                        _fragment.item.action.part = child;
                         break;
                     case `none`:
                         break;
                     }
                 }
-                return _interfaceFragment;
-            }, interfaceFragment);
+                return _fragment;
+            }, fragment);
         }
 
-        const itemMediaChildren = createFragment(interfaceFragment.item.media);
-        const itemActionChildren = createFragment(interfaceFragment.item.action);
+        itemMediaChildren = createFragment(fragment.item.media);
+        itemActionChildren = createFragment(fragment.item.action);
+        // itemMediaChildren = fragment.item.media;
+        // itemActionChildren = fragment.item.action;
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
@@ -203,7 +209,7 @@ const ItemViewInterface = Hf.Interface.augment({
                     <BlurView
                         style = { adjustedStyle.container }
                         blurType = { shade }
-                        blurAmount = { 95 }
+                        blurAmount = { Ht.Theme.misc.frostLevel }
                     >
                         <View style = { adjustedStyle.room.media }>
                         {

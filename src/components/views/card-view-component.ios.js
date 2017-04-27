@@ -28,7 +28,7 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative, { Dimensions } from 'react-native';
+import ReactNative from 'react-native';
 
 import createFragment from 'react-addons-create-fragment';
 
@@ -39,7 +39,8 @@ import { Ht } from '../../hypertoxin';
 import dropShadowStyleTemplate from '../../styles/templates/drop-shadow-style-template';
 
 const {
-    View
+    View,
+    Dimensions
 } = ReactNative;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
@@ -114,21 +115,21 @@ const CardViewInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `light`,
+            value: Ht.Theme.view.card.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         overlay: {
-            value: `opaque`,
+            value: Ht.Theme.view.card.overlay,
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
             stronglyTyped: true
         },
         outlined: {
-            value: false,
+            value: Ht.Theme.view.card.outlined,
             stronglyTyped: true
         },
         dropShadow: {
-            value: false,
+            value: Ht.Theme.view.card.dropShadow,
             stronglyTyped: true
         }
     },
@@ -188,7 +189,7 @@ const CardViewInterface = Hf.Interface.augment({
         let cardOverlayChildren = null;
         let cardBodyChildren = null;
         let cardActionChildren = null;
-        let interfaceFragment = {
+        let fragment = {
             card: {
                 header: {
                     leftPart: (<View style = { adjustedStyle.room.filler }/>),
@@ -213,7 +214,7 @@ const CardViewInterface = Hf.Interface.augment({
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         if (React.Children.count(children) > 0) {
-            interfaceFragment = React.Children.toArray(children).reduce((_interfaceFragment, child) => {
+            fragment = React.Children.toArray(children).reduce((_fragment, child) => {
                 const {
                     room
                 } = child.props;
@@ -222,17 +223,17 @@ const CardViewInterface = Hf.Interface.augment({
                 } else {
                     switch (room) { // eslint-disable-line
                     case `card-header-left`:
-                        _interfaceFragment.card.header.leftPart = child;
+                        _fragment.card.header.leftPart = child;
                         break;
                     case `card-header-right`:
-                        _interfaceFragment.card.header.rightPart = child;
+                        _fragment.card.header.rightPart = child;
                         break;
                     case `card-media`:
-                        _interfaceFragment.card.media.part = child;
+                        _fragment.card.media.part = child;
                         break;
                     case `card-overlay`:
-                        _interfaceFragment.card.overlay.part = child;
-                        // _interfaceFragment.card.overlay.part = (
+                        _fragment.card.overlay.part = child;
+                        // _fragment.card.overlay.part = (
                         //     <View style = { adjustedStyle.room.overlay }>
                         //     {
                         //         child
@@ -241,26 +242,29 @@ const CardViewInterface = Hf.Interface.augment({
                         // );
                         break;
                     case `card-body`:
-                        _interfaceFragment.card.body.part = child;
+                        _fragment.card.body.part = child;
                         break;
                     case `card-action-primary`:
-                        _interfaceFragment.card.action.primaryPart = child;
+                        _fragment.card.action.primaryPart = child;
                         break;
                     case `card-action-secondary`:
-                        _interfaceFragment.card.action.secondaryPart = child;
+                        _fragment.card.action.secondaryPart = child;
                         break;
                     case `none`:
                         break;
                     }
                 }
-                return _interfaceFragment;
-            }, interfaceFragment);
+                return _fragment;
+            }, fragment);
         }
 
-        cardHeaderChildren = createFragment(interfaceFragment.card.header);
-        cardOverlayChildren = createFragment(interfaceFragment.card.overlay);
-        cardMediaChildren = createFragment(interfaceFragment.card.media);
-        // cardMediaChildren = React.Children.map(createFragment(interfaceFragment.card.media), (child) => {
+        cardHeaderChildren = createFragment(fragment.card.header);
+        cardOverlayChildren = createFragment(fragment.card.overlay);
+        cardMediaChildren = createFragment(fragment.card.media);
+        // cardHeaderChildren = fragment.card.header;
+        // cardOverlayChildren = fragment.card.overlay;
+        // cardMediaChildren = fragment.card.media;
+        // cardMediaChildren = React.Children.map(createFragment(fragment.card.media), (child) => {
         //     if (Hf.isDefined(child.props.children)) {
         //         return React.cloneElement(child, {
         //             children: [ ...child.props.children, ...cardOverlayChildren ]
@@ -271,15 +275,17 @@ const CardViewInterface = Hf.Interface.augment({
         //         });
         //     }
         // });
-        cardBodyChildren = createFragment(interfaceFragment.card.body);
-        cardActionChildren = createFragment(interfaceFragment.card.action);
+        cardBodyChildren = createFragment(fragment.card.body);
+        cardActionChildren = createFragment(fragment.card.action);
+        // cardBodyChildren = fragment.card.body;
+        // cardActionChildren = fragment.card.action;
 
         if (frosted) {
             return (
                 <BlurView
                     style = { adjustedStyle.container }
                     blurType = { shade }
-                    blurAmount = { 95 }
+                    blurAmount = { Ht.Theme.misc.frostLevel }
                 >
                     <View style = { adjustedStyle.room.header }>
                     {

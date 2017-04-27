@@ -160,12 +160,12 @@ const EmailFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `light`,
+            value: Ht.Theme.field.email.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         fieldInputTextColor: {
-            value: `default`,
+            value: Ht.Theme.field.email.fieldInputTextColor,
             stronglyTyped: true
         },
         helperTextColor: {
@@ -209,12 +209,12 @@ const EmailFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.field.email.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         dropShadowIcon: {
-            value: true,
+            value: Ht.Theme.field.email.dropShadowIcon,
             stronglyTyped: true
         },
         fixedFloatingLabel: {

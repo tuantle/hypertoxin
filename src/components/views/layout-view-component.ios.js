@@ -28,7 +28,7 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative, { Dimensions } from 'react-native';
+import ReactNative from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -38,7 +38,8 @@ import { Ht } from '../../hypertoxin';
 
 const {
     View,
-    ScrollView
+    ScrollView,
+    Dimensions
 } = ReactNative;
 
 const AnimatedView = Animatable.View;
@@ -88,12 +89,12 @@ const LayoutViewInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `light`,
+            value: Ht.Theme.view.layout.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         overlay: {
-            value: `opaque`,
+            value: Ht.Theme.view.layout.overlay,
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
             stronglyTyped: true
         },
@@ -273,7 +274,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                         ref = { component.assignComponentRef(`animatedView`) }
                         style = { adjustedStyle.container }
                         blurType = { shade }
-                        blurAmount = { 95 }
+                        blurAmount = { Ht.Theme.misc.frostLevel }
                         useNativeDriver = { true }
                     >
                         <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
@@ -308,7 +309,7 @@ const LayoutViewInterface = Hf.Interface.augment({
                         ref = { component.assignComponentRef(`animatedView`) }
                         style = { adjustedStyle.container }
                         blurType = { shade }
-                        blurAmount = { 95 }
+                        blurAmount = { Ht.Theme.misc.frostLevel }
                         useNativeDriver = { true }
                     >
                         <View style = { adjustedStyle[orientation] }>

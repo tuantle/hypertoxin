@@ -160,12 +160,12 @@ const CreditCardFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `light`,
+            value: Ht.Theme.field.creditCard.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         fieldInputTextColor: {
-            value: `default`,
+            value: Ht.Theme.field.creditCard.fieldInputTextColor,
             stronglyTyped: true
         },
         helperTextColor: {
@@ -209,12 +209,12 @@ const CreditCardFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.field.creditCard.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         dropShadowIcon: {
-            value: true,
+            value: Ht.Theme.field.creditCard.dropShadowIcon,
             stronglyTyped: true
         },
         fixedFloatingLabel: {

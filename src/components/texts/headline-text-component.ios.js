@@ -60,26 +60,26 @@ const HeadlineTextInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.text.headline.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         color: {
-            value: `default`,
+            value: Ht.Theme.text.headline.color,
             stronglyTyped: true
         },
         size: {
-            value: `normal`,
+            value: Ht.Theme.text.headline.size,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         alignment: {
-            value: `center`,
+            value: Ht.Theme.text.headline.alignment,
             oneOf: [ `left`, `center`, `right` ],
             stronglyTyped: true
         },
         decoration: {
-            value: `none`,
+            value: Ht.Theme.text.headline.decoration,
             oneOf: [ `none`, `underline`, `line-through` ],
             stronglyTyped: true
         }

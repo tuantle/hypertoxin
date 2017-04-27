@@ -99,17 +99,17 @@ const FlatButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.button.flat.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
-        outlineShape: {
-            value: `square`,
+        shape: {
+            value: Ht.Theme.button.flat.shape,
             oneOf: [ `square`, `round` ],
             stronglyTyped: true
         },
         outlined: {
-            value: false,
+            value: Ht.Theme.button.flat.outlined,
             stronglyTyped: true
         },
         disabled: {
@@ -121,7 +121,7 @@ const FlatButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         dropShadowIcon: {
-            value: true,
+            value: Ht.Theme.button.flat.dropShadowIcon,
             stronglyTyped: true
         },
         label: {
@@ -129,11 +129,11 @@ const FlatButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         labelColor: {
-            value: `default`,
+            value: Ht.Theme.button.flat.labelColor,
             stronglyTyped: true
         },
         iconColor: {
-            value: `default`,
+            value: Ht.Theme.button.flat.iconColor,
             stronglyTyped: true
         },
         iconPreset: {
@@ -141,7 +141,7 @@ const FlatButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.button.flat.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
@@ -182,7 +182,7 @@ const FlatButtonInterface = Hf.Interface.augment({
         const component = this;
         const {
             shade,
-            outlineShape,
+            shape,
             outlined,
             disabled,
             busy,
@@ -224,7 +224,7 @@ const FlatButtonInterface = Hf.Interface.augment({
         adjustedStyle = Hf.merge(DEFAULT_FLAT_BUTTON_STYLE).with({
             container: outlined ? {
                 borderWidth: 1,
-                borderRadius: outlineShape === `square` ? 2 : 18,
+                borderRadius: shape === `square` ? 2 : 18,
                 borderColor: themedLabelColor
             } : {},
             label: {

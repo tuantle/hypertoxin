@@ -28,12 +28,13 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative, { Dimensions } from 'react-native';
+import ReactNative from 'react-native';
 
 import { Ht } from '../../hypertoxin';
 
 const {
-    View
+    View,
+    Dimensions
 } = ReactNative;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
@@ -53,7 +54,7 @@ const DividerInterface = Hf.Interface.augment({
     ],
     state: {
         thickness: {
-            value: 1,
+            value: Ht.Theme.divider.thickness,
             stronglyTyped: true
         }
     },

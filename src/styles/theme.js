@@ -28,6 +28,187 @@ import materialIconPreset from './icons/material-icon-preset';
 
 export default {
     icon: materialIconPreset,
+    general: {
+        frostLevel: 25
+    },
+    divider: {
+        thickness: 1
+    },
+    suggestiveSearch: {
+        shade: `light`,
+        searchInputTextColor: `default`,
+        searchSuggestionTextColor: `default`,
+        iconColor: `default`,
+        iconSize: `normal`,
+        statusHeightOffset: 21,
+        dropShadow: true,
+        dropShadowIcon: true
+    },
+    field: {
+        creditCard: {
+            shade: `light`,
+            fieldInputTextColor: `default`,
+            iconSize: `normal`,
+            dropShadowIcon: true
+        },
+        email: {
+            shade: `light`,
+            fieldInputTextColor: `default`,
+            iconSize: `normal`,
+            dropShadowIcon: true
+        },
+        number: {
+            shade: `light`,
+            fieldInputTextColor: `default`,
+            iconSize: `normal`,
+            dropShadowIcon: true
+        },
+        phoneNumber: {
+            shade: `light`,
+            fieldInputTextColor: `default`,
+            iconSize: `normal`,
+            dropShadowIcon: true
+        },
+        text: {
+            shade: `light`,
+            fieldInputTextColor: `default`,
+            iconSize: `normal`,
+            dropShadowIcon: true
+        }
+    },
+    view: {
+        header: {
+            shade: `light`,
+            overlay: `opaque`,
+            oversized: false,
+            dropShadow: false
+            // labelColor: `default`
+        },
+        body: {
+            shade: `light`,
+            overlay: `opaque`
+        },
+        card: {
+            shade: `light`,
+            overlay: `opaque`,
+            outlined: false,
+            dropShadow: false
+        },
+        item: {
+            shade: `light`,
+            overlay: `opaque`,
+            outlined: false,
+            dropShadow: false
+        },
+        layout: {
+            shade: `light`,
+            overlay: `opaque`
+        },
+        screen: {
+            shade: `light`
+        }
+    },
+    button: {
+        flat: {
+            shade: `dark`,
+            outlined: false,
+            shape: `square`,
+            dropShadowIcon: true,
+            labelColor: `default`,
+            iconColor: `default`,
+            iconSize: `normal`
+        },
+        floatingAction: {
+            shade: `dark`,
+            color: `default`,
+            iconColor: `default`,
+            iconSize: `normal`,
+            mini: false
+        },
+        icon: {
+            shade: `dark`,
+            dropShadow: true,
+            color: `default`,
+            size: `normal`
+        },
+        raised: {
+            shade: `dark`,
+            shape: `square`,
+            dropShadowIcon: true,
+            color: `default`,
+            labelColor: `default`,
+            iconColor: `default`,
+            iconSize: `normal`
+        }
+    },
+    image: {
+        avatar: {
+            size: `normal`
+        },
+        icon: {
+            shade: `dark`,
+            size: `normal`,
+            dropShadow: true,
+            color: `default`
+        },
+        landscape: {
+            size: `normal`,
+            resizeMode: `cover`
+        },
+        portrait: {
+            size: `normal`,
+            resizeMode: `cover`
+        },
+        square: {
+            size: `normal`,
+            resizeMode: `cover`
+        },
+        wallpaper: {
+            resizeMode: `cover`
+        }
+    },
+    text: {
+        caption: {
+            shade: `dark`,
+            color: `default`,
+            size: `normal`,
+            alignment: `center`,
+            decoration: `none`,
+            indentation: 0
+        },
+        headline: {
+            shade: `dark`,
+            color: `default`,
+            size: `normal`,
+            // weight: `normal`,
+            alignment: `center`,
+            decoration: `none`
+        },
+        info: {
+            shade: `dark`,
+            color: `default`,
+            size: `normal`,
+            alignment: `center`,
+            decoration: `none`,
+            indentation: 0
+        },
+        title: {
+            shade: `dark`,
+            color: `default`,
+            size: `normal`,
+            // weight: `bold`,
+            alignment: `center`,
+            decoration: `none`
+        },
+        subtitle: {
+            shade: `dark`,
+            color: `default`,
+            size: `normal`,
+            // weight: `normal`,
+            alignment: `center`,
+            decoration: `none`
+        }
+    },
     color: {
         palette: materialPalette,
         opacity: `aa`,

@@ -99,12 +99,12 @@ const RaisedButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.button.raised.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         shape: {
-            value: `square`,
+            value: Ht.Theme.button.raised.shape,
             oneOf: [ `square`, `round` ],
             stronglyTyped: true
         },
@@ -121,15 +121,15 @@ const RaisedButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         color: {
-            value: `default`,
+            value: Ht.Theme.button.raised.color,
             stronglyTyped: true
         },
         labelColor: {
-            value: `default`,
+            value: Ht.Theme.button.raised.labelColor,
             stronglyTyped: true
         },
         iconColor: {
-            value: `default`,
+            value: Ht.Theme.button.raised.iconColor,
             stronglyTyped: true
         },
         iconPreset: {
@@ -137,7 +137,7 @@ const RaisedButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.button.raised.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },

@@ -60,31 +60,31 @@ const InfoTextInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.text.info.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         color: {
-            value: `default`,
+            value: Ht.Theme.text.info.color,
             stronglyTyped: true
         },
         size: {
-            value: `normal`,
+            value: Ht.Theme.text.info.size,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         alignment: {
-            value: `left`,
+            value: Ht.Theme.text.info.alignment,
             oneOf: [ `left`, `center`, `right` ],
             stronglyTyped: true
         },
         decoration: {
-            value: `none`,
+            value: Ht.Theme.text.info.decoration,
             oneOf: [ `none`, `underline`, `line-through` ],
             stronglyTyped: true
         },
         indentation: {
-            value: 0,
+            value: Ht.Theme.text.info.indentation,
             stronglyTyped: true
         }
     },

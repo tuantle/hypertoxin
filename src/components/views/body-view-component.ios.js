@@ -54,12 +54,12 @@ const BodyViewInterface = Hf.Interface.augment({
     ],
     state: {
         shade: {
-            value: `light`,
+            value: Ht.Theme.view.body.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         overlay: {
-            value: `opaque`,
+            value: Ht.Theme.view.body.overlay,
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
             stronglyTyped: true
         },
@@ -129,7 +129,7 @@ const BodyViewInterface = Hf.Interface.augment({
                     <BlurView
                         style = { adjustedStyle.container }
                         blurType = { shade }
-                        blurAmount = { 95 }
+                        blurAmount = { Ht.Theme.misc.frostLevel }
                     >
                         <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
                         {
@@ -154,7 +154,7 @@ const BodyViewInterface = Hf.Interface.augment({
                     <BlurView
                         style = { adjustedStyle.container }
                         blurType = { shade }
-                        blurAmount = { 95 }
+                        blurAmount = { Ht.Theme.misc.frostLevel }
                     >
                     {
                         children

@@ -104,12 +104,12 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.button.floatingAction.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         mini: {
-            value: false,
+            value: Ht.Theme.button.floatingAction.mini,
             stronglyTyped: true
         },
         disabled: {
@@ -117,11 +117,11 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         color: {
-            value: `default`,
+            value: Ht.Theme.button.floatingAction.color,
             stronglyTyped: true
         },
         iconColor: {
-            value: `default`,
+            value: Ht.Theme.button.floatingAction.iconColor,
             stronglyTyped: true
         },
         iconPreset: {
@@ -129,7 +129,7 @@ const FloatingActionButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.button.floatingAction.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },

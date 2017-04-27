@@ -160,12 +160,12 @@ const NumberFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `light`,
+            value: Ht.Theme.field.number.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         fieldInputTextColor: {
-            value: `default`,
+            value: Ht.Theme.field.number.fieldInputTextColor,
             stronglyTyped: true
         },
         helperTextColor: {
@@ -209,12 +209,12 @@ const NumberFieldInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.field.number.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
         dropShadowIcon: {
-            value: true,
+            value: Ht.Theme.field.number.dropShadowIcon,
             stronglyTyped: true
         },
         fixedFloatingLabel: {

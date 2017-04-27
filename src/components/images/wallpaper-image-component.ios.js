@@ -31,6 +31,8 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+import { Ht } from '../../hypertoxin';
+
 const {
     Image
 } = ReactNative;
@@ -49,7 +51,7 @@ const WallpaperImageInterface = Hf.Interface.augment({
     ],
     state: {
         resizeMode: {
-            value: `cover`,
+            value: Ht.Theme.image.wallpaper.resizeMode,
             oneOf: [ `cover`, `contain`, `stretch`, `repeat`, `center` ],
             stronglyTyped: true
         }

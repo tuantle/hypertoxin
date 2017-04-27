@@ -91,7 +91,7 @@ const IconButtonInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         shade: {
-            value: `dark`,
+            value: Ht.Theme.button.icon.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
@@ -99,20 +99,20 @@ const IconButtonInterface = Hf.Interface.augment({
             value: false,
             stronglyTyped: true
         },
-        dropShadowIcon: {
-            value: true,
+        dropShadow: {
+            value: Ht.Theme.button.icon.dropShadow,
             stronglyTyped: true
         },
-        iconColor: {
-            value: `default`,
+        color: {
+            value: Ht.Theme.button.icon.color,
             stronglyTyped: true
         },
-        iconPreset: {
+        preset: {
             value: ``,
             stronglyTyped: true
         },
-        iconSize: {
-            value: `normal`,
+        size: {
+            value: Ht.Theme.button.icon.size,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
@@ -154,38 +154,38 @@ const IconButtonInterface = Hf.Interface.augment({
         const {
             shade,
             disabled,
-            dropShadowIcon,
-            iconColor,
-            iconPreset,
-            iconSize,
+            dropShadow,
+            color,
+            preset,
+            size,
             customIcon,
             style,
             onPress
         } = component.props;
         let icon = Hf.isDefined(customIcon) ? customIcon : null;
-        let themedIconColor;
+        let themedColor;
         let adjustedStyle;
 
-        if (Ht.Theme.color.button.icon.hasOwnProperty(iconColor)) {
-            themedIconColor = !disabled ? Ht.Theme.color.button.icon[iconColor][shade] : Ht.Theme.color.button.icon.disabled[shade];
+        if (Ht.Theme.color.button.icon.hasOwnProperty(color)) {
+            themedColor = !disabled ? Ht.Theme.color.button.icon[color][shade] : Ht.Theme.color.button.icon.disabled[shade];
         } else {
-            themedIconColor = !disabled ? iconColor : Ht.Theme.color.button.icon.disabled[shade];
+            themedColor = !disabled ? color : Ht.Theme.color.button.icon.disabled[shade];
         }
 
-        if (!Hf.isEmpty(iconPreset) && icon === null) {
-            if (Ht.Theme.icon.hasOwnProperty(Hf.dashToCamelcase(iconPreset))) {
-                icon = Ht.Theme.icon[Hf.dashToCamelcase(iconPreset)];
+        if (!Hf.isEmpty(preset) && icon === null) {
+            if (Ht.Theme.icon.hasOwnProperty(Hf.dashToCamelcase(preset))) {
+                icon = Ht.Theme.icon[Hf.dashToCamelcase(preset)];
             } else {
-                Hf.log(`warn1`, `IconButtonInterface - Icon preset:${iconPreset} is not found.`);
+                Hf.log(`warn1`, `IconButtonInterface - Icon preset:${preset} is not found.`);
             }
         }
 
         adjustedStyle = Hf.merge(DEFAULT_ICON_BUTTON_STYLE).with({
-            icon: dropShadowIcon ? Hf.merge(DEFAULT_ICON_BUTTON_ICON_STYLE.icon[iconSize]).with({
+            icon: dropShadow ? Hf.merge(DEFAULT_ICON_BUTTON_ICON_STYLE.icon[size]).with({
                 ...dropShadowStyleTemplate,
-                tintColor: themedIconColor
-            }) : Hf.merge(DEFAULT_ICON_BUTTON_ICON_STYLE.icon[iconSize]).with({
-                tintColor: themedIconColor
+                tintColor: themedColor
+            }) : Hf.merge(DEFAULT_ICON_BUTTON_ICON_STYLE.icon[size]).with({
+                tintColor: themedColor
             })
         });
 

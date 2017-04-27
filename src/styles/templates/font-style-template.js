@@ -32,13 +32,13 @@ const BASE_FONT_SCALING_UNIT = PixelRatio.get() >= 3 ? 8 : 6;
 /* changing font size according to ratio */
 const FONT_SCALING_UNIT = BASE_FONT_SCALING_UNIT * PixelRatio.get();
 
-const FONT_SIZE = FONT_SCALING_UNIT;
 const FONT_SIZE_SMALLEST = FONT_SCALING_UNIT * 0.625;
 const FONT_SIZE_SMALLER = FONT_SCALING_UNIT * 0.75;
 const FONT_SIZE_SMALL = FONT_SCALING_UNIT * 0.875;
+const FONT_SIZE_NORMAL = FONT_SCALING_UNIT * 1.0;
 const FONT_SIZE_LARGE = FONT_SCALING_UNIT * 1.25;
-const FONT_SIZE_LARGER = FONT_SCALING_UNIT * 1.5;
-const FONT_SIZE_LARGEST = FONT_SCALING_UNIT * 1.75;
+const FONT_SIZE_LARGER = FONT_SCALING_UNIT * 2.50;
+const FONT_SIZE_LARGEST = FONT_SCALING_UNIT * 3.75;
 
 const FONT_WEIGHT_THIN = `200`;
 const FONT_WEIGHT_NORMAL = `400`;
@@ -132,28 +132,28 @@ const italicFontSmallTemplate = {
 };
 
 const thinFontTemplate = {
-    fontSize: FONT_SIZE,
+    fontSize: FONT_SIZE_NORMAL,
     fontWeight: FONT_WEIGHT_THIN,
     marginVertical: 3,
     paddingVertical: 3
 };
 
 const normalFontTemplate = {
-    fontSize: FONT_SIZE,
+    fontSize: FONT_SIZE_NORMAL,
     fontWeight: FONT_WEIGHT_NORMAL,
     marginVertical: 3,
     paddingVertical: 3
 };
 
 const boldFontTemplate = {
-    fontSize: FONT_SIZE,
+    fontSize: FONT_SIZE_NORMAL,
     fontWeight: FONT_WEIGHT_BOLD,
     marginVertical: 3,
     paddingVertical: 3
 };
 
 const italicFontTemplate = {
-    fontSize: FONT_SIZE,
+    fontSize: FONT_SIZE_NORMAL,
     fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
     marginVertical: 3,

@@ -28,7 +28,7 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative, { Dimensions } from 'react-native';
+import ReactNative from 'react-native';
 
 import createFragment from 'react-addons-create-fragment';
 
@@ -46,7 +46,8 @@ import EVENT from '../events/header-event';
 
 const {
     Text,
-    View
+    View,
+    Dimensions
 } = ReactNative;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
@@ -55,7 +56,7 @@ const STATUS_WIDTH = DEVICE_WIDTH;
 const STATUS_HEIGHT = 25;
 const NAVIGATION_WIDTH = DEVICE_WIDTH;
 const NAVIGATION_HEIGHT = 56;
-const NAVIGATION_OVERSIZE_HEIGHT = 148;
+const NAVIGATION_OVERSIZED_HEIGHT = 148;
 const NAVIGATION_CHILD_MIN_WIDTH = 46;
 const NAVIGATION_CHILD_MIN_HEIGHT = 46;
 
@@ -130,17 +131,17 @@ const HeaderViewInterface = Hf.Interface.augment({
     ],
     state: {
         shade: {
-            value: `light`,
+            value: Ht.Theme.view.header.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         overlay: {
-            value: `opaque`,
+            value: Ht.Theme.view.header.overlay,
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
             stronglyTyped: true
         },
-        oversize: {
-            value: false,
+        oversized: {
+            value: Ht.Theme.view.header.oversized,
             stronglyTyped: true
         },
         minimizedInitially: {
@@ -148,7 +149,7 @@ const HeaderViewInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         dropShadow: {
-            value: false,
+            value: Ht.Theme.view.header.dropShadow,
             stronglyTyped: true
         },
         label: {
@@ -224,7 +225,7 @@ const HeaderViewInterface = Hf.Interface.augment({
         const {
             shade,
             overlay,
-            oversize,
+            oversized,
             minimizedInitially,
             dropShadow,
             label,
@@ -262,17 +263,17 @@ const HeaderViewInterface = Hf.Interface.augment({
                 } else {
                     return dropShadow ? {
                         ...dropShadowStyleTemplate,
-                        height: oversize ? NAVIGATION_OVERSIZE_HEIGHT : DEFAULT_HEADER_VIEW_STYLE.room.height,
+                        height: oversized ? NAVIGATION_OVERSIZED_HEIGHT : DEFAULT_HEADER_VIEW_STYLE.room.height,
                         backgroundColor
                     } : {
-                        height: oversize ? NAVIGATION_OVERSIZE_HEIGHT : DEFAULT_HEADER_VIEW_STYLE.room.height,
+                        height: oversized ? NAVIGATION_OVERSIZED_HEIGHT : DEFAULT_HEADER_VIEW_STYLE.room.height,
                         backgroundColor
                     };
                 }
             })(),
             room: {
                 center: {
-                    alignSelf: oversize ? `flex-start` : `center`
+                    alignSelf: oversized ? `flex-start` : `center`
                 }
             },
             status: (() => {
@@ -305,7 +306,7 @@ const HeaderViewInterface = Hf.Interface.augment({
         let headerLeftChildren = null;
         let headerCenterChildren = null;
         let headerRightChildren = null;
-        let interfaceFragment = {
+        let fragment = {
             header: {
                 left: {
                     part: (<View style = { adjustedStyle.room.filler }/>)
@@ -319,7 +320,7 @@ const HeaderViewInterface = Hf.Interface.augment({
             }
         };
         if (React.Children.count(children) > 0) {
-            interfaceFragment = React.Children.toArray(children).reduce((_interfaceFragment, child) => {
+            fragment = React.Children.toArray(children).reduce((_fragment, child) => {
                 const {
                     room
                 } = child.props;
@@ -328,25 +329,28 @@ const HeaderViewInterface = Hf.Interface.augment({
                 } else {
                     switch (room) { // eslint-disable-line
                     case `header-left`:
-                        _interfaceFragment.header.left.part = child;
+                        _fragment.header.left.part = child;
                         break;
                     case `header-center`:
-                        _interfaceFragment.header.center.part = child;
+                        _fragment.header.center.part = child;
                         break;
                     case `header-right`:
-                        _interfaceFragment.header.right.part = child;
+                        _fragment.header.right.part = child;
                         break;
                     case `none`:
                         break;
                     }
                 }
-                return _interfaceFragment;
-            }, interfaceFragment);
+                return _fragment;
+            }, fragment);
         }
 
-        headerLeftChildren = createFragment(interfaceFragment.header.left);
-        headerCenterChildren = createFragment(interfaceFragment.header.center);
-        headerRightChildren = createFragment(interfaceFragment.header.right);
+        headerLeftChildren = createFragment(fragment.header.left);
+        headerCenterChildren = createFragment(fragment.header.center);
+        headerRightChildren = createFragment(fragment.header.right);
+        // headerLeftChildren = fragment.header.left;
+        // headerCenterChildren = fragment.header.center;
+        // headerRightChildren = fragment.header.right;
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
@@ -355,7 +359,7 @@ const HeaderViewInterface = Hf.Interface.augment({
                 <BlurView
                     style = { adjustedStyle.container }
                     blurType = { shade }
-                    blurAmount = { 95 }
+                    blurAmount = { Ht.Theme.misc.frostLevel }
                 >
                     <View style = { adjustedStyle.status }/>
                     <AnimatedView

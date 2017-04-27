@@ -29,9 +29,15 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative, { Dimensions } from 'react-native';
+import ReactNative from 'react-native';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
+
+import { Ht } from '../../hypertoxin';
+
+const {
+    Dimensions
+} = ReactNative;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 const DEVICE_HEIGHT = Dimensions.get(`window`).height;
@@ -103,12 +109,12 @@ const LandscapeImageInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         size: {
-            value: `normal`,
+            value: Ht.Theme.image.landscape.size,
             oneOf: [ `smallest`, `smaller`, `small`, `normal`, `large`, `larger`, `largest` ],
             stronglyTyped: true
         },
         resizeMode: {
-            value: `cover`,
+            value: Ht.Theme.image.landscape.resizeMode,
             oneOf: [ `cover`, `contain`, `stretch`, `repeat`, `center` ],
             stronglyTyped: true
         }

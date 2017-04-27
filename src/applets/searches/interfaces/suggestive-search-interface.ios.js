@@ -28,7 +28,7 @@ import { Hf } from 'hyperflow';
 
 import React from 'react';
 
-import ReactNative, { Dimensions } from 'react-native';
+import ReactNative from 'react-native';
 
 import { View as AnimatedView } from 'react-native-animatable';
 
@@ -48,7 +48,8 @@ const {
     View,
     ScrollView,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } = ReactNative;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
@@ -112,12 +113,12 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
     ],
     state: {
         shade: {
-            value: `light`,
+            value: Ht.Theme.suggestiveSearch.shade,
             oneOf: [ `light`, `dark` ],
             stronglyTyped: true
         },
         searchInputTextColor: {
-            value: `default`,
+            value: Ht.Theme.suggestiveSearch.searchInputTextColor,
             stronglyTyped: true
         },
         hintTextColor: {
@@ -125,11 +126,11 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
             stronglyTyped: true
         },
         searchSuggestionTextColor: {
-            value: `default`,
+            value: Ht.Theme.suggestiveSearch.searchSuggestionTextColor,
             stronglyTyped: true
         },
         iconColor: {
-            value: `default`,
+            value: Ht.Theme.suggestiveSearch.iconColor,
             stronglyTyped: true
         },
         // iconPreset: {
@@ -137,20 +138,20 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
         //     stronglyTyped: true
         // },
         iconSize: {
-            value: `normal`,
+            value: Ht.Theme.suggestiveSearch.iconSize,
             oneOf: [ `small`, `normal`, `large` ],
             stronglyTyped: true
         },
-        statusHeightOffet: {
-            value: 21,
+        statusHeightOffset: {
+            value: Ht.Theme.suggestiveSearch.statusHeightOffset,
             stronglyTyped: true
         },
         dropShadow: {
-            value: true,
+            value: Ht.Theme.suggestiveSearch.dropShadow,
             stronglyTyped: true
         },
         dropShadowIcon: {
-            value: true,
+            value: Ht.Theme.suggestiveSearch.dropShadowIcon,
             stronglyTyped: true
         },
         visibleInitially: {
@@ -606,7 +607,7 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
             searchSuggestionTextColor,
             iconColor,
             iconSize,
-            statusHeightOffet,
+            statusHeightOffset,
             enableSearchSuggestion,
             dropShadow,
             dropShadowIcon,
@@ -640,7 +641,7 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
         adjustedStyle = Hf.merge(DEFAULT_SUGGESTIVE_SEARCH_STYLE).with({
             container: dropShadow ? {
                 ...dropShadowStyleTemplate,
-                top: statusHeightOffet,
+                top: statusHeightOffset,
                 transform: [{
                     translateX: (() => {
                         if (visibleInitially) {
@@ -653,7 +654,7 @@ const SuggestiveSearchInterface = Hf.Interface.augment({
                     })()
                 }]
             } : {
-                top: statusHeightOffet,
+                top: statusHeightOffset,
                 transform: [{
                     translateX: (() => {
                         if (visibleInitially) {
