@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module NumberFieldInterface
- * @description - Number field input interface.
+ * @description - Number field input ios interface.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *

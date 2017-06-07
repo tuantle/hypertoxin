@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module LandscapeImageComponent
- * @description - Landscape image component.
+ * @description - Landscape image ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -30,6 +30,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
@@ -191,7 +193,8 @@ const LandscapeImageComponent = LandscapeImageInterface({
     name: `landscape-image`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module PortraitImageComponent
- * @description - Portrait image component.
+ * @description - Portrait image ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -30,6 +30,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
@@ -187,7 +189,8 @@ const PortraitImageComponent = PortraitImageInterface({
     name: `portrait-image`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

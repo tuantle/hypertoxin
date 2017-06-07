@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module ItemViewComponent
- * @description - Item view component.
+ * @description - Item view ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import createFragment from 'react-addons-create-fragment';
 
@@ -249,7 +251,8 @@ const ItemViewComponent = ItemViewInterface({
     name: `item-view`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toPureComponent();
 
 export default ItemViewComponent;

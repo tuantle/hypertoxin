@@ -30,6 +30,8 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+import PropTypes from 'prop-types';
+
 /* load header domain */
 import HeaderDomain from './domains/header-domain';
 
@@ -47,7 +49,8 @@ const HeaderViewApplet = Hf.App.augment({
             component: {
                 library: {
                     React,
-                    ReactNative
+                    ReactNative,
+                    PropTypes
                 },
                 renderer: ReactNative
             }

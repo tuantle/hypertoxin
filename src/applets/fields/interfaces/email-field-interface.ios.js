@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module EmailFieldInterface
- * @description - Email field input interface.
+ * @description - Email field input ios interface.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *

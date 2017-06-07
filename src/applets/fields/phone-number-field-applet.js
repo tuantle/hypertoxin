@@ -30,6 +30,8 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+import PropTypes from 'prop-types';
+
 /* load phone number field domain */
 import PhoneNumberFieldDomain from './domains/phone-number-field-domain';
 
@@ -47,7 +49,8 @@ const PhoneNumberFieldApplet = Hf.App.augment({
             component: {
                 library: {
                     React,
-                    ReactNative
+                    ReactNative,
+                    PropTypes
                 },
                 renderer: ReactNative
             }

@@ -30,6 +30,8 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+import PropTypes from 'prop-types';
+
 /* load text field domain */
 import TextFieldDomain from './domains/text-field-domain';
 
@@ -47,7 +49,8 @@ const TextFieldApplet = Hf.App.augment({
             component: {
                 library: {
                     React,
-                    ReactNative
+                    ReactNative,
+                    PropTypes
                 },
                 renderer: ReactNative
             }

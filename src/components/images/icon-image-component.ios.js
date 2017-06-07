@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module IconImageComponent
- * @description - Icon image component.
+ * @description - Icon image ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
@@ -186,7 +188,8 @@ const IconImageComponent = IconImageInterface({
     name: `icon-image`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     componentMethodAndPropertyInclusions: [
         `animate`

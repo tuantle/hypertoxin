@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module CreditCardFieldInterface
- * @description - Credit card field input interface.
+ * @description - Credit card field input ios interface.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *

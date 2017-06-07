@@ -30,6 +30,8 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+import PropTypes from 'prop-types';
+
 /* load number field domain */
 import NumberFieldDomain from './domains/number-field-domain';
 
@@ -47,7 +49,8 @@ const NumberFieldApplet = Hf.App.augment({
             component: {
                 library: {
                     React,
-                    ReactNative
+                    ReactNative,
+                    PropTypes
                 },
                 renderer: ReactNative
             }

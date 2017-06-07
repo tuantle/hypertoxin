@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module TextFieldInterface
- * @description - Text field input interface.
+ * @description - Text field input ios interface.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *

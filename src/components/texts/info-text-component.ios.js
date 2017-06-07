@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module InfoTextComponent
- * @description - Info text component.
+ * @description - Info text ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Text as AnimatedText } from 'react-native-animatable';
 
@@ -168,7 +170,8 @@ const InfoTextComponent = InfoTextInterface({
     name: `info-text`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

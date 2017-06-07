@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module TitleTextComponent
- * @description - Title text component.
+ * @description - Title text ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -30,6 +30,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Text as AnimatedText } from 'react-native-animatable';
 
@@ -163,7 +165,8 @@ const TitleTextComponent = TitleTextInterface({
     name: `title-text`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

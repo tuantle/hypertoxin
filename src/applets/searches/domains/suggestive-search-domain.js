@@ -52,38 +52,25 @@ const SuggestiveSearchDomain = Hf.Domain.augment({
         domain.incoming(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE).forward(EVENT.DO.MUTATE_SEARCH_INPUT_ITEM_VALUE);
         domain.incoming(EVENT.ON.UPDATE_SEARCH_INPUT_ITEM_VALUE_CHANGED).forward(EVENT.DO.MUTATE_SEARCH_INPUT_ITEM_VALUE_CHANGED);
         domain.incoming(EVENT.ON.UPDATE_SEARCH_SUGGESTION_VISIBILITY).forward(EVENT.DO.MUTATE_SEARCH_SUGGESTION_VISIBILITY);
-        domain.incoming(EVENT.ON.UPDATE_SEARCH_SUGGESTION_ROLLOVER_COUNT).forward(EVENT.DO.MUTATE_SEARCH_SUGGESTION_ROLLOVER_COUNT);
+        domain.incoming(EVENT.ON.UPDATE_SEARCH_SUGGESTION_HISTORY_ITEM_ROLLOVER_COUNT).forward(EVENT.DO.MUTATE_SEARCH_SUGGESTION_HISTORY_ITEM_ROLLOVER_COUNT);
 
         domain.incoming(EVENT.ON.CLEAR_ALL_ITEMS_FROM_SEARCH_SUGGESTION).handle(() => {
             return function mutateSearchSuggestion (state) {
-                let {
-                    items
-                } = state.searchSuggestion;
                 return {
                     searchSuggestion: {
                         ...state.searchSuggestion,
-                        items: items.map((item) => {
-                            item.value = ``;
-                            return item;
-                        })
+                        historyItems: [],
+                        autocompleteItems: []
                     }
                 };
             };
         }).relay(EVENT.DO.MUTATE_SEARCH_SUGGESTION);
-        domain.incoming(EVENT.ON.CLEAR_NON_HISTORY_ITEMS_FROM_SEARCH_SUGGESTION).handle(() => {
+        domain.incoming(EVENT.ON.CLEAR_AUTOCOMPLETE_ITEMS_FROM_SEARCH_SUGGESTION).handle(() => {
             return function mutateSearchSuggestion (state) {
-                let {
-                    items
-                } = state.searchSuggestion;
                 return {
                     searchSuggestion: {
                         ...state.searchSuggestion,
-                        items: items.map((item) => {
-                            if (!item.historyType) {
-                                item.value = ``;
-                            }
-                            return item;
-                        })
+                        autocompleteItems: []
                     }
                 };
             };
@@ -91,32 +78,36 @@ const SuggestiveSearchDomain = Hf.Domain.augment({
         domain.incoming(EVENT.ON.ADD_ITEMS_TO_SEARCH_SUGGESTION).handle((searchSuggestionItems) => {
             return function mutateSearchSuggestion (state) {
                 let {
-                    index,
-                    rollOverCount,
-                    items
+                    historyItemIndex,
+                    historyItemRollOverCount,
+                    historyItems,
+                    autocompleteItems
                 } = state.searchSuggestion;
-                const filteredSearchSuggestionItems = searchSuggestionItems.filter((item) => !items.some((_item) => _item.value === item.value));
+                const filteredSearchSuggestionItems = searchSuggestionItems.filter((item) => !historyItems.some((_item) => _item.value === item.value));
 
                 if (!Hf.isEmpty(filteredSearchSuggestionItems)) {
                     filteredSearchSuggestionItems.forEach((item) => {
-                        if (index === rollOverCount) {
-                            index = 0;
+                        if (item.historyType) {
+                            if (historyItemIndex === historyItemRollOverCount) {
+                                historyItemIndex = 0;
+                            }
+                            if (historyItemIndex === historyItems.length) {
+                                historyItems.push(item);
+                            } else if (historyItemIndex < historyItems.length) {
+                                historyItems[historyItemIndex] = item;
+                            }
+                            historyItemIndex++;
+                        } else {
+                            autocompleteItems.push(item);
                         }
-                        if (index === items.length) {
-                            items.push(item);
-                        } else if (index < items.length) {
-                            items[index] = item;
-                        }
-                        index++;
                     });
-                    items = items.sort((itemA, itemB) => {
-                        return itemB.timestamp - itemA.timestamp;
-                    });
+                    historyItems = historyItems.sort((itemA, itemB) => itemB.timestamp - itemA.timestamp);
                     return {
                         searchSuggestion: {
                             ...state.searchSuggestion,
-                            index,
-                            items
+                            historyItemIndex,
+                            historyItems,
+                            autocompleteItems
                         }
                     };
                 } else { // eslint-disable-line

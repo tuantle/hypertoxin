@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module SquareImageComponent
- * @description - Square image component.
+ * @description - Square image ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -30,6 +30,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
@@ -190,7 +192,8 @@ const SquareImageComponent = SquareImageInterface({
     name: `square-image`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

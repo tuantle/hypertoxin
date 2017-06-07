@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module ScreenViewComponent
- * @description - Screen view component.
+ * @description - Screen view ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Ht } from '../../hypertoxin';
 
@@ -89,7 +91,8 @@ const ScreenViewComponent = ScreenViewInterface({
     name: `screen-view`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toPureComponent();
 
 export default ScreenViewComponent;

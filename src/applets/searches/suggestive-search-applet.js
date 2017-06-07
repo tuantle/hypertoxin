@@ -30,6 +30,8 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+import PropTypes from 'prop-types';
+
 /* load suggestive search domain */
 import SuggestiveSearchDomain from './domains/suggestive-search-domain';
 
@@ -47,7 +49,8 @@ const SuggestiveSearchApplet = Hf.App.augment({
             component: {
                 library: {
                     React,
-                    ReactNative
+                    ReactNative,
+                    PropTypes
                 },
                 renderer: ReactNative
             }

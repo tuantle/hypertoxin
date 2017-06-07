@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module CardViewComponent
- * @description - Card view component.
+ * @description - Card view ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import createFragment from 'react-addons-create-fragment';
 
@@ -352,7 +354,8 @@ const CardViewComponent = CardViewInterface({
     name: `card-view`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toPureComponent();
 
 export default CardViewComponent;

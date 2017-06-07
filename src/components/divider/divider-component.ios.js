@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module DividerComponent
- * @description - A divider component.
+ * @description - A divider ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Ht } from '../../hypertoxin';
 
@@ -85,7 +87,8 @@ const DividerComponent = DividerInterface({
     name: `divider`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toPureComponent();
 
 export default DividerComponent;

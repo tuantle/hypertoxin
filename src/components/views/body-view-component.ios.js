@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module BodyViewComponent
- * @description - Body view component.
+ * @description - Body view ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { BlurView } from 'react-native-blur';
 
@@ -178,7 +180,8 @@ const BodyViewComponent = BodyViewInterface({
     name: `body-view`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

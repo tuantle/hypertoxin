@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module HeaderViewInterface
- * @description - Header view interface.
+ * @description - Header view ios interface.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *

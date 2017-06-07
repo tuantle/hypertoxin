@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module LayoutViewComponent
- * @description - Layout view component.
+ * @description - Layout view ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -341,7 +343,8 @@ const LayoutViewComponent = LayoutViewInterface({
     name: `layout-view`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

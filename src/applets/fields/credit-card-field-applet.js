@@ -30,6 +30,8 @@ import React from 'react';
 
 import ReactNative from 'react-native';
 
+import PropTypes from 'prop-types';
+
 /* load credit card field domain */
 import CreditCardFieldDomain from './domains/credit-card-field-domain';
 
@@ -47,7 +49,8 @@ const CreditCardFieldApplet = Hf.App.augment({
             component: {
                 library: {
                     React,
-                    ReactNative
+                    ReactNative,
+                    PropTypes
                 },
                 renderer: ReactNative
             }

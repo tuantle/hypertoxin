@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module CaptionTextComponent
- * @description - Caption text component.
+ * @description - Caption text ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Text as AnimatedText } from 'react-native-animatable';
 
@@ -168,7 +170,8 @@ const CaptionTextComponent = CaptionTextInterface({
     name: `caption-text`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

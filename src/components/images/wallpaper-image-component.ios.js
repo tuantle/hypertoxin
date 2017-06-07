@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module WallpaperImageComponent
- * @description - Wallpaper image component.
+ * @description - Wallpaper image ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -30,6 +30,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { Ht } from '../../hypertoxin';
 
@@ -98,7 +100,8 @@ const WallpaperImageComponent = WallpaperImageInterface({
     name: `wallpaper-image`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toPureComponent();
 
 export default WallpaperImageComponent;

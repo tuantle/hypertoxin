@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module FloatingActionButtonComponent
- * @description - Floating action button component.
+ * @description - Floating action button ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -29,6 +29,8 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import { View as AnimatedView } from 'react-native-animatable';
 
@@ -251,7 +253,8 @@ const FloatingActionButtonComponent = FloatingActionButtonInterface({
     name: `floating-action-button`
 }).registerComponentLib({
     React,
-    ReactNative
+    ReactNative,
+    PropTypes
 }).toComponent(null, {
     componentMethodAndPropertyInclusions: [
         `animate`

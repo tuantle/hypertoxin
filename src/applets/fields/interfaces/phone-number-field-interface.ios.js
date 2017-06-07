@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module PhoneNumberFieldInterface
- * @description - Phone number field input interface.
+ * @description - Phone number field input ios interface.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
