@@ -47,7 +47,7 @@ const init = function init ({
 } = {}) {
     if (Ht === null) {
         Ht = {
-            VERSION: `0.1.0-beta7`,
+            VERSION: `0.1.0-beta8`,
             Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
         };
 
@@ -115,7 +115,6 @@ const init = function init ({
                         `hide`,
                         `clear`,
                         `clearSearchSuggestion`
-                        // `addSearchSuggestionItems`
                     ]
                 });
             },

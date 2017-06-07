@@ -2,15 +2,19 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
-**Development Beta Version 0.1.0-beta7 (04/26/2017)**
+**Development Beta Version 0.1.0-beta8 (05/27/2017)**
 ```
 Notes:
 - Update dependencies:
-    Hyperflow to 0.1.0-rc1
+    Hyperflow to 0.1.0-rc3
+    React Native to 0.44.0
 New Features:
 Breaking Changes:
+    - Renamed property searchSuggestionItemRollOverCount to searchSuggestionHistoryItemRollOverCount.
+    - Renamed property onGetSearchSuggestions to onGetSearchAutocompletions.
 Improvements:
-    - Improved stylings, allow to have better control over every style elements.
+    - Added *.android.js files.
+    - Used FlatList instead of ScrollView to render search suggestion list in SuggestiveSearchApplet.
 Bug fixes:
 ```
 **Development Beta Version 0.1.0-beta7 (04/03/2017)**
@@ -21,6 +25,7 @@ Notes:
 New Features:
 Breaking Changes:
 Improvements:
+    - Improved stylings, allow to have better control over every style elements.
 Bug fixes:
 ```
 **Development Beta Version 0.1.0-beta6 (03/08/2017)**
