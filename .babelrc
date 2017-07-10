@@ -1,9 +1,19 @@
 {
     "comments": false,
+    "sourceMaps": "inline",
     "presets": [
-        "react-native"
+        "react-native",
+        [
+            "env",
+            {
+                "targets": {
+                    "node": "current"
+                }
+            }
+        ]
     ],
     "plugins": [
-        "transform-strict-mode"
+        "transform-strict-mode",
+        "transform-object-rest-spread"
     ]
 }
