@@ -20,7 +20,7 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
 'use strict'; // eslint-disable-line
 
@@ -31,6 +31,8 @@ import React from 'react';
 import ReactNative from 'react-native';
 
 import PropTypes from 'prop-types';
+
+import CreateReactClass from 'create-react-class';
 
 import { View as AnimatedView } from 'react-native-animatable';
 
@@ -254,7 +256,8 @@ const FloatingActionButtonComponent = FloatingActionButtonInterface({
 }).registerComponentLib({
     React,
     ReactNative,
-    PropTypes
+    PropTypes,
+    CreateReactClass
 }).toComponent(null, {
     componentMethodAndPropertyInclusions: [
         `animate`

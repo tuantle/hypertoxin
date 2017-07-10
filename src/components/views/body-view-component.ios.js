@@ -20,7 +20,7 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
 'use strict'; // eslint-disable-line
 
@@ -31,6 +31,8 @@ import React from 'react';
 import ReactNative from 'react-native';
 
 import PropTypes from 'prop-types';
+
+import CreateReactClass from 'create-react-class';
 
 import { BlurView } from 'react-native-blur';
 
@@ -65,6 +67,11 @@ const BodyViewInterface = Hf.Interface.augment({
             oneOf: [ `opaque`, `transparent`, `translucent-clear`, `translucent-frosted` ],
             stronglyTyped: true
         },
+        alignment: {
+            value: `center`,
+            oneOf: [ `start`, `center`, `end`, `stretch` ],
+            stronglyTyped: true
+        },
         scrollable: {
             value: false,
             stronglyTyped: true
@@ -74,9 +81,7 @@ const BodyViewInterface = Hf.Interface.augment({
         const component = this;
         const [
             scrollView
-        ] = component.lookupComponentRefs(
-            `scrollView`
-        );
+        ] = component.lookupComponentRefs(`scrollView`);
         const {
             x,
             y,
@@ -100,6 +105,7 @@ const BodyViewInterface = Hf.Interface.augment({
         const {
             shade,
             overlay,
+            alignment,
             scrollable,
             style,
             children
@@ -119,6 +125,18 @@ const BodyViewInterface = Hf.Interface.augment({
                     case `transparent`:
                         return `transparent`;
                     }
+                })(),
+                alignItems: (() => {
+                    switch (alignment) { // eslint-disable-line
+                    case `start`:
+                        return `flex-start`;
+                    case `center`:
+                        return `center`;
+                    case `end`:
+                        return `flex-end`;
+                    case `stretch`:
+                        return `stretch`;
+                    }
                 })()
             }
         });
@@ -134,9 +152,9 @@ const BodyViewInterface = Hf.Interface.augment({
                         blurAmount = { Ht.Theme.misc.frostLevel }
                     >
                         <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
-                        {
-                            children
-                        }
+                            {
+                                children
+                            }
                         </ScrollView>
                     </BlurView>
                 );
@@ -144,9 +162,9 @@ const BodyViewInterface = Hf.Interface.augment({
             return (
                 <View style = { adjustedStyle.container }>
                     <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
-                    {
-                        children
-                    }
+                        {
+                            children
+                        }
                     </ScrollView>
                 </View>
             );
@@ -158,17 +176,17 @@ const BodyViewInterface = Hf.Interface.augment({
                         blurType = { shade }
                         blurAmount = { Ht.Theme.misc.frostLevel }
                     >
-                    {
-                        children
-                    }
+                        {
+                            children
+                        }
                     </BlurView>
                 );
             } else {
                 return (
                     <View style = { adjustedStyle.container }>
-                    {
-                        children
-                    }
+                        {
+                            children
+                        }
                     </View>
                 );
             }
@@ -181,7 +199,8 @@ const BodyViewComponent = BodyViewInterface({
 }).registerComponentLib({
     React,
     ReactNative,
-    PropTypes
+    PropTypes,
+    CreateReactClass
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

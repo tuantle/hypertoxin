@@ -20,7 +20,7 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
 'use strict'; // eslint-disable-line
 
@@ -29,8 +29,6 @@ import { Hf } from 'hyperflow';
 import React from 'react';
 
 import ReactNative from 'react-native';
-
-import createFragment from 'react-addons-create-fragment';
 
 import { View as AnimatedView } from 'react-native-animatable';
 
@@ -303,54 +301,46 @@ const HeaderViewInterface = Hf.Interface.augment({
                 color: Ht.Theme.color.header.label[shade]
             }
         });
-        let headerLeftChildren = null;
-        let headerCenterChildren = null;
-        let headerRightChildren = null;
-        let fragment = {
-            header: {
-                left: {
-                    part: (<View style = { adjustedStyle.room.filler }/>)
-                },
-                center: {
-                    part: (<Text style = { adjustedStyle.label }>{ label }</Text>)
-                },
-                right: {
-                    part: (<View style = { adjustedStyle.room.filler }/>)
-                }
-            }
-        };
+        let headerLeftChild = null;
+        let headerCenterChild = null;
+        let headerRightChild = null;
+
         if (React.Children.count(children) > 0) {
-            fragment = React.Children.toArray(children).reduce((_fragment, child) => {
+            let fragments = React.Children.toArray(children);
+            headerLeftChild = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
                 if (!Hf.isString(room)) {
                     Hf.log(`warn1`, `HeaderViewInterface - Header view interface requires children each to have a room propperty.`);
+                    return false;
                 } else {
-                    switch (room) { // eslint-disable-line
-                    case `header-left`:
-                        _fragment.header.left.part = child;
-                        break;
-                    case `header-center`:
-                        _fragment.header.center.part = child;
-                        break;
-                    case `header-right`:
-                        _fragment.header.right.part = child;
-                        break;
-                    case `none`:
-                        break;
-                    }
+                    return room === `header-left`;
                 }
-                return _fragment;
-            }, fragment);
+            });
+            headerCenterChild = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `HeaderViewInterface - Header view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `header-center`;
+                }
+            });
+            headerRightChild = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `HeaderViewInterface - Header view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `header-right`;
+                }
+            });
         }
-
-        headerLeftChildren = createFragment(fragment.header.left);
-        headerCenterChildren = createFragment(fragment.header.center);
-        headerRightChildren = createFragment(fragment.header.right);
-        // headerLeftChildren = fragment.header.left;
-        // headerCenterChildren = fragment.header.center;
-        // headerRightChildren = fragment.header.right;
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
@@ -371,17 +361,17 @@ const HeaderViewInterface = Hf.Interface.augment({
                     >
                         <View style = { adjustedStyle.room.left }>
                         {
-                            headerLeftChildren
+                            headerLeftChild !== null ? headerLeftChild : <View style = { adjustedStyle.room.filler }/>
                         }
                             <View style = { adjustedStyle.room.center }>
                             {
-                                headerCenterChildren
+                                headerCenterChild !== null ? headerCenterChild : <Text style = { adjustedStyle.label }>{ label }</Text>
                             }
                             </View>
                         </View>
                         <View style = { adjustedStyle.room.right }>
                         {
-                            headerRightChildren
+                            headerRightChild !== null ? headerRightChild : <View style = { adjustedStyle.room.filler }/>
                         }
                         </View>
                     </AnimatedView>
@@ -400,17 +390,17 @@ const HeaderViewInterface = Hf.Interface.augment({
                     >
                         <View style = { adjustedStyle.room.left }>
                         {
-                            headerLeftChildren
+                            headerLeftChild !== null ? headerLeftChild : <View style = { adjustedStyle.room.filler }/>
                         }
                             <View style = { adjustedStyle.room.center }>
                             {
-                                headerCenterChildren
+                                headerCenterChild !== null ? headerCenterChild : <Text style = { adjustedStyle.label }>{ label }</Text>
                             }
                             </View>
                         </View>
                         <View style = { adjustedStyle.room.right }>
                         {
-                            headerRightChildren
+                            headerRightChild !== null ? headerRightChild : <View style = { adjustedStyle.room.filler }/>
                         }
                         </View>
                     </AnimatedView>

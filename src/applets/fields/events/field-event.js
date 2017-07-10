@@ -19,7 +19,7 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
 'use strict'; // eslint-disable-line
 

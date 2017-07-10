@@ -20,7 +20,7 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
 'use strict'; // eslint-disable-line
 
@@ -31,6 +31,8 @@ import React from 'react';
 import ReactNative from 'react-native';
 
 import PropTypes from 'prop-types';
+
+import CreateReactClass from 'create-react-class';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -281,9 +283,9 @@ const LayoutViewInterface = Hf.Interface.augment({
                     >
                         <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
                             <View style = { adjustedStyle[orientation] }>
-                            {
-                                children
-                            }
+                                {
+                                    children
+                                }
                             </View>
                         </ScrollView>
                     </AnimatedBlurView>
@@ -297,9 +299,9 @@ const LayoutViewInterface = Hf.Interface.augment({
                 >
                     <ScrollView ref = { component.assignComponentRef(`scrollView`) }>
                         <View style = { adjustedStyle[orientation] }>
-                        {
-                            children
-                        }
+                            {
+                                children
+                            }
                         </View>
                     </ScrollView>
                 </AnimatedView>
@@ -315,9 +317,9 @@ const LayoutViewInterface = Hf.Interface.augment({
                         useNativeDriver = { true }
                     >
                         <View style = { adjustedStyle[orientation] }>
-                        {
-                            children
-                        }
+                            {
+                                children
+                            }
                         </View>
                     </AnimatedBlurView>
                 );
@@ -329,9 +331,9 @@ const LayoutViewInterface = Hf.Interface.augment({
                     useNativeDriver = { true }
                 >
                     <View style = { adjustedStyle[orientation] }>
-                    {
-                        children
-                    }
+                        {
+                            children
+                        }
                     </View>
                 </AnimatedView>
             );
@@ -344,7 +346,8 @@ const LayoutViewComponent = LayoutViewInterface({
 }).registerComponentLib({
     React,
     ReactNative,
-    PropTypes
+    PropTypes,
+    CreateReactClass
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

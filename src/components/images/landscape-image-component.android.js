@@ -20,9 +20,8 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
-'use strict'; // eslint-disable-line
 'use strict'; // eslint-disable-line
 
 import { Hf } from 'hyperflow';
@@ -32,6 +31,8 @@ import React from 'react';
 import ReactNative from 'react-native';
 
 import PropTypes from 'prop-types';
+
+import CreateReactClass from 'create-react-class';
 
 import { Image as AnimatedImage } from 'react-native-animatable';
 
@@ -194,7 +195,8 @@ const LandscapeImageComponent = LandscapeImageInterface({
 }).registerComponentLib({
     React,
     ReactNative,
-    PropTypes
+    PropTypes,
+    CreateReactClass
 }).toComponent(null, {
     alwaysUpdateAsParent: true,
     componentMethodAndPropertyInclusions: [

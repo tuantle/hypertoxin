@@ -20,7 +20,7 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
 'use strict'; // eslint-disable-line
 
@@ -31,8 +31,6 @@ import React from 'react';
 import ReactNative from 'react-native';
 
 import PropTypes from 'prop-types';
-
-import createFragment from 'react-addons-create-fragment';
 
 import { BlurView } from 'react-native-blur';
 
@@ -164,44 +162,32 @@ const ItemViewInterface = Hf.Interface.augment({
         });
         let itemMediaChildren = null;
         let itemActionChildren = null;
-        let fragment = {
-            item: {
-                media: {
-                    part: (<View style = { adjustedStyle.room.filler }/>)
-                },
-                action: {
-                    part: (<View style = { adjustedStyle.room.filler }/>)
-                }
-            }
-        };
 
         if (React.Children.count(children) > 0) {
-            fragment = React.Children.toArray(children).reduce((_fragment, child) => {
+            let fragments = React.Children.toArray(children);
+            itemMediaChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
                 if (!Hf.isString(room)) {
                     Hf.log(`warn1`, `ItemViewInterface - Item view interface requires children each to have a room propperty.`);
+                    return false;
                 } else {
-                    switch (room) { // eslint-disable-line
-                    case `item-media`:
-                        _fragment.item.media.part = child;
-                        break;
-                    case `item-action`:
-                        _fragment.item.action.part = child;
-                        break;
-                    case `none`:
-                        break;
-                    }
+                    return room === `item-media`;
                 }
-                return _fragment;
-            }, fragment);
+            });
+            itemActionChildren = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `ItemViewInterface - Item view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `item-action`;
+                }
+            });
         }
-
-        itemMediaChildren = createFragment(fragment.item.media);
-        itemActionChildren = createFragment(fragment.item.action);
-        // itemMediaChildren = fragment.item.media;
-        // itemActionChildren = fragment.item.action;
 
         adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
@@ -214,14 +200,14 @@ const ItemViewInterface = Hf.Interface.augment({
                         blurAmount = { Ht.Theme.misc.frostLevel }
                     >
                         <View style = { adjustedStyle.room.media }>
-                        {
-                            itemMediaChildren
-                        }
+                            {
+                                itemMediaChildren !== null ? itemMediaChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
                         </View>
                         <View style = { adjustedStyle.room.action }>
-                        {
-                            itemActionChildren
-                        }
+                            {
+                                itemActionChildren !== null ? itemActionChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
                         </View>
                     </BlurView>
                 </TouchableOpacity>
@@ -231,14 +217,14 @@ const ItemViewInterface = Hf.Interface.augment({
                 <TouchableOpacity onPress = { onPress }>
                     <View style = { adjustedStyle.container }>
                         <View style = { adjustedStyle.room.media }>
-                        {
-                            itemMediaChildren
-                        }
+                            {
+                                itemMediaChildren !== null ? itemMediaChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
                         </View>
                         <View style = { adjustedStyle.room.action }>
-                        {
-                            itemActionChildren
-                        }
+                            {
+                                itemActionChildren !== null ? itemActionChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
                         </View>
                     </View>
                 </TouchableOpacity>

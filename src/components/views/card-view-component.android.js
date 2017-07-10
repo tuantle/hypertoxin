@@ -20,7 +20,7 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
 'use strict'; // eslint-disable-line
 
@@ -31,8 +31,6 @@ import React from 'react';
 import ReactNative from 'react-native';
 
 import PropTypes from 'prop-types';
-
-import createFragment from 'react-addons-create-fragment';
 
 import { BlurView } from 'react-native-blur';
 
@@ -60,11 +58,20 @@ const DEFAULT_CARD_VIEW_STYLE = {
     },
     room: {
         header: {
-            flexDirection: `row`,
-            alignItems: `stretch`,
-            justifyContent: `space-between`,
-            maxWidth: DEVICE_WIDTH,
-            backgroundColor: `transparent`
+            left: {
+                flexDirection: `row`,
+                alignItems: `stretch`,
+                justifyContent: `space-between`,
+                maxWidth: DEVICE_WIDTH,
+                backgroundColor: `transparent`
+            },
+            right: {
+                flexDirection: `row`,
+                alignItems: `stretch`,
+                justifyContent: `space-between`,
+                maxWidth: DEVICE_WIDTH,
+                backgroundColor: `transparent`
+            }
         },
         media: {
             flexDirection: `column`,
@@ -89,11 +96,20 @@ const DEFAULT_CARD_VIEW_STYLE = {
             backgroundColor: `transparent`
         },
         action: {
-            flexDirection: `row`,
-            alignItems: `flex-start`,
-            justifyContent: `center`,
-            maxWidth: DEVICE_WIDTH,
-            backgroundColor: `transparent`
+            primary: {
+                flexDirection: `row`,
+                alignItems: `flex-start`,
+                justifyContent: `center`,
+                maxWidth: DEVICE_WIDTH,
+                backgroundColor: `transparent`
+            },
+            secondary: {
+                flexDirection: `row`,
+                alignItems: `flex-start`,
+                justifyContent: `center`,
+                maxWidth: DEVICE_WIDTH,
+                backgroundColor: `transparent`
+            }
         },
         filler: {
             width: 0,
@@ -186,101 +202,96 @@ const CardViewInterface = Hf.Interface.augment({
                 })()
             }
         });
-        let cardHeaderChildren = null;
+        let cardHeaderLeftChildren = null;
+        let cardHeaderRightChildren = null;
         let cardMediaChildren = null;
         let cardOverlayChildren = null;
         let cardBodyChildren = null;
-        let cardActionChildren = null;
-        let fragment = {
-            card: {
-                header: {
-                    leftPart: (<View style = { adjustedStyle.room.filler }/>),
-                    rightPart: (<View style = { adjustedStyle.room.filler }/>)
-                },
-                media: {
-                    part: (<View style = { adjustedStyle.room.filler }/>)
-                },
-                overlay: {
-                    part: (<View style = { adjustedStyle.room.filler }/>)
-                },
-                body: {
-                    part: (<View style = { adjustedStyle.room.filler }/>)
-                },
-                action: {
-                    primaryPart: (<View style = { adjustedStyle.room.filler }/>),
-                    secondaryPart: (<View style = { adjustedStyle.room.filler }/>)
-                }
-            }
-        };
-
-        adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
+        let cardActionPrimaryChildren = null;
+        let cardActionSecondaryChildren = null;
 
         if (React.Children.count(children) > 0) {
-            fragment = React.Children.toArray(children).reduce((_fragment, child) => {
+            let fragments = React.Children.toArray(children);
+            cardHeaderLeftChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
                 if (!Hf.isString(room)) {
                     Hf.log(`warn1`, `CardViewInterface - Card view interface requires children each to have a room propperty.`);
+                    return false;
                 } else {
-                    switch (room) { // eslint-disable-line
-                    case `card-header-left`:
-                        _fragment.card.header.leftPart = child;
-                        break;
-                    case `card-header-right`:
-                        _fragment.card.header.rightPart = child;
-                        break;
-                    case `card-media`:
-                        _fragment.card.media.part = child;
-                        break;
-                    case `card-overlay`:
-                        _fragment.card.overlay.part = child;
-                        // _fragment.card.overlay.part = (
-                        //     <View style = { adjustedStyle.room.overlay }>
-                        //     {
-                        //         child
-                        //     }
-                        //     </View>
-                        // );
-                        break;
-                    case `card-body`:
-                        _fragment.card.body.part = child;
-                        break;
-                    case `card-action-primary`:
-                        _fragment.card.action.primaryPart = child;
-                        break;
-                    case `card-action-secondary`:
-                        _fragment.card.action.secondaryPart = child;
-                        break;
-                    case `none`:
-                        break;
-                    }
+                    return room === `card-header-left`;
                 }
-                return _fragment;
-            }, fragment);
+            });
+            cardHeaderRightChildren = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `CardViewInterface - Card view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `card-header-right`;
+                }
+            });
+            cardMediaChildren = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `CardViewInterface - Card view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `card-media`;
+                }
+            });
+            cardOverlayChildren = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `CardViewInterface - Card view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `card-overlay`;
+                }
+            });
+            cardBodyChildren = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `CardViewInterface - Card view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `card-body`;
+                }
+            });
+            cardActionPrimaryChildren = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `CardViewInterface - Card view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `card-action-primary`;
+                }
+            });
+            cardActionSecondaryChildren = fragments.filter((child) => {
+                const {
+                    room
+                } = child.props;
+                if (!Hf.isString(room)) {
+                    Hf.log(`warn1`, `CardViewInterface - Card view interface requires children each to have a room propperty.`);
+                    return false;
+                } else {
+                    return room === `card-action-secondary`;
+                }
+            });
         }
 
-        cardHeaderChildren = createFragment(fragment.card.header);
-        cardOverlayChildren = createFragment(fragment.card.overlay);
-        cardMediaChildren = createFragment(fragment.card.media);
-        // cardHeaderChildren = fragment.card.header;
-        // cardOverlayChildren = fragment.card.overlay;
-        // cardMediaChildren = fragment.card.media;
-        // cardMediaChildren = React.Children.map(createFragment(fragment.card.media), (child) => {
-        //     if (Hf.isDefined(child.props.children)) {
-        //         return React.cloneElement(child, {
-        //             children: [ ...child.props.children, ...cardOverlayChildren ]
-        //         });
-        //     } else {
-        //         return React.cloneElement(child, {
-        //             children: [ ...cardOverlayChildren ]
-        //         });
-        //     }
-        // });
-        cardBodyChildren = createFragment(fragment.card.body);
-        cardActionChildren = createFragment(fragment.card.action);
-        // cardBodyChildren = fragment.card.body;
-        // cardActionChildren = fragment.card.action;
+        adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
 
         if (frosted) {
             return (
@@ -289,29 +300,39 @@ const CardViewInterface = Hf.Interface.augment({
                     blurType = { shade }
                     blurAmount = { Ht.Theme.misc.frostLevel }
                 >
-                    <View style = { adjustedStyle.room.header }>
-                    {
-                        cardHeaderChildren
-                    }
+                    <View style = { adjustedStyle.room.header.left }>
+                        {
+                            cardHeaderLeftChildren !== null ? cardHeaderLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                        }
+                    </View>
+                    <View style = { adjustedStyle.room.header.right }>
+                        {
+                            cardHeaderRightChildren !== null ? cardHeaderRightChildren : <View style = { adjustedStyle.room.filler }/>
+                        }
                     </View>
                     <View style = { adjustedStyle.room.media }>
-                    {
-                        cardMediaChildren
-                    }
-                        <View style = { adjustedStyle.room.overlay }>
                         {
-                            cardOverlayChildren
+                            cardMediaChildren !== null ? cardMediaChildren : <View style = { adjustedStyle.room.filler }/>
                         }
+                        <View style = { adjustedStyle.room.overlay }>
+                            {
+                                cardOverlayChildren !== null ? cardOverlayChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
                         </View>
                     </View>
                     <View style = { adjustedStyle.room.body }>
-                    {
-                        cardBodyChildren
-                    }
-                        <View style = { adjustedStyle.room.action }>
                         {
-                            cardActionChildren
+                            cardBodyChildren !== null ? cardBodyChildren : <View style = { adjustedStyle.room.filler }/>
                         }
+                        <View style = { adjustedStyle.room.action.primary }>
+                            {
+                                cardActionPrimaryChildren !== null ? cardActionPrimaryChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
+                        </View>
+                        <View style = { adjustedStyle.room.action.secondary }>
+                            {
+                                cardActionSecondaryChildren !== null ? cardActionSecondaryChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
                         </View>
                     </View>
                 </BlurView>
@@ -319,29 +340,39 @@ const CardViewInterface = Hf.Interface.augment({
         } else {
             return (
                 <View style = { adjustedStyle.container }>
-                    <View style = { adjustedStyle.room.header }>
-                    {
-                        cardHeaderChildren
-                    }
+                    <View style = { adjustedStyle.room.header.left }>
+                        {
+                            cardHeaderLeftChildren !== null ? cardHeaderLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                        }
+                    </View>
+                    <View style = { adjustedStyle.room.header.right }>
+                        {
+                            cardHeaderRightChildren !== null ? cardHeaderRightChildren : <View style = { adjustedStyle.room.filler }/>
+                        }
                     </View>
                     <View style = { adjustedStyle.room.media }>
-                    {
-                        cardMediaChildren
-                    }
-                        <View style = { adjustedStyle.room.overlay }>
                         {
-                            cardOverlayChildren
+                            cardMediaChildren !== null ? cardMediaChildren : <View style = { adjustedStyle.room.filler }/>
                         }
+                        <View style = { adjustedStyle.room.overlay }>
+                            {
+                                cardOverlayChildren !== null ? cardOverlayChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
                         </View>
                     </View>
                     <View style = { adjustedStyle.room.body }>
-                    {
-                        cardBodyChildren
-                    }
-                        <View style = { adjustedStyle.room.action }>
                         {
-                            cardActionChildren
+                            cardBodyChildren !== null ? cardBodyChildren : <View style = { adjustedStyle.room.filler }/>
                         }
+                        <View style = { adjustedStyle.room.action.primary }>
+                            {
+                                cardActionPrimaryChildren !== null ? cardActionPrimaryChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
+                        </View>
+                        <View style = { adjustedStyle.room.action.secondary }>
+                            {
+                                cardActionSecondaryChildren !== null ? cardActionSecondaryChildren : <View style = { adjustedStyle.room.filler }/>
+                            }
                         </View>
                     </View>
                 </View>

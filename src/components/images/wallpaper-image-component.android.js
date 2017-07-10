@@ -20,9 +20,8 @@
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
- *------------------------------------------------------------------------
+ * @flow
  */
-'use strict'; // eslint-disable-line
 'use strict'; // eslint-disable-line
 
 import { Hf } from 'hyperflow';
