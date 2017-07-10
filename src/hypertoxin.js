@@ -19,8 +19,9 @@
  * @description - Hf namespace setup. Initialize Hf, adding core modules, and apply settings.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
+ *
+ * @flow
  */
-/* @flow */
 'use strict'; // eslint-disable-line
 
 /* load and initialize hyperflow */
@@ -31,6 +32,9 @@ const Hf = require('hyperflow').init({ // eslint-disable-line
 
 /* load hypertoxin default icon and color theme */
 const defaultTheme = require(`./styles/theme`).default;
+
+/* load hypertoxin default contraint */
+const defaultConstraint = require(`./styles/constraint`).default;
 
 /* hypertoxin global object */
 let Ht = null;
@@ -43,12 +47,14 @@ let Ht = null;
  * @returns {object}
  */
 const init = function init ({
-    customTheme
+    customTheme,
+    customConstraint
 } = {}) {
     if (Ht === null) {
         Ht = {
-            VERSION: `0.1.0-beta8`,
-            Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
+            VERSION: `0.1.0-beta9`,
+            Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme,
+            Constraint: Hf.isNonEmptyObject(customConstraint) ? Hf.merge(defaultConstraint).with(customConstraint) : defaultConstraint
         };
 
         const HtApplet = {

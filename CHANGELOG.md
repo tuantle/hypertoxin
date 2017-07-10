@@ -2,6 +2,20 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
+**Development Beta Version 0.1.0-beta9 (07/10/2017)**
+```
+Notes:
+- Update dependencies:
+    Hyperflow to 0.1.0-rc4
+    React Native to 0.45.1
+New Features:
+Breaking Changes:
+Improvements:
+    - Removed react-addons-create-fragment package dependency.
+Bug fixes:
+```
+
+
 **Development Beta Version 0.1.0-beta8 (05/27/2017)**
 ```
 Notes:
