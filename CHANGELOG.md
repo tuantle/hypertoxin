@@ -10,7 +10,7 @@ Notes:
     React Native to 0.49.3
 New Features:
 Breaking Changes:
-    - Reimplementing Components.
+    - Code refactored. Reimplementing Components.
     - Removed constraint idea.
     - Removed IconButton and FloatingActionButton.
 Improvements:
