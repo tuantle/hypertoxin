@@ -2,6 +2,35 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
+**Development Beta Version 0.1.0-beta10 (10/20/2017)**
+```
+Notes:
+- Update dependencies:
+    Hyperflow to 0.1.6
+    React Native to 0.49.3
+New Features:
+Breaking Changes:
+    - Reimplementing Components.
+    - Removed constraint idea.
+    - Removed IconButton and FloatingActionButton.
+Improvements:
+    - Added debouncing to all onPress callbacks.
+    - Refactored and improved how theme is handle.
+    - Code cleanups.
+    - Using ImageBackground instead of Image for WallpaperImageComponent.
+Bug fixes:
+```
+**Development Beta Version 0.1.0-beta9 (07/21/2017)**
+```
+Notes:
+- Update dependencies:
+    Hyperflow to 0.1.0
+    React Native to 0.46.4
+New Features:
+Breaking Changes:
+Improvements:
+Bug fixes:
+```
 **Development Beta Version 0.1.0-beta9 (07/10/2017)**
 ```
 Notes:
@@ -14,8 +43,6 @@ Improvements:
     - Removed react-addons-create-fragment package dependency.
 Bug fixes:
 ```
-
-
 **Development Beta Version 0.1.0-beta8 (05/27/2017)**
 ```
 Notes:
