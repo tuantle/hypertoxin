@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Dropped shadow style template.
+ * @description - Hypertoxin default toxin icon preset.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -23,32 +23,7 @@
  * @flow
  *
  */
+'use strict'; // eslint-disable-line
 
-'use strict'; //eslint-disable-line
-
-import toxinPalette from '../palettes/toxin-palette';
-
-const shallowDroppedShadowTemplate = {
-    shadowRadius: 2,
-    shadowOpacity: 0.2,
-    shadowOffset: {
-        width: 0,
-        height: 1
-    },
-    shadowColor: toxinPalette.black
-};
-
-const deepDroppedShadowTemplate = {
-    shadowRadius: 2.5,
-    shadowOpacity: 0.35,
-    shadowOffset: {
-        width: 0,
-        height: 3
-    },
-    shadowColor: toxinPalette.black
-};
-
-export default { // eslint-disable-line
-    shallow: shallowDroppedShadowTemplate,
-    deep: deepDroppedShadowTemplate
+export default {
 };

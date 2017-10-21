@@ -1,0 +1,107 @@
+/**
+ * Copyright 2016-present Tuan Le.
+ *
+ * Licensed under the MIT License.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://opensource.org/licenses/mit-license.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *------------------------------------------------------------------------
+ *
+ * @description - Field theme.
+ *
+ * @author Tuan Le (tuan.t.lei@gmail.com)
+ *
+ * @flow
+ *
+ */
+'use strict'; // eslint-disable-line
+
+import fontStyleTemplate from './templates/font-style-template';
+
+import toxinPalette from './palettes/toxin-palette';
+
+import colorTheme from './color-theme.js';
+
+export default {
+    search: {
+        shade: `dark`
+    },
+    text: {
+        shade: `dark`,
+        overlay: `opaque`,
+        underlined: true
+    },
+    size: {
+        search: {
+            line: 2,
+            input: 36,
+            suggestionEntry: 36
+        },
+        text: {
+            line: 2,
+            input: 36,
+            underline: {
+                focused: 3,
+                blurred: 1
+            }
+        }
+    },
+    font: {
+        search: {
+            input: fontStyleTemplate.normalLarge,
+            suggestionEntry: fontStyleTemplate.normalLarge,
+            hint: fontStyleTemplate.normalLarge
+        },
+        text: {
+            input: fontStyleTemplate.normalLarge,
+            hint: fontStyleTemplate.normalLarge,
+            status: fontStyleTemplate.italicSmall,
+            helper: fontStyleTemplate.normalSmall,
+            label: {
+                focused: fontStyleTemplate.normal,
+                blurred: fontStyleTemplate.normalLarge
+            }
+        }
+    },
+    color: {
+        search: {
+        },
+        text: {
+            opacity: `dd`,
+            focused: {
+                dark: toxinPalette.orange,
+                light: toxinPalette.orange
+            },
+            blurred: {
+                dark: toxinPalette.grey,
+                light: toxinPalette.grey
+            },
+            disabled: {
+                dark: colorTheme.dark.disabled,
+                light: colorTheme.light.disabled
+            },
+            box: {
+                dark: toxinPalette.charcoal,
+                light: toxinPalette.silver
+            },
+            input: {
+                dark: toxinPalette.white,
+                light: toxinPalette.deepGrey
+            },
+            helper: {
+                dark: toxinPalette.grey,
+                light: toxinPalette.grey
+            },
+            hint: toxinPalette.lightGrey,
+            status: toxinPalette.red
+        }
+    }
+};

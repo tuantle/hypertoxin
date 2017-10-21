@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Hypertoxin default theme.
+ * @description - Misc theme.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -26,40 +26,20 @@
 
 import fontStyleTemplate from './templates/font-style-template';
 
-import dropShadowStyleTemplate from './templates/drop-shadow-style-template';
-
-// import toxinIconPreset from './icons/toxin-preset';
-
 import toxinPalette from './palettes/toxin-palette';
 
-import colorTheme from './color-theme.js';
-
-import buttonTheme from './button-theme.js';
-
-import fieldTheme from './field-theme.js';
-
-import miscTheme from './misc-theme.js';
-
-import textTheme from './text-theme.js';
-
-import viewTheme from './view-theme.js';
-
-import imageTheme from './image-theme.js';
-
 export default {
-    palette: toxinPalette,
-    icon: {},
-    // icon: toxinIconPreset,
-    font: fontStyleTemplate,
-    general: {
-        frostLevel: 25,
-        dropShadow: dropShadowStyleTemplate,
-        color: colorTheme
+    size: {
+        badge: 20,
+        divider: 1
     },
-    misc: miscTheme,
-    field: fieldTheme,
-    button: buttonTheme,
-    text: textTheme,
-    view: viewTheme,
-    image: imageTheme
+    font: {
+        badge: {
+            label: fontStyleTemplate.boldSmaller
+        }
+    },
+    color: {
+        divider: toxinPalette.lightGrey,
+        badge: toxinPalette.red
+    }
 };
