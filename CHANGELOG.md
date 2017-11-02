@@ -2,6 +2,21 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
+**Development Beta Version 0.1.0-beta11 (11/02/2017)**
+```
+Notes:
+- Update dependencies:
+    Hyperflow to 0.1.8
+    React Native to 0.49.5
+New Features:
+    - Added ripple to ItemView, FlatButton, and RaisedButton.
+Breaking Changes:
+    - Renamed room property tags.
+    - Renamed methods renderHeaderViewEntryAnimation to animateHeaderViewEntry and renderHeaderViewExitAnimation to animateHeaderViewExit for HeaderViewSlideAndFadeAnimationComposite.
+Improvements:
+    - Code cleanups.
+Bug fixes:
+```
 **Development Beta Version 0.1.0-beta10 (10/20/2017)**
 ```
 Notes:
