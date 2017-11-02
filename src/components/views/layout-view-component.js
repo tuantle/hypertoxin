@@ -84,9 +84,9 @@ export default class LayoutViewComponent extends Component {
         cId: PropTypes.string,
         room: PropTypes.oneOf([
             `none`,
-            `left`, `center`, `right`,
-            `action`, `action-primary`, `action-secondary`,
-            `media`, `overlay`, `body`
+            `action-left`, `action-right`,
+            `content-left`, `content-center`, `content-right`,
+            `media`, `overlay`
         ]),
         shade: PropTypes.oneOf([ `light`, `dark` ]),
         overlay: PropTypes.oneOf([ `opaque`, `frosted`, `translucent`, `transparent` ]),

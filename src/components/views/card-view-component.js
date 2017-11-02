@@ -34,8 +34,6 @@ import ReactNative from 'react-native'; // eslint-disable-line
 
 import PropTypes from 'prop-types';
 
-import { BlurView } from 'react-native-blur';
-
 const {
     View,
     Dimensions
@@ -52,27 +50,56 @@ const DEFAULT_CARD_VIEW_STYLE = {
         maxWidth: DEVICE_WIDTH,
         padding: 3
     },
+    header: {
+        flexDirection: `row`,
+        alignItems: `stretch`,
+        alignSelf: `stretch`,
+        justifyContent: `space-between`,
+        maxWidth: DEVICE_WIDTH,
+        backgroundColor: `transparent`
+    },
+    body: {
+        flexDirection: `column`,
+        alignItems: `stretch`,
+        alignSelf: `stretch`,
+        justifyContent: `center`,
+        maxWidth: DEVICE_WIDTH,
+        backgroundColor: `transparent`
+    },
+    footer: {
+        flexDirection: `row`,
+        alignItems: `stretch`,
+        alignSelf: `stretch`,
+        justifyContent: `space-between`,
+        maxWidth: DEVICE_WIDTH,
+        backgroundColor: `transparent`
+    },
     room: {
-        header: {
-            left: {
-                flexDirection: `row`,
-                alignItems: `center`,
-                justifyContent: `center`,
-                maxWidth: DEVICE_WIDTH / 2,
-                backgroundColor: `transparent`
-            },
-            right: {
-                flexDirection: `row`,
-                alignItems: `center`,
-                justifyContent: `center`,
-                maxWidth: DEVICE_WIDTH / 2,
-                backgroundColor: `transparent`
-            }
+        contentLeft: {
+            flexDirection: `row`,
+            alignItems: `center`,
+            justifyContent: `center`,
+            maxWidth: DEVICE_WIDTH / 2,
+            backgroundColor: `transparent`
         },
-        media: {
+        contentRight: {
+            flexDirection: `row`,
+            alignItems: `center`,
+            justifyContent: `center`,
+            maxWidth: DEVICE_WIDTH / 2,
+            backgroundColor: `transparent`
+        },
+        contentCenter: {
             flexDirection: `column`,
             alignItems: `flex-start`,
             justifyContent: `flex-start`,
+            maxWidth: DEVICE_WIDTH,
+            backgroundColor: `transparent`
+        },
+        media: {
+            flexDirection: `column`,
+            alignItems: `center`,
+            justifyContent: `center`,
             maxWidth: DEVICE_WIDTH,
             backgroundColor: `transparent`
         },
@@ -84,28 +111,19 @@ const DEFAULT_CARD_VIEW_STYLE = {
             maxWidth: DEVICE_WIDTH,
             backgroundColor: `${Ht.Theme.view.color.card.overlay}${Ht.Theme.view.color.card.opacity}`
         },
-        body: {
-            flexDirection: `column`,
-            alignItems: `flex-start`,
-            justifyContent: `flex-start`,
-            maxWidth: DEVICE_WIDTH,
+        actionLeft: {
+            flexDirection: `row`,
+            alignItems: `center`,
+            justifyContent: `center`,
+            maxWidth: DEVICE_WIDTH / 2,
             backgroundColor: `transparent`
         },
-        action: {
-            primary: {
-                flexDirection: `row`,
-                alignItems: `center`,
-                justifyContent: `center`,
-                maxWidth: DEVICE_WIDTH / 2,
-                backgroundColor: `transparent`
-            },
-            secondary: {
-                flexDirection: `row`,
-                alignItems: `center`,
-                justifyContent: `center`,
-                maxWidth: DEVICE_WIDTH / 2,
-                backgroundColor: `transparent`
-            }
+        actionRight: {
+            flexDirection: `row`,
+            alignItems: `center`,
+            justifyContent: `center`,
+            maxWidth: DEVICE_WIDTH / 2,
+            backgroundColor: `transparent`
         },
         filler: {
             width: 0,
@@ -129,7 +147,6 @@ const CardViewComponent = function CardViewComponent (property = {
         shade: Ht.Theme.view.card.shade,
         overlay: Ht.Theme.view.card.overlay
     }).of(property);
-    let frosted = false;
     let adjustedStyle = Hf.merge(DEFAULT_CARD_VIEW_STYLE).with({
         container: {
             backgroundColor: (() => {
@@ -138,22 +155,19 @@ const CardViewComponent = function CardViewComponent (property = {
                     return Ht.Theme.view.color.card[shade];
                 case `translucent`:
                     return `${Ht.Theme.view.color.card[shade]}${Ht.Theme.view.color.card.opacity}`;
-                case `frosted`:
-                    frosted = true;
-                    return `transparent`;
                 case `transparent`:
                     return `transparent`;
                 }
             })()
         }
     });
-    let cardHeaderLeftChildren = null;
-    let cardHeaderRightChildren = null;
+    let cardContentLeftChildren = null;
+    let cardContentRightChildren = null;
     let cardMediaChildren = null;
     let cardOverlayChildren = null;
-    let cardBodyChildren = null;
-    let cardActionPrimaryChildren = null;
-    let cardActionSecondaryChildren = null;
+    let cardContentCenterChildren = null;
+    let cardActionLeftChildren = null;
+    let cardActionRightChildren = null;
 
     adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
         container: style
@@ -161,7 +175,7 @@ const CardViewComponent = function CardViewComponent (property = {
 
     if (React.Children.count(children) > 0) {
         let fragments = React.Children.toArray(children);
-        cardHeaderLeftChildren = fragments.filter((child) => {
+        cardContentLeftChildren = fragments.filter((child) => {
             const {
                 room
             } = child.props;
@@ -169,12 +183,12 @@ const CardViewComponent = function CardViewComponent (property = {
                 Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
                 return false;
             } else {
-                return room === `left`;
+                return room === `content-left`;
             }
         });
-        cardHeaderLeftChildren = Hf.isEmpty(cardHeaderLeftChildren) ? null : cardHeaderLeftChildren;
+        cardContentLeftChildren = Hf.isEmpty(cardContentLeftChildren) ? null : cardContentLeftChildren;
 
-        cardHeaderRightChildren = fragments.filter((child) => {
+        cardContentRightChildren = fragments.filter((child) => {
             const {
                 room
             } = child.props;
@@ -182,10 +196,10 @@ const CardViewComponent = function CardViewComponent (property = {
                 Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
                 return false;
             } else {
-                return room === `right`;
+                return room === `content-right`;
             }
         });
-        cardHeaderRightChildren = Hf.isEmpty(cardHeaderRightChildren) ? null : cardHeaderRightChildren;
+        cardContentRightChildren = Hf.isEmpty(cardContentRightChildren) ? null : cardContentRightChildren;
 
         cardMediaChildren = fragments.filter((child) => {
             const {
@@ -213,7 +227,7 @@ const CardViewComponent = function CardViewComponent (property = {
         });
         cardOverlayChildren = Hf.isEmpty(cardOverlayChildren) ? null : cardOverlayChildren;
 
-        cardBodyChildren = fragments.filter((child) => {
+        cardContentCenterChildren = fragments.filter((child) => {
             const {
                 room
             } = child.props;
@@ -221,12 +235,12 @@ const CardViewComponent = function CardViewComponent (property = {
                 Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
                 return false;
             } else {
-                return room === `body`;
+                return room === `content-center`;
             }
         });
-        cardBodyChildren = Hf.isEmpty(cardBodyChildren) ? null : cardBodyChildren;
+        cardContentCenterChildren = Hf.isEmpty(cardContentCenterChildren) ? null : cardContentCenterChildren;
 
-        cardActionPrimaryChildren = fragments.filter((child) => {
+        cardActionLeftChildren = fragments.filter((child) => {
             const {
                 room
             } = child.props;
@@ -234,12 +248,12 @@ const CardViewComponent = function CardViewComponent (property = {
                 Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
                 return false;
             } else {
-                return room === `action-primary`;
+                return room === `action-left`;
             }
         });
-        cardActionPrimaryChildren = Hf.isEmpty(cardActionPrimaryChildren) ? null : cardActionPrimaryChildren;
+        cardActionLeftChildren = Hf.isEmpty(cardActionLeftChildren) ? null : cardActionLeftChildren;
 
-        cardActionSecondaryChildren = fragments.filter((child) => {
+        cardActionRightChildren = fragments.filter((child) => {
             const {
                 room
             } = child.props;
@@ -247,103 +261,66 @@ const CardViewComponent = function CardViewComponent (property = {
                 Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
                 return false;
             } else {
-                return room === `action-secondary`;
+                return room === `action-right`;
             }
         });
-        cardActionSecondaryChildren = Hf.isEmpty(cardActionSecondaryChildren) ? null : cardActionSecondaryChildren;
+        cardActionRightChildren = Hf.isEmpty(cardActionRightChildren) ? null : cardActionRightChildren;
     }
 
-    if (frosted) {
-        return (
-            <BlurView
-                style = { adjustedStyle.container }
-                blurType = { shade }
-                blurAmount = { Ht.Theme.general.frostLevel }
-            >
-                <View style = { adjustedStyle.room.header.left }>
+    return (
+        <View style = { adjustedStyle.container }>
+            <View style = { adjustedStyle.header }>
+                <View style = { adjustedStyle.room.contentLeft }>
                     {
-                        cardHeaderLeftChildren !== null ? cardHeaderLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                        cardContentLeftChildren !== null ? cardContentLeftChildren : <View style = { adjustedStyle.room.filler }/>
                     }
                 </View>
-                <View style = { adjustedStyle.room.header.right }>
+                <View style = { adjustedStyle.room.contentRight }>
                     {
-                        cardHeaderRightChildren !== null ? cardHeaderRightChildren : <View style = { adjustedStyle.room.filler }/>
+                        cardContentRightChildren !== null ? cardContentRightChildren : <View style = { adjustedStyle.room.filler }/>
                     }
-                </View>
-                <View style = { adjustedStyle.room.media }>
-                    {
-                        cardMediaChildren !== null ? cardMediaChildren : <View style = { adjustedStyle.room.filler }/>
-                    }
-                    <View style = { adjustedStyle.room.overlay }>
-                        {
-                            cardOverlayChildren !== null ? cardOverlayChildren : <View style = { adjustedStyle.room.filler }/>
-                        }
-                    </View>
-                </View>
-                <View style = { adjustedStyle.room.body }>
-                    {
-                        cardBodyChildren !== null ? cardBodyChildren : <View style = { adjustedStyle.room.filler }/>
-                    }
-                    <View style = { adjustedStyle.room.action.primary }>
-                        {
-                            cardActionPrimaryChildren !== null ? cardActionPrimaryChildren : <View style = { adjustedStyle.room.filler }/>
-                        }
-                    </View>
-                    <View style = { adjustedStyle.room.action.secondary }>
-                        {
-                            cardActionSecondaryChildren !== null ? cardActionSecondaryChildren : <View style = { adjustedStyle.room.filler }/>
-                        }
-                    </View>
-                </View>
-            </BlurView>
-        );
-    } else {
-        return (
-            <View style = { adjustedStyle.container }>
-                <View style = { adjustedStyle.room.header.left }>
-                    {
-                        cardHeaderLeftChildren !== null ? cardHeaderLeftChildren : <View style = { adjustedStyle.room.filler }/>
-                    }
-                </View>
-                <View style = { adjustedStyle.room.header.right }>
-                    {
-                        cardHeaderRightChildren !== null ? cardHeaderRightChildren : <View style = { adjustedStyle.room.filler }/>
-                    }
-                </View>
-                <View style = { adjustedStyle.room.media }>
-                    {
-                        cardMediaChildren !== null ? cardMediaChildren : <View style = { adjustedStyle.room.filler }/>
-                    }
-                    <View style = { adjustedStyle.room.overlay }>
-                        {
-                            cardOverlayChildren !== null ? cardOverlayChildren : <View style = { adjustedStyle.room.filler }/>
-                        }
-                    </View>
-                </View>
-                <View style = { adjustedStyle.room.body }>
-                    {
-                        cardBodyChildren !== null ? cardBodyChildren : <View style = { adjustedStyle.room.filler }/>
-                    }
-                    <View style = { adjustedStyle.room.action.primary }>
-                        {
-                            cardActionPrimaryChildren !== null ? cardActionPrimaryChildren : <View style = { adjustedStyle.room.filler }/>
-                        }
-                    </View>
-                    <View style = { adjustedStyle.room.action.secondary }>
-                        {
-                            cardActionSecondaryChildren !== null ? cardActionSecondaryChildren : <View style = { adjustedStyle.room.filler }/>
-                        }
-                    </View>
                 </View>
             </View>
-        );
-    }
+            <View style = { adjustedStyle.body }>
+                <View style = { adjustedStyle.room.media }>
+                    {
+                        cardMediaChildren !== null ? cardMediaChildren : <View style = { adjustedStyle.room.filler }/>
+                    }
+                    <View style = { adjustedStyle.room.overlay }>
+                        {
+                            cardOverlayChildren !== null ? cardOverlayChildren : <View style = { adjustedStyle.room.filler }/>
+                        }
+                    </View>
+                </View>
+                <View style = { adjustedStyle.room.contentCenter }>
+                    {
+                        cardContentCenterChildren !== null ? cardContentCenterChildren : <View style = { adjustedStyle.room.filler }/>
+                    }
+                </View>
+            </View>
+            <View style = { adjustedStyle.footer }>
+                <View style = { adjustedStyle.room.actionLeft }>
+                    {
+                        cardActionLeftChildren !== null ? cardActionLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                    }
+                </View>
+                <View style = { adjustedStyle.room.actionRight }>
+                    {
+                        cardActionRightChildren !== null ? cardActionRightChildren : <View style = { adjustedStyle.room.filler }/>
+                    }
+                </View>
+            </View>
+        </View>
+    );
 };
 
 CardViewComponent.propTypes = {
-    room: PropTypes.oneOf([ `none`, `media` ]),
+    room: PropTypes.oneOf([
+        `none`,
+        `content-left`, `content-center`, `content-right`
+    ]),
     shade: PropTypes.oneOf([ `light`, `dark` ]),
-    overlay: PropTypes.oneOf([ `opaque`, `frosted`, `translucent`, `transparent` ])
+    overlay: PropTypes.oneOf([ `opaque`, `translucent`, `transparent` ])
 };
 
 export default CardViewComponent;

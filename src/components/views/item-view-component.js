@@ -36,8 +36,6 @@ import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
 
-import { BlurView } from 'react-native-blur';
-
 import debouncer from '../../common/utils/debouncer';
 
 const {
@@ -45,13 +43,15 @@ const {
 } = React;
 
 const {
-    View,
+    Animated,
+    Dimensions,
+    Easing,
+    StyleSheet,
     TouchableOpacity,
-    Dimensions
+    View
 } = ReactNative;
 
 const AnimatedView = Animatable.View;
-const AnimatedBlurView = Animatable.createAnimatableComponent(BlurView);
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
@@ -62,34 +62,45 @@ const DEFAULT_ITEM_VIEW_STYLE = {
         flexDirection: `row`,
         alignItems: `stretch`,
         alignSelf: `stretch`,
-        justifyContent: `center`,
-        maxWidth: DEVICE_WIDTH,
+        justifyContent: `space-around`,
+        width: DEVICE_WIDTH,
+        height: Ht.Theme.view.size.item,
         padding: 3,
-        backgroundColor: `transparent`
+        marginVertical: 6
     },
     room: {
-        media: {
+        contentLeft: {
             flexGrow: 1,
             flexDirection: `column`,
             alignSelf: `center`,
             alignItems: `center`,
-            justifyContent: `flex-start`,
+            justifyContent: `center`,
             maxWidth: (5 * DEVICE_WIDTH) / 6,
+            height: Ht.Theme.view.size.item,
             backgroundColor: `transparent`
         },
-        action: {
+        actionRight: {
             flexShrink: 1,
             flexDirection: `column`,
             alignSelf: `center`,
             alignItems: `center`,
-            justifyContent: `flex-end`,
+            justifyContent: `center`,
             maxWidth: DEVICE_WIDTH / 6,
+            height: Ht.Theme.view.size.item,
             backgroundColor: `transparent`
         },
         filler: {
             maxWidth: DEVICE_WIDTH / 6,
+            height: Ht.Theme.view.size.item,
             backgroundColor: `transparent`
         }
+    },
+    ripple: {
+        position: `absolute`,
+        width: Ht.Theme.view.size.item,
+        height: Ht.Theme.view.size.item,
+        borderRadius: Ht.Theme.view.size.item / 2,
+        overflow: `hidden`
     }
 };
 
@@ -97,8 +108,9 @@ export default class ItemViewComponent extends Component {
     static propTypes = {
         cId: PropTypes.string,
         shade: PropTypes.oneOf([ `light`, `dark` ]),
-        overlay: PropTypes.oneOf([ `opaque`, `frosted`, `translucent`, `transparent` ]),
+        overlay: PropTypes.oneOf([ `opaque`, `translucent`, `transparent` ]),
         disabled: PropTypes.bool,
+        rippled: PropTypes.bool,
         debounceTime: PropTypes.number,
         onPress: PropTypes.func
     }
@@ -108,6 +120,7 @@ export default class ItemViewComponent extends Component {
         shade: Ht.Theme.view.item.shade,
         overlay: Ht.Theme.view.item.overlay,
         disabled: false,
+        rippled: Ht.Theme.view.item.rippled,
         debounceTime: DEFAULT_ITEM_PRESS_DEBOUNCE_TIME_MS,
         onPress: () => null
     }
@@ -116,7 +129,16 @@ export default class ItemViewComponent extends Component {
         this.refCache = {};
         this.debounce = null;
         this.state = {
-            adjustedStyle: DEFAULT_ITEM_VIEW_STYLE
+            adjustedStyle: DEFAULT_ITEM_VIEW_STYLE,
+            width: 0,
+            height: Ht.Theme.button.size.flat,
+            ripple: {
+                animating: false,
+                progress: new Animated.Value(0),
+                scale: 0,
+                locationX: 0,
+                locationY: 0
+            }
         };
     }
     /**
@@ -184,20 +206,30 @@ export default class ItemViewComponent extends Component {
         const {
             adjustedStyle: prevAdjustedStyle
         } = component.state;
+        let themedColor;
+        let themedRippleColor;
+
+        switch (overlay) { // eslint-disable-line
+        case `opaque`:
+            themedColor = Ht.Theme.view.color.item[shade];
+            themedRippleColor = Ht.Theme.view.color.item.ripple.dark;
+            break;
+        case `translucent`:
+            themedColor = `${Ht.Theme.view.color.item[shade]}${Ht.Theme.view.color.item.opacity}`;
+            themedRippleColor = Ht.Theme.view.color.item.ripple.dark;
+            break;
+        case `transparent`:
+            themedColor = `transparent`;
+            themedRippleColor = Ht.Theme.view.color.item.ripple[shade];
+            break;
+        }
+
         const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
             container: {
-                backgroundColor: (() => {
-                    switch (overlay) { // eslint-disable-line
-                    case `opaque`:
-                        return Ht.Theme.view.color.item[shade];
-                    case `translucent`:
-                        return `${Ht.Theme.view.color.item[shade]}${Ht.Theme.view.color.item.opacity}`;
-                    case `frosted`:
-                        return `transparent`;
-                    case `transparent`:
-                        return `transparent`;
-                    }
-                })()
+                backgroundColor: themedColor
+            },
+            ripple: {
+                backgroundColor: themedRippleColor
             }
         });
 
@@ -290,6 +322,80 @@ export default class ItemViewComponent extends Component {
             }
         }
     }
+    animateRipple (locationX, locationY) {
+        const component = this;
+        const {
+            adjustedStyle,
+            width,
+            height
+        } = component.state;
+        let ripple = {
+            animating: true,
+            progress: new Animated.Value(0),
+            scale: 2 * Math.sqrt((Math.pow(width, 2) + Math.pow(height, 2)) / ((Math.pow(adjustedStyle.ripple.width, 2) + Math.pow(adjustedStyle.ripple.height, 2)))),
+            locationX,
+            locationY
+        };
+
+        Animated.timing(ripple.progress, {
+            toValue: 1,
+            easing: Easing.out(Easing.ease),
+            duration: 600,
+            useNativeDriver: true
+        }).start(() => {
+            component.setState(() => {
+                return {
+                    ripple: {
+                        animating: false,
+                        progress: new Animated.Value(0),
+                        scale: 0,
+                        locationX: 0,
+                        locationY: 0
+                    }
+                };
+            });
+        });
+
+        component.setState(() => {
+            return {
+                ripple
+            };
+        });
+    }
+    onLayout = (event) => {
+        const component = this;
+        const {
+            width,
+            height
+        } = event.nativeEvent.layout;
+
+        component.setState((prevState) => {
+            if (prevState.ripple.animating) {
+                return null;
+            } else {
+                return {
+                    width,
+                    height
+                };
+            }
+        });
+    }
+    onPress = (event) => {
+        const component = this;
+        const {
+            rippled,
+            onPress
+        } = component.props;
+
+        if (rippled) {
+            const {
+                locationX,
+                locationY
+            } = event.nativeEvent;
+            requestAnimationFrame(() => onPress(event));
+            component.animateRipple(locationX, locationY);
+        }
+    }
     componentWillMount () {
         const component = this;
         const {
@@ -336,29 +442,65 @@ export default class ItemViewComponent extends Component {
             };
         });
     }
+    renderRipple () {
+        const component = this;
+        const {
+            adjustedStyle,
+            ripple
+        } = component.state;
+
+        if (ripple.animating) {
+            return (
+                <View
+                    style = {{
+                        ...StyleSheet.absoluteFillObject,
+                        borderRadius: adjustedStyle.container.borderRadius,
+                        backgroundColor: `transparent`,
+                        overflow: `hidden`
+                    }}
+                    pointerEvents = 'box-only'
+                >
+                    <Animated.View style = {{
+                        ...adjustedStyle.ripple,
+                        top: 0, // ripple.locationY,
+                        left: ripple.locationX,
+                        transform: [{
+                            scale: ripple.progress.interpolate({
+                                inputRange: [ 0, 1 ],
+                                outputRange: [ 0, ripple.scale ]
+                            })
+                        }],
+                        opacity: ripple.progress.interpolate({
+                            inputRange: [ 0, 1 ],
+                            outputRange: [ parseInt(Ht.Theme.view.color.item.opacity, 16) / 255, 0 ]
+                        })
+                    }}/>
+                </View>
+            );
+        } else {
+            return null;
+        }
+    }
     render () {
         const component = this;
         const {
             cId,
-            shade,
-            overlay,
             disabled,
-            onPress,
+            rippled,
             children
         } = component.props;
         const {
             adjustedStyle
         } = component.state;
-        let frosted = overlay === `frosted`;
-        let itemMediaChildren = null;
-        let itemActionChildren = null;
+        let itemContentLeftChildren = null;
+        let itemActionRightChildren = null;
 
         if (React.Children.count(children) > 0) {
             let fragments = React.Children.toArray(React.Children.map(children, (child) => {
                 const {
                     room
                 } = child.props;
-                if (Hf.isString(room) && room === `action`) {
+                if (Hf.isString(room) && room === `action-right`) {
                     return React.cloneElement(child, {
                         disabled,
                         onPress: () => component.debounce(component.onClearInput)
@@ -368,7 +510,7 @@ export default class ItemViewComponent extends Component {
                 }
             }));
 
-            itemMediaChildren = fragments.filter((child) => {
+            itemContentLeftChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
@@ -376,12 +518,12 @@ export default class ItemViewComponent extends Component {
                     Hf.log(`warn1`, `ItemViewComponent.render - Item view component requires children each to have a room propperty.`);
                     return false;
                 } else {
-                    return room === `media`;
+                    return room === `content-left`;
                 }
             });
-            itemMediaChildren = Hf.isEmpty(itemMediaChildren) ? null : itemMediaChildren;
+            itemContentLeftChildren = Hf.isEmpty(itemContentLeftChildren) ? null : itemContentLeftChildren;
 
-            itemActionChildren = fragments.filter((child) => {
+            itemActionRightChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
@@ -389,76 +531,48 @@ export default class ItemViewComponent extends Component {
                     Hf.log(`warn1`, `ItemViewComponent.render - Item view component requires children each to have a room propperty.`);
                     return false;
                 } else {
-                    return room === `action`;
+                    return room === `action-right`;
                 }
             });
-            itemActionChildren = Hf.isEmpty(itemActionChildren) ? null : itemActionChildren;
+            itemActionRightChildren = Hf.isEmpty(itemActionRightChildren) ? null : itemActionRightChildren;
         }
 
-        if (frosted) {
-            return (
-                <AnimatedBlurView
-                    ref = { component.assignComponentRef(`animated-view${cId}`) }
-                    blurType = { shade }
-                    blurAmount = { Ht.Theme.general.frostLevel }
-                    useNativeDriver = { true }
+        return (
+            <AnimatedView
+                ref = { component.assignComponentRef(`animated-view${cId}`) }
+                useNativeDriver = { true }
+            >
+                <TouchableOpacity
+                    style = { adjustedStyle.container }
+                    activeOpacity = { parseInt(Ht.Theme.view.color.item.opacity, 16) / 255 }
+                    onLayout = { component.onLayout }
+                    onPress = { disabled ? null : (event) => component.debounce(component.onPress, event) }
                 >
-                    <TouchableOpacity
-                        style = { adjustedStyle.container }
-                        onPress = { disabled ? null : () => component.debounce(onPress) }
+                    {
+                        rippled ? component.renderRipple() : null
+                    }
+                    <AnimatedView
+                        ref = { component.assignComponentRef(`animated-content-left-view${cId}`) }
+                        style = { adjustedStyle.room.contentLeft }
+                        pointerEvents = 'box-only'
+                        useNativeDriver = { true }
                     >
-                        <AnimatedView
-                            ref = { component.assignComponentRef(`animated-media-view${cId}`) }
-                            style = { adjustedStyle.room.media }
-                            useNativeDriver = { true }
-                        >
-                            {
-                                itemMediaChildren !== null ? itemMediaChildren : <View style = { adjustedStyle.room.filler }/>
-                            }
-                        </AnimatedView>
-                        <AnimatedView
-                            ref = { component.assignComponentRef(`animated-action-view${cId}`) }
-                            style = { adjustedStyle.room.action }
-                            useNativeDriver = { true }
-                        >
-                            {
-                                itemActionChildren !== null ? itemActionChildren : <View style = { adjustedStyle.room.filler }/>
-                            }
-                        </AnimatedView>
-                    </TouchableOpacity>
-                </AnimatedBlurView>
-            );
-        } else {
-            return (
-                <AnimatedView
-                    ref = { component.assignComponentRef(`animated-view${cId}`) }
-                    useNativeDriver = { true }
-                >
-                    <TouchableOpacity
-                        style = { adjustedStyle.container }
-                        onPress = { disabled ? null : () => component.debounce(onPress) }
+                        {
+                            itemContentLeftChildren !== null ? itemContentLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                        }
+                    </AnimatedView>
+                    <AnimatedView
+                        ref = { component.assignComponentRef(`animated-action-right-view${cId}`) }
+                        style = { adjustedStyle.room.actionRight }
+                        pointerEvents = 'box-only'
+                        useNativeDriver = { true }
                     >
-                        <AnimatedView
-                            ref = { component.assignComponentRef(`animated-media-view${cId}`) }
-                            style = { adjustedStyle.room.media }
-                            useNativeDriver = { true }
-                        >
-                            {
-                                itemMediaChildren !== null ? itemMediaChildren : <View style = { adjustedStyle.room.filler }/>
-                            }
-                        </AnimatedView>
-                        <AnimatedView
-                            ref = { component.assignComponentRef(`animated-action-view${cId}`) }
-                            style = { adjustedStyle.room.action }
-                            useNativeDriver = { true }
-                        >
-                            {
-                                itemActionChildren !== null ? itemActionChildren : <View style = { adjustedStyle.room.filler }/>
-                            }
-                        </AnimatedView>
-                    </TouchableOpacity>
-                </AnimatedView>
-            );
-        }
+                        {
+                            itemActionRightChildren !== null ? itemActionRightChildren : <View style = { adjustedStyle.room.filler }/>
+                        }
+                    </AnimatedView>
+                </TouchableOpacity>
+            </AnimatedView>
+        );
     }
 }

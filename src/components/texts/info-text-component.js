@@ -46,9 +46,9 @@ export default class InfoTextComponent extends Component {
         cId: PropTypes.string,
         room: PropTypes.oneOf([
             `none`,
-            `none`,
-            `left`, `center`, `right`, `badge`,
-            `media`, `overlay`, `body`
+            `action-left`, `action-right`,
+            `content-left`, `content-center`, `content-right`,
+            `media`, `overlay`, `badge`
         ]),
         shade: PropTypes.oneOf([ `light`, `dark` ]),
         alignment: PropTypes.oneOf([ `left`, `center`, `right` ]),

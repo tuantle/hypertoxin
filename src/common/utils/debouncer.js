@@ -46,7 +46,16 @@ const debouncer = function debouncer (ms) {
     }
 
     let timeoutId = null;
-    const debounce = function debounce (task) {
+
+    /**
+     * @description - debounce call back
+     *
+     * @method debounce
+     * @param {function} task
+     * @param {*} args
+     * @return {function}
+     */
+    const debounce = function debounce (task, ...args) {
         if (Hf.DEVELOPMENT) {
             if (!Hf.isFunction(task)) {
                 Hf.log(`error`, `debounce - Input task function is invalid.`);
@@ -54,7 +63,6 @@ const debouncer = function debouncer (ms) {
         }
 
         const context = this;
-        const args = arguments;
 
         if (timeoutId !== null) {
             return;
@@ -65,7 +73,7 @@ const debouncer = function debouncer (ms) {
             timeoutId = null;
         }, ms);
 
-        task.apply(context, args);
+        task.call(context, ...args);
     };
 
     return debounce;

@@ -69,8 +69,9 @@ export default class IconImageComponent extends Component {
         cId: PropTypes.string,
         room: PropTypes.oneOf([
             `none`,
-            `left`, `center`, `right`, `badge`,
-            `media`, `action`, `overlay`, `body`
+            `action-left`, `action-right`,
+            `content-left`, `content-center`, `content-right`,
+            `media`, `overlay`, `badge`
         ]),
         shade: PropTypes.oneOf([ `light`, `dark` ]),
         size: PropTypes.oneOf([ `small`, `normal`, `large` ]),

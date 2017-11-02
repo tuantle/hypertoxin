@@ -26,6 +26,8 @@
 
 import fontStyleTemplate from './templates/font-style-template';
 
+import toxinPalette from './palettes/toxin-palette';
+
 import colorTheme from './color-theme.js';
 
 export default {
@@ -33,13 +35,15 @@ export default {
         shade: `dark`,
         overlay: `opaque`,
         corner: `square`,
-        color: `primary`
+        color: `primary`,
+        rippled: true
     },
     raised: {
         shade: `dark`,
         overlay: `opaque`,
         corner: `square`,
-        color: `primary`
+        color: `primary`,
+        rippled: true
     },
     font: {
         label: fontStyleTemplate.bold
@@ -75,9 +79,14 @@ export default {
             label: {
                 dark: colorTheme.light.default,
                 light: colorTheme.dark.default
+            },
+            ripple: {
+                dark: toxinPalette.white,
+                light: toxinPalette.lightGrey
             }
         },
         raised: {
+            opacity: `dd`,
             accent: {
                 dark: colorTheme.dark.accent,
                 light: colorTheme.light.accent
@@ -97,6 +106,10 @@ export default {
             label: {
                 dark: colorTheme.light.default,
                 light: colorTheme.dark.default
+            },
+            ripple: {
+                dark: toxinPalette.white,
+                light: toxinPalette.lightGrey
             }
         }
     }

@@ -28,14 +28,14 @@ import { Hf } from 'hyperflow';
 
 const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
     template: {
-        renderHeaderViewEntryAnimation: function renderHeaderViewEntryAnimation (duration = 300) {
+        animateHeaderViewEntry: function animateHeaderViewEntry (duration = 300) {
             const component = this;
 
             if (Hf.DEVELOPMENT) {
                 if (!Hf.isSchema({
                     lookupComponentRefs: `function`
                 }).of(component)) {
-                    Hf.log(`error`, `HeaderViewSlideAndFadeAnimationComposite.$init - Component is invalid. Cannot apply composite.`);
+                    Hf.log(`error`, `HeaderViewSlideAndFadeAnimationComposite.animateHeaderViewEntry - Component is invalid. Cannot apply composite.`);
                 }
             }
 
@@ -45,11 +45,11 @@ const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
                 if (!Hf.isSchema({
                     animate: `function`
                 }).of(animatedHeader)) {
-                    Hf.log(`error`, `HeaderViewSlideAndFadeAnimationComposite.renderHeaderViewEntryAnimation - Animated header component is invalid.`);
+                    Hf.log(`error`, `HeaderViewSlideAndFadeAnimationComposite.animateHeaderViewEntry - Animated header component is invalid.`);
                 }
             }
 
-            animatedHeader.animate(`animated-navigation-left-view`, {
+            animatedHeader.animate(`animated-navigation-action-left-view`, {
                 from: {
                     opacity: 0
                 },
@@ -60,7 +60,7 @@ const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
                 loopCount: 1,
                 duration
             });
-            animatedHeader.animate(`animated-navigation-center-view`, {
+            animatedHeader.animate(`animated-navigation-content-center-view`, {
                 from: {
                     opacity: 0,
                     translateX: 100
@@ -73,15 +73,26 @@ const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
                 loopCount: 1,
                 duration
             });
+            animatedHeader.animate(`animated-navigation-action-right-view`, {
+                from: {
+                    opacity: 0
+                },
+                to: {
+                    opacity: 1
+                },
+                easing: `ease-in`,
+                loopCount: 1,
+                duration
+            });
         },
-        renderHeaderViewExitAnimation: function renderHeaderViewExitAnimation (duration) {
+        animateHeaderViewExit: function animateHeaderViewExit (duration) {
             const component = this;
 
             if (Hf.DEVELOPMENT) {
                 if (!Hf.isSchema({
                     lookupComponentRefs: `function`
                 }).of(component)) {
-                    Hf.log(`error`, `HeaderViewSlideAndFadeAnimationComposite.$init - Component is invalid. Cannot apply composite.`);
+                    Hf.log(`error`, `HeaderViewSlideAndFadeAnimationComposite.animateHeaderViewExit - Component is invalid. Cannot apply composite.`);
                 }
             }
 
@@ -91,11 +102,11 @@ const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
                 if (!Hf.isSchema({
                     animate: `function`
                 }).of(animatedHeader)) {
-                    Hf.log(`error`, `HeaderViewSlideAndFadeAnimationComposite.renderHeaderViewEntryAnimation - Animated header component is invalid.`);
+                    Hf.log(`error`, `HeaderViewSlideAndFadeAnimationComposite.animateHeaderViewExit - Animated header component is invalid.`);
                 }
             }
 
-            animatedHeader.animate(`animated-navigation-left-view`, {
+            animatedHeader.animate(`animated-navigation-action-left-view`, {
                 from: {
                     opacity: 1
                 },
@@ -106,7 +117,7 @@ const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
                 loopCount: 1,
                 duration
             });
-            animatedHeader.animate(`animated-navigation-center-view`, {
+            animatedHeader.animate(`animated-navigation-content-center-view`, {
                 from: {
                     opacity: 1,
                     translateX: 0
@@ -114,6 +125,17 @@ const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
                 to: {
                     opacity: 0,
                     translateX: 100
+                },
+                easing: `ease-out`,
+                loopCount: 1,
+                duration
+            });
+            animatedHeader.animate(`animated-navigation-action-right-view`, {
+                from: {
+                    opacity: 1
+                },
+                to: {
+                    opacity: 0
                 },
                 easing: `ease-out`,
                 loopCount: 1,

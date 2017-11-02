@@ -27,7 +27,11 @@
 /* load and initialize hyperflow */
 const Hf = require('hyperflow').init({ // eslint-disable-line
     target: `client-native`,
-    enableProductionMode: false
+    enableProductionMode: false,
+    enableInfo0Logging: false,
+    enableInfo1Logging: true,
+    enableWarn0Logging: false,
+    enableWarn1Logging: true
 });
 
 /* load hypertoxin default icon and color theme */
@@ -57,7 +61,7 @@ const init = function init (option = {
 
     if (Ht === null) {
         Ht = {
-            VERSION: `0.1.0-beta10`,
+            VERSION: `0.1.0-beta11`,
             Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
         };
 

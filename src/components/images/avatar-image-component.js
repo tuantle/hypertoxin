@@ -46,6 +46,7 @@ const DEFAULT_AVATAR_IMAGE_STYLE = {
         width: Ht.Theme.image.size.avatar.small,
         height: Ht.Theme.image.size.avatar.small,
         padding: 3,
+        margin: 3,
         borderRadius: Ht.Theme.image.size.avatar.small / 2,
         backgroundColor: Ht.Theme.palette.white
     },
@@ -54,6 +55,7 @@ const DEFAULT_AVATAR_IMAGE_STYLE = {
         width: Ht.Theme.image.size.avatar.normal,
         height: Ht.Theme.image.size.avatar.normal,
         padding: 3,
+        margin: 3,
         borderRadius: Ht.Theme.image.size.avatar.normal / 2,
         backgroundColor: Ht.Theme.palette.white
     },
@@ -62,6 +64,7 @@ const DEFAULT_AVATAR_IMAGE_STYLE = {
         width: Ht.Theme.image.size.avatar.large,
         height: Ht.Theme.image.size.avatar.large,
         padding: 3,
+        margin: 3,
         borderRadius: Ht.Theme.image.size.avatar.large,
         backgroundColor: Ht.Theme.palette.white
     }
@@ -72,8 +75,8 @@ export default class AvatarImageComponent extends Component {
         cId: PropTypes.string,
         room: PropTypes.oneOf([
             `none`,
-            `left`, `center`, `right`, `badge`,
-            `media`, `action`, `overlay`, `body`
+            `content-left`, `content-center`, `content-right`,
+            `media`, `overlay`
         ]),
         size: PropTypes.oneOf([ `small`, `normal`, `large` ]),
         dropShadowed: PropTypes.bool,

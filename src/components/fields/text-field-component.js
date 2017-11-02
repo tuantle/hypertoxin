@@ -105,14 +105,12 @@ const DEFAULT_TEXT_FIELD_STYLE = {
     },
     multiLine: {
         flexDirection: `row`,
-        alignItems: `center`,
+        alignItems: `flex-end`,
         justifyContent: `center`,
-        paddingTop: 33,
-        paddingBottom: 16,
         backgroundColor: `transparent`
     },
     room: {
-        media: {
+        contentLeft: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
@@ -120,7 +118,7 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             maxHeight: Ht.Theme.field.size.text.input,
             backgroundColor: `transparent`
         },
-        action: {
+        actionRight: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
@@ -192,7 +190,8 @@ export default class TextFieldComponent extends Component {
     static propTypes = {
         room: PropTypes.oneOf([
             `none`,
-            `media`, `body`
+            `content-left`, `content-center`, `content-right`,
+            `media`, `overlay`
         ]),
         shade: PropTypes.oneOf([ `light`, `dark` ]),
         overlay: PropTypes.oneOf([ `opaque`, `translucent`, `transparent`, `transparent-outlined` ]),
@@ -400,7 +399,8 @@ export default class TextFieldComponent extends Component {
         overlay: Ht.Theme.field.text.overlay,
         focusColor: ``,
         blurColor: ``,
-        disabled: false
+        disabled: false,
+        lineLimit: 1
     }) => {
         const component = this;
         const {
@@ -409,13 +409,15 @@ export default class TextFieldComponent extends Component {
             focusColor,
             blurColor,
             disabled,
+            lineLimit,
             style
         } = Hf.fallback({
             shade: Ht.Theme.field.text.shade,
             overlay: Ht.Theme.field.text.overlay,
             focusColor: ``,
             blurColor: ``,
-            disabled: false
+            disabled: false,
+            lineLimit: 1
         }).of(newStyle);
         const {
             adjustedStyle: prevAdjustedStyle
@@ -475,6 +477,7 @@ export default class TextFieldComponent extends Component {
                 }
             },
             input: {
+                paddingTop: lineLimit === -1 || lineLimit > 1 ? 9 : 0,
                 color: themedInputColor
             },
             helper: {
@@ -595,12 +598,12 @@ export default class TextFieldComponent extends Component {
 
                 if (prevState.input.height < height) {
                     if (lineLimit === -1 || lineCount <= lineLimit) {
-                        boxHeight += Ht.Theme.field.size.text.input * 0.525;
+                        boxHeight += Ht.Theme.field.size.text.input * 0.55;
                         lineCount++;
                     }
                 } else if (prevState.input.height > height) {
                     if (lineCount > 1) {
-                        boxHeight -= Ht.Theme.field.size.text.input * 0.525;
+                        boxHeight -= Ht.Theme.field.size.text.input * 0.55;
                         lineCount--;
                     }
                 }
@@ -796,6 +799,7 @@ export default class TextFieldComponent extends Component {
             blurColor,
             disabled,
             initialValue,
+            lineLimit,
             inputType,
             debounceTime,
             onValidate,
@@ -822,6 +826,7 @@ export default class TextFieldComponent extends Component {
                             focusColor,
                             blurColor,
                             disabled,
+                            lineLimit,
                             style
                         }),
                         input: {
@@ -856,6 +861,7 @@ export default class TextFieldComponent extends Component {
                             focusColor,
                             blurColor,
                             disabled,
+                            lineLimit,
                             style
                         }),
                         input: {
@@ -885,6 +891,7 @@ export default class TextFieldComponent extends Component {
                             focusColor,
                             blurColor,
                             disabled,
+                            lineLimit,
                             style
                         }),
                         input: {
@@ -914,6 +921,7 @@ export default class TextFieldComponent extends Component {
                             focusColor,
                             blurColor,
                             disabled,
+                            lineLimit,
                             style
                         }),
                         input: {
@@ -936,6 +944,7 @@ export default class TextFieldComponent extends Component {
                         focusColor,
                         blurColor,
                         disabled,
+                        lineLimit,
                         style
                     })
                 };
@@ -1081,6 +1090,7 @@ export default class TextFieldComponent extends Component {
             focusColor,
             blurColor,
             disabled,
+            lineLimit,
             debounceTime,
             style
         } = nextProperty;
@@ -1094,6 +1104,7 @@ export default class TextFieldComponent extends Component {
                     focusColor,
                     blurColor,
                     disabled,
+                    lineLimit,
                     style
                 })
             };
@@ -1270,15 +1281,15 @@ export default class TextFieldComponent extends Component {
             disabled,
             color: adjustedStyle.input.color // input.focused ? adjustedStyle.label.focused.color : adjustedStyle.input.color
         };
-        let fieldMediaChildren = null;
-        let fieldActionChildren = null;
+        let fieldContentLeftChildren = null;
+        let fieldActionRightChildren = null;
 
         if (React.Children.count(children) > 0) {
             let fragments = React.Children.toArray(React.Children.map(children, (child) => {
                 const {
                     room
                 } = child.props;
-                if (Hf.isString(room) && room === `action`) {
+                if (Hf.isString(room) && room === `action-right`) {
                     return React.cloneElement(child, {
                         ...fieldChildProperty,
                         onPress: () => component.debounce(component.clear)
@@ -1287,29 +1298,29 @@ export default class TextFieldComponent extends Component {
                     return React.cloneElement(child, fieldChildProperty);
                 }
             }));
-            fieldMediaChildren = fragments.filter((child) => {
+            fieldContentLeftChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
                 if (!Hf.isString(room)) {
                     return false;
                 } else {
-                    return room === `media`;
+                    return room === `content-left`;
                 }
             });
-            fieldMediaChildren = Hf.isEmpty(fieldMediaChildren) ? null : fieldMediaChildren;
+            fieldContentLeftChildren = Hf.isEmpty(fieldContentLeftChildren) ? null : fieldContentLeftChildren;
 
-            fieldActionChildren = fragments.filter((child) => {
+            fieldActionRightChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
                 if (!Hf.isString(room)) {
                     return false;
                 } else {
-                    return room === `action`;
+                    return room === `action-right`;
                 }
             });
-            fieldActionChildren = Hf.isEmpty(fieldActionChildren) ? null : fieldActionChildren;
+            fieldActionRightChildren = Hf.isEmpty(fieldActionRightChildren) ? null : fieldActionRightChildren;
         }
 
         return (
@@ -1336,9 +1347,9 @@ export default class TextFieldComponent extends Component {
                         height: box.height
                     }}>
                         {
-                            fieldMediaChildren === null ? null : <View style = { adjustedStyle.room.media }>
+                            fieldContentLeftChildren === null ? null : <View style = { adjustedStyle.room.contentLeft }>
                                 {
-                                    fieldMediaChildren
+                                    fieldContentLeftChildren
                                 }
                             </View>
                         }
@@ -1346,15 +1357,15 @@ export default class TextFieldComponent extends Component {
                             component.renderInput()
                         }
                         {
-                            !Hf.isEmpty(input.value) ? <View style = { adjustedStyle.room.action }>
+                            !Hf.isEmpty(input.value) ? <View style = { adjustedStyle.room.actionRight }>
                                 {
-                                    fieldActionChildren === null ? <TouchableOpacity onPress = {() => component.debounce(component.clear)}>
+                                    fieldActionRightChildren === null ? <TouchableOpacity onPress = {() => component.debounce(component.clear)}>
                                         <Text style = {{
                                             ...Ht.Theme.font.bold,
                                             marginHorizontal: 6,
                                             color: adjustedStyle.input.color
                                         }}> Clear </Text>
-                                    </TouchableOpacity> : fieldActionChildren
+                                    </TouchableOpacity> : fieldActionRightChildren
                                 }
                             </View> : null
                         }

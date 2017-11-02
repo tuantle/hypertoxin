@@ -50,7 +50,8 @@ export default {
     },
     item: {
         shade: `light`,
-        overlay: `opaque`
+        overlay: `opaque`,
+        rippled: true
     },
     layout: {
         shade: `light`,
@@ -61,7 +62,8 @@ export default {
             normal: 48,
             oversize: 148,
             status: 24
-        }
+        },
+        item: 48
     },
     font: {
         header: {
@@ -103,7 +105,11 @@ export default {
         item: {
             opacity: `dd`,
             dark: colorTheme.light.default,
-            light: colorTheme.dark.default
+            light: colorTheme.dark.default,
+            ripple: {
+                dark: toxinPalette.lightGrey,
+                light: toxinPalette.white
+            }
         },
         layout: {
             opacity: `dd`,

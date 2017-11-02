@@ -43,7 +43,10 @@ const {
 } = React;
 
 const {
+    Animated,
     ActivityIndicator,
+    Easing,
+    StyleSheet,
     Text,
     TouchableOpacity,
     View
@@ -59,25 +62,24 @@ const DEFAULT_FLAT_BUTTON_STYLE = {
         height: Ht.Theme.button.size.flat,
         borderWidth: 1,
         margin: 9,
-        padding: 9,
-        backgroundColor: `transparent`
+        padding: 9
     },
     room: {
-        left: {
+        contentLeft: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
             maxHeight: Ht.Theme.button.size.flat,
             backgroundColor: `transparent`
         },
-        center: {
+        contentCenter: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
             maxHeight: Ht.Theme.button.size.flat,
             backgroundColor: `transparent`
         },
-        right: {
+        contentRight: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
@@ -100,6 +102,13 @@ const DEFAULT_FLAT_BUTTON_STYLE = {
     label: {
         ...Ht.Theme.button.font.label,
         marginHorizontal: 6
+    },
+    ripple: {
+        position: `absolute`,
+        width: Ht.Theme.button.size.flat,
+        height: Ht.Theme.button.size.flat,
+        borderRadius: Ht.Theme.button.size.flat / 2,
+        overflow: `hidden`
     }
 };
 
@@ -108,16 +117,14 @@ export default class FlatButtonInterface extends Component {
         cId: PropTypes.string,
         room: PropTypes.oneOf([
             `none`,
-            `left`, `right`,
-            `action`,
-            `action-clear`,
-            `action-primary`, `action-secondary`
+            `action-left`, `action-right`
         ]),
         shade: PropTypes.oneOf([ `light`, `dark` ]),
         overlay: PropTypes.oneOf([ `opaque`, `translucent`, `transparent`, `transparent-outlined` ]),
         corner: PropTypes.oneOf([ `round25`, `round50`, `square` ]),
         disabled: PropTypes.bool,
         busy: PropTypes.bool,
+        rippled: PropTypes.bool,
         label: PropTypes.string,
         color: PropTypes.string,
         debounceTime: PropTypes.number,
@@ -126,11 +133,12 @@ export default class FlatButtonInterface extends Component {
     static defaultProps = {
         cId: ``,
         room: `none`,
-        shade: Ht.Theme.view.layout.shade,
+        shade: Ht.Theme.button.flat.shade,
         overlay: Ht.Theme.button.flat.overlay,
         corner: Ht.Theme.button.flat.corner,
         disabled: false,
         busy: false,
+        rippled: Ht.Theme.button.flat.rippled,
         label: `BUTTON`,
         color: Ht.Theme.button.flat.color,
         debounceTime: DEFAULT_BUTTON_PRESS_DEBOUNCE_TIME_MS,
@@ -141,7 +149,16 @@ export default class FlatButtonInterface extends Component {
         this.refCache = {};
         this.debounce = null;
         this.state = {
-            adjustedStyle: DEFAULT_FLAT_BUTTON_STYLE
+            adjustedStyle: DEFAULT_FLAT_BUTTON_STYLE,
+            width: 0,
+            height: Ht.Theme.button.size.flat,
+            ripple: {
+                animating: false,
+                progress: new Animated.Value(0),
+                scale: 0,
+                locationX: 0,
+                locationY: 0
+            }
         };
     }
     /**
@@ -194,7 +211,7 @@ export default class FlatButtonInterface extends Component {
         return componentRefs;
     }
     readjustStyle = (newStyle = {
-        shade: Ht.Theme.view.layout.shade,
+        shade: Ht.Theme.button.flat.shade,
         overlay: Ht.Theme.button.flat.overlay,
         corner: Ht.Theme.button.flat.corner,
         disabled: false,
@@ -211,7 +228,7 @@ export default class FlatButtonInterface extends Component {
             color,
             style
         } = Hf.fallback({
-            shade: Ht.Theme.view.layout.shade,
+            shade: Ht.Theme.button.flat.shade,
             overlay: Ht.Theme.button.flat.overlay,
             corner: Ht.Theme.button.flat.corner,
             disabled: false,
@@ -224,6 +241,7 @@ export default class FlatButtonInterface extends Component {
         let themedColor;
         let themedBorderColor;
         let themedLabelColor;
+        let themedRippleColor;
 
         if (Ht.Theme.button.color.flat.hasOwnProperty(color)) {
             themedColor = busy || disabled ? Ht.Theme.button.color.flat.disabled[shade] : Ht.Theme.button.color.flat[color][shade];
@@ -234,20 +252,24 @@ export default class FlatButtonInterface extends Component {
         switch (overlay) { // eslint-disable-line
         case `opaque`:
             themedLabelColor = Ht.Theme.button.color.flat.label[shade];
+            themedRippleColor = Ht.Theme.button.color.flat.ripple.dark;
             themedBorderColor = `transparent`;
             break;
         case `translucent`:
             themedLabelColor = Ht.Theme.button.color.flat.label[shade];
+            themedRippleColor = Ht.Theme.button.color.flat.ripple.dark;
             themedBorderColor = `transparent`;
             break;
         case `transparent`:
             themedLabelColor = themedColor;
+            themedRippleColor = Ht.Theme.button.color.flat.ripple[shade];
             themedBorderColor = `transparent`;
             themedColor = `transparent`;
             break;
         case `transparent-outlined`:
             themedLabelColor = themedColor;
             themedBorderColor = themedColor;
+            themedRippleColor = Ht.Theme.button.color.flat.ripple[shade];
             themedColor = `transparent`;
             break;
         }
@@ -260,6 +282,9 @@ export default class FlatButtonInterface extends Component {
             },
             label: {
                 color: themedLabelColor
+            },
+            ripple: {
+                backgroundColor: themedRippleColor
             }
         });
 
@@ -352,6 +377,80 @@ export default class FlatButtonInterface extends Component {
             }
         }
     }
+    animateRipple (locationX, locationY) {
+        const component = this;
+        const {
+            adjustedStyle,
+            width,
+            height
+        } = component.state;
+        let ripple = {
+            animating: true,
+            progress: new Animated.Value(0),
+            scale: 2 * Math.sqrt((Math.pow(width, 2) + Math.pow(height, 2)) / ((Math.pow(adjustedStyle.ripple.width, 2) + Math.pow(adjustedStyle.ripple.height, 2)))),
+            locationX,
+            locationY
+        };
+
+        Animated.timing(ripple.progress, {
+            toValue: 1,
+            easing: Easing.out(Easing.ease),
+            duration: 600,
+            useNativeDriver: true
+        }).start(() => {
+            component.setState(() => {
+                return {
+                    ripple: {
+                        animating: false,
+                        progress: new Animated.Value(0),
+                        scale: 0,
+                        locationX: 0,
+                        locationY: 0
+                    }
+                };
+            });
+        });
+
+        component.setState(() => {
+            return {
+                ripple
+            };
+        });
+    }
+    onLayout = (event) => {
+        const component = this;
+        const {
+            width,
+            height
+        } = event.nativeEvent.layout;
+
+        component.setState((prevState) => {
+            if (prevState.ripple.animating) {
+                return null;
+            } else {
+                return {
+                    width,
+                    height
+                };
+            }
+        });
+    }
+    onPress = (event) => {
+        const component = this;
+        const {
+            rippled,
+            onPress
+        } = component.props;
+
+        if (rippled) {
+            const {
+                locationX,
+                locationY
+            } = event.nativeEvent;
+            requestAnimationFrame(() => onPress(event));
+            component.animateRipple(locationX, locationY);
+        }
+    }
     componentWillMount () {
         const component = this;
         const {
@@ -414,6 +513,45 @@ export default class FlatButtonInterface extends Component {
             };
         });
     }
+    renderRipple () {
+        const component = this;
+        const {
+            adjustedStyle,
+            ripple
+        } = component.state;
+
+        if (ripple.animating) {
+            return (
+                <View
+                    style = {{
+                        ...StyleSheet.absoluteFillObject,
+                        borderRadius: adjustedStyle.container.borderRadius,
+                        backgroundColor: `transparent`,
+                        overflow: `hidden`
+                    }}
+                    pointerEvents = 'box-only'
+                >
+                    <Animated.View style = {{
+                        ...adjustedStyle.ripple,
+                        top: 0, // ripple.locationY,
+                        left: ripple.locationX,
+                        transform: [{
+                            scale: ripple.progress.interpolate({
+                                inputRange: [ 0, 1 ],
+                                outputRange: [ 0, ripple.scale ]
+                            })
+                        }],
+                        opacity: ripple.progress.interpolate({
+                            inputRange: [ 0, 1 ],
+                            outputRange: [ parseInt(Ht.Theme.button.color.flat.opacity, 16) / 255, 0 ]
+                        })
+                    }}/>
+                </View>
+            );
+        } else {
+            return null;
+        }
+    }
     render () {
         const component = this;
         const {
@@ -421,9 +559,9 @@ export default class FlatButtonInterface extends Component {
             shade,
             disabled,
             busy,
+            rippled,
             label,
-            children,
-            onPress
+            children
         } = component.props;
         const {
             adjustedStyle
@@ -432,28 +570,28 @@ export default class FlatButtonInterface extends Component {
             shade,
             color: adjustedStyle.label.color
         };
-        let buttonLeftChildren = null;
-        let buttonCenterChildren = null;
-        let buttonRightChildren = null;
+        let buttonContentLeftChildren = null;
+        let buttonContentCenterChildren = null;
+        let buttonContentRightChildren = null;
         let buttonBadgeChildren = null;
 
         if (React.Children.count(children) > 0) {
             let fragments = React.Children.toArray(React.Children.map(children, (child) => {
                 return React.cloneElement(child, buttonChildProperty);
             }));
-            buttonLeftChildren = fragments.filter((child) => {
+            buttonContentLeftChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
                 if (!Hf.isString(room)) {
                     return false;
                 } else {
-                    return room === `left`;
+                    return room === `content-left`;
                 }
             });
-            buttonLeftChildren = Hf.isEmpty(buttonLeftChildren) ? null : buttonLeftChildren;
+            buttonContentLeftChildren = Hf.isEmpty(buttonContentLeftChildren) ? null : buttonContentLeftChildren;
 
-            buttonCenterChildren = fragments.filter((child) => {
+            buttonContentCenterChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
@@ -461,22 +599,22 @@ export default class FlatButtonInterface extends Component {
                     Hf.log(`warn1`, `FlatButtonComponent.render - Button component requires children each to have a center room propperty.`);
                     return false;
                 } else {
-                    return room === `center`;
+                    return room === `content-center`;
                 }
             });
-            buttonCenterChildren = Hf.isEmpty(buttonCenterChildren) ? null : buttonCenterChildren;
+            buttonContentCenterChildren = Hf.isEmpty(buttonContentCenterChildren) ? null : buttonContentCenterChildren;
 
-            buttonRightChildren = fragments.filter((child) => {
+            buttonContentRightChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
                 if (!Hf.isString(room)) {
                     return false;
                 } else {
-                    return room === `right`;
+                    return room === `content-right`;
                 }
             });
-            buttonRightChildren = Hf.isEmpty(buttonRightChildren) ? null : buttonRightChildren;
+            buttonContentRightChildren = Hf.isEmpty(buttonContentRightChildren) ? null : buttonContentRightChildren;
 
             buttonBadgeChildren = fragments.filter((child) => {
                 const {
@@ -498,29 +636,34 @@ export default class FlatButtonInterface extends Component {
             >
                 <TouchableOpacity
                     style = { adjustedStyle.container }
+                    activeOpacity = { parseInt(Ht.Theme.button.color.flat.opacity, 16) / 255 }
                     disabled = { busy || disabled }
-                    onPress = { busy || disabled ? null : () => component.debounce(onPress) }
+                    onLayout = { component.onLayout }
+                    onPress = { busy || disabled ? null : (event) => component.debounce(component.onPress, event) }
                 >
-                    <View style = { adjustedStyle.room.left }>
+                    {
+                        rippled ? component.renderRipple() : null
+                    }
+                    <View style = { adjustedStyle.room.contentLeft } pointerEvents = 'box-only' >
                         {
-                            buttonLeftChildren
+                            buttonContentLeftChildren
                         }
                     </View>
-                    <View style = { adjustedStyle.room.center }>
+                    <View style = { adjustedStyle.room.contentCenter } pointerEvents = 'box-only' >
                         {
-                            buttonCenterChildren !== null ? buttonCenterChildren : <Text style = { adjustedStyle.label }>{ label }</Text>
+                            buttonContentCenterChildren !== null ? buttonContentCenterChildren : <Text style = { adjustedStyle.label }>{ label }</Text>
                         }
                     </View>
-                    <View style = { adjustedStyle.room.right }>
+                    <View style = { adjustedStyle.room.contentRight } pointerEvents = 'box-only' >
                         {
-                            buttonRightChildren
+                            buttonContentRightChildren
                         }
                     </View>
                     {
-                        busy ? <ActivityIndicator size = 'small'/> : null
+                        busy ? <ActivityIndicator size = 'small' /> : null
                     }
                     {
-                        buttonBadgeChildren !== null ? <View style = { adjustedStyle.room.badge }>
+                        buttonBadgeChildren !== null ? <View style = { adjustedStyle.room.badge } pointerEvents = 'box-only' >
                             {
                                 buttonBadgeChildren
                             }
