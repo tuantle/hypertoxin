@@ -48,9 +48,6 @@ let Ht = null;
  * @returns {object}
  */
 const init = function init (option = {
-    // setting: {
-    //     touchPressDebounceTime: 250
-    // },
     customTheme: {}
 }) {
     const {
@@ -61,7 +58,7 @@ const init = function init (option = {
 
     if (Ht === null) {
         Ht = {
-            VERSION: `0.1.0-beta11`,
+            VERSION: `0.1.0-beta12`,
             Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
         };
 
@@ -104,8 +101,8 @@ const init = function init (option = {
             },
             /* load field components */
             Field: {
-                TextField: require(`./components/fields/text-field-component`).default
-                // SearchField: require(`./components/fields/search-field-component`).default
+                TextField: require(`./components/fields/text-field-component`).default,
+                SearchField: require(`./components/fields/search-field-component`).default
             },
             /* load view components */
             View: {
@@ -194,6 +191,13 @@ const init = function init (option = {
         Object.defineProperty(HtProperty.Field, `TextField`, {
             get: function get () {
                 return HtComponent.Field.TextField;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Field, `SearchField`, {
+            get: function get () {
+                return HtComponent.Field.SearchField;
             },
             configurable: false,
             enumerable: true

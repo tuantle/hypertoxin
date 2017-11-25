@@ -2,6 +2,19 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
+**Development Beta Version 0.1.0-beta12 (11/24/2017)**
+```
+Notes:
+- Update dependencies:
+    Hyperflow to 0.1.9
+    React Native to 0.50.4
+New Features:
+    - Added new SearchField component.
+Breaking Changes:
+Improvements:
+    - Code cleanups.
+Bug fixes:
+```
 **Development Beta Version 0.1.0-beta11 (11/02/2017)**
 ```
 Notes:
