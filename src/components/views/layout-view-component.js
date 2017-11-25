@@ -54,6 +54,8 @@ const AnimatedBlurView = Animatable.createAnimatableComponent(BlurView);
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
+const DEFAULT_ANIMATION_DURATION_MS = 300;
+
 const DEFAULT_LAYOUT_VIEW_STYLE = {
     container: {
         flexShrink: 1,
@@ -66,14 +68,12 @@ const DEFAULT_LAYOUT_VIEW_STYLE = {
     horizontal: {
         flexShrink: 1,
         flexDirection: `column`,
-        maxWidth: DEVICE_WIDTH,
         borderColor: `transparent`,
         backgroundColor: `transparent`
     },
     vertical: {
         flexShrink: 1,
         flexDirection: `row`,
-        maxWidth: DEVICE_WIDTH,
         borderColor: `transparent`,
         backgroundColor: `transparent`
     }
@@ -84,7 +84,6 @@ export default class LayoutViewComponent extends Component {
         cId: PropTypes.string,
         room: PropTypes.oneOf([
             `none`,
-            `action-left`, `action-right`,
             `content-left`, `content-center`, `content-right`,
             `media`, `overlay`
         ]),
@@ -187,32 +186,26 @@ export default class LayoutViewComponent extends Component {
         const {
             adjustedStyle: prevAdjustedStyle
         } = component.state;
+        let themedColor;
+
+        switch (overlay) { // eslint-disable-line
+        case `opaque`:
+            themedColor = Ht.Theme.view.color.layout[shade];
+            break;
+        case `translucent`:
+            themedColor = `${Ht.Theme.view.color.layout[shade]}${Ht.Theme.view.color.layout.opacity}`;
+            break;
+        case `frosted`:
+            themedColor = `transparent`;
+            break;
+        case `transparent`:
+            themedColor = `transparent`;
+            break;
+        }
+
         const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
             container: {
-                backgroundColor: (() => {
-                    switch (overlay) { // eslint-disable-line
-                    case `opaque`:
-                        return Ht.Theme.view.color.layout[shade];
-                    case `translucent`:
-                        return `${Ht.Theme.view.color.layout[shade]}${Ht.Theme.view.color.layout.opacity}`;
-                    case `frosted`:
-                        return `transparent`;
-                    case `transparent`:
-                        return `transparent`;
-                    }
-                })(),
-                borderColor: (() => {
-                    switch (overlay) { // eslint-disable-line
-                    case `opaque`:
-                        return Ht.Theme.view.color.layout[shade];
-                    case `translucent`:
-                        return `${Ht.Theme.view.color.layout[shade]}${Ht.Theme.view.color.layout.opacity}`;
-                    case `frosted`:
-                        return `transparent`;
-                    case `transparent`:
-                        return `transparent`;
-                    }
-                })(),
+                backgroundColor: themedColor,
                 alignSelf: (() => {
                     switch (selfAlignment) { // eslint-disable-line
                     case `auto`:
@@ -228,58 +221,96 @@ export default class LayoutViewComponent extends Component {
                     }
                 })()
             },
-            horizontal: {
-                justifyContent: (() => {
-                    switch (alignment) { // eslint-disable-line
-                    case `start`:
-                        return `flex-start`;
-                    case `center`:
-                        return `center`;
-                    case `end`:
-                        return `flex-end`;
-                    case `stretch`:
-                        return `space-between`;
+            horizontal: (() => {
+                switch (alignment) { // eslint-disable-line
+                case `start`:
+                    if (selfAlignment === `stretch`) {
+                        return {
+                            justifyContent: `space-between`,
+                            alignItems: `flex-start`
+                        };
+                    } else {
+                        return {
+                            justifyContent: `flex-start`,
+                            alignItems: `flex-start`
+                        };
                     }
-                })(),
-                alignItems: (() => {
-                    switch (alignment) { // eslint-disable-line
-                    case `start`:
-                        return `flex-start`;
-                    case `center`:
-                        return `center`;
-                    case `end`:
-                        return `flex-end`;
-                    case `stretch`:
-                        return `stretch`;
+                case `center`:
+                    if (selfAlignment === `stretch`) {
+                        return {
+                            justifyContent: `space-between`,
+                            alignItems: `center`
+                        };
+                    } else {
+                        return {
+                            justifyContent: `center`,
+                            alignItems: `center`
+                        };
                     }
-                })()
-            },
-            vertical: {
-                justifyContent: (() => {
-                    switch (alignment) { // eslint-disable-line
-                    case `start`:
-                        return `flex-start`;
-                    case `center`:
-                        return `center`;
-                    case `end`:
-                        return `flex-end`;
-                    case `stretch`:
-                        return `space-between`;
+                case `end`:
+                    if (selfAlignment === `stretch`) {
+                        return {
+                            justifyContent: `space-between`,
+                            alignItems: `flex-end`
+                        };
+                    } else {
+                        return {
+                            justifyContent: `flex-end`,
+                            alignItems: `flex-end`
+                        };
                     }
-                })(),
-                alignItems: (() => {
-                    switch (alignment) { // eslint-disable-line
-                    case `start`:
-                        return `flex-start`;
-                    case `center`:
-                        return `center`;
-                    case `end`:
-                        return `flex-end`;
-                    case `stretch`:
-                        return `stretch`;
+                case `stretch`:
+                    return {
+                        justifyContent: `space-between`,
+                        alignItems: `stretch`
+                    };
+                }
+            })(),
+            vertical: (() => {
+                switch (alignment) { // eslint-disable-line
+                case `start`:
+                    if (selfAlignment === `stretch`) {
+                        return {
+                            justifyContent: `space-between`,
+                            alignItems: `flex-start`
+                        };
+                    } else {
+                        return {
+                            justifyContent: `flex-start`,
+                            alignItems: `flex-start`
+                        };
                     }
-                })()
-            }
+                case `center`:
+                    if (selfAlignment === `stretch`) {
+                        return {
+                            justifyContent: `space-between`,
+                            alignItems: `center`
+                        };
+                    } else {
+                        return {
+                            justifyContent: `center`,
+                            alignItems: `center`
+                        };
+                    }
+                case `end`:
+                    if (selfAlignment === `stretch`) {
+                        return {
+                            justifyContent: `space-between`,
+                            alignItems: `flex-end`
+                        };
+                    } else {
+                        return {
+                            justifyContent: `flex-end`,
+                            alignItems: `flex-end`
+                        };
+                    }
+                case `stretch`:
+                    return {
+                        justifyContent: `space-between`,
+                        alignItems: `stretch`
+                    };
+                }
+            })()
         });
 
         return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
@@ -333,7 +364,7 @@ export default class LayoutViewComponent extends Component {
     }
     animate = (option = {
         loopCount: -1,
-        duration: 300,
+        duration: DEFAULT_ANIMATION_DURATION_MS,
         delay: 0,
         easing: `ease`
     }) => {
@@ -351,7 +382,7 @@ export default class LayoutViewComponent extends Component {
             easing
         } = Hf.fallback({
             loopCount: -1,
-            duration: 300,
+            duration: DEFAULT_ANIMATION_DURATION_MS,
             delay: 0,
             easing: `ease`
         }).of(option);
@@ -501,7 +532,22 @@ export default class LayoutViewComponent extends Component {
             adjustedStyle,
             scrollDirection
         } = component.state;
-        let frosted = overlay === `frosted`;
+        const frosted = overlay === `frosted`;
+        const layoutViewChildProperty = {
+            shade
+        };
+        let layoutViewChildren = null;
+
+        if (React.Children.count(children) > 0) {
+            let fragments = React.Children.toArray(React.Children.map(children, (child) => {
+                if (child !== null) {
+                    return React.cloneElement(child, layoutViewChildProperty);
+                } else {
+                    return null;
+                }
+            }));
+            layoutViewChildren = Hf.isEmpty(fragments) ? null : fragments;
+        }
 
         if (scrollable) {
             if (frosted) {
@@ -524,7 +570,7 @@ export default class LayoutViewComponent extends Component {
                         >
                             <View style = { adjustedStyle[orientation] }>
                                 {
-                                    children
+                                    layoutViewChildren
                                 }
                             </View>
                         </ScrollView>
@@ -548,7 +594,7 @@ export default class LayoutViewComponent extends Component {
                     >
                         <View style = { adjustedStyle[orientation] }>
                             {
-                                children
+                                layoutViewChildren
                             }
                         </View>
                     </ScrollView>
@@ -566,7 +612,7 @@ export default class LayoutViewComponent extends Component {
                     >
                         <View style = { adjustedStyle[orientation] }>
                             {
-                                children
+                                layoutViewChildren
                             }
                         </View>
                     </AnimatedBlurView>
@@ -580,7 +626,7 @@ export default class LayoutViewComponent extends Component {
                 >
                     <View style = { adjustedStyle[orientation] }>
                         {
-                            children
+                            layoutViewChildren
                         }
                     </View>
                 </AnimatedView>

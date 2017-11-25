@@ -38,7 +38,8 @@ export default {
         shade: `light`,
         overlay: `opaque`,
         oversized: false,
-        dropShadowed: true
+        dropShadowed: true,
+        uppercasedLabel: true
     },
     body: {
         shade: `light`,

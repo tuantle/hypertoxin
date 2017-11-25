@@ -40,6 +40,8 @@ const {
     Component
 } = React;
 
+const DEFAULT_ANIMATION_DURATION_MS = 300;
+
 const DEFAULT_AVATAR_IMAGE_STYLE = {
     small: {
         ...Ht.Theme.general.dropShadow.shallow,
@@ -207,7 +209,7 @@ export default class AvatarImageComponent extends Component {
     }
     animate = (option = {
         loopCount: -1,
-        duration: 300,
+        duration: DEFAULT_ANIMATION_DURATION_MS,
         delay: 0,
         easing: `ease`
     }) => {
@@ -225,7 +227,7 @@ export default class AvatarImageComponent extends Component {
             easing
         } = Hf.fallback({
             loopCount: -1,
-            duration: 300,
+            duration: DEFAULT_ANIMATION_DURATION_MS,
             delay: 0,
             easing: `ease`
         }).of(option);

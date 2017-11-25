@@ -32,18 +32,28 @@ import colorTheme from './color-theme.js';
 
 export default {
     search: {
-        shade: `dark`
+        shade: `light`,
+        overlay: `opaque`,
+        corner: `square`,
+        dropShadowed: true
     },
     text: {
-        shade: `dark`,
+        shade: `light`,
         overlay: `opaque`,
-        underlined: true
+        underlined: true,
+        uppercasedLabel: false
+    },
+    corner: {
+        search: {
+            square: 4,
+            round25: 13,
+            round50: 26
+        }
     },
     size: {
         search: {
             line: 2,
-            input: 36,
-            suggestionEntry: 36
+            input: 42
         },
         text: {
             line: 2,
@@ -57,7 +67,6 @@ export default {
     font: {
         search: {
             input: fontStyleTemplate.normalLarge,
-            suggestionEntry: fontStyleTemplate.normalLarge,
             hint: fontStyleTemplate.normalLarge
         },
         text: {
@@ -73,6 +82,16 @@ export default {
     },
     color: {
         search: {
+            opacity: `dd`,
+            box: {
+                dark: toxinPalette.deepGrey,
+                light: toxinPalette.white
+            },
+            input: {
+                dark: toxinPalette.white,
+                light: toxinPalette.deepGrey
+            },
+            hint: toxinPalette.grey
         },
         text: {
             opacity: `dd`,

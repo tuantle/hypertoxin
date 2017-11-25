@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module HeaderViewComponent
- * @description - Header view android component.
+ * @description - Header view ios component.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -51,6 +51,8 @@ const {
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
+const DEFAULT_ANIMATION_DURATION_MS = 300;
+
 const DEFAULT_HEADER_VIEW_STYLE = {
     container: {
         flexDirection: `column`,
@@ -61,41 +63,39 @@ const DEFAULT_HEADER_VIEW_STYLE = {
         overflow: `hidden`
     },
     status: {
-        ...Ht.Theme.general.dropShadow.deep,
+        ...Ht.Theme.general.dropShadow.shallow,
         position: `absolute`,
         zIndex: 12,
         elevation: 4,
         width: DEVICE_WIDTH,
         height: Ht.Theme.view.size.header.status,
         top: 0,
-        left: 0
+        left: 0,
+        marginBottom: 3
     },
     navigation: {
-        ...Ht.Theme.general.dropShadow.deep,
+        ...Ht.Theme.general.dropShadow.shallow,
         flexDirection: `row`,
         alignItems: `stretch`,
         justifyContent: `space-between`,
-        width: DEVICE_WIDTH,
         height: Ht.Theme.view.size.header.normal,
         zIndex: 10,
         elevation: 2,
         marginTop: Ht.Theme.view.size.header.status,
-        marginBottom: 6
+        marginBottom: 3
     },
     room: {
         actionLeft: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `flex-start`,
-            maxWidth: DEVICE_WIDTH / 6,
             maxHeight: Ht.Theme.view.size.header.normal,
             backgroundColor: `transparent`
         },
         contentCenter: {
             flexDirection: `column`,
             alignItems: `center`,
-            justifyContent: `flex-start`,
-            maxWidth: DEVICE_WIDTH,
+            justifyContent: `center`,
             maxHeight: Ht.Theme.view.size.header.normal,
             backgroundColor: `transparent`
         },
@@ -103,12 +103,10 @@ const DEFAULT_HEADER_VIEW_STYLE = {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `flex-start`,
-            maxWidth: DEVICE_WIDTH / 6,
             maxHeight: Ht.Theme.view.size.header.normal,
             backgroundColor: `transparent`
         },
         filler: {
-            width: DEVICE_WIDTH / 7,
             height: Ht.Theme.view.size.header.normal,
             backgroundColor: `transparent`
         }
@@ -125,9 +123,11 @@ export default class HeaderViewComponent extends Component {
         overlay: PropTypes.oneOf([ `opaque`, `frosted`, `translucent`, `transparent` ]),
         oversized: PropTypes.bool,
         dropShadowed: PropTypes.bool,
+        uppercasedLabel: PropTypes.bool,
+        initiallyCollapsed: PropTypes.bool,
         label: PropTypes.string,
-        onMinimized: PropTypes.func,
-        onMaximized: PropTypes.func
+        onCollapse: PropTypes.func,
+        onExpand: PropTypes.func
     }
     static defaultProps = {
         cId: ``,
@@ -135,72 +135,22 @@ export default class HeaderViewComponent extends Component {
         overlay: Ht.Theme.view.header.overlay,
         oversized: Ht.Theme.view.header.oversized,
         dropShadowed: Ht.Theme.view.header.dropShadowed,
+        uppercasedLabel: Ht.Theme.view.header.uppercasedLabel,
+        initiallyCollapsed: false,
         label: `Header`,
-        onMinimized: () => null,
-        onMaximized: () => null
+        onCollapse: () => null,
+        onExpand: () => null
     }
     constructor (property) {
         super(property);
         this.refCache = {};
         this.state = {
-            minimized: false,
-            adjustedStyle: DEFAULT_HEADER_VIEW_STYLE
-        };
-    }
-    isMinimized = () => {
-        const component = this;
-        const {
-            minimized
-        } = component.state;
-
-        return minimized;
-    }
-    minimize = (minimized = false) => {
-        const component = this;
-        const {
-            cId,
-            oversized
-        } = component.props;
-        const {
-            minimized: wasMinimized
-        } = component.state;
-        const [
-            animatedStatusView,
-            animatedNavigationView
-        ] = component.lookupComponentRefs(
-            `animated-status-view${cId}`,
-            `animated-navigation-view${cId}`
-        );
-
-        minimized = Hf.isBoolean(minimized) ? minimized : false;
-
-        if (wasMinimized && !minimized || !wasMinimized && minimized) {
-            component.setState(() => {
-                return {
-                    minimized
-                };
-            });
-
-            if (minimized) {
-                animatedStatusView.transitionTo({
-                    shadowOpacity: Ht.Theme.general.dropShadow.deep.shadowOpacity
-                }, 300, `ease-in`);
-                animatedNavigationView.transitionTo({
-                    opacity: 0,
-                    height: 0,
-                    translateY: oversized ? -Ht.Theme.view.size.header.oversize : -Ht.Theme.view.size.header.normal
-                }, 300, `ease-out-cubic`);
-            } else {
-                animatedStatusView.transitionTo({
-                    shadowOpacity: 0
-                }, 300, `ease-out`);
-                animatedNavigationView.transitionTo({
-                    opacity: 1,
-                    height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal,
-                    translateY: 0
-                }, 300, `ease-in-cubic`);
+            collapsed: false,
+            adjustedStyle: DEFAULT_HEADER_VIEW_STYLE,
+            filler: {
+                width: 0
             }
-        }
+        };
     }
     /**
      * @description - Assign the registered component's reference object.
@@ -255,7 +205,8 @@ export default class HeaderViewComponent extends Component {
         shade: Ht.Theme.view.header.shade,
         overlay: Ht.Theme.view.header.overlay,
         oversized: Ht.Theme.view.header.oversized,
-        dropShadowed: Ht.Theme.view.header.dropShadowed
+        dropShadowed: Ht.Theme.view.header.dropShadowed,
+        initiallyCollapsed: false
     }) => {
         const component = this;
         const {
@@ -263,12 +214,14 @@ export default class HeaderViewComponent extends Component {
             overlay,
             oversized,
             dropShadowed,
+            initiallyCollapsed,
             style
         } = Hf.fallback({
             shade: Ht.Theme.view.header.shade,
             overlay: Ht.Theme.view.header.overlay,
             oversized: Ht.Theme.view.header.oversized,
-            dropShadowed: Ht.Theme.view.header.dropShadowed
+            dropShadowed: Ht.Theme.view.header.dropShadowed,
+            initiallyCollapsed: false
         }).of(newStyle);
         const {
             adjustedStyle: prevAdjustedStyle
@@ -299,9 +252,17 @@ export default class HeaderViewComponent extends Component {
         themedLabelColor = Ht.Theme.view.color.header.label[shade === `dark` ? `light` : `dark`];
 
         const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
-            navigation: {
+            navigation: initiallyCollapsed ? {
+                opacity: 0,
+                height: 0,
+                transform: [{
+                    translateX: oversized ? -Ht.Theme.view.size.header.oversize : -Ht.Theme.view.size.header.normal
+                }],
+                shadowOpacity: 0,
+                backgroundColor: themedNavigationColor
+            } : {
                 height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal,
-                shadowOpacity: dropShadowed ? Ht.Theme.general.dropShadow.deep.shadowOpacity : 0,
+                shadowOpacity: dropShadowed ? Ht.Theme.general.dropShadow.shallow.shadowOpacity : 0,
                 backgroundColor: themedNavigationColor
             },
             room: {
@@ -309,7 +270,10 @@ export default class HeaderViewComponent extends Component {
                     alignSelf: oversized ? `flex-start` : `center`
                 }
             },
-            status: {
+            status: initiallyCollapsed ? {
+                shadowOpacity: Ht.Theme.general.dropShadow.shallow.shadowOpacity,
+                backgroundColor: themedStatusColor
+            } : {
                 shadowOpacity: 0,
                 backgroundColor: themedStatusColor
             },
@@ -324,7 +288,7 @@ export default class HeaderViewComponent extends Component {
     }
     animate = (refName, option = {
         loopCount: -1,
-        duration: 300,
+        duration: DEFAULT_ANIMATION_DURATION_MS,
         delay: 0,
         easing: `ease`
     }) => {
@@ -333,10 +297,10 @@ export default class HeaderViewComponent extends Component {
             cId
         } = component.props;
         const {
-            minimized
+            collapsed
         } = component.state;
 
-        if (!minimized) {
+        if (!collapsed) {
             const [ animatedView ] = component.lookupComponentRefs(`${refName}${cId}`);
             const {
                 from,
@@ -347,7 +311,7 @@ export default class HeaderViewComponent extends Component {
                 easing
             } = Hf.fallback({
                 loopCount: -1,
-                duration: 300,
+                duration: DEFAULT_ANIMATION_DURATION_MS,
                 delay: 0,
                 easing: `ease`
             }).of(option);
@@ -409,6 +373,121 @@ export default class HeaderViewComponent extends Component {
             }
         }
     }
+    isCollapsed = () => {
+        const component = this;
+        const {
+            collapsed
+        } = component.state;
+
+        return collapsed;
+    }
+    collapse = (option = {
+        duration: DEFAULT_ANIMATION_DURATION_MS,
+        easing: `ease-out-cubic`
+    }) => {
+        const component = this;
+        const {
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: DEFAULT_ANIMATION_DURATION_MS,
+            easing: `ease-out-cubic`
+        }).of(option);
+        const {
+            cId,
+            oversized
+        } = component.props;
+        const {
+            collapsed
+        } = component.state;
+        const [
+            animatedStatusView,
+            animatedNavigationView
+        ] = component.lookupComponentRefs(
+            `animated-status-view${cId}`,
+            `animated-navigation-view${cId}`
+        );
+
+        if (!collapsed) {
+            component.setState(() => {
+                return {
+                    collapsed: true
+                };
+            });
+            animatedStatusView.transitionTo({
+                shadowOpacity: Ht.Theme.general.dropShadow.shallow.shadowOpacity
+            }, duration, `ease-in`);
+            animatedNavigationView.transitionTo({
+                opacity: 0,
+                height: 0,
+                translateY: oversized ? -Ht.Theme.view.size.header.oversize : -Ht.Theme.view.size.header.normal
+            }, duration, easing);
+        }
+    }
+    expand = (option = {
+        duration: DEFAULT_ANIMATION_DURATION_MS,
+        easing: `ease-in-cubic`
+    }) => {
+        const component = this;
+        const {
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: DEFAULT_ANIMATION_DURATION_MS,
+            easing: `ease-in-cubic`
+        }).of(option);
+        const {
+            cId,
+            oversized
+        } = component.props;
+        const {
+            collapsed
+        } = component.state;
+        const [
+            animatedStatusView,
+            animatedNavigationView
+        ] = component.lookupComponentRefs(
+            `animated-status-view${cId}`,
+            `animated-navigation-view${cId}`
+        );
+
+        if (collapsed) {
+            animatedStatusView.transitionTo({
+                shadowOpacity: 0
+            }, duration, `ease-out`);
+            animatedNavigationView.transitionTo({
+                opacity: 1,
+                height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal,
+                translateY: 0
+            }, duration, easing);
+            setTimeout(() => {
+                component.setState(() => {
+                    return {
+                        collapsed: false
+                    };
+                });
+            }, 300);
+        }
+    }
+    onLayout = (event) => {
+        const component = this;
+        const {
+            filler
+        } = component.state;
+        const {
+            width
+        } = event.nativeEvent.layout;
+
+        if (filler.width < width) {
+            component.setState(() => {
+                return {
+                    filler: {
+                        width
+                    }
+                };
+            });
+        }
+    }
     componentWillMount () {
         const component = this;
         const {
@@ -416,16 +495,19 @@ export default class HeaderViewComponent extends Component {
             overlay,
             oversized,
             dropShadowed,
+            initiallyCollapsed,
             style
         } = component.props;
 
         component.setState(() => {
             return {
+                collapsed: initiallyCollapsed,
                 adjustedStyle: component.readjustStyle({
                     shade,
                     overlay,
                     oversized,
                     dropShadowed,
+                    initiallyCollapsed,
                     style
                 })
             };
@@ -443,16 +525,19 @@ export default class HeaderViewComponent extends Component {
             overlay,
             oversized,
             dropShadowed,
+            initiallyCollapsed,
             style
         } = nextProperty;
 
         component.setState(() => {
             return {
+                collapsed: initiallyCollapsed,
                 adjustedStyle: component.readjustStyle({
                     shade,
                     overlay,
                     oversized,
                     dropShadowed,
+                    initiallyCollapsed,
                     style
                 })
             };
@@ -464,65 +549,89 @@ export default class HeaderViewComponent extends Component {
             cId,
             shade,
             overlay,
+            uppercasedLabel,
             label,
             children,
-            onMinimized,
-            onMaximized
+            onCollapse,
+            onExpand
         } = component.props;
         const {
-            minimized,
-            adjustedStyle
+            collapsed,
+            adjustedStyle,
+            filler
         } = component.state;
         const frosted = overlay === `frosted`;
-        const headerChildProperty = {
+        const headerViewActionChildProperty = {
             shade,
             color: adjustedStyle.label.color
         };
-        let headerActionLeftChildren = null;
-        let headerContentCenterChildren = null;
-        let headerActionRightChildren = null;
+        const headerViewContentChildProperty = {
+            shade,
+            uppercased: uppercasedLabel,
+            color: adjustedStyle.label.color
+        };
+        let headerViewActionLeftChildren = null;
+        let headerViewContentCenterChildren = null;
+        let headerViewActionRightChildren = null;
 
         if (React.Children.count(children) > 0) {
             let fragments = React.Children.toArray(React.Children.map(children, (child) => {
-                return React.cloneElement(child, headerChildProperty);
+                const {
+                    room
+                } = child.props;
+
+                if (child !== null) {
+                    if (Hf.isString(room) && (room === `action-left` || room === `action-right`)) {
+                        return React.cloneElement(child, headerViewActionChildProperty);
+                    } else if (Hf.isString(room) && room === `content-center`) {
+                        return React.cloneElement(child, headerViewContentChildProperty);
+                    } else {
+                        Hf.log(`warn1`, `HeaderViewComponent.render - Header view component requires children each to have a center room propperty.`);
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
             }));
 
-            headerActionLeftChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    return false;
-                } else {
+            headerViewActionLeftChildren = fragments.filter((child) => {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `action-left`;
+                } else {
+                    return false;
                 }
             });
-            headerActionLeftChildren = Hf.isEmpty(headerActionLeftChildren) ? null : headerActionLeftChildren;
+            headerViewActionLeftChildren = Hf.isEmpty(headerViewActionLeftChildren) ? null : headerViewActionLeftChildren;
 
-            headerContentCenterChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    Hf.log(`warn1`, `HeaderViewComponent.render - Header view component requires children each to have a center room propperty.`);
-                    return false;
-                } else {
+            headerViewContentCenterChildren = fragments.filter((child) => {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `content-center`;
-                }
-            });
-            headerContentCenterChildren = Hf.isEmpty(headerContentCenterChildren) ? null : headerContentCenterChildren;
-
-            headerActionRightChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    return false;
                 } else {
-                    return room === `action-right`;
+                    return false;
                 }
             });
-            headerActionRightChildren = Hf.isEmpty(headerActionRightChildren) ? null : headerActionRightChildren;
+            headerViewContentCenterChildren = Hf.isEmpty(headerViewContentCenterChildren) ? null : headerViewContentCenterChildren;
+
+            headerViewActionRightChildren = fragments.filter((child) => {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
+                    return room === `action-right`;
+                } else {
+                    return false;
+                }
+            });
+            headerViewActionRightChildren = Hf.isEmpty(headerViewActionRightChildren) ? null : headerViewActionRightChildren;
         }
 
         if (frosted) {
@@ -535,43 +644,55 @@ export default class HeaderViewComponent extends Component {
                     <AnimatedView
                         ref = { component.assignComponentRef(`animated-status-view${cId}`) }
                         style = { adjustedStyle.status }
-                        duration = { 300 }
+                        duration = { DEFAULT_ANIMATION_DURATION_MS }
                         useNativeDriver = { false }
                     >
                         <StatusBar
-                            barStyle = { shade === `dark` ? `light-content` : `dark-content` }
+                            barStyle = { `${shade}-content` }
                             networkActivityIndicatorVisible = { false }
                         />
                     </AnimatedView>
                     <AnimatedView
                         ref = { component.assignComponentRef(`animated-navigation-view${cId}`) }
                         style = { adjustedStyle.navigation }
-                        duration = { 300 }
+                        duration = { DEFAULT_ANIMATION_DURATION_MS }
                         useNativeDriver = { false }
-                        onAnimationEnd = {() => minimized ? onMinimized() : onMaximized()}
+                        onAnimationEnd = {() => collapsed ? onCollapse() : onExpand()}
                     >
                         <AnimatedView
                             ref = { component.assignComponentRef(`animated-navigation-action-left-view${cId}`) }
+                            onLayout = { component.onLayout }
                             style = { adjustedStyle.room.actionLeft }
                         >
                             {
-                                headerActionLeftChildren !== null ? headerActionLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                                headerViewActionLeftChildren !== null ? headerViewActionLeftChildren : <View style = {{
+                                    ...adjustedStyle.room.filler,
+                                    width: filler.width
+                                }}/>
                             }
-                            <AnimatedView
-                                ref = { component.assignComponentRef(`animated-navigation-content-center-view${cId}`) }
-                                style = { adjustedStyle.room.contentCenter }
-                            >
-                                {
-                                    headerContentCenterChildren !== null ? headerContentCenterChildren : <Text style = { adjustedStyle.label }>{ label }</Text>
-                                }
-                            </AnimatedView>
+                        </AnimatedView>
+                        <AnimatedView
+                            ref = { component.assignComponentRef(`animated-navigation-content-center-view${cId}`) }
+                            style = { adjustedStyle.room.contentCenter }
+                        >
+                            {
+                                headerViewContentCenterChildren !== null ? headerViewContentCenterChildren : <Text style = { adjustedStyle.label }>
+                                    {
+                                        uppercasedLabel ? label.toUpperCase() : label
+                                    }
+                                </Text>
+                            }
                         </AnimatedView>
                         <AnimatedView
                             ref = { component.assignComponentRef(`animated-navigation-action-right-view${cId}`) }
+                            onLayout = { component.onLayout }
                             style = { adjustedStyle.room.actionRight }
                         >
                             {
-                                headerActionRightChildren !== null ? headerActionRightChildren : <View style = { adjustedStyle.room.filler }/>
+                                headerViewActionRightChildren !== null ? headerViewActionRightChildren : <View style = {{
+                                    ...adjustedStyle.room.filler,
+                                    width: filler.width
+                                }}/>
                             }
                         </AnimatedView>
                     </AnimatedView>
@@ -583,43 +704,55 @@ export default class HeaderViewComponent extends Component {
                     <AnimatedView
                         ref = { component.assignComponentRef(`animated-status-view${cId}`) }
                         style = { adjustedStyle.status }
-                        duration = { 300 }
+                        duration = { DEFAULT_ANIMATION_DURATION_MS }
                         useNativeDriver = { false }
                     >
                         <StatusBar
-                            barStyle = { shade === `dark` ? `light-content` : `dark-content` }
+                            barStyle = { `${shade}-content` }
                             networkActivityIndicatorVisible = { false }
                         />
                     </AnimatedView>
                     <AnimatedView
                         ref = { component.assignComponentRef(`animated-navigation-view${cId}`) }
                         style = { adjustedStyle.navigation }
-                        duration = { 300 }
+                        duration = { DEFAULT_ANIMATION_DURATION_MS }
                         useNativeDriver = { false }
-                        onAnimationEnd = {() => minimized ? onMinimized() : onMaximized()}
+                        onAnimationEnd = {() => collapsed ? onCollapse() : onExpand()}
                     >
                         <AnimatedView
                             ref = { component.assignComponentRef(`animated-navigation-action-left-view${cId}`) }
+                            onLayout = { component.onLayout }
                             style = { adjustedStyle.room.actionLeft }
                         >
                             {
-                                headerActionLeftChildren !== null ? headerActionLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                                headerViewActionLeftChildren !== null ? headerViewActionLeftChildren : <View style = {{
+                                    ...adjustedStyle.room.filler,
+                                    width: filler.width
+                                }}/>
                             }
-                            <AnimatedView
-                                ref = { component.assignComponentRef(`animated-navigation-content-center-view${cId}`) }
-                                style = { adjustedStyle.room.contentCenter }
-                            >
-                                {
-                                    headerContentCenterChildren !== null ? headerContentCenterChildren : <Text style = { adjustedStyle.label }>{ label }</Text>
-                                }
-                            </AnimatedView>
+                        </AnimatedView>
+                        <AnimatedView
+                            ref = { component.assignComponentRef(`animated-navigation-content-center-view${cId}`) }
+                            style = { adjustedStyle.room.contentCenter }
+                        >
+                            {
+                                headerViewContentCenterChildren !== null ? headerViewContentCenterChildren : <Text style = { adjustedStyle.label }>
+                                    {
+                                        uppercasedLabel ? label.toUpperCase() : label
+                                    }
+                                </Text>
+                            }
                         </AnimatedView>
                         <AnimatedView
                             ref = { component.assignComponentRef(`animated-navigation-action-right-view${cId}`) }
+                            onLayout = { component.onLayout }
                             style = { adjustedStyle.room.actionRight }
                         >
                             {
-                                headerActionRightChildren !== null ? headerActionRightChildren : <View style = { adjustedStyle.room.filler }/>
+                                headerViewActionRightChildren !== null ? headerViewActionRightChildren : <View style = {{
+                                    ...adjustedStyle.room.filler,
+                                    width: filler.width
+                                }}/>
                             }
                         </AnimatedView>
                     </AnimatedView>

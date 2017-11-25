@@ -41,6 +41,8 @@ const {
     Component
 } = React;
 
+const DEFAULT_ANIMATION_DURATION_MS = 300;
+
 export default class TitleTextComponent extends Component {
     static propTypes = {
         cId: PropTypes.string,
@@ -55,6 +57,8 @@ export default class TitleTextComponent extends Component {
         decoration: PropTypes.oneOf([ `none`, `underline`, `line-through` ]),
         size: PropTypes.oneOf([ `small`, `normal`, `large` ]),
         indentation: PropTypes.number,
+        uppercased: PropTypes.bool,
+        lowercased: PropTypes.bool,
         color: PropTypes.string
     }
     static defaultProps = {
@@ -64,7 +68,9 @@ export default class TitleTextComponent extends Component {
         alignment: Ht.Theme.text.title.alignment,
         decoration: Ht.Theme.text.title.decoration,
         size: Ht.Theme.text.title.size,
-        indentation: Ht.Theme.text.title.indentation,
+        indentation: 0,
+        uppercased: false,
+        lowercased: false,
         color: ``
     }
     constructor (property) {
@@ -127,7 +133,7 @@ export default class TitleTextComponent extends Component {
         shade: Ht.Theme.text.title.shade,
         alignment: Ht.Theme.text.title.alignment,
         decoration: Ht.Theme.text.title.decoration,
-        indentation: Ht.Theme.text.title.indentation,
+        indentation: 0,
         color: ``
     }) => {
         const component = this;
@@ -142,7 +148,7 @@ export default class TitleTextComponent extends Component {
             shade: Ht.Theme.text.title.shade,
             alignment: Ht.Theme.text.title.alignment,
             decoration: Ht.Theme.text.title.decoration,
-            indentation: Ht.Theme.text.title.indentation,
+            indentation: 0,
             color: ``
         }).of(newStyle);
         const {
@@ -201,7 +207,7 @@ export default class TitleTextComponent extends Component {
     }
     animate = (option = {
         loopCount: -1,
-        duration: 300,
+        duration: DEFAULT_ANIMATION_DURATION_MS,
         delay: 0,
         easing: `ease`
     }) => {
@@ -219,7 +225,7 @@ export default class TitleTextComponent extends Component {
             easing
         } = Hf.fallback({
             loopCount: -1,
-            duration: 300,
+            duration: DEFAULT_ANIMATION_DURATION_MS,
             delay: 0,
             easing: `ease`
         }).of(option);
@@ -338,11 +344,27 @@ export default class TitleTextComponent extends Component {
         const {
             cId,
             size,
+            uppercased,
+            lowercased,
             children
         } = component.props;
         const {
             adjustedStyle
         } = component.state;
+        let titleTextChildren = null;
+
+        if (React.Children.count(children) > 0) {
+            let fragments = React.Children.toArray(React.Children.map(children, (child) => {
+                if (uppercased) {
+                    return child.toUpperCase();
+                } else if (lowercased) {
+                    return child.toLowerCase();
+                } else {
+                    return child;
+                }
+            }));
+            titleTextChildren = Hf.isEmpty(fragments) ? null : fragments;
+        }
 
         return (
             <AnimatedText
@@ -353,7 +375,7 @@ export default class TitleTextComponent extends Component {
                 numberOfLines = { 1 }
             >
                 {
-                    children
+                    titleTextChildren
                 }
             </AnimatedText>
         );

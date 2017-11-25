@@ -55,7 +55,6 @@ const DEFAULT_CARD_VIEW_STYLE = {
         alignItems: `stretch`,
         alignSelf: `stretch`,
         justifyContent: `space-between`,
-        maxWidth: DEVICE_WIDTH,
         backgroundColor: `transparent`
     },
     body: {
@@ -63,7 +62,6 @@ const DEFAULT_CARD_VIEW_STYLE = {
         alignItems: `stretch`,
         alignSelf: `stretch`,
         justifyContent: `center`,
-        maxWidth: DEVICE_WIDTH,
         backgroundColor: `transparent`
     },
     footer: {
@@ -71,7 +69,6 @@ const DEFAULT_CARD_VIEW_STYLE = {
         alignItems: `stretch`,
         alignSelf: `stretch`,
         justifyContent: `space-between`,
-        maxWidth: DEVICE_WIDTH,
         backgroundColor: `transparent`
     },
     room: {
@@ -79,28 +76,24 @@ const DEFAULT_CARD_VIEW_STYLE = {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
-            maxWidth: DEVICE_WIDTH / 2,
             backgroundColor: `transparent`
         },
         contentRight: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
-            maxWidth: DEVICE_WIDTH / 2,
             backgroundColor: `transparent`
         },
         contentCenter: {
             flexDirection: `column`,
             alignItems: `flex-start`,
             justifyContent: `flex-start`,
-            maxWidth: DEVICE_WIDTH,
             backgroundColor: `transparent`
         },
         media: {
             flexDirection: `column`,
             alignItems: `center`,
             justifyContent: `center`,
-            maxWidth: DEVICE_WIDTH,
             backgroundColor: `transparent`
         },
         overlay: {
@@ -108,33 +101,27 @@ const DEFAULT_CARD_VIEW_STYLE = {
             alignSelf: `stretch`,
             alignItems: `flex-start`,
             justifyContent: `flex-start`,
-            maxWidth: DEVICE_WIDTH,
             backgroundColor: `${Ht.Theme.view.color.card.overlay}${Ht.Theme.view.color.card.opacity}`
         },
         actionLeft: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
-            maxWidth: DEVICE_WIDTH / 2,
             backgroundColor: `transparent`
         },
         actionRight: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
-            maxWidth: DEVICE_WIDTH / 2,
             backgroundColor: `transparent`
         },
         filler: {
-            width: 0,
-            height: 0,
             backgroundColor: `transparent`
         }
     }
 };
 
 const CardViewComponent = function CardViewComponent (property = {
-    room: `none`,
     shade: Ht.Theme.view.card.shade,
     overlay: Ht.Theme.view.card.overlay
 }) {
@@ -147,6 +134,9 @@ const CardViewComponent = function CardViewComponent (property = {
         shade: Ht.Theme.view.card.shade,
         overlay: Ht.Theme.view.card.overlay
     }).of(property);
+    const cardViewChildProperty = {
+        shade
+    };
     let adjustedStyle = Hf.merge(DEFAULT_CARD_VIEW_STYLE).with({
         container: {
             backgroundColor: (() => {
@@ -161,110 +151,128 @@ const CardViewComponent = function CardViewComponent (property = {
             })()
         }
     });
-    let cardContentLeftChildren = null;
-    let cardContentRightChildren = null;
-    let cardMediaChildren = null;
-    let cardOverlayChildren = null;
-    let cardContentCenterChildren = null;
-    let cardActionLeftChildren = null;
-    let cardActionRightChildren = null;
+    let cardViewContentLeftChildren = null;
+    let cardViewContentRightChildren = null;
+    let cardViewMediaChildren = null;
+    let cardViewOverlayChildren = null;
+    let cardViewContentCenterChildren = null;
+    let cardViewActionLeftChildren = null;
+    let cardViewActionRightChildren = null;
 
     adjustedStyle = Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
         container: style
     }) : adjustedStyle;
 
     if (React.Children.count(children) > 0) {
-        let fragments = React.Children.toArray(children);
-        cardContentLeftChildren = fragments.filter((child) => {
+        let fragments = React.Children.toArray(React.Children.map(children, (child) => {
             const {
                 room
             } = child.props;
-            if (!Hf.isString(room)) {
-                Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
-                return false;
+
+            if (child !== null) {
+                if (Hf.isString(room) && (room === `content-left` || room === `content-center` || room === `content-right` ||
+                    room === `media` || room === `overlay` ||
+                    room === `action-left` || room === `action-right`)) {
+                    return React.cloneElement(child, cardViewChildProperty);
+                } else {
+                    Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
+                    return null;
+                }
             } else {
+                return null;
+            }
+        }));
+
+        cardViewContentLeftChildren = fragments.filter((child) => {
+            if (child !== null) {
+                const {
+                    room
+                } = child.props;
+
                 return room === `content-left`;
+            } else {
+                return false;
             }
         });
-        cardContentLeftChildren = Hf.isEmpty(cardContentLeftChildren) ? null : cardContentLeftChildren;
+        cardViewContentLeftChildren = Hf.isEmpty(cardViewContentLeftChildren) ? null : cardViewContentLeftChildren;
 
-        cardContentRightChildren = fragments.filter((child) => {
-            const {
-                room
-            } = child.props;
-            if (!Hf.isString(room)) {
-                Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
-                return false;
-            } else {
-                return room === `content-right`;
-            }
-        });
-        cardContentRightChildren = Hf.isEmpty(cardContentRightChildren) ? null : cardContentRightChildren;
+        cardViewContentCenterChildren = fragments.filter((child) => {
+            if (child !== null) {
+                const {
+                    room
+                } = child.props;
 
-        cardMediaChildren = fragments.filter((child) => {
-            const {
-                room
-            } = child.props;
-            if (!Hf.isString(room)) {
-                Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
-                return false;
-            } else {
-                return room === `media`;
-            }
-        });
-        cardMediaChildren = Hf.isEmpty(cardMediaChildren) ? null : cardMediaChildren;
-
-        cardOverlayChildren = fragments.filter((child) => {
-            const {
-                room
-            } = child.props;
-            if (!Hf.isString(room)) {
-                Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
-                return false;
-            } else {
-                return room === `overlay`;
-            }
-        });
-        cardOverlayChildren = Hf.isEmpty(cardOverlayChildren) ? null : cardOverlayChildren;
-
-        cardContentCenterChildren = fragments.filter((child) => {
-            const {
-                room
-            } = child.props;
-            if (!Hf.isString(room)) {
-                Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
-                return false;
-            } else {
                 return room === `content-center`;
+            } else {
+                return false;
             }
         });
-        cardContentCenterChildren = Hf.isEmpty(cardContentCenterChildren) ? null : cardContentCenterChildren;
+        cardViewContentCenterChildren = Hf.isEmpty(cardViewContentCenterChildren) ? null : cardViewContentCenterChildren;
 
-        cardActionLeftChildren = fragments.filter((child) => {
-            const {
-                room
-            } = child.props;
-            if (!Hf.isString(room)) {
-                Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
-                return false;
+        cardViewContentRightChildren = fragments.filter((child) => {
+            if (child !== null) {
+                const {
+                    room
+                } = child.props;
+
+                return room === `content-right`;
             } else {
+                return false;
+            }
+        });
+        cardViewContentRightChildren = Hf.isEmpty(cardViewContentRightChildren) ? null : cardViewContentRightChildren;
+
+        cardViewMediaChildren = fragments.filter((child) => {
+            if (child !== null) {
+                const {
+                    room
+                } = child.props;
+
+                return room === `media`;
+            } else {
+                return false;
+            }
+        });
+        cardViewMediaChildren = Hf.isEmpty(cardViewMediaChildren) ? null : cardViewMediaChildren;
+
+        cardViewOverlayChildren = fragments.filter((child) => {
+            if (child !== null) {
+                const {
+                    room
+                } = child.props;
+
+                return room === `overlay`;
+            } else {
+                return false;
+            }
+        });
+        cardViewOverlayChildren = Hf.isEmpty(cardViewOverlayChildren) ? null : cardViewOverlayChildren;
+
+        cardViewActionLeftChildren = fragments.filter((child) => {
+            if (child !== null) {
+                const {
+                    room
+                } = child.props;
+
                 return room === `action-left`;
-            }
-        });
-        cardActionLeftChildren = Hf.isEmpty(cardActionLeftChildren) ? null : cardActionLeftChildren;
-
-        cardActionRightChildren = fragments.filter((child) => {
-            const {
-                room
-            } = child.props;
-            if (!Hf.isString(room)) {
-                Hf.log(`warn1`, `CardViewComponent.render - Card view component requires children each to have a room propperty.`);
-                return false;
             } else {
-                return room === `action-right`;
+                return false;
             }
         });
-        cardActionRightChildren = Hf.isEmpty(cardActionRightChildren) ? null : cardActionRightChildren;
+        cardViewActionLeftChildren = Hf.isEmpty(cardViewActionLeftChildren) ? null : cardViewActionLeftChildren;
+
+        cardViewActionRightChildren = fragments.filter((child) => {
+            if (child !== null) {
+                const {
+                    room
+                } = child.props;
+
+                return room === `action-right`;
+            } else {
+                return false;
+            }
+        });
+        cardViewActionRightChildren = Hf.isEmpty(cardViewActionRightChildren) ? null : cardViewActionRightChildren;
     }
 
     return (
@@ -272,41 +280,41 @@ const CardViewComponent = function CardViewComponent (property = {
             <View style = { adjustedStyle.header }>
                 <View style = { adjustedStyle.room.contentLeft }>
                     {
-                        cardContentLeftChildren !== null ? cardContentLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                        cardViewContentLeftChildren !== null ? cardViewContentLeftChildren : <View style = { adjustedStyle.room.filler }/>
                     }
                 </View>
                 <View style = { adjustedStyle.room.contentRight }>
                     {
-                        cardContentRightChildren !== null ? cardContentRightChildren : <View style = { adjustedStyle.room.filler }/>
+                        cardViewContentRightChildren !== null ? cardViewContentRightChildren : <View style = { adjustedStyle.room.filler }/>
                     }
                 </View>
             </View>
             <View style = { adjustedStyle.body }>
                 <View style = { adjustedStyle.room.media }>
                     {
-                        cardMediaChildren !== null ? cardMediaChildren : <View style = { adjustedStyle.room.filler }/>
+                        cardViewMediaChildren !== null ? cardViewMediaChildren : <View style = { adjustedStyle.room.filler }/>
                     }
                     <View style = { adjustedStyle.room.overlay }>
                         {
-                            cardOverlayChildren !== null ? cardOverlayChildren : <View style = { adjustedStyle.room.filler }/>
+                            cardViewOverlayChildren !== null ? cardViewOverlayChildren : <View style = { adjustedStyle.room.filler }/>
                         }
                     </View>
                 </View>
                 <View style = { adjustedStyle.room.contentCenter }>
                     {
-                        cardContentCenterChildren !== null ? cardContentCenterChildren : <View style = { adjustedStyle.room.filler }/>
+                        cardViewContentCenterChildren !== null ? cardViewContentCenterChildren : <View style = { adjustedStyle.room.filler }/>
                     }
                 </View>
             </View>
             <View style = { adjustedStyle.footer }>
                 <View style = { adjustedStyle.room.actionLeft }>
                     {
-                        cardActionLeftChildren !== null ? cardActionLeftChildren : <View style = { adjustedStyle.room.filler }/>
+                        cardViewActionLeftChildren !== null ? cardViewActionLeftChildren : <View style = { adjustedStyle.room.filler }/>
                     }
                 </View>
                 <View style = { adjustedStyle.room.actionRight }>
                     {
-                        cardActionRightChildren !== null ? cardActionRightChildren : <View style = { adjustedStyle.room.filler }/>
+                        cardViewActionRightChildren !== null ? cardViewActionRightChildren : <View style = { adjustedStyle.room.filler }/>
                     }
                 </View>
             </View>
@@ -315,10 +323,6 @@ const CardViewComponent = function CardViewComponent (property = {
 };
 
 CardViewComponent.propTypes = {
-    room: PropTypes.oneOf([
-        `none`,
-        `content-left`, `content-center`, `content-right`
-    ]),
     shade: PropTypes.oneOf([ `light`, `dark` ]),
     overlay: PropTypes.oneOf([ `opaque`, `translucent`, `transparent` ])
 };

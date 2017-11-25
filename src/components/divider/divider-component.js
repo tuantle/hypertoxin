@@ -35,14 +35,11 @@ import ReactNative from 'react-native'; // eslint-disable-line
 import PropTypes from 'prop-types';
 
 const {
-    Dimensions,
     View
 } = ReactNative;
 
-const DEVICE_WIDTH = Dimensions.get(`window`).width;
-
 const DEFAULT_DIVIDER_VIEW_STYLE = {
-    minWidth: DEVICE_WIDTH,
+    width: `100%`,
     height: Ht.Theme.misc.size.divider,
     marginVertical: 9,
     backgroundColor: Ht.Theme.misc.color.divider

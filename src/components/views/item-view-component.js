@@ -44,7 +44,6 @@ const {
 
 const {
     Animated,
-    Dimensions,
     Easing,
     StyleSheet,
     TouchableOpacity,
@@ -53,44 +52,41 @@ const {
 
 const AnimatedView = Animatable.View;
 
-const DEVICE_WIDTH = Dimensions.get(`window`).width;
-
 const DEFAULT_ITEM_PRESS_DEBOUNCE_TIME_MS = 250;
+
+const DEFAULT_ANIMATION_DURATION_MS = 300;
 
 const DEFAULT_ITEM_VIEW_STYLE = {
     container: {
         flexDirection: `row`,
-        alignItems: `stretch`,
+        alignItems: `center`,
         alignSelf: `stretch`,
-        justifyContent: `space-around`,
-        width: DEVICE_WIDTH,
+        justifyContent: `space-between`,
+        width: `100%`,
         height: Ht.Theme.view.size.item,
-        padding: 3,
+        paddingVertical: 6,
         marginVertical: 6
     },
     room: {
         contentLeft: {
             flexGrow: 1,
             flexDirection: `column`,
-            alignSelf: `center`,
-            alignItems: `center`,
+            alignItems: `flex-start`,
             justifyContent: `center`,
-            maxWidth: (5 * DEVICE_WIDTH) / 6,
+            maxWidth: `100%`,
             height: Ht.Theme.view.size.item,
             backgroundColor: `transparent`
         },
         actionRight: {
             flexShrink: 1,
             flexDirection: `column`,
-            alignSelf: `center`,
-            alignItems: `center`,
+            alignItems: `flex-end`,
             justifyContent: `center`,
-            maxWidth: DEVICE_WIDTH / 6,
+            maxWidth: `100%`,
             height: Ht.Theme.view.size.item,
             backgroundColor: `transparent`
         },
         filler: {
-            maxWidth: DEVICE_WIDTH / 6,
             height: Ht.Theme.view.size.item,
             backgroundColor: `transparent`
         }
@@ -116,7 +112,6 @@ export default class ItemViewComponent extends Component {
     }
     static defaultProps = {
         cId: ``,
-        room: `none`,
         shade: Ht.Theme.view.item.shade,
         overlay: Ht.Theme.view.item.overlay,
         disabled: false,
@@ -131,11 +126,12 @@ export default class ItemViewComponent extends Component {
         this.state = {
             adjustedStyle: DEFAULT_ITEM_VIEW_STYLE,
             width: 0,
-            height: Ht.Theme.button.size.flat,
+            height: Ht.Theme.view.size.item,
             ripple: {
                 animating: false,
-                progress: new Animated.Value(0),
+                animatedValue: new Animated.Value(0),
                 scale: 0,
+                radius: Ht.Theme.view.size.item / 2,
                 locationX: 0,
                 locationY: 0
             }
@@ -239,7 +235,7 @@ export default class ItemViewComponent extends Component {
     }
     animate (refName, option = {
         loopCount: -1,
-        duration: 300,
+        duration: DEFAULT_ANIMATION_DURATION_MS,
         delay: 0,
         easing: `ease`
     }) {
@@ -260,7 +256,7 @@ export default class ItemViewComponent extends Component {
                 easing
             } = Hf.fallback({
                 loopCount: -1,
-                duration: 300,
+                duration: DEFAULT_ANIMATION_DURATION_MS,
                 delay: 0,
                 easing: `ease`
             }).of(option);
@@ -326,29 +322,25 @@ export default class ItemViewComponent extends Component {
         const component = this;
         const {
             adjustedStyle,
+            ripple,
             width,
             height
         } = component.state;
-        let ripple = {
-            animating: true,
-            progress: new Animated.Value(0),
-            scale: 2 * Math.sqrt((Math.pow(width, 2) + Math.pow(height, 2)) / ((Math.pow(adjustedStyle.ripple.width, 2) + Math.pow(adjustedStyle.ripple.height, 2)))),
-            locationX,
-            locationY
-        };
 
-        Animated.timing(ripple.progress, {
+        Animated.timing(ripple.animatedValue, {
             toValue: 1,
             easing: Easing.out(Easing.ease),
             duration: 600,
             useNativeDriver: true
         }).start(() => {
+            ripple.animatedValue.resetAnimation();
             component.setState(() => {
                 return {
                     ripple: {
                         animating: false,
-                        progress: new Animated.Value(0),
+                        animatedValue: new Animated.Value(0),
                         scale: 0,
+                        radius: Ht.Theme.view.size.item / 2,
                         locationX: 0,
                         locationY: 0
                     }
@@ -356,9 +348,15 @@ export default class ItemViewComponent extends Component {
             });
         });
 
-        component.setState(() => {
+        component.setState((prevState) => {
             return {
-                ripple
+                ripple: {
+                    ...prevState.ripple,
+                    animating: true,
+                    scale: 2 * Math.sqrt((Math.pow(width, 2) + Math.pow(height, 2)) / ((Math.pow(adjustedStyle.ripple.width, 2) + Math.pow(adjustedStyle.ripple.height, 2)))),
+                    locationX,
+                    locationY
+                }
             };
         });
     }
@@ -418,9 +416,13 @@ export default class ItemViewComponent extends Component {
     }
     componentWillUnMount () {
         const component = this;
+        const {
+            ripple
+        } = component.state;
 
         component.debounce = null;
         component.refCache = {};
+        ripple.animatedValue.removeAllListeners();
     }
     componentWillReceiveProps (nextProperty) {
         const component = this;
@@ -465,12 +467,12 @@ export default class ItemViewComponent extends Component {
                         top: 0, // ripple.locationY,
                         left: ripple.locationX,
                         transform: [{
-                            scale: ripple.progress.interpolate({
+                            scale: ripple.animatedValue.interpolate({
                                 inputRange: [ 0, 1 ],
                                 outputRange: [ 0, ripple.scale ]
                             })
                         }],
-                        opacity: ripple.progress.interpolate({
+                        opacity: ripple.animatedValue.interpolate({
                             inputRange: [ 0, 1 ],
                             outputRange: [ parseInt(Ht.Theme.view.color.item.opacity, 16) / 255, 0 ]
                         })
@@ -485,6 +487,7 @@ export default class ItemViewComponent extends Component {
         const component = this;
         const {
             cId,
+            shade,
             disabled,
             rippled,
             children
@@ -492,6 +495,13 @@ export default class ItemViewComponent extends Component {
         const {
             adjustedStyle
         } = component.state;
+        const itemViewContentChildProperty = {
+            shade
+        };
+        const itemViewActionChildProperty = {
+            shade,
+            disabled
+        };
         let itemContentLeftChildren = null;
         let itemActionRightChildren = null;
 
@@ -500,38 +510,43 @@ export default class ItemViewComponent extends Component {
                 const {
                     room
                 } = child.props;
-                if (Hf.isString(room) && room === `action-right`) {
-                    return React.cloneElement(child, {
-                        disabled,
-                        onPress: () => component.debounce(component.onClearInput)
-                    });
+
+                if (child !== null) {
+                    if (Hf.isString(room) && room === `content-left`) {
+                        return React.cloneElement(child, itemViewContentChildProperty);
+                    } else if (Hf.isString(room) && room === `action-right`) {
+                        return React.cloneElement(child, itemViewActionChildProperty);
+                    } else {
+                        Hf.log(`warn1`, `ItemViewComponent.render - Item view component requires children each to have a room propperty.`);
+                        return null;
+                    }
                 } else {
-                    return React.cloneElement(child);
+                    return null;
                 }
             }));
 
             itemContentLeftChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    Hf.log(`warn1`, `ItemViewComponent.render - Item view component requires children each to have a room propperty.`);
-                    return false;
-                } else {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `content-left`;
+                } else {
+                    return false;
                 }
             });
             itemContentLeftChildren = Hf.isEmpty(itemContentLeftChildren) ? null : itemContentLeftChildren;
 
             itemActionRightChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    Hf.log(`warn1`, `ItemViewComponent.render - Item view component requires children each to have a room propperty.`);
-                    return false;
-                } else {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `action-right`;
+                } else {
+                    return false;
                 }
             });
             itemActionRightChildren = Hf.isEmpty(itemActionRightChildren) ? null : itemActionRightChildren;
@@ -564,7 +579,6 @@ export default class ItemViewComponent extends Component {
                     <AnimatedView
                         ref = { component.assignComponentRef(`animated-action-right-view${cId}`) }
                         style = { adjustedStyle.room.actionRight }
-                        pointerEvents = 'box-only'
                         useNativeDriver = { true }
                     >
                         {

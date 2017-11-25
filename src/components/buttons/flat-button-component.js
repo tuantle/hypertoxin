@@ -54,15 +54,16 @@ const {
 
 const DEFAULT_BUTTON_PRESS_DEBOUNCE_TIME_MS = 250;
 
+const DEFAULT_ANIMATION_DURATION_MS = 300;
+
 const DEFAULT_FLAT_BUTTON_STYLE = {
     container: {
         flexDirection: `row`,
         justifyContent: `center`,
         alignItems: `center`,
         height: Ht.Theme.button.size.flat,
-        borderWidth: 1,
         margin: 9,
-        padding: 9
+        padding: 6
     },
     room: {
         contentLeft: {
@@ -119,12 +120,20 @@ export default class FlatButtonInterface extends Component {
             `none`,
             `action-left`, `action-right`
         ]),
+        action: PropTypes.oneOf([
+            `none`,
+            `clear`,
+            `expand`, `collapse`,
+            `show`, `hide`,
+            `close`, `open`
+        ]),
         shade: PropTypes.oneOf([ `light`, `dark` ]),
         overlay: PropTypes.oneOf([ `opaque`, `translucent`, `transparent`, `transparent-outlined` ]),
         corner: PropTypes.oneOf([ `round25`, `round50`, `square` ]),
         disabled: PropTypes.bool,
         busy: PropTypes.bool,
         rippled: PropTypes.bool,
+        uppercasedLabel: PropTypes.bool,
         label: PropTypes.string,
         color: PropTypes.string,
         debounceTime: PropTypes.number,
@@ -133,13 +142,15 @@ export default class FlatButtonInterface extends Component {
     static defaultProps = {
         cId: ``,
         room: `none`,
+        action: `none`,
         shade: Ht.Theme.button.flat.shade,
         overlay: Ht.Theme.button.flat.overlay,
         corner: Ht.Theme.button.flat.corner,
         disabled: false,
         busy: false,
         rippled: Ht.Theme.button.flat.rippled,
-        label: `BUTTON`,
+        uppercasedLabel: Ht.Theme.button.flat.uppercasedLabel,
+        label: `Button`,
         color: Ht.Theme.button.flat.color,
         debounceTime: DEFAULT_BUTTON_PRESS_DEBOUNCE_TIME_MS,
         onPress: () => null
@@ -154,8 +165,9 @@ export default class FlatButtonInterface extends Component {
             height: Ht.Theme.button.size.flat,
             ripple: {
                 animating: false,
-                progress: new Animated.Value(0),
+                animatedValue: new Animated.Value(0),
                 scale: 0,
+                radius: Ht.Theme.button.size.flat / 2,
                 locationX: 0,
                 locationY: 0
             }
@@ -259,6 +271,7 @@ export default class FlatButtonInterface extends Component {
             themedLabelColor = Ht.Theme.button.color.flat.label[shade];
             themedRippleColor = Ht.Theme.button.color.flat.ripple.dark;
             themedBorderColor = `transparent`;
+            themedColor = `${themedColor}${Ht.Theme.button.color.flat.opacity}`;
             break;
         case `transparent`:
             themedLabelColor = themedColor;
@@ -276,6 +289,7 @@ export default class FlatButtonInterface extends Component {
 
         const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
             container: {
+                borderWidth: overlay === `transparent-outlined` ? 1 : 0,
                 borderRadius: Ht.Theme.button.corner[corner],
                 borderColor: themedBorderColor,
                 backgroundColor: themedColor
@@ -294,7 +308,7 @@ export default class FlatButtonInterface extends Component {
     }
     animate = (option = {
         loopCount: -1,
-        duration: 300,
+        duration: DEFAULT_ANIMATION_DURATION_MS,
         delay: 0,
         easing: `ease`
     }) => {
@@ -315,7 +329,7 @@ export default class FlatButtonInterface extends Component {
                 easing
             } = Hf.fallback({
                 loopCount: -1,
-                duration: 300,
+                duration: DEFAULT_ANIMATION_DURATION_MS,
                 delay: 0,
                 easing: `ease`
             }).of(option);
@@ -381,29 +395,25 @@ export default class FlatButtonInterface extends Component {
         const component = this;
         const {
             adjustedStyle,
+            ripple,
             width,
             height
         } = component.state;
-        let ripple = {
-            animating: true,
-            progress: new Animated.Value(0),
-            scale: 2 * Math.sqrt((Math.pow(width, 2) + Math.pow(height, 2)) / ((Math.pow(adjustedStyle.ripple.width, 2) + Math.pow(adjustedStyle.ripple.height, 2)))),
-            locationX,
-            locationY
-        };
 
-        Animated.timing(ripple.progress, {
+        Animated.timing(ripple.animatedValue, {
             toValue: 1,
             easing: Easing.out(Easing.ease),
             duration: 600,
             useNativeDriver: true
         }).start(() => {
+            ripple.animatedValue.resetAnimation();
             component.setState(() => {
                 return {
                     ripple: {
                         animating: false,
-                        progress: new Animated.Value(0),
+                        animatedValue: new Animated.Value(0),
                         scale: 0,
+                        radius: Ht.Theme.button.size.flat / 2,
                         locationX: 0,
                         locationY: 0
                     }
@@ -411,9 +421,15 @@ export default class FlatButtonInterface extends Component {
             });
         });
 
-        component.setState(() => {
+        component.setState((prevState) => {
             return {
-                ripple
+                ripple: {
+                    ...prevState.ripple,
+                    animating: true,
+                    scale: 2 * Math.sqrt((Math.pow(width, 2) + Math.pow(height, 2)) / ((Math.pow(adjustedStyle.ripple.width, 2) + Math.pow(adjustedStyle.ripple.height, 2)))),
+                    locationX,
+                    locationY
+                }
             };
         });
     }
@@ -481,9 +497,13 @@ export default class FlatButtonInterface extends Component {
     }
     componentWillUnMount () {
         const component = this;
+        const {
+            ripple
+        } = component.state;
 
         component.debounce = null;
         component.refCache = {};
+        ripple.animatedValue.removeAllListeners();
     }
     componentWillReceiveProps (nextProperty) {
         const component = this;
@@ -517,7 +537,8 @@ export default class FlatButtonInterface extends Component {
         const component = this;
         const {
             adjustedStyle,
-            ripple
+            ripple,
+            width
         } = component.state;
 
         if (ripple.animating) {
@@ -534,14 +555,14 @@ export default class FlatButtonInterface extends Component {
                     <Animated.View style = {{
                         ...adjustedStyle.ripple,
                         top: 0, // ripple.locationY,
-                        left: ripple.locationX,
+                        left: width <= ripple.radius * 4 ? width / 2 - ripple.radius : ripple.locationX,
                         transform: [{
-                            scale: ripple.progress.interpolate({
+                            scale: ripple.animatedValue.interpolate({
                                 inputRange: [ 0, 1 ],
                                 outputRange: [ 0, ripple.scale ]
                             })
                         }],
-                        opacity: ripple.progress.interpolate({
+                        opacity: ripple.animatedValue.interpolate({
                             inputRange: [ 0, 1 ],
                             outputRange: [ parseInt(Ht.Theme.button.color.flat.opacity, 16) / 255, 0 ]
                         })
@@ -560,6 +581,7 @@ export default class FlatButtonInterface extends Component {
             disabled,
             busy,
             rippled,
+            uppercasedLabel,
             label,
             children
         } = component.props;
@@ -568,6 +590,7 @@ export default class FlatButtonInterface extends Component {
         } = component.state;
         const buttonChildProperty = {
             shade,
+            uppercased: uppercasedLabel,
             color: adjustedStyle.label.color
         };
         let buttonContentLeftChildren = null;
@@ -577,53 +600,69 @@ export default class FlatButtonInterface extends Component {
 
         if (React.Children.count(children) > 0) {
             let fragments = React.Children.toArray(React.Children.map(children, (child) => {
-                return React.cloneElement(child, buttonChildProperty);
-            }));
-            buttonContentLeftChildren = fragments.filter((child) => {
                 const {
                     room
                 } = child.props;
-                if (!Hf.isString(room)) {
-                    return false;
+
+                if (child !== null) {
+                    if (Hf.isString(room) && (room === `content-left` || room === `content-center` || room === `content-right` || room === `badge`)) {
+                        return React.cloneElement(child, buttonChildProperty);
+                    } else {
+                        Hf.log(`warn1`, `FlatButtonComponent.render - Flat button component requires children each to have a room propperties.`);
+                        return null;
+                    }
                 } else {
+                    return null;
+                }
+            }));
+            buttonContentLeftChildren = fragments.filter((child) => {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `content-left`;
+                } else {
+                    return false;
                 }
             });
             buttonContentLeftChildren = Hf.isEmpty(buttonContentLeftChildren) ? null : buttonContentLeftChildren;
 
             buttonContentCenterChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    Hf.log(`warn1`, `FlatButtonComponent.render - Button component requires children each to have a center room propperty.`);
-                    return false;
-                } else {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `content-center`;
+                } else {
+                    return false;
                 }
             });
             buttonContentCenterChildren = Hf.isEmpty(buttonContentCenterChildren) ? null : buttonContentCenterChildren;
 
             buttonContentRightChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    return false;
-                } else {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `content-right`;
+                } else {
+                    return false;
                 }
             });
             buttonContentRightChildren = Hf.isEmpty(buttonContentRightChildren) ? null : buttonContentRightChildren;
 
             buttonBadgeChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    return false;
-                } else {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `badge`;
+                } else {
+                    return false;
                 }
             });
             buttonBadgeChildren = Hf.isEmpty(buttonBadgeChildren) ? null : buttonBadgeChildren;
@@ -651,7 +690,11 @@ export default class FlatButtonInterface extends Component {
                     </View>
                     <View style = { adjustedStyle.room.contentCenter } pointerEvents = 'box-only' >
                         {
-                            buttonContentCenterChildren !== null ? buttonContentCenterChildren : <Text style = { adjustedStyle.label }>{ label }</Text>
+                            buttonContentCenterChildren !== null ? buttonContentCenterChildren : <Text style = { adjustedStyle.label }>
+                                {
+                                    uppercasedLabel ? label.toUpperCase() : label
+                                }
+                            </Text>
                         }
                     </View>
                     <View style = { adjustedStyle.room.contentRight } pointerEvents = 'box-only' >

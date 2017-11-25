@@ -28,6 +28,7 @@ import toxinPalette from './palettes/toxin-palette';
 
 export default {
     dark: {
+        opacity: `dd`,
         default: toxinPalette.white,
         accent: toxinPalette.orange,
         primary: toxinPalette.blue,
@@ -35,6 +36,7 @@ export default {
         disabled: toxinPalette.deepGrey
     },
     light: {
+        opacity: `dd`,
         default: toxinPalette.black,
         accent: toxinPalette.orange,
         primary: toxinPalette.blue,

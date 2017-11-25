@@ -32,18 +32,20 @@ import colorTheme from './color-theme.js';
 
 export default {
     flat: {
-        shade: `dark`,
+        shade: `light`,
         overlay: `opaque`,
         corner: `square`,
         color: `primary`,
-        rippled: true
+        rippled: true,
+        uppercasedLabel: true
     },
     raised: {
-        shade: `dark`,
+        shade: `light`,
         overlay: `opaque`,
         corner: `square`,
         color: `primary`,
-        rippled: true
+        rippled: true,
+        uppercasedLabel: true
     },
     font: {
         label: fontStyleTemplate.bold

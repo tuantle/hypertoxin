@@ -48,7 +48,6 @@ const {
     Dimensions,
     Text,
     TextInput,
-    TouchableOpacity,
     View
 } = ReactNative;
 
@@ -59,7 +58,9 @@ const {
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
-const DEFAULT_BUTTON_PRESS_DEBOUNCE_TIME_MS = 250;
+const DEFAULT_FIELD_DEBOUNCE_TIME_MS = 250;
+
+const DEFAULT_ANIMATION_DURATION_MS = 300;
 
 const DEFAULT_TEXT_FIELD_STYLE = {
     container: {
@@ -82,7 +83,6 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             flexDirection: `column`,
             alignItems: `stretch`,
             justifyContent: `flex-end`,
-            maxWidth: DEVICE_WIDTH,
             height: Ht.Theme.field.size.text.input * 1.55,
             borderWidth: 1,
             borderRadius: 4
@@ -91,7 +91,6 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             flexDirection: `column`,
             alignItems: `stretch`,
             justifyContent: `flex-end`,
-            maxWidth: DEVICE_WIDTH,
             height: Ht.Theme.field.size.text.input * 1.55,
             borderWidth: 1,
             borderRadius: 4
@@ -125,13 +124,16 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             minWidth: Ht.Theme.field.size.text.input,
             maxHeight: Ht.Theme.field.size.text.input,
             backgroundColor: `transparent`
+        },
+        filler: {
+            height: Ht.Theme.field.size.text.input,
+            backgroundColor: `transparent`
         }
     },
     input: {
         ...Ht.Theme.field.font.text.input,
         flexGrow: 1,
         textAlign: `left`,
-        maxWidth: DEVICE_WIDTH,
         minHeight: Ht.Theme.field.size.text.input,
         lineHeight: Ht.Theme.field.size.text.line,
         marginHorizontal: 6,
@@ -140,20 +142,20 @@ const DEFAULT_TEXT_FIELD_STYLE = {
     },
     helper: {
         ...Ht.Theme.field.font.text.helper,
-        paddingRight: 9,
-        textAlign: `right`
+        textAlign: `right`,
+        paddingRight: 9
     },
     hint: {
         ...Ht.Theme.field.font.text.hint,
-        color: Ht.Theme.field.color.text.hint,
+        textAlign: `left`,
         paddingRight: 3,
-        textAlign: `left`
+        color: Ht.Theme.field.color.text.hint
     },
     status: {
         ...Ht.Theme.field.font.text.status,
-        color: Ht.Theme.field.color.text.status,
+        textAlign: `left`,
         paddingLeft: 6,
-        textAlign: `left`
+        color: Ht.Theme.field.color.text.status
     },
     label: {
         focused: {
@@ -163,7 +165,8 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             lineHeight: Ht.Theme.field.size.text.line,
             paddingTop: 26,
             marginVertical: 0,
-            paddingVertical: 0
+            paddingVertical: 0,
+            opacity: 0
         },
         blurred: {
             ...Ht.Theme.field.font.text.label.blurred,
@@ -172,7 +175,8 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             lineHeight: Ht.Theme.field.size.text.line,
             paddingTop: 44,
             marginVertical: 0,
-            paddingVertical: 0
+            paddingVertical: 0,
+            opacity: 0
         }
     },
     underline: {
@@ -197,6 +201,7 @@ export default class TextFieldComponent extends Component {
         overlay: PropTypes.oneOf([ `opaque`, `translucent`, `transparent`, `transparent-outlined` ]),
         focusColor: PropTypes.string,
         blurColor: PropTypes.string,
+        autoFocus: PropTypes.bool,
         autoCorrect: PropTypes.bool,
         secured: PropTypes.bool,
         underlined: PropTypes.bool,
@@ -212,7 +217,6 @@ export default class TextFieldComponent extends Component {
             `email-address`,
             `credit-card-visa`, `credit-card-master`, `credit-card-discover`, `credit-card-american-express`
         ]),
-        returnKeyType: PropTypes.oneOf([ `default`, `next`, `done` ]),
         debounceTime: PropTypes.number,
         onValidate: PropTypes.func,
         onEditing: PropTypes.func,
@@ -226,6 +230,7 @@ export default class TextFieldComponent extends Component {
         overlay: Ht.Theme.field.text.overlay,
         focusColor: ``,
         blurColor: ``,
+        autoFocus: false,
         autoCorrect: false,
         secured: false,
         underlined: Ht.Theme.field.text.underlined,
@@ -236,8 +241,7 @@ export default class TextFieldComponent extends Component {
         charLimit: -1,
         lineLimit: 1,
         inputType: `default`,
-        returnKeyType: `default`,
-        debounceTime: DEFAULT_BUTTON_PRESS_DEBOUNCE_TIME_MS,
+        debounceTime: DEFAULT_FIELD_DEBOUNCE_TIME_MS,
         onValidate: (value, inputType) => {
             let regex;
             let status = ``;
@@ -328,7 +332,6 @@ export default class TextFieldComponent extends Component {
             adjustedStyle: DEFAULT_TEXT_FIELD_STYLE,
             input: {
                 focused: false,
-                valueChanged: false,
                 left: 0,
                 width: 0,
                 height: Ht.Theme.field.size.text.input,
@@ -528,7 +531,6 @@ export default class TextFieldComponent extends Component {
                 return {
                     input: {
                         ...prevState.input,
-                        valueChanged: true,
                         value: ``,
                         lineCount: 1
                     },
@@ -570,8 +572,7 @@ export default class TextFieldComponent extends Component {
             return {
                 input: {
                     ...prevState.input,
-                    focused: false,
-                    valueChanged: false
+                    focused: false
                 }
             };
         });
@@ -621,21 +622,20 @@ export default class TextFieldComponent extends Component {
             });
         }
     }
-    onEditting = (event) => {
+    onChangeText = (text) => {
         const component = this;
         const {
             inputType,
             onEditing
         } = component.props;
-        const value = event.nativeEvent.text;
+        const value = text;
 
         if (Hf.isEmpty(value)) {
-            onEditing(``);
+            onEditing(value);
             component.setState((prevState) => {
                 return {
                     input: {
                         ...prevState.input,
-                        valueChanged: !Hf.isEmpty(prevState.input.value),
                         value: ``
                     },
                     validation: {
@@ -647,15 +647,15 @@ export default class TextFieldComponent extends Component {
         } else {
             if (inputType === `monetary`) {
                 onEditing(parseFloat(value).toFixed(2));
+            } else if (inputType === `numeric`) {
+                onEditing(parseFloat(value));
             } else if (inputType === `phone-pad` ||
                        inputType === `credit-card-visa` ||
                        inputType === `credit-card-master` ||
                        inputType === `credit-card-discover` ||
                        inputType === `credit-card-american-express`
             ) {
-                onEditing(parseFloat(value).toFixed(0));
-            } else if (inputType === `numeric`) {
-                onEditing(parseFloat(value));
+                onEditing(parseInt(value, 10));
             } else {
                 onEditing(value);
             }
@@ -664,7 +664,6 @@ export default class TextFieldComponent extends Component {
                 return {
                     input: {
                         ...prevState.input,
-                        valueChanged: value !== prevState.input.value,
                         value
                     }
                 };
@@ -679,11 +678,23 @@ export default class TextFieldComponent extends Component {
         const value = event.nativeEvent.text;
 
         if (!Hf.isEmpty(value)) {
-            const [ textInput ] = component.lookupComponentRefs(`text-input`);
-
             if (inputType === `monetary`) {
-                textInput.setNativeProps({
-                    text: `${parseFloat(value).toFixed(2)}`
+                component.setState((prevState) => {
+                    return {
+                        input: {
+                            ...prevState.input,
+                            value: `${parseFloat(value).toFixed(2)}`
+                        }
+                    };
+                });
+            } else if (inputType === `numeric`) {
+                component.setState((prevState) => {
+                    return {
+                        input: {
+                            ...prevState.input,
+                            value: `${parseFloat(value)}`
+                        }
+                    };
                 });
             } else if (inputType === `phone-pad` ||
                        inputType === `credit-card-visa` ||
@@ -691,8 +702,13 @@ export default class TextFieldComponent extends Component {
                        inputType === `credit-card-discover` ||
                        inputType === `credit-card-american-express`
             ) {
-                textInput.setNativeProps({
-                    text: `${parseInt(value, 10)}`
+                component.setState((prevState) => {
+                    return {
+                        input: {
+                            ...prevState.input,
+                            value: `${parseInt(value, 10)}`
+                        }
+                    };
                 });
             }
         }
@@ -993,20 +1009,23 @@ export default class TextFieldComponent extends Component {
                             }
                         };
                     });
+
                     if (!Hf.isEmpty(label)) {
                         if (lineLimit === -1 || lineLimit > 1) {
                             if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
                                 animatedLabel.transitionTo({
                                     top: 0,
                                     left: textInputLeft + 6,
-                                    paddingTop: 44
+                                    paddingTop: 44,
+                                    opacity: 1
                                 });
                             } else {
                                 animatedLabel.transitionTo({
                                     top: -6,
                                     left: textInputLeft + 6,
                                     paddingTop: 26,
-                                    fontSize: Ht.Theme.field.font.text.label.focused.fontSize
+                                    fontSize: Ht.Theme.field.font.text.label.focused.fontSize,
+                                    opacity: 1
                                 });
                             }
                         } else {
@@ -1014,14 +1033,16 @@ export default class TextFieldComponent extends Component {
                                 animatedLabel.transitionTo({
                                     top: 0,
                                     left: textInputLeft,
-                                    paddingTop: 44
+                                    paddingTop: 44,
+                                    opacity: 1
                                 });
                             } else {
                                 animatedLabel.transitionTo({
                                     top: -6,
                                     left: textInputLeft,
                                     paddingTop: 26,
-                                    fontSize: Ht.Theme.field.font.text.label.focused.fontSize
+                                    fontSize: Ht.Theme.field.font.text.label.focused.fontSize,
+                                    opacity: 1
                                 });
                             }
                         }
@@ -1056,7 +1077,8 @@ export default class TextFieldComponent extends Component {
                     animatedLabel.transitionTo({
                         top: -6,
                         paddingTop: 26,
-                        fontSize: Ht.Theme.field.font.text.label.focused.fontSize
+                        fontSize: Ht.Theme.field.font.text.label.focused.fontSize,
+                        opacity: 1
                     });
                 }
             } else {
@@ -1064,7 +1086,8 @@ export default class TextFieldComponent extends Component {
                     animatedLabel.transitionTo({
                         top: 0,
                         paddingTop: 44,
-                        fontSize: Ht.Theme.field.font.text.label.blurred.fontSize
+                        fontSize: Ht.Theme.field.font.text.label.blurred.fontSize,
+                        opacity: 1
                     });
                 }
             }
@@ -1081,6 +1104,12 @@ export default class TextFieldComponent extends Component {
                 });
             }
         }
+    }
+    componentWillUnMount () {
+        const component = this;
+
+        component.debounce = null;
+        component.refCache = {};
     }
     componentWillReceiveProps (nextProperty) {
         const component = this;
@@ -1110,12 +1139,6 @@ export default class TextFieldComponent extends Component {
             };
         });
     }
-    componentWillUnMount () {
-        const component = this;
-
-        component.debounce = null;
-        component.refCache = {};
-    }
     renderFloatingLabel () {
         const component = this;
         const {
@@ -1130,7 +1153,7 @@ export default class TextFieldComponent extends Component {
             <AnimatedText
                 ref = { component.assignComponentRef(`animated-label`) }
                 style = { input.focused ? adjustedStyle.label.focused : adjustedStyle.label.blurred }
-                duration = { 300 }
+                duration = { DEFAULT_ANIMATION_DURATION_MS }
                 useNativeDriver = { false }
             >{ label }</AnimatedText>
         );
@@ -1156,7 +1179,7 @@ export default class TextFieldComponent extends Component {
                 <AnimatedView
                     ref = { component.assignComponentRef(`animated-underline-focused-view`) }
                     style = { adjustedStyle.underline.focused }
-                    duration = { 300 }
+                    duration = { DEFAULT_ANIMATION_DURATION_MS }
                     useNativeDriver = { false }
                 />
             </View>
@@ -1207,29 +1230,33 @@ export default class TextFieldComponent extends Component {
     renderInput () {
         const component = this;
         const {
+            autoFocus,
             autoCorrect,
             secured,
             disabled,
             hint,
             charLimit,
             lineLimit,
-            inputType,
-            returnKeyType
+            inputType
         } = component.props;
         const {
             adjustedStyle,
             input
         } = component.state;
         let keyboardType = `default`;
+        let returnKeyType = `default`;
 
-        if (inputType === `monetary`) {
+        if (inputType === `numeric` || inputType === `monetary`) {
             keyboardType = `numeric`;
-        } else if (inputType === `credit-card-visa` ||
+            returnKeyType = `done`;
+        } else if (inputType === `phone-pad` ||
+                   inputType === `credit-card-visa` ||
                    inputType === `credit-card-master` ||
                    inputType === `credit-card-discover` ||
                    inputType === `credit-card-american-express`
         ) {
             keyboardType = `phone-pad`;
+            returnKeyType = `done`;
         } else {
             keyboardType = inputType;
         }
@@ -1243,6 +1270,8 @@ export default class TextFieldComponent extends Component {
                     height: input.height
                 }}
                 keyboardType = { keyboardType }
+                returnKeyType = { returnKeyType }
+                autoFocus = { autoFocus }
                 autoCorrect = { autoCorrect }
                 secureTextEntry = { secured }
                 multiline = { lineLimit === -1 || lineLimit > 1 }
@@ -1252,11 +1281,10 @@ export default class TextFieldComponent extends Component {
                 placeholder = { hint }
                 placeholderTextColor = { adjustedStyle.hint.color }
                 // placeholderColor = { adjustedStyle.hint.color }
-                returnKeyType = { returnKeyType }
                 onFocus = { component.onFocus }
                 onBlur = { component.onBlur }
                 onContentSizeChange = { component.onUpdateInputSize }
-                onChange = { component.onEditting }
+                onChangeText = {(text) => component.debounce(component.onChangeText, text)}
                 onEndEditing = { component.onEndEditting }
                 onSubmitEditing = { component.onSubmitEditing }
             />
@@ -1266,6 +1294,7 @@ export default class TextFieldComponent extends Component {
         const component = this;
         const {
             shade,
+            autoFocus,
             underlined,
             disabled,
             lineLimit,
@@ -1287,37 +1316,57 @@ export default class TextFieldComponent extends Component {
         if (React.Children.count(children) > 0) {
             let fragments = React.Children.toArray(React.Children.map(children, (child) => {
                 const {
-                    room
+                    room,
+                    action
                 } = child.props;
-                if (Hf.isString(room) && room === `action-right`) {
-                    return React.cloneElement(child, {
-                        ...fieldChildProperty,
-                        onPress: () => component.debounce(component.clear)
-                    });
+
+                if (child !== null) {
+                    if (Hf.isString(room) && room === `content-left`) {
+                        return React.cloneElement(child, fieldChildProperty);
+                    } else if (Hf.isString(room) && Hf.isString(action) && room === `action-right`) {
+                        switch (action) {
+                        case `clear`:
+                            if (!Hf.isEmpty(input.value)) {
+                                return React.cloneElement(child, {
+                                    ...fieldChildProperty,
+                                    onPress: () => component.debounce(component.clear)
+                                });
+                            } else {
+                                return null;
+                            }
+                        default:
+                            return null;
+                        }
+                    } else {
+                        Hf.log(`warn1`, `TextFieldComponent.render - Text field component requires children each to have a room and action propperties.`);
+                        return null;
+                    }
                 } else {
-                    return React.cloneElement(child, fieldChildProperty);
+                    return null;
                 }
             }));
             fieldContentLeftChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    return false;
-                } else {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `content-left`;
+                } else {
+                    return false;
                 }
             });
             fieldContentLeftChildren = Hf.isEmpty(fieldContentLeftChildren) ? null : fieldContentLeftChildren;
 
             fieldActionRightChildren = fragments.filter((child) => {
-                const {
-                    room
-                } = child.props;
-                if (!Hf.isString(room)) {
-                    return false;
-                } else {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
                     return room === `action-right`;
+                } else {
+                    return false;
                 }
             });
             fieldActionRightChildren = Hf.isEmpty(fieldActionRightChildren) ? null : fieldActionRightChildren;
@@ -1327,7 +1376,9 @@ export default class TextFieldComponent extends Component {
             <View
                 style = { adjustedStyle.container }
                 onStartShouldSetResponder = {() => {
-                    dismissKeyboard();
+                    if (!autoFocus) {
+                        dismissKeyboard();
+                    }
                 }}
             >
                 <View
@@ -1347,7 +1398,7 @@ export default class TextFieldComponent extends Component {
                         height: box.height
                     }}>
                         {
-                            fieldContentLeftChildren === null ? null : <View style = { adjustedStyle.room.contentLeft }>
+                            fieldContentLeftChildren === null ? <View style = { adjustedStyle.room.filler }/> : <View style = { adjustedStyle.room.contentLeft }>
                                 {
                                     fieldContentLeftChildren
                                 }
@@ -1357,17 +1408,11 @@ export default class TextFieldComponent extends Component {
                             component.renderInput()
                         }
                         {
-                            !Hf.isEmpty(input.value) ? <View style = { adjustedStyle.room.actionRight }>
+                            fieldActionRightChildren === null ? <View style = { adjustedStyle.room.filler }/> : <View style = { adjustedStyle.room.actionRight }>
                                 {
-                                    fieldActionRightChildren === null ? <TouchableOpacity onPress = {() => component.debounce(component.clear)}>
-                                        <Text style = {{
-                                            ...Ht.Theme.font.bold,
-                                            marginHorizontal: 6,
-                                            color: adjustedStyle.input.color
-                                        }}> Clear </Text>
-                                    </TouchableOpacity> : fieldActionRightChildren
+                                    fieldActionRightChildren
                                 }
-                            </View> : null
+                            </View>
                         }
                     </View>
                     {

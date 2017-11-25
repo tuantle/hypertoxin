@@ -36,7 +36,7 @@ export default {
         frameColor: toxinPalette.lightGrey
     },
     icon: {
-        shade: `dark`,
+        shade: `light`,
         size: `normal`,
         dropShadowed: true,
         color: `primary`

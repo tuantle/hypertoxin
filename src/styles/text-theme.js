@@ -30,42 +30,39 @@ import toxinPalette from './palettes/toxin-palette';
 
 export default {
     headline: {
-        shade: `dark`,
+        shade: `light`,
         size: `normal`,
         // weight: `normal`,
         alignment: `center`,
-        decoration: `none`,
-        indentation: 0
+        decoration: `none`
     },
     title: {
-        shade: `dark`,
+        shade: `light`,
         size: `normal`,
         // weight: `bold`,
         alignment: `center`,
-        decoration: `none`,
-        indentation: 0
+        decoration: `none`
     },
     subtitle: {
-        shade: `dark`,
+        shade: `light`,
         size: `normal`,
         // weight: `normal`,
         alignment: `center`,
-        decoration: `none`,
-        indentation: 0
+        decoration: `none`
     },
     info: {
-        shade: `dark`,
+        shade: `light`,
         size: `normal`,
+        // weight: `normal`,
         alignment: `left`,
-        decoration: `none`,
-        indentation: 0
+        decoration: `none`
     },
     caption: {
-        shade: `dark`,
+        shade: `light`,
         size: `normal`,
+        // weight: `normal`,
         alignment: `left`,
-        decoration: `none`,
-        indentation: 0
+        decoration: `none`
     },
     font: {
         headline: {

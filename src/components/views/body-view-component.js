@@ -320,7 +320,22 @@ export default class BodyViewComponent extends Component {
             adjustedStyle,
             scrollDirection
         } = component.state;
-        let frosted = overlay === `frosted`;
+        const frosted = overlay === `frosted`;
+        const bodyViewChildProperty = {
+            shade
+        };
+        let bodyViewChildren = null;
+
+        if (React.Children.count(children) > 0) {
+            let fragments = React.Children.toArray(React.Children.map(children, (child) => {
+                if (child !== null) {
+                    return React.cloneElement(child, bodyViewChildProperty);
+                } else {
+                    return null;
+                }
+            }));
+            bodyViewChildren = Hf.isEmpty(fragments) ? null : fragments;
+        }
 
         if (scrollable) {
             if (frosted) {
@@ -340,7 +355,7 @@ export default class BodyViewComponent extends Component {
                             { ...component.panResponder.panHandlers }
                         >
                             {
-                                children
+                                bodyViewChildren
                             }
                         </ScrollView>
                     </BlurView>
@@ -358,7 +373,7 @@ export default class BodyViewComponent extends Component {
                         { ...component.panResponder.panHandlers }
                     >
                         {
-                            children
+                            bodyViewChildren
                         }
                     </ScrollView>
                 </View>
@@ -372,7 +387,7 @@ export default class BodyViewComponent extends Component {
                         blurAmount = { Ht.Theme.general.frostLevel }
                     >
                         {
-                            children
+                            bodyViewChildren
                         }
                     </BlurView>
                 );
@@ -380,7 +395,7 @@ export default class BodyViewComponent extends Component {
                 return (
                     <View style = { adjustedStyle }>
                         {
-                            children
+                            bodyViewChildren
                         }
                     </View>
                 );

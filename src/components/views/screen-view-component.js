@@ -64,11 +64,26 @@ const ScreenViewComponent = function ScreenViewComponent (property = {
     }) : Hf.merge(DEFAULT_SCREEN_VIEW_STYLE).with({
         backgroundColor: Ht.Theme.view.color.screen[shade]
     });
+    const screenViewChildProperty = {
+        shade
+    };
+    let screenViewChildren = null;
+
+    if (React.Children.count(children) > 0) {
+        let fragments = React.Children.toArray(React.Children.map(children, (child) => {
+            if (child !== null) {
+                return React.cloneElement(child, screenViewChildProperty);
+            } else {
+                return null;
+            }
+        }));
+        screenViewChildren = Hf.isEmpty(fragments) ? null : fragments;
+    }
 
     return (
         <View style = { adjustedStyle }>
             {
-                children
+                screenViewChildren
             }
         </View>
     );

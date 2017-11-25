@@ -41,6 +41,8 @@ const {
     Component
 } = React;
 
+const DEFAULT_ANIMATION_DURATION_MS = 300;
+
 export default class HeadLineTextComponent extends Component {
     static propTypes = {
         cId: PropTypes.string,
@@ -55,6 +57,8 @@ export default class HeadLineTextComponent extends Component {
         decoration: PropTypes.oneOf([ `none`, `underline`, `line-through` ]),
         size: PropTypes.oneOf([ `small`, `normal`, `large` ]),
         indentation: PropTypes.number,
+        uppercased: PropTypes.bool,
+        lowercased: PropTypes.bool,
         color: PropTypes.string
     }
     static defaultProps = {
@@ -64,7 +68,9 @@ export default class HeadLineTextComponent extends Component {
         alignment: Ht.Theme.text.headline.alignment,
         decoration: Ht.Theme.text.headline.decoration,
         size: Ht.Theme.text.headline.size,
-        indentation: Ht.Theme.text.headline.indentation,
+        indentation: 0,
+        uppercased: false,
+        lowercased: false,
         color: ``
     }
     constructor (property) {
@@ -127,7 +133,7 @@ export default class HeadLineTextComponent extends Component {
         shade: Ht.Theme.text.headline.shade,
         alignment: Ht.Theme.text.headline.alignment,
         decoration: Ht.Theme.text.headline.decoration,
-        indentation: Ht.Theme.text.headline.indentation,
+        indentation: 0,
         color: ``
     }) => {
         const component = this;
@@ -142,7 +148,7 @@ export default class HeadLineTextComponent extends Component {
             shade: Ht.Theme.text.headline.shade,
             alignment: Ht.Theme.text.headline.alignment,
             decoration: Ht.Theme.text.headline.decoration,
-            indentation: Ht.Theme.text.headline.indentation,
+            indentation: 0,
             color: ``
         }).of(newStyle);
         const {
@@ -201,7 +207,7 @@ export default class HeadLineTextComponent extends Component {
     }
     animate = (option = {
         loopCount: -1,
-        duration: 300,
+        duration: DEFAULT_ANIMATION_DURATION_MS,
         delay: 0,
         easing: `ease`
     }) => {
@@ -219,7 +225,7 @@ export default class HeadLineTextComponent extends Component {
             easing
         } = Hf.fallback({
             loopCount: -1,
-            duration: 300,
+            duration: DEFAULT_ANIMATION_DURATION_MS,
             delay: 0,
             easing: `ease`
         }).of(option);
@@ -338,11 +344,27 @@ export default class HeadLineTextComponent extends Component {
         const {
             cId,
             size,
+            uppercased,
+            lowercased,
             children
         } = component.props;
         const {
             adjustedStyle
         } = component.state;
+        let headlineTextChildren = null;
+
+        if (React.Children.count(children) > 0) {
+            let fragments = React.Children.toArray(React.Children.map(children, (child) => {
+                if (uppercased) {
+                    return child.toUpperCase();
+                } else if (lowercased) {
+                    return child.toLowerCase();
+                } else {
+                    return child;
+                }
+            }));
+            headlineTextChildren = Hf.isEmpty(fragments) ? null : fragments;
+        }
 
         return (
             <AnimatedText
@@ -353,7 +375,7 @@ export default class HeadLineTextComponent extends Component {
                 numberOfLines = { 1 }
             >
                 {
-                    children
+                    headlineTextChildren
                 }
             </AnimatedText>
         );
