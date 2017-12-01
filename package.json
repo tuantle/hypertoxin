@@ -1,6 +1,6 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-beta12",
+    "version": "0.1.0-rc1",
     "registry": "github",
     "description": "A client native app component library (built using React Native & Hyperflow).",
     "authors": [
@@ -57,7 +57,7 @@
         "babel-preset-react": "^6.23.0",
         "babel-preset-react-native": "^4.0.0",
         "create-react-class": "^15.6.2",
-        "eslint": "^4.11.0",
+        "eslint": "^4.12.0",
         "eslint-plugin-react": "^7.5.1",
         "eslint-plugin-react-native": "^3.2.0",
         "jest": "^21.2.1",

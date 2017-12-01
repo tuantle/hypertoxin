@@ -2,6 +2,18 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
+**Development RC Version 0.1.0-rc1 (11/*/2017)**
+```
+Notes:
+- Update dependencies:
+    Added project example code
+New Features:
+Breaking Changes:
+Improvements:
+    Update FlatButton, RaisedButton, and ItemView ripple animation code.
+    Cleaned up HeaderView, TextField, and SearchField code.
+Bug fixes:
+```
 **Development Beta Version 0.1.0-beta12 (11/24/2017)**
 ```
 Notes:

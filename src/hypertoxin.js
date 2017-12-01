@@ -58,7 +58,7 @@ const init = function init (option = {
 
     if (Ht === null) {
         Ht = {
-            VERSION: `0.1.0-beta12`,
+            VERSION: `0.1.0-rc1`,
             Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
         };
 
