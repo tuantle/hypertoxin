@@ -127,9 +127,23 @@ export default class ItemViewComponent extends Component {
             adjustedStyle: DEFAULT_ITEM_VIEW_STYLE,
             width: 0,
             height: Ht.Theme.view.size.item,
-            ripple: {
+            animation: {
                 animating: false,
                 animatedValue: new Animated.Value(0),
+                easing: {
+                    in: Easing.in(Easing.ease),
+                    out: Easing.out(Easing.ease)
+                },
+                duration: DEFAULT_ANIMATION_DURATION_MS * 2,
+                delay: 0
+                // style: {
+                //     opactity: {
+                //         from: 1,
+                //         to: 1
+                //     }
+                // }
+            },
+            ripple: {
                 scale: 0,
                 radius: Ht.Theme.view.size.item / 2,
                 locationX: 0,
@@ -318,48 +332,6 @@ export default class ItemViewComponent extends Component {
             }
         }
     }
-    animateRipple (locationX, locationY) {
-        const component = this;
-        const {
-            adjustedStyle,
-            ripple,
-            width,
-            height
-        } = component.state;
-
-        Animated.timing(ripple.animatedValue, {
-            toValue: 1,
-            easing: Easing.out(Easing.ease),
-            duration: 600,
-            useNativeDriver: true
-        }).start(() => {
-            ripple.animatedValue.resetAnimation();
-            component.setState(() => {
-                return {
-                    ripple: {
-                        animating: false,
-                        animatedValue: new Animated.Value(0),
-                        scale: 0,
-                        radius: Ht.Theme.view.size.item / 2,
-                        locationX: 0,
-                        locationY: 0
-                    }
-                };
-            });
-        });
-
-        component.setState((prevState) => {
-            return {
-                ripple: {
-                    ...prevState.ripple,
-                    animating: true,
-                    scale: 2 * Math.sqrt((Math.pow(width, 2) + Math.pow(height, 2)) / ((Math.pow(adjustedStyle.ripple.width, 2) + Math.pow(adjustedStyle.ripple.height, 2)))),
-                    locationX,
-                    locationY
-                }
-            };
-        });
-    }
     onLayout = (event) => {
         const component = this;
         const {
@@ -368,7 +340,7 @@ export default class ItemViewComponent extends Component {
         } = event.nativeEvent.layout;
 
         component.setState((prevState) => {
-            if (prevState.ripple.animating) {
+            if (prevState.animation.animating) {
                 return null;
             } else {
                 return {
@@ -384,14 +356,58 @@ export default class ItemViewComponent extends Component {
             rippled,
             onPress
         } = component.props;
+        const {
+            adjustedStyle,
+            animation,
+            width,
+            height
+        } = component.state;
 
         if (rippled) {
             const {
                 locationX,
                 locationY
             } = event.nativeEvent;
-            requestAnimationFrame(() => onPress(event));
-            component.animateRipple(locationX, locationY);
+            component.setState((prevState) => {
+                return {
+                    animation: {
+                        ...prevState.animation,
+                        animating: true
+                    },
+                    ripple: {
+                        ...prevState.ripple,
+                        scale: 2 * Math.sqrt((Math.pow(width, 2) + Math.pow(height, 2)) / ((Math.pow(adjustedStyle.ripple.width, 2) + Math.pow(adjustedStyle.ripple.height, 2)))),
+                        locationX,
+                        locationY
+                    }
+                };
+            }, () => {
+                Animated.timing(animation.animatedValue, {
+                    toValue: 1,
+                    easing: animation.easing.out,
+                    duration: animation.duration,
+                    useNativeDriver: true
+                }).start(() => {
+                    animation.animatedValue.resetAnimation();
+                    component.setState((prevState) => {
+                        return {
+                            animation: {
+                                ...prevState.animation,
+                                animating: false
+                            },
+                            ripple: {
+                                animatedValue: new Animated.Value(0),
+                                scale: 0,
+                                radius: Ht.Theme.view.size.item / 2,
+                                locationX: 0,
+                                locationY: 0
+                            }
+                        };
+                    }, () => {
+                        onPress(event);
+                    });
+                });
+            });
         }
     }
     componentWillMount () {
@@ -417,12 +433,12 @@ export default class ItemViewComponent extends Component {
     componentWillUnMount () {
         const component = this;
         const {
-            ripple
+            animation
         } = component.state;
 
         component.debounce = null;
         component.refCache = {};
-        ripple.animatedValue.removeAllListeners();
+        animation.animatedValue.removeAllListeners();
     }
     componentWillReceiveProps (nextProperty) {
         const component = this;
@@ -448,10 +464,12 @@ export default class ItemViewComponent extends Component {
         const component = this;
         const {
             adjustedStyle,
-            ripple
+            animation,
+            ripple,
+            width
         } = component.state;
 
-        if (ripple.animating) {
+        if (animation.animating) {
             return (
                 <View
                     style = {{
@@ -465,14 +483,14 @@ export default class ItemViewComponent extends Component {
                     <Animated.View style = {{
                         ...adjustedStyle.ripple,
                         top: 0, // ripple.locationY,
-                        left: ripple.locationX,
+                        left: width <= ripple.radius * 4 ? width / 2 - ripple.radius : ripple.locationX,
                         transform: [{
-                            scale: ripple.animatedValue.interpolate({
+                            scale: animation.animatedValue.interpolate({
                                 inputRange: [ 0, 1 ],
                                 outputRange: [ 0, ripple.scale ]
                             })
                         }],
-                        opacity: ripple.animatedValue.interpolate({
+                        opacity: animation.animatedValue.interpolate({
                             inputRange: [ 0, 1 ],
                             outputRange: [ parseInt(Ht.Theme.view.color.item.opacity, 16) / 255, 0 ]
                         })

@@ -65,12 +65,12 @@ const DEFAULT_HEADER_VIEW_STYLE = {
     status: {
         ...Ht.Theme.general.dropShadow.shallow,
         position: `absolute`,
-        zIndex: 12,
-        elevation: 4,
-        width: DEVICE_WIDTH,
-        height: Ht.Theme.view.size.header.status,
         top: 0,
         left: 0,
+        width: DEVICE_WIDTH,
+        height: Ht.Theme.view.size.header.status,
+        zIndex: 12,
+        elevation: 4,
         marginBottom: 3
     },
     navigation: {
@@ -124,7 +124,7 @@ export default class HeaderViewComponent extends Component {
         oversized: PropTypes.bool,
         dropShadowed: PropTypes.bool,
         uppercasedLabel: PropTypes.bool,
-        initiallyCollapsed: PropTypes.bool,
+        collapsed: PropTypes.bool,
         label: PropTypes.string,
         onCollapse: PropTypes.func,
         onExpand: PropTypes.func
@@ -136,7 +136,7 @@ export default class HeaderViewComponent extends Component {
         oversized: Ht.Theme.view.header.oversized,
         dropShadowed: Ht.Theme.view.header.dropShadowed,
         uppercasedLabel: Ht.Theme.view.header.uppercasedLabel,
-        initiallyCollapsed: false,
+        collapsed: false,
         label: `Header`,
         onCollapse: () => null,
         onExpand: () => null
@@ -206,7 +206,7 @@ export default class HeaderViewComponent extends Component {
         overlay: Ht.Theme.view.header.overlay,
         oversized: Ht.Theme.view.header.oversized,
         dropShadowed: Ht.Theme.view.header.dropShadowed,
-        initiallyCollapsed: false
+        collapsed: false
     }) => {
         const component = this;
         const {
@@ -214,14 +214,14 @@ export default class HeaderViewComponent extends Component {
             overlay,
             oversized,
             dropShadowed,
-            initiallyCollapsed,
+            collapsed,
             style
         } = Hf.fallback({
             shade: Ht.Theme.view.header.shade,
             overlay: Ht.Theme.view.header.overlay,
             oversized: Ht.Theme.view.header.oversized,
             dropShadowed: Ht.Theme.view.header.dropShadowed,
-            initiallyCollapsed: false
+            collapsed: false
         }).of(newStyle);
         const {
             adjustedStyle: prevAdjustedStyle
@@ -252,12 +252,9 @@ export default class HeaderViewComponent extends Component {
         themedLabelColor = Ht.Theme.view.color.header.label[shade === `dark` ? `light` : `dark`];
 
         const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
-            navigation: initiallyCollapsed ? {
+            navigation: collapsed ? {
                 opacity: 0,
                 height: 0,
-                transform: [{
-                    translateX: oversized ? -Ht.Theme.view.size.header.oversize : -Ht.Theme.view.size.header.normal
-                }],
                 shadowOpacity: 0,
                 backgroundColor: themedNavigationColor
             } : {
@@ -270,7 +267,7 @@ export default class HeaderViewComponent extends Component {
                     alignSelf: oversized ? `flex-start` : `center`
                 }
             },
-            status: initiallyCollapsed ? {
+            status: collapsed ? {
                 shadowOpacity: Ht.Theme.general.dropShadow.shallow.shadowOpacity,
                 backgroundColor: themedStatusColor
             } : {
@@ -395,7 +392,7 @@ export default class HeaderViewComponent extends Component {
         }).of(option);
         const {
             cId,
-            oversized
+            onCollapse
         } = component.props;
         const {
             collapsed
@@ -409,19 +406,20 @@ export default class HeaderViewComponent extends Component {
         );
 
         if (!collapsed) {
-            component.setState(() => {
-                return {
-                    collapsed: true
-                };
-            });
             animatedStatusView.transitionTo({
                 shadowOpacity: Ht.Theme.general.dropShadow.shallow.shadowOpacity
             }, duration, `ease-in`);
             animatedNavigationView.transitionTo({
                 opacity: 0,
-                height: 0,
-                translateY: oversized ? -Ht.Theme.view.size.header.oversize : -Ht.Theme.view.size.header.normal
+                height: 0
             }, duration, easing);
+            component.setState(() => {
+                return {
+                    collapsed: true
+                };
+            }, () => {
+                onCollapse();
+            });
         }
     }
     expand = (option = {
@@ -438,7 +436,8 @@ export default class HeaderViewComponent extends Component {
         }).of(option);
         const {
             cId,
-            oversized
+            oversized,
+            onExpand
         } = component.props;
         const {
             collapsed
@@ -457,16 +456,15 @@ export default class HeaderViewComponent extends Component {
             }, duration, `ease-out`);
             animatedNavigationView.transitionTo({
                 opacity: 1,
-                height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal,
-                translateY: 0
+                height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal
             }, duration, easing);
-            setTimeout(() => {
-                component.setState(() => {
-                    return {
-                        collapsed: false
-                    };
-                });
-            }, 300);
+            component.setState(() => {
+                return {
+                    collapsed: false
+                };
+            }, () => {
+                onExpand();
+            });
         }
     }
     onLayout = (event) => {
@@ -495,19 +493,19 @@ export default class HeaderViewComponent extends Component {
             overlay,
             oversized,
             dropShadowed,
-            initiallyCollapsed,
+            collapsed,
             style
         } = component.props;
 
         component.setState(() => {
             return {
-                collapsed: initiallyCollapsed,
+                collapsed: collapsed,
                 adjustedStyle: component.readjustStyle({
                     shade,
                     overlay,
                     oversized,
                     dropShadowed,
-                    initiallyCollapsed,
+                    collapsed,
                     style
                 })
             };
@@ -525,22 +523,28 @@ export default class HeaderViewComponent extends Component {
             overlay,
             oversized,
             dropShadowed,
-            initiallyCollapsed,
+            collapsed,
             style
         } = nextProperty;
 
         component.setState(() => {
             return {
-                collapsed: initiallyCollapsed,
+                collapsed: collapsed,
                 adjustedStyle: component.readjustStyle({
                     shade,
                     overlay,
                     oversized,
                     dropShadowed,
-                    initiallyCollapsed,
+                    collapsed,
                     style
                 })
             };
+        }, () => {
+            if (collapsed) {
+                component.collapse();
+            } else {
+                component.expand();
+            }
         });
     }
     render () {
@@ -551,12 +555,9 @@ export default class HeaderViewComponent extends Component {
             overlay,
             uppercasedLabel,
             label,
-            children,
-            onCollapse,
-            onExpand
+            children
         } = component.props;
         const {
-            collapsed,
             adjustedStyle,
             filler
         } = component.state;
@@ -657,7 +658,6 @@ export default class HeaderViewComponent extends Component {
                         style = { adjustedStyle.navigation }
                         duration = { DEFAULT_ANIMATION_DURATION_MS }
                         useNativeDriver = { false }
-                        onAnimationEnd = {() => collapsed ? onCollapse() : onExpand()}
                     >
                         <AnimatedView
                             ref = { component.assignComponentRef(`animated-navigation-action-left-view${cId}`) }
@@ -717,7 +717,6 @@ export default class HeaderViewComponent extends Component {
                         style = { adjustedStyle.navigation }
                         duration = { DEFAULT_ANIMATION_DURATION_MS }
                         useNativeDriver = { false }
-                        onAnimationEnd = {() => collapsed ? onCollapse() : onExpand()}
                     >
                         <AnimatedView
                             ref = { component.assignComponentRef(`animated-navigation-action-left-view${cId}`) }
