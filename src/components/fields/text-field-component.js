@@ -525,8 +525,6 @@ export default class TextFieldComponent extends Component {
         if (!disabled) {
             const [ textInput ] = component.lookupComponentRefs(`text-input`);
 
-            textInput.clear();
-
             component.setState((prevState) => {
                 return {
                     input: {
@@ -543,6 +541,8 @@ export default class TextFieldComponent extends Component {
                         status: ``
                     }
                 };
+            }, () => {
+                textInput.clear();
             });
         }
     }
@@ -559,8 +559,9 @@ export default class TextFieldComponent extends Component {
                     focused: true
                 }
             };
+        }, () => {
+            onFocus();
         });
-        onFocus();
     }
     onBlur = () => {
         const component = this;
@@ -575,8 +576,9 @@ export default class TextFieldComponent extends Component {
                     focused: false
                 }
             };
+        }, () => {
+            onBlur();
         });
-        onBlur();
     }
     onUpdateInputSize = (event) => {
         const component = this;
@@ -631,7 +633,6 @@ export default class TextFieldComponent extends Component {
         const value = text;
 
         if (Hf.isEmpty(value)) {
-            onEditing(value);
             component.setState((prevState) => {
                 return {
                     input: {
@@ -643,23 +644,10 @@ export default class TextFieldComponent extends Component {
                         status: ``
                     }
                 };
+            }, () => {
+                onEditing(value);
             });
         } else {
-            if (inputType === `monetary`) {
-                onEditing(parseFloat(value).toFixed(2));
-            } else if (inputType === `numeric`) {
-                onEditing(parseFloat(value));
-            } else if (inputType === `phone-pad` ||
-                       inputType === `credit-card-visa` ||
-                       inputType === `credit-card-master` ||
-                       inputType === `credit-card-discover` ||
-                       inputType === `credit-card-american-express`
-            ) {
-                onEditing(parseInt(value, 10));
-            } else {
-                onEditing(value);
-            }
-
             component.setState((prevState) => {
                 return {
                     input: {
@@ -667,6 +655,21 @@ export default class TextFieldComponent extends Component {
                         value
                     }
                 };
+            }, () => {
+                if (inputType === `monetary`) {
+                    onEditing(parseFloat(value).toFixed(2));
+                } else if (inputType === `numeric`) {
+                    onEditing(parseFloat(value));
+                } else if (inputType === `phone-pad` ||
+                           inputType === `credit-card-visa` ||
+                           inputType === `credit-card-master` ||
+                           inputType === `credit-card-discover` ||
+                           inputType === `credit-card-american-express`
+                ) {
+                    onEditing(parseInt(value, 10));
+                } else {
+                    onEditing(value);
+                }
             });
         }
     }
@@ -738,9 +741,9 @@ export default class TextFieldComponent extends Component {
                         status
                     }
                 };
+            }, () => {
+                onDoneEdit(parseFloat(value).toFixed(2));
             });
-
-            onDoneEdit(parseFloat(value).toFixed(2));
         } else if (inputType === `phone-pad` ||
                    inputType === `credit-card-visa` ||
                    inputType === `credit-card-master` ||
@@ -762,9 +765,9 @@ export default class TextFieldComponent extends Component {
                         status
                     }
                 };
+            }, () => {
+                onDoneEdit(parseInt(value, 10));
             });
-
-            onDoneEdit(parseInt(value, 10));
         } else if (inputType === `numeric`) {
             const {
                 validated,
@@ -781,9 +784,9 @@ export default class TextFieldComponent extends Component {
                         status
                     }
                 };
+            }, () => {
+                onDoneEdit(parseFloat(value));
             });
-
-            onDoneEdit(parseFloat(value));
         } else {
             const {
                 validated,
@@ -800,9 +803,9 @@ export default class TextFieldComponent extends Component {
                         status
                     }
                 };
+            }, () => {
+                onDoneEdit(value);
             });
-
-            onDoneEdit(value);
         }
         dismissKeyboard();
     }
@@ -996,20 +999,6 @@ export default class TextFieldComponent extends Component {
                     boxViewLeft, boxViewTop,
                     boxViewWidth, boxViewHeight // eslint-disable-line
                 ) => {
-                    component.setState((prevState) => {
-                        return {
-                            input: {
-                                ...prevState.input,
-                                left: textInputLeft,
-                                width: textInputWidth
-                            },
-                            box: {
-                                ...prevState.box,
-                                width: boxViewWidth
-                            }
-                        };
-                    });
-
                     if (!Hf.isEmpty(label)) {
                         if (lineLimit === -1 || lineLimit > 1) {
                             if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
@@ -1047,6 +1036,21 @@ export default class TextFieldComponent extends Component {
                             }
                         }
                     }
+                    setTimeout(() => {
+                        component.setState((prevState) => {
+                            return {
+                                input: {
+                                    ...prevState.input,
+                                    left: textInputLeft,
+                                    width: textInputWidth
+                                },
+                                box: {
+                                    ...prevState.box,
+                                    width: boxViewWidth
+                                }
+                            };
+                        });
+                    }, DEFAULT_ANIMATION_DURATION_MS);
                 });
             });
         });

@@ -70,27 +70,29 @@ const DEFAULT_HISTORY_ENTRY_COUNT = 8;
 
 const DEFAULT_SEARCH_FIELD_STYLE = {
     container: {
-        flexGrow: 1,
         flexDirection: `column`,
         alignItems: `stretch`,
+        alignSelf: `flex-start`,
         justifyContent: `center`,
         maxWidth: DEVICE_WIDTH,
-        marginVertical: 6,
-        paddingVertical: 6,
-        marginHorizontal: 3,
-        paddingHorizontal: 3,
+        zIndex: 10,
+        elevation: 2,
         backgroundColor: `transparent`,
         overflow: `hidden`
     },
     box: {
         ...Ht.Theme.general.dropShadow.shallow,
-        flexGrow: 1,
+        flexShrink: 1,
         flexDirection: `row`,
         alignItems: `center`,
         justifyContent: `space-between`,
         minWidth: Ht.Theme.field.size.search.input * 1.25,
         height: Ht.Theme.field.size.search.input * 1.25,
-        marginVertical: 3
+        zIndex: 11,
+        elevation: 2,
+        marginVertical: 6,
+        marginHorizontal: DEVICE_WIDTH * 0.015,
+        paddingVertical: 6
     },
     room: {
         actionLeft: {
@@ -134,8 +136,93 @@ const DEFAULT_SEARCH_FIELD_STYLE = {
         alignItems: `stretch`,
         justifyContent: `center`,
         maxHeight: DEVICE_HEIGHT / 3,
-        marginVertical: 3,
+        height: 0,
+        zIndex: 11,
+        elevation: 2,
+        marginHorizontal: 6,
         borderRadius: 4
+    }
+};
+
+const fetchAutocompletions = async function fetchAutocompletions (value, getAutocompletions) {
+    const component = this;
+
+    if (Hf.DEVELOPMENT) {
+        if (!Hf.isString(value)) {
+            Hf.log(`error`, `fetchAutocompletions - Input component reference name is invalid.`);
+        } else if (!Hf.isFunction(getAutocompletions)) {
+            Hf.log(`error`, `fetchAutocompletions - Input get autocompletions callback is invalid.`);
+        }
+
+        try {
+            const autocompleteTexts = await getAutocompletions(value);
+
+            if (Hf.isNonEmptyArray(autocompleteTexts)) {
+                component.setState((prevState) => {
+                    return {
+                        suggestion: {
+                            ...prevState.suggestion,
+                            visible: true,
+                            wasVisibled: prevState.suggestion.visible,
+                            autocompletes: [
+                                ...new Set(autocompleteTexts.filter((autocompleteText) => Hf.isString(autocompleteText)))
+                            ].map((autocompleteText) => {
+                                return {
+                                    historyType: false,
+                                    value: autocompleteText
+                                };
+                            })
+                        }
+                    };
+                });
+            } else {
+                component.setState((prevState) => {
+                    return {
+                        suggestion: {
+                            ...prevState.suggestion,
+                            visible: false,
+                            wasVisibled: prevState.suggestion.visible,
+                            autocompletes: []
+                        }
+                    };
+                });
+            }
+        } catch(error) {
+            Hf.log(`warn1`, `SearchFieldComponent.onEditting.fetchAutocompletions - Error occured while awaiting for autocompletions.`);
+        }
+    } else {
+        const autocompleteTexts = await getAutocompletions(value);
+
+        if (Hf.isNonEmptyArray(autocompleteTexts)) {
+            component.setState((prevState) => {
+                return {
+                    suggestion: {
+                        ...prevState.suggestion,
+                        visible: true,
+                        wasVisibled: prevState.suggestion.visible,
+                        autocompletes: [
+                            ...new Set(autocompleteTexts.filter((autocompleteText) => Hf.isString(autocompleteText)))
+                        ].map((autocompleteText) => {
+                            return {
+                                historyType: false,
+                                value: autocompleteText
+                            };
+                        })
+                    }
+                };
+            });
+        } else {
+            component.setState((prevState) => {
+                return {
+                    suggestion: {
+                        ...prevState.suggestion,
+                        visible: false,
+                        wasVisibled: prevState.suggestion.visible,
+                        autocompletes: []
+                    }
+                };
+            });
+        }
     }
 };
 
@@ -148,8 +235,8 @@ export default class SearchFieldComponent extends Component {
         autoFocus: PropTypes.bool,
         autoCorrect: PropTypes.bool,
         suggestive: PropTypes.bool,
-        initiallyHidden: PropTypes.bool,
-        initiallyCollapsed: PropTypes.bool,
+        hidden: PropTypes.bool,
+        collapsed: PropTypes.bool,
         hint: PropTypes.string,
         debounceTime: PropTypes.number,
         onSearch: PropTypes.func,
@@ -167,8 +254,8 @@ export default class SearchFieldComponent extends Component {
         autoFocus: false,
         autoCorrect: true,
         suggestive: true,
-        initiallyHidden: false,
-        initiallyCollapsed: false,
+        hidden: false,
+        collapsed: false,
         hint: ``,
         debounceTime: DEFAULT_FIELD_DEBOUNCE_TIME_MS,
         onSearch: () => null,
@@ -199,6 +286,7 @@ export default class SearchFieldComponent extends Component {
             },
             suggestion: {
                 visible: false,
+                wasVisibled: false,
                 supressedAutocompletion: false,
                 historyEntryIndex: 0,
                 historyEntryRollOverCount: 0,
@@ -261,8 +349,8 @@ export default class SearchFieldComponent extends Component {
         overlay: Ht.Theme.field.search.overlay,
         corner: Ht.Theme.field.search.corner,
         dropShadowed: Ht.Theme.field.search.dropShadowed,
-        initiallyHidden: false,
-        initiallyCollapsed: false
+        hidden: false,
+        collapsed: false
     }) => {
         const component = this;
         const {
@@ -270,16 +358,16 @@ export default class SearchFieldComponent extends Component {
             overlay,
             corner,
             dropShadowed,
-            initiallyHidden,
-            initiallyCollapsed,
+            hidden,
+            collapsed,
             style
         } = Hf.fallback({
             shade: Ht.Theme.field.search.shade,
             overlay: Ht.Theme.field.search.overlay,
             corner: Ht.Theme.field.search.corner,
             dropShadowed: Ht.Theme.field.search.dropShadowed,
-            initiallyHidden: false,
-            initiallyCollapsed: false
+            hidden: false,
+            collapsed: false
         }).of(newStyle);
         const {
             adjustedStyle: prevAdjustedStyle
@@ -303,9 +391,9 @@ export default class SearchFieldComponent extends Component {
 
         const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
             box: {
-                width: initiallyCollapsed ? Ht.Theme.field.size.search.input * 1.25 : `100%`,
+                width: collapsed ? Ht.Theme.field.size.search.input * 1.25 : DEVICE_WIDTH * 0.97,
                 borderRadius: Ht.Theme.field.corner.search[corner],
-                opacity: initiallyHidden ? 0 : 1,
+                opacity: hidden ? 0 : 1,
                 shadowOpacity: dropShadowed ? Ht.Theme.general.dropShadow.shallow.shadowOpacity : 0,
                 backgroundColor: themedColor
             },
@@ -351,54 +439,29 @@ export default class SearchFieldComponent extends Component {
             easing: `ease-out-cubic`
         }).of(option);
         const {
+            onCollapse
+        } = component.props;
+        const {
             collapsed
         } = component.state;
-        const [ animatedBoxView ] = component.lookupComponentRefs(`animated-box-view`);
+        const [ animatedBoxView
+        ] = component.lookupComponentRefs(`animated-box-view`);
 
         if (!collapsed) {
             animatedBoxView.transitionTo({
-                width: 0
+                width: Ht.Theme.field.size.search.input * 1.25
             }, duration, easing);
             component.setState((prevState) => {
                 return {
                     collapsed: true,
                     suggestion: {
                         ...prevState.suggestion,
-                        visible: false
+                        visible: false,
+                        wasVisibled: prevState.suggestion.visible
                     }
                 };
-            });
-        }
-    }
-    hide = (option = {
-        duration: DEFAULT_ANIMATION_DURATION_MS,
-        easing: `ease-out-cubic`
-    }) => {
-        const component = this;
-        const {
-            duration,
-            easing
-        } = Hf.fallback({
-            duration: DEFAULT_ANIMATION_DURATION_MS,
-            easing: `ease-out-cubic`
-        }).of(option);
-        const {
-            hidden
-        } = component.state;
-        const [ animatedBoxView ] = component.lookupComponentRefs(`animated-box-view`);
-
-        if (!hidden) {
-            animatedBoxView.transitionTo({
-                opacity: 0
-            }, duration, easing);
-            component.setState((prevState) => {
-                return {
-                    hidden: true,
-                    suggestion: {
-                        ...prevState.suggestion,
-                        visible: false
-                    }
-                };
+            }, () => {
+                onCollapse();
             });
         }
     }
@@ -415,22 +478,24 @@ export default class SearchFieldComponent extends Component {
             easing: `ease-in-cubic`
         }).of(option);
         const {
-            collapsed,
-            box
+            onExpand
+        } = component.props;
+        const {
+            collapsed
         } = component.state;
         const [ animatedBoxView ] = component.lookupComponentRefs(`animated-box-view`);
 
         if (collapsed) {
             animatedBoxView.transitionTo({
-                width: box.width
+                width: DEVICE_WIDTH * 0.97
             }, duration, easing);
-            setTimeout(() => {
-                component.setState(() => {
-                    return {
-                        collapsed: false
-                    };
-                });
-            }, duration);
+            component.setState(() => {
+                return {
+                    collapsed: false
+                };
+            }, () => {
+                onExpand();
+            });
         }
     }
     show = (option = {
@@ -446,6 +511,9 @@ export default class SearchFieldComponent extends Component {
             easing: `ease-in-cubic`
         }).of(option);
         const {
+            onShow
+        } = component.props;
+        const {
             hidden
         } = component.state;
         const [ animatedBoxView ] = component.lookupComponentRefs(`animated-box-view`);
@@ -454,13 +522,51 @@ export default class SearchFieldComponent extends Component {
             animatedBoxView.transitionTo({
                 opacity: 1
             }, duration, easing);
-            setTimeout(() => {
-                component.setState(() => {
-                    return {
-                        hidden: false
-                    };
-                });
-            }, duration);
+            component.setState(() => {
+                return {
+                    hidden: false
+                };
+            }, () => {
+                onShow();
+            });
+        }
+    }
+    hide = (option = {
+        duration: DEFAULT_ANIMATION_DURATION_MS,
+        easing: `ease-out-cubic`
+    }) => {
+        const component = this;
+        const {
+            duration,
+            easing
+        } = Hf.fallback({
+            duration: DEFAULT_ANIMATION_DURATION_MS,
+            easing: `ease-out-cubic`
+        }).of(option);
+        const {
+            onHide
+        } = component.props;
+        const {
+            hidden
+        } = component.state;
+        const [ animatedBoxView ] = component.lookupComponentRefs(`animated-box-view`);
+
+        if (!hidden) {
+            animatedBoxView.transitionTo({
+                opacity: 0
+            }, duration, easing);
+            component.setState((prevState) => {
+                return {
+                    hidden: true,
+                    suggestion: {
+                        ...prevState.suggestion,
+                        visible: false,
+                        wasVisibled: prevState.suggestion.visible
+                    }
+                };
+            }, () => {
+                onHide();
+            });
         }
     }
     clear = () => {
@@ -475,12 +581,13 @@ export default class SearchFieldComponent extends Component {
                 },
                 suggestion: {
                     ...prevState.suggestion,
-                    visible: false
+                    visible: false,
+                    wasVisibled: prevState.suggestion.visible
                 }
             };
+        }, () => {
+            textInput.clear();
         });
-
-        textInput.clear();
     }
     clearSuggestion = () => {
         const component = this;
@@ -489,6 +596,7 @@ export default class SearchFieldComponent extends Component {
             return {
                 suggestion: {
                     visible: false,
+                    wasVisibled: false,
                     supressedAutocompletion: false,
                     historyEntryIndex: 0,
                     histories: [],
@@ -510,8 +618,9 @@ export default class SearchFieldComponent extends Component {
                     focused: true
                 }
             };
+        }, () => {
+            onFocus();
         });
-        onFocus();
     }
     onBlur = () => {
         const component = this;
@@ -526,8 +635,9 @@ export default class SearchFieldComponent extends Component {
                     focused: false
                 }
             };
+        }, () => {
+            onBlur();
         });
-        onBlur();
     }
     onChangeText = (text) => {
         const component = this;
@@ -542,32 +652,7 @@ export default class SearchFieldComponent extends Component {
 
         if (!Hf.isEmpty(value)) {
             if (suggestive && !suggestion.supressedAutocompletion) {
-                const fetchAutocompletions = async function fetchAutocompletions () {
-                    try {
-                        const autocompleteTexts = await onGetAutocompletions(value);
-
-                        component.setState((prevState) => {
-                            return {
-                                suggestion: {
-                                    ...prevState.suggestion,
-                                    visible: true,
-                                    autocompletes: [
-                                        ...new Set(autocompleteTexts.filter((autocompleteText) => Hf.isString(autocompleteText)))
-                                    ].map((autocompleteText) => {
-                                        return {
-                                            historyType: false,
-                                            value: autocompleteText
-                                        };
-                                    })
-                                }
-                            };
-                        });
-                    } catch(error) {
-                        Hf.log(`warn1`, `SearchFieldComponent.onEditting.fetchAutocompletions - Error occured while awaiting for autocompletions.`);
-                    }
-                };
-
-                fetchAutocompletions();
+                fetchAutocompletions.call(component, value, onGetAutocompletions);
             }
             component.setState((prevState) => {
                 return {
@@ -577,7 +662,6 @@ export default class SearchFieldComponent extends Component {
                     },
                     suggestion: {
                         ...prevState.suggestion,
-                        visible: false,
                         supressedAutocompletion: false
                     }
                 };
@@ -592,6 +676,7 @@ export default class SearchFieldComponent extends Component {
                     suggestion: {
                         ...prevState.suggestion,
                         visible: false,
+                        wasVisibled: prevState.suggestion.visible,
                         supressedAutocompletion: false
                     }
                 };
@@ -638,19 +723,22 @@ export default class SearchFieldComponent extends Component {
                     suggestion: {
                         ...prevState.suggestion,
                         visible: false,
+                        wasVisibled: prevState.suggestion.visible,
                         supressedAutocompletion: true,
                         historyEntryIndex,
                         histories
                     }
                 };
+            }, () => {
+                onSearch(value);
             });
-            onSearch(value);
         } else {
             component.setState((prevState) => {
                 return {
                     suggestion: {
                         ...prevState.suggestion,
                         visible: false,
+                        wasVisibled: prevState.suggestion.visible,
                         supressedAutocompletion: true
                     }
                 };
@@ -703,11 +791,14 @@ export default class SearchFieldComponent extends Component {
                             suggestion: {
                                 ...prevState.suggestion,
                                 visible: false,
+                                wasVisibled: prevState.suggestion.visible,
                                 supressedAutocompletion: true,
                                 historyEntryIndex,
                                 histories
                             }
                         };
+                    }, () => {
+                        onSearch(entry.value);
                     });
                 } else {
                     component.setState((prevState) => {
@@ -719,14 +810,15 @@ export default class SearchFieldComponent extends Component {
                             suggestion: {
                                 ...prevState.suggestion,
                                 visible: false,
+                                wasVisibled: prevState.suggestion.visible,
                                 supressedAutocompletion: true,
                                 autocompletes: []
                             }
                         };
+                    }, () => {
+                        onSearch(entry.value);
                     });
                 }
-
-                onSearch(entry.value);
             }, DEFAULT_ANIMATION_DURATION_MS);
         }
     }
@@ -758,8 +850,8 @@ export default class SearchFieldComponent extends Component {
             overlay,
             corner,
             dropShadowed,
-            initiallyHidden,
-            initiallyCollapsed,
+            hidden,
+            collapsed,
             debounceTime,
             style
         } = component.props;
@@ -767,38 +859,18 @@ export default class SearchFieldComponent extends Component {
         component.debounce = debouncer(debounceTime);
         component.setState(() => {
             return {
-                hidden: initiallyHidden,
-                collapsed: initiallyCollapsed,
+                hidden: hidden,
+                collapsed: collapsed,
                 adjustedStyle: component.readjustStyle({
                     shade,
                     overlay,
                     corner,
                     dropShadowed,
-                    initiallyHidden,
-                    initiallyCollapsed,
+                    hidden,
+                    collapsed,
                     style
                 })
             };
-        });
-    }
-    componentDidMount () {
-        const component = this;
-        const [ containerView ] = component.lookupComponentRefs(`container-view`);
-
-        requestAnimationFrame(() => {
-            containerView.measure((
-                containerViewLeft, containerViewTop,
-                containerViewWidth, containerViewHeight // eslint-disable-line
-            ) => {
-                component.setState((prevState) => {
-                    return {
-                        box: {
-                            ...prevState.box,
-                            width: containerViewWidth - 6
-                        }
-                    };
-                });
-            });
         });
     }
     componentDidUpdate () {
@@ -806,23 +878,27 @@ export default class SearchFieldComponent extends Component {
         const {
             suggestive
         } = component.props;
+        const {
+            hidden,
+            collapsed
+        } = component.state;
 
-        if (suggestive) {
+        if (suggestive && !(collapsed || hidden)) {
             const [ animatedSuggestionView ] = component.lookupComponentRefs(`animated-suggestion-view`);
             const {
                 suggestion
             } = component.state;
 
-            if (suggestion.visible) {
+            if (suggestion.visible && !suggestion.wasVisibled) {
                 animatedSuggestionView.transitionTo({
                     opacity: 1,
-                    translateY: 0
-                });
-            } else {
+                    height: DEVICE_HEIGHT / 2
+                }, DEFAULT_ANIMATION_DURATION_MS, `ease-in-cubic`);
+            } else if (!suggestion.visible && suggestion.wasVisibled) {
                 animatedSuggestionView.transitionTo({
                     opacity: 0,
-                    translateY: DEVICE_HEIGHT / 2
-                });
+                    height: 0
+                }, DEFAULT_ANIMATION_DURATION_MS, `ease-out-cubic`);
             }
         }
     }
@@ -839,21 +915,34 @@ export default class SearchFieldComponent extends Component {
             overlay,
             corner,
             dropShadowed,
+            hidden,
+            collapsed,
             style
         } = component.props;
 
-        component.setState((prevState) => {
+        component.setState(() => {
             return {
                 adjustedStyle: component.readjustStyle({
                     shade,
                     overlay,
                     corner,
                     dropShadowed,
-                    initiallyHidden: prevState.hidden,
-                    initiallyCollapsed: prevState.collapsed,
+                    hidden,
+                    collapsed,
                     style
                 })
             };
+        }, () => {
+            if (hidden) {
+                component.hide();
+            } else {
+                component.show();
+            }
+            if (collapsed) {
+                component.collapse();
+            } else {
+                component.expand();
+            }
         });
     }
     renderInput () {
@@ -865,11 +954,13 @@ export default class SearchFieldComponent extends Component {
         } = component.props;
 
         const {
+            hidden,
+            collapsed,
             adjustedStyle,
             input
         } = component.state;
 
-        return (
+        return !(collapsed || hidden) ? (
             <TextInput
                 ref = { component.assignComponentRef(`text-input`) }
                 style = { adjustedStyle.input }
@@ -888,16 +979,18 @@ export default class SearchFieldComponent extends Component {
                 onChangeText = {(text) => component.debounce(component.onChangeText, text)}
                 onSubmitEditing = { component.onSubmitEditing }
             />
-        );
+        ) : null;
     }
     renderSuggestionEntries () {
         const component = this;
         const {
+            suggestive,
             renderSuggestionEntry
         } = component.props;
         const {
+            hidden,
+            collapsed,
             adjustedStyle,
-            box,
             input,
             suggestion
         } = component.state;
@@ -912,13 +1005,11 @@ export default class SearchFieldComponent extends Component {
             };
         });
 
-        return (
+        return suggestive && !(collapsed || hidden) ? (
             <AnimatedView
                 ref = { component.assignComponentRef(`animated-suggestion-view`) }
-                style = {{
-                    ...adjustedStyle.suggestion,
-                    width: box.width
-                }}
+                style = { adjustedStyle.suggestion }
+                pointerEvents = 'box-none'
                 duration = { DEFAULT_ANIMATION_DURATION_MS }
                 useNativeDriver = { false }
             >
@@ -939,7 +1030,7 @@ export default class SearchFieldComponent extends Component {
                     }}
                 />
             </AnimatedView>
-        );
+        ) : null;
     }
     render () {
         const component = this;
@@ -947,9 +1038,6 @@ export default class SearchFieldComponent extends Component {
             shade,
             overlay,
             autoFocus,
-            suggestive,
-            onCollapse,
-            onExpand,
             children
         } = component.props;
         const {
@@ -1075,7 +1163,6 @@ export default class SearchFieldComponent extends Component {
                         blurType = { shade }
                         blurAmount = { Ht.Theme.general.frostLevel }
                         useNativeDriver = { false }
-                        onAnimationEnd = {() => collapsed ? onCollapse() : onExpand()}
                     >
                         {
                             fieldActionLeftChildren === null ? <View style = { adjustedStyle.room.filler }/> : <View style = { adjustedStyle.room.actionLeft }>
@@ -1085,7 +1172,7 @@ export default class SearchFieldComponent extends Component {
                             </View>
                         }
                         {
-                            !collapsed ? component.renderInput() : null
+                            component.renderInput()
                         }
                         {
                             fieldActionRightChildren === null ? <View style = { adjustedStyle.room.filler }/> : <View style = { adjustedStyle.room.actionRight }>
@@ -1096,7 +1183,7 @@ export default class SearchFieldComponent extends Component {
                         }
                     </AnimatedBlurView>
                     {
-                        !suggestive ? null : component.renderSuggestionEntries()
+                        component.renderSuggestionEntries()
                     }
                 </View>
             );
@@ -1106,7 +1193,9 @@ export default class SearchFieldComponent extends Component {
                     ref = { component.assignComponentRef(`container-view`) }
                     style = { adjustedStyle.container }
                     onStartShouldSetResponder = {() => {
-                        dismissKeyboard();
+                        if (!autoFocus) {
+                            dismissKeyboard();
+                        }
                     }}
                 >
                     <AnimatedView
@@ -1114,7 +1203,6 @@ export default class SearchFieldComponent extends Component {
                         style = { adjustedStyle.box }
                         duration = { DEFAULT_ANIMATION_DURATION_MS }
                         useNativeDriver = { false }
-                        onAnimationEnd = {() => collapsed ? onCollapse() : onExpand()}
                     >
                         {
                             fieldActionLeftChildren === null ? <View style = { adjustedStyle.room.filler }/> : <View style = { adjustedStyle.room.actionLeft }>
@@ -1124,7 +1212,7 @@ export default class SearchFieldComponent extends Component {
                             </View>
                         }
                         {
-                            !collapsed ? component.renderInput() : null
+                            component.renderInput()
                         }
                         {
                             fieldActionRightChildren === null ? <View style = { adjustedStyle.room.filler }/> : <View style = { adjustedStyle.room.actionRight }>
@@ -1135,7 +1223,7 @@ export default class SearchFieldComponent extends Component {
                         }
                     </AnimatedView>
                     {
-                        !suggestive ? null : component.renderSuggestionEntries()
+                        component.renderSuggestionEntries()
                     }
                 </View>
             );
