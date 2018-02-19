@@ -36,7 +36,7 @@ import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
 
-import debouncer from '../../common/utils/debouncer';
+import debouncer from '../../utils/debouncer';
 
 const {
     Component
@@ -44,6 +44,7 @@ const {
 
 const {
     Animated,
+    // Dimensions,
     Easing,
     StyleSheet,
     TouchableOpacity,
@@ -51,6 +52,8 @@ const {
 } = ReactNative;
 
 const AnimatedView = Animatable.View;
+
+// const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
 const DEFAULT_ITEM_PRESS_DEBOUNCE_TIME_MS = 250;
 
@@ -62,6 +65,7 @@ const DEFAULT_ITEM_VIEW_STYLE = {
         alignItems: `center`,
         alignSelf: `stretch`,
         justifyContent: `space-between`,
+        // width: DEVICE_WIDTH,
         width: `100%`,
         height: Ht.Theme.view.size.item,
         paddingVertical: 6,
@@ -73,7 +77,6 @@ const DEFAULT_ITEM_VIEW_STYLE = {
             flexDirection: `column`,
             alignItems: `flex-start`,
             justifyContent: `center`,
-            maxWidth: `100%`,
             height: Ht.Theme.view.size.item,
             backgroundColor: `transparent`
         },
@@ -82,7 +85,6 @@ const DEFAULT_ITEM_VIEW_STYLE = {
             flexDirection: `column`,
             alignItems: `flex-end`,
             justifyContent: `center`,
-            maxWidth: `100%`,
             height: Ht.Theme.view.size.item,
             backgroundColor: `transparent`
         },
@@ -152,6 +154,61 @@ export default class ItemViewComponent extends Component {
         };
     }
     /**
+     * @description - Helper method to readjust current style.
+     *
+     * @method _readjustStyle
+     * @param {object} newStyle
+     * @returns {object}
+     * @private
+     */
+    _readjustStyle = (newStyle = {
+        shade: Ht.Theme.view.item.shade,
+        overlay: Ht.Theme.view.item.overlay
+    }) => {
+        const component = this;
+        const {
+            shade,
+            overlay,
+            style
+        } = Hf.fallback({
+            shade: Ht.Theme.view.item.shade,
+            overlay: Ht.Theme.view.item.overlay
+        }).of(newStyle);
+        const {
+            adjustedStyle: prevAdjustedStyle
+        } = component.state;
+        let themedColor;
+        let themedRippleColor;
+
+        switch (overlay) { // eslint-disable-line
+        case `opaque`:
+            themedColor = Ht.Theme.view.color.item[shade];
+            themedRippleColor = Ht.Theme.view.color.item.ripple.dark;
+            break;
+        case `translucent`:
+            themedColor = `${Ht.Theme.view.color.item[shade]}${Ht.Theme.view.color.item.opacity}`;
+            themedRippleColor = Ht.Theme.view.color.item.ripple.dark;
+            break;
+        case `transparent`:
+            themedColor = `transparent`;
+            themedRippleColor = Ht.Theme.view.color.item.ripple[shade];
+            break;
+        }
+
+        const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
+            container: {
+                backgroundColor: themedColor
+            },
+            ripple: {
+                backgroundColor: themedRippleColor
+            }
+        });
+
+        return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
+            container: style
+        }) : adjustedStyle;
+    }
+    /**
      * @description - Assign the registered component's reference object.
      *
      * @method assignComponentRef
@@ -199,53 +256,6 @@ export default class ItemViewComponent extends Component {
         }
 
         return componentRefs;
-    }
-    readjustStyle = (newStyle = {
-        shade: Ht.Theme.view.item.shade,
-        overlay: Ht.Theme.view.item.overlay
-    }) => {
-        const component = this;
-        const {
-            shade,
-            overlay,
-            style
-        } = Hf.fallback({
-            shade: Ht.Theme.view.item.shade,
-            overlay: Ht.Theme.view.item.overlay
-        }).of(newStyle);
-        const {
-            adjustedStyle: prevAdjustedStyle
-        } = component.state;
-        let themedColor;
-        let themedRippleColor;
-
-        switch (overlay) { // eslint-disable-line
-        case `opaque`:
-            themedColor = Ht.Theme.view.color.item[shade];
-            themedRippleColor = Ht.Theme.view.color.item.ripple.dark;
-            break;
-        case `translucent`:
-            themedColor = `${Ht.Theme.view.color.item[shade]}${Ht.Theme.view.color.item.opacity}`;
-            themedRippleColor = Ht.Theme.view.color.item.ripple.dark;
-            break;
-        case `transparent`:
-            themedColor = `transparent`;
-            themedRippleColor = Ht.Theme.view.color.item.ripple[shade];
-            break;
-        }
-
-        const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
-            container: {
-                backgroundColor: themedColor
-            },
-            ripple: {
-                backgroundColor: themedRippleColor
-            }
-        });
-
-        return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
-            container: style
-        }) : adjustedStyle;
     }
     animate (refName, option = {
         loopCount: -1,
@@ -422,7 +432,7 @@ export default class ItemViewComponent extends Component {
         component.debounce = debouncer(debounceTime);
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     style
@@ -452,7 +462,7 @@ export default class ItemViewComponent extends Component {
         component.debounce = debouncer(debounceTime);
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     style

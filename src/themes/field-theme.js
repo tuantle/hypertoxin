@@ -24,7 +24,7 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './templates/font-style-template';
+import fontStyleTemplate from './style-templates/font-style-template';
 
 import toxinPalette from './palettes/toxin-palette';
 
@@ -52,11 +52,11 @@ export default {
     },
     size: {
         search: {
-            line: 2,
+            line: 1,
             input: 42
         },
         text: {
-            line: 2,
+            line: 1,
             input: 36,
             underline: {
                 focused: 3,
@@ -71,18 +71,18 @@ export default {
         },
         text: {
             input: fontStyleTemplate.normalLarge,
-            hint: fontStyleTemplate.normalLarge,
+            hint: fontStyleTemplate.normalLarger,
             status: fontStyleTemplate.italicSmall,
             helper: fontStyleTemplate.normalSmall,
             label: {
-                focused: fontStyleTemplate.normal,
-                blurred: fontStyleTemplate.normalLarge
+                focused: fontStyleTemplate.normalSmall,
+                blurred: fontStyleTemplate.normal
             }
         }
     },
     color: {
         search: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             box: {
                 dark: toxinPalette.deepGrey,
                 light: toxinPalette.white
@@ -94,7 +94,7 @@ export default {
             hint: toxinPalette.grey
         },
         text: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             focused: {
                 dark: toxinPalette.orange,
                 light: toxinPalette.orange

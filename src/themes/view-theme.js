@@ -24,7 +24,7 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './templates/font-style-template';
+import fontStyleTemplate from './style-templates/font-style-template';
 
 import toxinPalette from './palettes/toxin-palette';
 
@@ -39,7 +39,8 @@ export default {
         overlay: `opaque`,
         oversized: false,
         dropShadowed: true,
-        uppercasedLabel: true
+        offcenteredLabel: false,
+        uppercasedLabel: false
     },
     body: {
         shade: `light`,
@@ -73,38 +74,38 @@ export default {
     },
     color: {
         screen: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             dark: colorTheme.light.default,
             light: colorTheme.dark.default
         },
         header: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             navigation: {
-                dark: toxinPalette.blue,
-                light: toxinPalette.lightBlue
+                dark: colorTheme.dark.primary,
+                light: colorTheme.light.primary
             },
             status: {
-                dark: toxinPalette.blue,
-                light: toxinPalette.lightBlue
+                dark: colorTheme.dark.primary,
+                light: colorTheme.light.primary
             },
             label: {
-                dark: toxinPalette.white,
-                light: toxinPalette.white
+                dark: colorTheme.dark.default,
+                light: colorTheme.light.default
             }
         },
         body: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             dark: colorTheme.light.default,
             light: colorTheme.dark.default
         },
         card: {
-            opacity: `dd`,
-            overlay: `#000000`,
+            opacity: colorTheme.opacity,
+            overlay: toxinPalette.black,
             dark: colorTheme.light.default,
             light: colorTheme.dark.default
         },
         item: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             dark: colorTheme.light.default,
             light: colorTheme.dark.default,
             ripple: {
@@ -113,7 +114,7 @@ export default {
             }
         },
         layout: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             dark: colorTheme.light.default,
             light: colorTheme.dark.default
         }

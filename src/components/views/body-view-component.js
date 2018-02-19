@@ -41,10 +41,14 @@ const {
 } = React;
 
 const {
+    Dimensions,
+    KeyboardAvoidingView,
     View,
     ScrollView,
     PanResponder
 } = ReactNative;
+
+const DEVICE_HEIGHT = Dimensions.get(`window`).height;
 
 const DEFAULT_BODY_VIEW_STYLE = {
     flexShrink: 1,
@@ -62,6 +66,7 @@ export default class BodyViewComponent extends Component {
         orientation: PropTypes.oneOf([ `horizontal`, `vertical` ]),
         alignment: PropTypes.oneOf([ `start`, `center`, `end`, `stretch` ]),
         scrollable: PropTypes.bool,
+        keyboardAvoiding: PropTypes.bool,
         onScroll: PropTypes.func
     }
     static defaultProps = {
@@ -71,6 +76,7 @@ export default class BodyViewComponent extends Component {
         orientation: `horizontal`,
         alignment: `center`,
         scrollable: false,
+        keyboardAvoiding: false,
         onScroll: () => null
     }
     constructor (property) {
@@ -83,55 +89,14 @@ export default class BodyViewComponent extends Component {
         };
     }
     /**
-     * @description - Assign the registered component's reference object.
+     * @description - Helper method to readjust current style.
      *
-     * @method assignComponentRef
-     * @param {string} refName
-     * @returns function
+     * @method _readjustStyle
+     * @param {object} newStyle
+     * @returns {object}
+     * @private
      */
-    assignComponentRef = (refName) => {
-        const component = this;
-
-        if (Hf.DEVELOPMENT) {
-            if (!Hf.isString(refName)) {
-                Hf.log(`error`, `BodyViewComponent.assignComponentRef - Input component reference name is invalid.`);
-            }
-        }
-
-        /* helper function to set component ref */
-        const setComponentRef = function setComponentRef (componentRef) {
-            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
-        };
-        return setComponentRef;
-    }
-    /**
-     * @description - Lookup the registered component's reference object.
-     *
-     * @method lookupComponentRefs
-     * @param {array} refNames
-     * @returns {array}
-     */
-    lookupComponentRefs = (...refNames) => {
-        const component = this;
-        let componentRefs = [];
-
-        if (!Hf.isEmpty(refNames)) {
-            if (Hf.DEVELOPMENT) {
-                if (!refNames.every((refName) => Hf.isString(refName))) {
-                    Hf.log(`error`, `BodyViewComponent.lookupComponentRefs - Input component reference name is invalid.`);
-                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
-                    Hf.log(`error`, `BodyViewComponent.lookupComponentRefs - Component reference is not found.`);
-                }
-            }
-
-            componentRefs = Hf.collect(...refNames).from(component.refCache);
-        } else {
-            Hf.log(`error`, `BodyViewComponent.lookupComponentRefs - Input component reference name array is empty.`);
-        }
-
-        return componentRefs;
-    }
-    readjustStyle = (newStyle = {
+    _readjustStyle = (newStyle = {
         shade: Ht.Theme.view.body.shade,
         overlay: Ht.Theme.view.body.overlay,
         alignment: `center`
@@ -190,6 +155,55 @@ export default class BodyViewComponent extends Component {
         });
 
         return Hf.isObject(style) ? Hf.merge(adjustedStyle).with(style) : adjustedStyle;
+    }
+    /**
+     * @description - Assign the registered component's reference object.
+     *
+     * @method assignComponentRef
+     * @param {string} refName
+     * @returns function
+     */
+    assignComponentRef = (refName) => {
+        const component = this;
+
+        if (Hf.DEVELOPMENT) {
+            if (!Hf.isString(refName)) {
+                Hf.log(`error`, `BodyViewComponent.assignComponentRef - Input component reference name is invalid.`);
+            }
+        }
+
+        /* helper function to set component ref */
+        const setComponentRef = function setComponentRef (componentRef) {
+            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
+        };
+        return setComponentRef;
+    }
+    /**
+     * @description - Lookup the registered component's reference object.
+     *
+     * @method lookupComponentRefs
+     * @param {array} refNames
+     * @returns {array}
+     */
+    lookupComponentRefs = (...refNames) => {
+        const component = this;
+        let componentRefs = [];
+
+        if (!Hf.isEmpty(refNames)) {
+            if (Hf.DEVELOPMENT) {
+                if (!refNames.every((refName) => Hf.isString(refName))) {
+                    Hf.log(`error`, `BodyViewComponent.lookupComponentRefs - Input component reference name is invalid.`);
+                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
+                    Hf.log(`error`, `BodyViewComponent.lookupComponentRefs - Component reference is not found.`);
+                }
+            }
+
+            componentRefs = Hf.collect(...refNames).from(component.refCache);
+        } else {
+            Hf.log(`error`, `BodyViewComponent.lookupComponentRefs - Input component reference name array is empty.`);
+        }
+
+        return componentRefs;
     }
     getScrollDirection = () => {
         const component = this;
@@ -270,7 +284,7 @@ export default class BodyViewComponent extends Component {
         }
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     alignment,
@@ -297,7 +311,7 @@ export default class BodyViewComponent extends Component {
         component.setState(() => {
             return {
                 scrollDirection: 0,
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     alignment,
@@ -313,6 +327,7 @@ export default class BodyViewComponent extends Component {
             shade,
             overlay,
             scrollable,
+            keyboardAvoiding,
             onScroll,
             children
         } = component.props;
@@ -337,14 +352,134 @@ export default class BodyViewComponent extends Component {
             bodyViewChildren = Hf.isEmpty(fragments) ? null : fragments;
         }
 
-        if (scrollable) {
-            if (frosted) {
+        if (keyboardAvoiding) {
+            if (scrollable) {
+                if (frosted) {
+                    return (
+                        <KeyboardAvoidingView
+                            style = {{
+                                flexGrow: 1,
+                                backgroundColor: `transparent`
+                            }}
+                            behavior = 'padding'
+                            keyboardVerticalOffset = { DEVICE_HEIGHT / 4 }
+                        >
+                            <BlurView
+                                style = { adjustedStyle }
+                                blurType = { shade }
+                                blurAmount = { Ht.Theme.general.frostLevel }
+                            >
+                                <ScrollView
+                                    ref = { component.assignComponentRef(`scroll-view${cId}`) }
+                                    directionalLockEnabled = { true }
+                                    scrollEventThrottle = { 16 }
+                                    onScroll = {(event) => {
+                                        onScroll(event, scrollDirection);
+                                    }}
+                                    { ...component.panResponder.panHandlers }
+                                >
+                                    {
+                                        bodyViewChildren
+                                    }
+                                </ScrollView>
+                            </BlurView>
+                        </KeyboardAvoidingView>
+                    );
+                }
                 return (
-                    <BlurView
-                        style = { adjustedStyle }
-                        blurType = { shade }
-                        blurAmount = { Ht.Theme.general.frostLevel }
+                    <KeyboardAvoidingView
+                        style = {{
+                            flexGrow: 1,
+                            backgroundColor: `transparent`
+                        }}
+                        behavior = 'padding'
+                        keyboardVerticalOffset = { DEVICE_HEIGHT / 4 }
                     >
+                        <View style = { adjustedStyle }>
+                            <ScrollView
+                                ref = { component.assignComponentRef(`scroll-view${cId}`) }
+                                directionalLockEnabled = { true }
+                                scrollEventThrottle = { 16 }
+                                onScroll = {(event) => {
+                                    onScroll(event, scrollDirection);
+                                }}
+                                { ...component.panResponder.panHandlers }
+                            >
+                                {
+                                    bodyViewChildren
+                                }
+                            </ScrollView>
+                        </View>
+                    </KeyboardAvoidingView>
+                );
+            } else {
+                if (frosted) {
+                    return (
+                        <KeyboardAvoidingView
+                            style = {{
+                                flexGrow: 1,
+                                backgroundColor: `transparent`
+                            }}
+                            behavior = 'padding'
+                            keyboardVerticalOffset = { DEVICE_HEIGHT / 4 }
+                        >
+                            <BlurView
+                                style = { adjustedStyle }
+                                blurType = { shade }
+                                blurAmount = { Ht.Theme.general.frostLevel }
+                            >
+                                {
+                                    bodyViewChildren
+                                }
+                            </BlurView>
+                        </KeyboardAvoidingView>
+                    );
+                } else {
+                    return (
+                        <KeyboardAvoidingView
+                            style = {{
+                                flexGrow: 1,
+                                backgroundColor: `green`
+                            }}
+                            behavior = 'padding'
+                            keyboardVerticalOffset = { DEVICE_HEIGHT / 4 }
+                        >
+                            <View style = { adjustedStyle }>
+                                {
+                                    bodyViewChildren
+                                }
+                            </View>
+                        </KeyboardAvoidingView>
+                    );
+                }
+            }
+        } else {
+            if (scrollable) {
+                if (frosted) {
+                    return (
+                        <BlurView
+                            style = { adjustedStyle }
+                            blurType = { shade }
+                            blurAmount = { Ht.Theme.general.frostLevel }
+                        >
+                            <ScrollView
+                                ref = { component.assignComponentRef(`scroll-view${cId}`) }
+                                directionalLockEnabled = { true }
+                                scrollEventThrottle = { 16 }
+                                onScroll = {(event) => {
+                                    onScroll(event, scrollDirection);
+                                }}
+                                { ...component.panResponder.panHandlers }
+                            >
+                                {
+                                    bodyViewChildren
+                                }
+                            </ScrollView>
+                        </BlurView>
+                    );
+                }
+                return (
+                    <View style = { adjustedStyle }>
                         <ScrollView
                             ref = { component.assignComponentRef(`scroll-view${cId}`) }
                             directionalLockEnabled = { true }
@@ -358,47 +493,30 @@ export default class BodyViewComponent extends Component {
                                 bodyViewChildren
                             }
                         </ScrollView>
-                    </BlurView>
-                );
-            }
-            return (
-                <View style = { adjustedStyle }>
-                    <ScrollView
-                        ref = { component.assignComponentRef(`scroll-view${cId}`) }
-                        directionalLockEnabled = { true }
-                        scrollEventThrottle = { 16 }
-                        onScroll = {(event) => {
-                            onScroll(event, scrollDirection);
-                        }}
-                        { ...component.panResponder.panHandlers }
-                    >
-                        {
-                            bodyViewChildren
-                        }
-                    </ScrollView>
-                </View>
-            );
-        } else {
-            if (frosted) {
-                return (
-                    <BlurView
-                        style = { adjustedStyle }
-                        blurType = { shade }
-                        blurAmount = { Ht.Theme.general.frostLevel }
-                    >
-                        {
-                            bodyViewChildren
-                        }
-                    </BlurView>
-                );
-            } else {
-                return (
-                    <View style = { adjustedStyle }>
-                        {
-                            bodyViewChildren
-                        }
                     </View>
                 );
+            } else {
+                if (frosted) {
+                    return (
+                        <BlurView
+                            style = { adjustedStyle }
+                            blurType = { shade }
+                            blurAmount = { Ht.Theme.general.frostLevel }
+                        >
+                            {
+                                bodyViewChildren
+                            }
+                        </BlurView>
+                    );
+                } else {
+                    return (
+                        <View style = { adjustedStyle }>
+                            {
+                                bodyViewChildren
+                            }
+                        </View>
+                    );
+                }
             }
         }
     }

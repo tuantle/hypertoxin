@@ -24,7 +24,7 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './templates/font-style-template';
+import fontStyleTemplate from './style-templates/font-style-template';
 
 import toxinPalette from './palettes/toxin-palette';
 
@@ -61,7 +61,7 @@ export default {
     },
     color: {
         flat: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             accent: {
                 dark: colorTheme.dark.accent,
                 light: colorTheme.light.accent
@@ -88,7 +88,7 @@ export default {
             }
         },
         raised: {
-            opacity: `dd`,
+            opacity: colorTheme.opacity,
             accent: {
                 dark: colorTheme.dark.accent,
                 light: colorTheme.light.accent

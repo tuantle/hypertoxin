@@ -38,7 +38,7 @@ import * as Animatable from 'react-native-animatable';
 
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
-import debouncer from '../../common/utils/debouncer';
+import debouncer from '../../utils/debouncer';
 
 const {
     Component
@@ -70,12 +70,10 @@ const DEFAULT_TEXT_FIELD_STYLE = {
         alignSelf: `stretch`,
         justifyContent: `center`,
         maxWidth: DEVICE_WIDTH,
+        paddingTop: 6,
         paddingHorizontal: 6,
-        marginHorizontal: 6,
-        paddingTop: 9,
-        paddingBottom: 3,
         marginTop: 6,
-        marginBottom: 3,
+        marginHorizontal: 6,
         backgroundColor: `transparent`
     },
     box: {
@@ -126,6 +124,7 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             backgroundColor: `transparent`
         },
         filler: {
+            width: 0,
             height: Ht.Theme.field.size.text.input,
             backgroundColor: `transparent`
         }
@@ -136,9 +135,9 @@ const DEFAULT_TEXT_FIELD_STYLE = {
         textAlign: `left`,
         minHeight: Ht.Theme.field.size.text.input,
         lineHeight: Ht.Theme.field.size.text.line,
+        paddingVertical: 0,
         marginHorizontal: 6,
-        marginVertical: 0,
-        paddingVertical: 0
+        marginVertical: 0
     },
     helper: {
         ...Ht.Theme.field.font.text.helper,
@@ -164,8 +163,8 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             textAlign: `left`,
             lineHeight: Ht.Theme.field.size.text.line,
             paddingTop: 26,
-            marginVertical: 0,
             paddingVertical: 0,
+            marginVertical: 0,
             opacity: 0
         },
         blurred: {
@@ -174,8 +173,8 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             textAlign: `left`,
             lineHeight: Ht.Theme.field.size.text.line,
             paddingTop: 44,
-            marginVertical: 0,
             paddingVertical: 0,
+            marginVertical: 0,
             opacity: 0
         }
     },
@@ -349,55 +348,14 @@ export default class TextFieldComponent extends Component {
         };
     }
     /**
-     * @description - Assign the registered component's reference object.
+     * @description - Helper method to readjust current style.
      *
-     * @method assignComponentRef
-     * @param {string} refName
-     * @returns function
+     * @method _readjustStyle
+     * @param {object} newStyle
+     * @returns {object}
+     * @private
      */
-    assignComponentRef = (refName) => {
-        const component = this;
-
-        if (Hf.DEVELOPMENT) {
-            if (!Hf.isString(refName)) {
-                Hf.log(`error`, `TextFieldComponent.assignComponentRef - Input component reference name is invalid.`);
-            }
-        }
-
-        /* helper function to set component ref */
-        const setComponentRef = function setComponentRef (componentRef) {
-            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
-        };
-        return setComponentRef;
-    }
-    /**
-     * @description - Lookup the registered component's reference object.
-     *
-     * @method lookupComponentRefs
-     * @param {array} refNames
-     * @returns {array}
-     */
-    lookupComponentRefs = (...refNames) => {
-        const component = this;
-        let componentRefs = [];
-
-        if (!Hf.isEmpty(refNames)) {
-            if (Hf.DEVELOPMENT) {
-                if (!refNames.every((refName) => Hf.isString(refName))) {
-                    Hf.log(`error`, `TextFieldComponent.lookupComponentRefs - Input component reference name is invalid.`);
-                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
-                    Hf.log(`error`, `TextFieldComponent.lookupComponentRefs - Component reference is not found.`);
-                }
-            }
-
-            componentRefs = Hf.collect(...refNames).from(component.refCache);
-        } else {
-            Hf.log(`error`, `TextFieldComponent.lookupComponentRefs - Input component reference name array is empty.`);
-        }
-
-        return componentRefs;
-    }
-    readjustStyle = (newStyle = {
+    _readjustStyle = (newStyle = {
         shade: Ht.Theme.field.text.shade,
         overlay: Ht.Theme.field.text.overlay,
         focusColor: ``,
@@ -508,6 +466,55 @@ export default class TextFieldComponent extends Component {
         return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
             container: style
         }) : adjustedStyle;
+    }
+    /**
+     * @description - Assign the registered component's reference object.
+     *
+     * @method assignComponentRef
+     * @param {string} refName
+     * @returns function
+     */
+    assignComponentRef = (refName) => {
+        const component = this;
+
+        if (Hf.DEVELOPMENT) {
+            if (!Hf.isString(refName)) {
+                Hf.log(`error`, `TextFieldComponent.assignComponentRef - Input component reference name is invalid.`);
+            }
+        }
+
+        /* helper function to set component ref */
+        const setComponentRef = function setComponentRef (componentRef) {
+            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
+        };
+        return setComponentRef;
+    }
+    /**
+     * @description - Lookup the registered component's reference object.
+     *
+     * @method lookupComponentRefs
+     * @param {array} refNames
+     * @returns {array}
+     */
+    lookupComponentRefs = (...refNames) => {
+        const component = this;
+        let componentRefs = [];
+
+        if (!Hf.isEmpty(refNames)) {
+            if (Hf.DEVELOPMENT) {
+                if (!refNames.every((refName) => Hf.isString(refName))) {
+                    Hf.log(`error`, `TextFieldComponent.lookupComponentRefs - Input component reference name is invalid.`);
+                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
+                    Hf.log(`error`, `TextFieldComponent.lookupComponentRefs - Component reference is not found.`);
+                }
+            }
+
+            componentRefs = Hf.collect(...refNames).from(component.refCache);
+        } else {
+            Hf.log(`error`, `TextFieldComponent.lookupComponentRefs - Input component reference name array is empty.`);
+        }
+
+        return componentRefs;
     }
     isValidated = () => {
         const component = this;
@@ -839,7 +846,7 @@ export default class TextFieldComponent extends Component {
 
                 component.setState((prevState) => {
                     return {
-                        adjustedStyle: component.readjustStyle({
+                        adjustedStyle: component._readjustStyle({
                             shade,
                             overlay,
                             focusColor,
@@ -874,7 +881,7 @@ export default class TextFieldComponent extends Component {
 
                 component.setState((prevState) => {
                     return {
-                        adjustedStyle: component.readjustStyle({
+                        adjustedStyle: component._readjustStyle({
                             shade,
                             overlay,
                             focusColor,
@@ -904,7 +911,7 @@ export default class TextFieldComponent extends Component {
 
                 component.setState((prevState) => {
                     return {
-                        adjustedStyle: component.readjustStyle({
+                        adjustedStyle: component._readjustStyle({
                             shade,
                             overlay,
                             focusColor,
@@ -934,7 +941,7 @@ export default class TextFieldComponent extends Component {
 
                 component.setState((prevState) => {
                     return {
-                        adjustedStyle: component.readjustStyle({
+                        adjustedStyle: component._readjustStyle({
                             shade,
                             overlay,
                             focusColor,
@@ -957,7 +964,7 @@ export default class TextFieldComponent extends Component {
         } else {
             component.setState(() => {
                 return {
-                    adjustedStyle: component.readjustStyle({
+                    adjustedStyle: component._readjustStyle({
                         shade,
                         overlay,
                         focusColor,
@@ -1131,7 +1138,7 @@ export default class TextFieldComponent extends Component {
         component.debounce = debouncer(debounceTime);
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     focusColor,
@@ -1311,8 +1318,8 @@ export default class TextFieldComponent extends Component {
         } = component.state;
         const fieldChildProperty = {
             shade,
-            disabled,
-            color: adjustedStyle.input.color // input.focused ? adjustedStyle.label.focused.color : adjustedStyle.input.color
+            disabled
+            // color: adjustedStyle.input.color // input.focused ? adjustedStyle.label.focused.color : adjustedStyle.input.color
         };
         let fieldContentLeftChildren = null;
         let fieldActionRightChildren = null;

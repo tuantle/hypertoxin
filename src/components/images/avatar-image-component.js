@@ -101,55 +101,14 @@ export default class AvatarImageComponent extends Component {
         };
     }
     /**
-     * @description - Assign the registered component's reference object.
+     * @description - Helper method to readjust current style.
      *
-     * @method assignComponentRef
-     * @param {string} refName
-     * @returns function
+     * @method _readjustStyle
+     * @param {object} newStyle
+     * @returns {object}
+     * @private
      */
-    assignComponentRef = (refName) => {
-        const component = this;
-
-        if (Hf.DEVELOPMENT) {
-            if (!Hf.isString(refName)) {
-                Hf.log(`error`, `AvatarImageComponent.assignComponentRef - Input component reference name is invalid.`);
-            }
-        }
-
-        /* helper function to set component ref */
-        const setComponentRef = function setComponentRef (componentRef) {
-            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
-        };
-        return setComponentRef;
-    }
-    /**
-     * @description - Lookup the registered component's reference object.
-     *
-     * @method lookupComponentRefs
-     * @param {array} refNames
-     * @returns {array}
-     */
-    lookupComponentRefs = (...refNames) => {
-        const component = this;
-        let componentRefs = [];
-
-        if (!Hf.isEmpty(refNames)) {
-            if (Hf.DEVELOPMENT) {
-                if (!refNames.every((refName) => Hf.isString(refName))) {
-                    Hf.log(`error`, `AvatarImageComponent.lookupComponentRefs - Input component reference name is invalid.`);
-                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
-                    Hf.log(`error`, `AvatarImageComponent.lookupComponentRefs - Component reference is not found.`);
-                }
-            }
-
-            componentRefs = Hf.collect(...refNames).from(component.refCache);
-        } else {
-            Hf.log(`error`, `AvatarImageComponent.lookupComponentRefs - Input component reference name array is empty.`);
-        }
-
-        return componentRefs;
-    }
-    readjustStyle = (newStyle = {
+    _readjustStyle = (newStyle = {
         dropShadowed: Ht.Theme.image.avatar.dropShadowed,
         frame: Ht.Theme.image.avatar.frame,
         frameColor: Ht.Theme.image.avatar.frameColor
@@ -206,6 +165,55 @@ export default class AvatarImageComponent extends Component {
                 shadowColor: dropShadowed ? Ht.Theme.palette.black : `transparent`
             }
         });
+    }
+    /**
+     * @description - Assign the registered component's reference object.
+     *
+     * @method assignComponentRef
+     * @param {string} refName
+     * @returns function
+     */
+    assignComponentRef = (refName) => {
+        const component = this;
+
+        if (Hf.DEVELOPMENT) {
+            if (!Hf.isString(refName)) {
+                Hf.log(`error`, `AvatarImageComponent.assignComponentRef - Input component reference name is invalid.`);
+            }
+        }
+
+        /* helper function to set component ref */
+        const setComponentRef = function setComponentRef (componentRef) {
+            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
+        };
+        return setComponentRef;
+    }
+    /**
+     * @description - Lookup the registered component's reference object.
+     *
+     * @method lookupComponentRefs
+     * @param {array} refNames
+     * @returns {array}
+     */
+    lookupComponentRefs = (...refNames) => {
+        const component = this;
+        let componentRefs = [];
+
+        if (!Hf.isEmpty(refNames)) {
+            if (Hf.DEVELOPMENT) {
+                if (!refNames.every((refName) => Hf.isString(refName))) {
+                    Hf.log(`error`, `AvatarImageComponent.lookupComponentRefs - Input component reference name is invalid.`);
+                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
+                    Hf.log(`error`, `AvatarImageComponent.lookupComponentRefs - Component reference is not found.`);
+                }
+            }
+
+            componentRefs = Hf.collect(...refNames).from(component.refCache);
+        } else {
+            Hf.log(`error`, `AvatarImageComponent.lookupComponentRefs - Input component reference name array is empty.`);
+        }
+
+        return componentRefs;
     }
     animate = (option = {
         loopCount: -1,
@@ -299,7 +307,7 @@ export default class AvatarImageComponent extends Component {
 
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     dropShadowed,
                     frame,
                     frameColor,
@@ -324,7 +332,7 @@ export default class AvatarImageComponent extends Component {
 
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     dropShadowed,
                     frame,
                     frameColor,

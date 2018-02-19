@@ -24,9 +24,9 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './templates/font-style-template';
+import fontStyleTemplate from './style-templates/font-style-template';
 
-import toxinPalette from './palettes/toxin-palette';
+import colorTheme from './color-theme.js';
 
 export default {
     headline: {
@@ -92,7 +92,7 @@ export default {
         }
     },
     color: {
-        dark: toxinPalette.white,
-        light: toxinPalette.deepGrey
+        dark: colorTheme.dark.default,
+        light: colorTheme.light.default
     }
 };

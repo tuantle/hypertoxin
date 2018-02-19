@@ -24,9 +24,9 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './templates/font-style-template';
+import fontStyleTemplate from './style-templates/font-style-template';
 
-import dropShadowStyleTemplate from './templates/drop-shadow-style-template';
+import dropShadowStyleTemplate from './style-templates/drop-shadow-style-template';
 
 // import toxinIconPreset from './icons/toxin-preset';
 

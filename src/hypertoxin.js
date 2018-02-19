@@ -34,8 +34,8 @@ const Hf = require('hyperflow').init({ // eslint-disable-line
     enableWarn1Logging: true
 });
 
-/* load hypertoxin default icon and color theme */
-const defaultTheme = require(`./styles/theme`).default;
+/* load hypertoxin default theme */
+const defaultTheme = require(`./themes/default-theme`).default;
 
 /* hypertoxin global object */
 let Ht = null;
@@ -58,19 +58,18 @@ const init = function init (option = {
 
     if (Ht === null) {
         Ht = {
-            VERSION: `0.1.0-rc1`,
+            VERSION: `0.1.0-rc2`,
             Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
         };
 
         const HtProperty = {
-            Badge: null,
-            Divider: null,
             Button: {},
-            Text: {},
             Image: {},
+            Field: {},
+            Misc: {},
+            Text: {},
             View: {},
-            ViewComposite: {},
-            Field: {}
+            ViewComposite: {}
         };
 
         const HtComposite = {
@@ -79,7 +78,6 @@ const init = function init (option = {
             }
         };
         const HtComponent = {
-            Divider: require(`./components/divider/divider-component`).default,
             /* load button components */
             Button: {
                 FlatButton: require(`./components/buttons/flat-button-component`).default,
@@ -91,6 +89,15 @@ const init = function init (option = {
                 IconImage: require(`./components/images/icon-image-component`).default,
                 WallpaperImage: require(`./components/images/wallpaper-image-component`).default
             },
+            /* load field components */
+            Field: {
+                TextField: require(`./components/fields/text-field-component`).default,
+                SearchField: require(`./components/fields/search-field-component`).default
+            },
+            /* load misc components */
+            Misc: {
+                Divider: require(`./components/misc/divider-component`).default
+            },
             /* load text components */
             Text: {
                 HeadlineText: require(`./components/texts/headline-text-component`).default,
@@ -98,11 +105,6 @@ const init = function init (option = {
                 SubtitleText: require(`./components/texts/subtitle-text-component`).default,
                 InfoText: require(`./components/texts/info-text-component`).default,
                 CaptionText: require(`./components/texts/caption-text-component`).default
-            },
-            /* load field components */
-            Field: {
-                TextField: require(`./components/fields/text-field-component`).default,
-                SearchField: require(`./components/fields/search-field-component`).default
             },
             /* load view components */
             View: {
@@ -115,9 +117,97 @@ const init = function init (option = {
             }
         };
 
-        Object.defineProperty(HtProperty, `Divider`, {
+        Object.defineProperty(HtProperty.Button, `FlatButton`, {
             get: function get () {
-                return HtComponent.Divider;
+                return HtComponent.Button.FlatButton;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Button, `RaisedButton`, {
+            get: function get () {
+                return HtComponent.Button.RaisedButton;
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Image, `AvatarImage`, {
+            get: function get () {
+                return HtComponent.Image.AvatarImage;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Image, `IconImage`, {
+            get: function get () {
+                return HtComponent.Image.IconImage;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Image, `WallpaperImage`, {
+            get: function get () {
+                return HtComponent.Image.WallpaperImage;
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Field, `TextField`, {
+            get: function get () {
+                return HtComponent.Field.TextField;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Field, `SearchField`, {
+            get: function get () {
+                return HtComponent.Field.SearchField;
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Misc, `Divider`, {
+            get: function get () {
+                return HtComponent.Misc.Divider;
+            },
+            configurable: false,
+            enumerable: true
+        });
+
+        Object.defineProperty(HtProperty.Text, `HeadlineText`, {
+            get: function get () {
+                return HtComponent.Text.HeadlineText;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Text, `TitleText`, {
+            get: function get () {
+                return HtComponent.Text.TitleText;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Text, `SubtitleText`, {
+            get: function get () {
+                return HtComponent.Text.SubtitleText;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Text, `InfoText`, {
+            get: function get () {
+                return HtComponent.Text.InfoText;
+            },
+            configurable: false,
+            enumerable: true
+        });
+        Object.defineProperty(HtProperty.Text, `CaptionText`, {
+            get: function get () {
+                return HtComponent.Text.CaptionText;
             },
             configurable: false,
             enumerable: true
@@ -168,94 +258,6 @@ const init = function init (option = {
         Object.defineProperty(HtProperty.View, `ItemView`, {
             get: function get () {
                 return HtComponent.View.ItemView;
-            },
-            configurable: false,
-            enumerable: true
-        });
-
-        Object.defineProperty(HtProperty.Button, `FlatButton`, {
-            get: function get () {
-                return HtComponent.Button.FlatButton;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Button, `RaisedButton`, {
-            get: function get () {
-                return HtComponent.Button.RaisedButton;
-            },
-            configurable: false,
-            enumerable: true
-        });
-
-        Object.defineProperty(HtProperty.Field, `TextField`, {
-            get: function get () {
-                return HtComponent.Field.TextField;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Field, `SearchField`, {
-            get: function get () {
-                return HtComponent.Field.SearchField;
-            },
-            configurable: false,
-            enumerable: true
-        });
-
-        Object.defineProperty(HtProperty.Text, `HeadlineText`, {
-            get: function get () {
-                return HtComponent.Text.HeadlineText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Text, `TitleText`, {
-            get: function get () {
-                return HtComponent.Text.TitleText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Text, `SubtitleText`, {
-            get: function get () {
-                return HtComponent.Text.SubtitleText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Text, `InfoText`, {
-            get: function get () {
-                return HtComponent.Text.InfoText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Text, `CaptionText`, {
-            get: function get () {
-                return HtComponent.Text.CaptionText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-
-        Object.defineProperty(HtProperty.Image, `AvatarImage`, {
-            get: function get () {
-                return HtComponent.Image.AvatarImage;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Image, `IconImage`, {
-            get: function get () {
-                return HtComponent.Image.IconImage;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Image, `WallpaperImage`, {
-            get: function get () {
-                return HtComponent.Image.WallpaperImage;
             },
             configurable: false,
             enumerable: true

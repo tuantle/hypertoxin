@@ -36,7 +36,7 @@ import PropTypes from 'prop-types';
 
 import { View as AnimatedView } from 'react-native-animatable';
 
-import debouncer from '../../common/utils/debouncer';
+import debouncer from '../../utils/debouncer';
 
 const {
     Component
@@ -63,8 +63,10 @@ const DEFAULT_RAISED_BUTTON_STYLE = {
         justifyContent: `center`,
         alignItems: `center`,
         height: Ht.Theme.button.size.raised,
-        margin: 9,
-        padding: 6
+        paddingHorizontal: 9,
+        paddingVertical: 6,
+        marginHorizontal: 6,
+        marginVertical: 6
     },
     room: {
         contentLeft: {
@@ -124,6 +126,8 @@ export default class RaisedButtonComponent extends Component {
         ]),
         action: PropTypes.oneOf([
             `none`,
+            `toggle`,
+            `search`,
             `clear`,
             `expand`, `collapse`,
             `show`, `hide`,
@@ -188,55 +192,14 @@ export default class RaisedButtonComponent extends Component {
         };
     }
     /**
-     * @description - Assign the registered component's reference object.
+     * @description - Helper method to readjust current style.
      *
-     * @method assignComponentRef
-     * @param {string} refName
-     * @returns function
+     * @method _readjustStyle
+     * @param {object} newStyle
+     * @returns {object}
+     * @private
      */
-    assignComponentRef = (refName) => {
-        const component = this;
-
-        if (Hf.DEVELOPMENT) {
-            if (!Hf.isString(refName)) {
-                Hf.log(`error`, `RaisedButtonComponent.assignComponentRef - Input component reference name is invalid.`);
-            }
-        }
-
-        /* helper function to set component ref */
-        const setComponentRef = function setComponentRef (componentRef) {
-            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
-        };
-        return setComponentRef;
-    }
-    /**
-     * @description - Lookup the registered component's reference object.
-     *
-     * @method lookupComponentRefs
-     * @param {array} refNames
-     * @returns {array}
-     */
-    lookupComponentRefs = (...refNames) => {
-        const component = this;
-        let componentRefs = [];
-
-        if (!Hf.isEmpty(refNames)) {
-            if (Hf.DEVELOPMENT) {
-                if (!refNames.every((refName) => Hf.isString(refName))) {
-                    Hf.log(`error`, `RaisedButtonComponent.lookupComponentRefs - Input component reference name is invalid.`);
-                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
-                    Hf.log(`error`, `RaisedButtonComponent.lookupComponentRefs - Component reference is not found.`);
-                }
-            }
-
-            componentRefs = Hf.collect(...refNames).from(component.refCache);
-        } else {
-            Hf.log(`error`, `RaisedButtonComponent.lookupComponentRefs - Input component reference name array is empty.`);
-        }
-
-        return componentRefs;
-    }
-    readjustStyle = (newStyle = {
+    _readjustStyle = (newStyle = {
         shade: Ht.Theme.button.raised.shade,
         corner: Ht.Theme.button.raised.corner,
         disabled: false,
@@ -290,6 +253,55 @@ export default class RaisedButtonComponent extends Component {
         return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
             container: style
         }) : adjustedStyle;
+    }
+    /**
+     * @description - Assign the registered component's reference object.
+     *
+     * @method assignComponentRef
+     * @param {string} refName
+     * @returns function
+     */
+    assignComponentRef = (refName) => {
+        const component = this;
+
+        if (Hf.DEVELOPMENT) {
+            if (!Hf.isString(refName)) {
+                Hf.log(`error`, `RaisedButtonComponent.assignComponentRef - Input component reference name is invalid.`);
+            }
+        }
+
+        /* helper function to set component ref */
+        const setComponentRef = function setComponentRef (componentRef) {
+            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
+        };
+        return setComponentRef;
+    }
+    /**
+     * @description - Lookup the registered component's reference object.
+     *
+     * @method lookupComponentRefs
+     * @param {array} refNames
+     * @returns {array}
+     */
+    lookupComponentRefs = (...refNames) => {
+        const component = this;
+        let componentRefs = [];
+
+        if (!Hf.isEmpty(refNames)) {
+            if (Hf.DEVELOPMENT) {
+                if (!refNames.every((refName) => Hf.isString(refName))) {
+                    Hf.log(`error`, `RaisedButtonComponent.lookupComponentRefs - Input component reference name is invalid.`);
+                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
+                    Hf.log(`error`, `RaisedButtonComponent.lookupComponentRefs - Component reference is not found.`);
+                }
+            }
+
+            componentRefs = Hf.collect(...refNames).from(component.refCache);
+        } else {
+            Hf.log(`error`, `RaisedButtonComponent.lookupComponentRefs - Input component reference name array is empty.`);
+        }
+
+        return componentRefs;
     }
     animate = (option = {
         loopCount: -1,
@@ -469,7 +481,7 @@ export default class RaisedButtonComponent extends Component {
         component.debounce = debouncer(debounceTime);
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     corner,
                     disabled,
@@ -505,7 +517,7 @@ export default class RaisedButtonComponent extends Component {
         component.debounce = debouncer(debounceTime);
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     corner,
                     disabled,

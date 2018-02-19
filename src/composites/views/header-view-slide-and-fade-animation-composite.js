@@ -16,7 +16,7 @@
  *------------------------------------------------------------------------
  *
  * @module HeaderViewSlideAndFadeAnimationComposite
- * @description - Header view default slide and fade animation composite.
+ * @description - HeaderView slide and fade animation composite.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -28,6 +28,13 @@ import { Hf } from 'hyperflow';
 
 const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
     template: {
+        /**
+         * @description - Animate HeaderView entry animation.
+         *
+         * @method animateHeaderViewEntry
+         * @param {number} duration
+         * @return void
+         */
         animateHeaderViewEntry: function animateHeaderViewEntry (duration = 300) {
             const component = this;
 
@@ -85,6 +92,13 @@ const HeaderViewSlideAndFadeAnimationComposite = Hf.Composite({
                 duration
             });
         },
+        /**
+         * @description - Animate HeaderView exit animation.
+         *
+         * @method $initReactComponentComposite
+         * @param {number} duration
+         * @return void
+         */
         animateHeaderViewExit: function animateHeaderViewExit (duration) {
             const component = this;
 

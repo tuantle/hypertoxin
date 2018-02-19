@@ -15,40 +15,31 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Dropped shadow style template.
+ * @description - Hypertoxin default color theme.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
- *
  *
  * @flow
  *
  */
+'use strict'; // eslint-disable-line
 
-'use strict'; //eslint-disable-line
+import toxinPalette from './palettes/toxin-palette';
 
-import toxinPalette from '../palettes/toxin-palette';
-
-const shallowDroppedShadowTemplate = {
-    shadowRadius: 2,
-    shadowOpacity: 0.2,
-    shadowOffset: {
-        width: 0,
-        height: 1
+export default {
+    opacity: `dd`,
+    dark: {
+        default: toxinPalette.white,
+        accent: toxinPalette.orange,
+        primary: toxinPalette.blue,
+        secondary: toxinPalette.pink,
+        disabled: toxinPalette.deepGrey
     },
-    shadowColor: toxinPalette.black
-};
-
-const deepDroppedShadowTemplate = {
-    shadowRadius: 2.5,
-    shadowOpacity: 0.35,
-    shadowOffset: {
-        width: 0,
-        height: 3
-    },
-    shadowColor: toxinPalette.black
-};
-
-export default { // eslint-disable-line
-    shallow: shallowDroppedShadowTemplate,
-    deep: deepDroppedShadowTemplate
+    light: {
+        default: toxinPalette.black,
+        accent: toxinPalette.orange,
+        primary: toxinPalette.blue,
+        secondary: toxinPalette.pink,
+        disabled: toxinPalette.lightGrey
+    }
 };

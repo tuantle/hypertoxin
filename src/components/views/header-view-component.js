@@ -59,8 +59,8 @@ const DEFAULT_HEADER_VIEW_STYLE = {
         alignItems: `stretch`,
         justifyContent: `center`,
         width: DEVICE_WIDTH,
-        backgroundColor: `transparent`,
-        overflow: `hidden`
+        // width: `100%`,
+        backgroundColor: `transparent`
     },
     status: {
         ...Ht.Theme.general.dropShadow.shallow,
@@ -68,45 +68,39 @@ const DEFAULT_HEADER_VIEW_STYLE = {
         top: 0,
         left: 0,
         width: DEVICE_WIDTH,
-        height: Ht.Theme.view.size.header.status,
-        zIndex: 12,
-        elevation: 4,
-        marginBottom: 3
+        // width: `100%`,
+        height: Ht.Theme.view.size.header.status
     },
     navigation: {
         ...Ht.Theme.general.dropShadow.shallow,
         flexDirection: `row`,
         alignItems: `stretch`,
         justifyContent: `space-between`,
+        width: DEVICE_WIDTH,
         height: Ht.Theme.view.size.header.normal,
-        zIndex: 10,
-        elevation: 2,
-        marginTop: Ht.Theme.view.size.header.status,
-        marginBottom: 3
+        marginTop: Ht.Theme.view.size.header.status
     },
     room: {
         actionLeft: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `flex-start`,
-            maxHeight: Ht.Theme.view.size.header.normal,
             backgroundColor: `transparent`
         },
         contentCenter: {
-            flexDirection: `column`,
+            flexGrow: 1,
+            flexDirection: `row`,
             alignItems: `center`,
-            justifyContent: `center`,
-            maxHeight: Ht.Theme.view.size.header.normal,
             backgroundColor: `transparent`
         },
         actionRight: {
             flexDirection: `row`,
             alignItems: `center`,
-            justifyContent: `flex-start`,
-            maxHeight: Ht.Theme.view.size.header.normal,
+            justifyContent: `center`,
             backgroundColor: `transparent`
         },
         filler: {
+            width: 0,
             height: Ht.Theme.view.size.header.normal,
             backgroundColor: `transparent`
         }
@@ -123,8 +117,9 @@ export default class HeaderViewComponent extends Component {
         overlay: PropTypes.oneOf([ `opaque`, `frosted`, `translucent`, `transparent` ]),
         oversized: PropTypes.bool,
         dropShadowed: PropTypes.bool,
+        offcenteredLabel: PropTypes.bool,
         uppercasedLabel: PropTypes.bool,
-        collapsed: PropTypes.bool,
+        initiallyCollapsed: PropTypes.bool,
         label: PropTypes.string,
         onCollapse: PropTypes.func,
         onExpand: PropTypes.func
@@ -135,8 +130,9 @@ export default class HeaderViewComponent extends Component {
         overlay: Ht.Theme.view.header.overlay,
         oversized: Ht.Theme.view.header.oversized,
         dropShadowed: Ht.Theme.view.header.dropShadowed,
+        offcenteredLabel: Ht.Theme.view.header.offcenteredLabel,
         uppercasedLabel: Ht.Theme.view.header.uppercasedLabel,
-        collapsed: false,
+        initiallyCollapsed: false,
         label: `Header`,
         onCollapse: () => null,
         onExpand: () => null
@@ -145,12 +141,105 @@ export default class HeaderViewComponent extends Component {
         super(property);
         this.refCache = {};
         this.state = {
-            collapsed: false,
+            collapsed: property.initiallyCollapsed,
             adjustedStyle: DEFAULT_HEADER_VIEW_STYLE,
             filler: {
                 width: 0
             }
         };
+    }
+    /**
+     * @description - Helper method to readjust current style.
+     *
+     * @method _readjustStyle
+     * @param {object} newStyle
+     * @returns {object}
+     * @private
+     */
+    _readjustStyle = (newStyle = {
+        shade: Ht.Theme.view.header.shade,
+        overlay: Ht.Theme.view.header.overlay,
+        oversized: Ht.Theme.view.header.oversized,
+        dropShadowed: Ht.Theme.view.header.dropShadowed,
+        offcenteredLabel: Ht.Theme.view.header.offcenteredLabel,
+        collapsed: false
+    }) => {
+        const component = this;
+        const {
+            shade,
+            overlay,
+            oversized,
+            dropShadowed,
+            offcenteredLabel,
+            collapsed,
+            style
+        } = Hf.fallback({
+            shade: Ht.Theme.view.header.shade,
+            overlay: Ht.Theme.view.header.overlay,
+            oversized: Ht.Theme.view.header.oversized,
+            dropShadowed: Ht.Theme.view.header.dropShadowed,
+            offcenteredLabel: Ht.Theme.view.header.offcenteredLabel,
+            collapsed: false
+        }).of(newStyle);
+        const {
+            adjustedStyle: prevAdjustedStyle
+        } = component.state;
+        let themedStatusColor;
+        let themedNavigationColor;
+        let themedLabelColor;
+
+        switch (overlay) { // eslint-disable-line
+        case `opaque`:
+            themedStatusColor = Ht.Theme.view.color.header.status[shade];
+            themedNavigationColor = Ht.Theme.view.color.header.navigation[shade];
+            break;
+        case `translucent`:
+            themedStatusColor = `${Ht.Theme.view.color.header.status[shade]}${Ht.Theme.view.color.header.opacity}`;
+            themedNavigationColor = `${Ht.Theme.view.color.header.navigation[shade]}${Ht.Theme.view.color.header.opacity}`;
+            break;
+        case `frosted`:
+            themedStatusColor = `transparent`;
+            themedNavigationColor = `transparent`;
+            break;
+        case `transparent`:
+            themedStatusColor = `transparent`;
+            themedNavigationColor = `transparent`;
+            break;
+        }
+
+        themedLabelColor = Ht.Theme.view.color.header.label[shade === `dark` ? `light` : `dark`];
+
+        const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
+            navigation: collapsed ? {
+                opacity: 0,
+                height: 0,
+                shadowOpacity: 0,
+                backgroundColor: themedNavigationColor
+            } : {
+                height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal,
+                shadowOpacity: dropShadowed ? Ht.Theme.general.dropShadow.shallow.shadowOpacity : 0,
+                backgroundColor: themedNavigationColor
+            },
+            room: {
+                contentCenter: {
+                    justifyContent: offcenteredLabel ? `flex-start` : `center`
+                }
+            },
+            status: collapsed ? {
+                shadowOpacity: Ht.Theme.general.dropShadow.shallow.shadowOpacity,
+                backgroundColor: themedStatusColor
+            } : {
+                shadowOpacity: 0,
+                backgroundColor: themedStatusColor
+            },
+            label: {
+                color: themedLabelColor
+            }
+        });
+
+        return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
+            container: style
+        }) : adjustedStyle;
     }
     /**
      * @description - Assign the registered component's reference object.
@@ -200,88 +289,6 @@ export default class HeaderViewComponent extends Component {
         }
 
         return componentRefs;
-    }
-    readjustStyle = (newStyle = {
-        shade: Ht.Theme.view.header.shade,
-        overlay: Ht.Theme.view.header.overlay,
-        oversized: Ht.Theme.view.header.oversized,
-        dropShadowed: Ht.Theme.view.header.dropShadowed,
-        collapsed: false
-    }) => {
-        const component = this;
-        const {
-            shade,
-            overlay,
-            oversized,
-            dropShadowed,
-            collapsed,
-            style
-        } = Hf.fallback({
-            shade: Ht.Theme.view.header.shade,
-            overlay: Ht.Theme.view.header.overlay,
-            oversized: Ht.Theme.view.header.oversized,
-            dropShadowed: Ht.Theme.view.header.dropShadowed,
-            collapsed: false
-        }).of(newStyle);
-        const {
-            adjustedStyle: prevAdjustedStyle
-        } = component.state;
-        let themedStatusColor;
-        let themedNavigationColor;
-        let themedLabelColor;
-
-        switch (overlay) { // eslint-disable-line
-        case `opaque`:
-            themedStatusColor = Ht.Theme.view.color.header.status[shade];
-            themedNavigationColor = Ht.Theme.view.color.header.navigation[shade];
-            break;
-        case `translucent`:
-            themedStatusColor = `${Ht.Theme.view.color.header.status[shade]}${Ht.Theme.view.color.header.opacity}`;
-            themedNavigationColor = `${Ht.Theme.view.color.header.navigation[shade]}${Ht.Theme.view.color.header.opacity}`;
-            break;
-        case `frosted`:
-            themedStatusColor = `transparent`;
-            themedNavigationColor = `transparent`;
-            break;
-        case `transparent`:
-            themedStatusColor = `transparent`;
-            themedNavigationColor = `transparent`;
-            break;
-        }
-
-        themedLabelColor = Ht.Theme.view.color.header.label[shade === `dark` ? `light` : `dark`];
-
-        const adjustedStyle = Hf.merge(prevAdjustedStyle).with({
-            navigation: collapsed ? {
-                opacity: 0,
-                height: 0,
-                shadowOpacity: 0,
-                backgroundColor: themedNavigationColor
-            } : {
-                height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal,
-                shadowOpacity: dropShadowed ? Ht.Theme.general.dropShadow.shallow.shadowOpacity : 0,
-                backgroundColor: themedNavigationColor
-            },
-            room: {
-                center: {
-                    alignSelf: oversized ? `flex-start` : `center`
-                }
-            },
-            status: collapsed ? {
-                shadowOpacity: Ht.Theme.general.dropShadow.shallow.shadowOpacity,
-                backgroundColor: themedStatusColor
-            } : {
-                shadowOpacity: 0,
-                backgroundColor: themedStatusColor
-            },
-            label: {
-                color: themedLabelColor
-            }
-        });
-
-        return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
-            container: style
-        }) : adjustedStyle;
     }
     animate = (refName, option = {
         loopCount: -1,
@@ -476,7 +483,7 @@ export default class HeaderViewComponent extends Component {
             width
         } = event.nativeEvent.layout;
 
-        if (filler.width < width) {
+        if (filler.width === 0) {
             component.setState(() => {
                 return {
                     filler: {
@@ -493,19 +500,21 @@ export default class HeaderViewComponent extends Component {
             overlay,
             oversized,
             dropShadowed,
-            collapsed,
+            offcenteredLabel,
+            initiallyCollapsed,
             style
         } = component.props;
 
         component.setState(() => {
             return {
-                collapsed: collapsed,
-                adjustedStyle: component.readjustStyle({
+                collapsed: initiallyCollapsed,
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     oversized,
                     dropShadowed,
-                    collapsed,
+                    offcenteredLabel,
+                    collapsed: initiallyCollapsed,
                     style
                 })
             };
@@ -523,18 +532,21 @@ export default class HeaderViewComponent extends Component {
             overlay,
             oversized,
             dropShadowed,
-            collapsed,
+            offcenteredLabel,
             style
         } = nextProperty;
+        const {
+            collapsed
+        } = component.state;
 
         component.setState(() => {
             return {
-                collapsed: collapsed,
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     oversized,
                     dropShadowed,
+                    offcenteredLabel,
                     collapsed,
                     style
                 })
@@ -643,17 +655,6 @@ export default class HeaderViewComponent extends Component {
                     blurAmount = { Ht.Theme.general.frostLevel }
                 >
                     <AnimatedView
-                        ref = { component.assignComponentRef(`animated-status-view${cId}`) }
-                        style = { adjustedStyle.status }
-                        duration = { DEFAULT_ANIMATION_DURATION_MS }
-                        useNativeDriver = { false }
-                    >
-                        <StatusBar
-                            barStyle = { `${shade}-content` }
-                            networkActivityIndicatorVisible = { false }
-                        />
-                    </AnimatedView>
-                    <AnimatedView
                         ref = { component.assignComponentRef(`animated-navigation-view${cId}`) }
                         style = { adjustedStyle.navigation }
                         duration = { DEFAULT_ANIMATION_DURATION_MS }
@@ -695,6 +696,17 @@ export default class HeaderViewComponent extends Component {
                                 }}/>
                             }
                         </AnimatedView>
+                    </AnimatedView>
+                    <AnimatedView
+                        ref = { component.assignComponentRef(`animated-status-view${cId}`) }
+                        style = { adjustedStyle.status }
+                        duration = { DEFAULT_ANIMATION_DURATION_MS }
+                        useNativeDriver = { false }
+                    >
+                        <StatusBar
+                            barStyle = { `${shade}-content` }
+                            networkActivityIndicatorVisible = { false }
+                        />
                     </AnimatedView>
                 </BlurView>
             );
@@ -702,17 +714,6 @@ export default class HeaderViewComponent extends Component {
             return (
                 <View style = { adjustedStyle.container }>
                     <AnimatedView
-                        ref = { component.assignComponentRef(`animated-status-view${cId}`) }
-                        style = { adjustedStyle.status }
-                        duration = { DEFAULT_ANIMATION_DURATION_MS }
-                        useNativeDriver = { false }
-                    >
-                        <StatusBar
-                            barStyle = { `${shade}-content` }
-                            networkActivityIndicatorVisible = { false }
-                        />
-                    </AnimatedView>
-                    <AnimatedView
                         ref = { component.assignComponentRef(`animated-navigation-view${cId}`) }
                         style = { adjustedStyle.navigation }
                         duration = { DEFAULT_ANIMATION_DURATION_MS }
@@ -754,6 +755,17 @@ export default class HeaderViewComponent extends Component {
                                 }}/>
                             }
                         </AnimatedView>
+                    </AnimatedView>
+                    <AnimatedView
+                        ref = { component.assignComponentRef(`animated-status-view${cId}`) }
+                        style = { adjustedStyle.status }
+                        duration = { DEFAULT_ANIMATION_DURATION_MS }
+                        useNativeDriver = { false }
+                    >
+                        <StatusBar
+                            barStyle = { `${shade}-content` }
+                            networkActivityIndicatorVisible = { false }
+                        />
                     </AnimatedView>
                 </View>
             );

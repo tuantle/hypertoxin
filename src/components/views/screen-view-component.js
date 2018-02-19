@@ -44,8 +44,8 @@ const DEVICE_HEIGHT = Dimensions.get(`window`).height;
 
 const DEFAULT_SCREEN_VIEW_STYLE = {
     flexGrow: 1,
-    width: DEVICE_WIDTH,
-    height: DEVICE_HEIGHT
+    minWidth: DEVICE_WIDTH,
+    minHeight: DEVICE_HEIGHT
 };
 
 const ScreenViewComponent = function ScreenViewComponent (property = {

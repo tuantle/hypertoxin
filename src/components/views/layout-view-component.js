@@ -62,8 +62,8 @@ const DEFAULT_LAYOUT_VIEW_STYLE = {
         flexDirection: `column`,
         justifyContent: `center`,
         alignItems: `stretch`,
-        maxWidth: DEVICE_WIDTH,
-        overflow: `hidden`
+        maxWidth: DEVICE_WIDTH
+        // overflow: `hidden`
     },
     horizontal: {
         flexShrink: 1,
@@ -116,55 +116,14 @@ export default class LayoutViewComponent extends Component {
         };
     }
     /**
-     * @description - Assign the registered component's reference object.
+     * @description - Helper method to readjust current style.
      *
-     * @method assignComponentRef
-     * @param {string} refName
-     * @returns function
+     * @method _readjustStyle
+     * @param {object} newStyle
+     * @returns {object}
+     * @private
      */
-    assignComponentRef = (refName) => {
-        const component = this;
-
-        if (Hf.DEVELOPMENT) {
-            if (!Hf.isString(refName)) {
-                Hf.log(`error`, `LayoutViewComponent.assignComponentRef - Input component reference name is invalid.`);
-            }
-        }
-
-        /* helper function to set component ref */
-        const setComponentRef = function setComponentRef (componentRef) {
-            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
-        };
-        return setComponentRef;
-    }
-    /**
-     * @description - Lookup the registered component's reference object.
-     *
-     * @method lookupComponentRefs
-     * @param {array} refNames
-     * @returns {array}
-     */
-    lookupComponentRefs = (...refNames) => {
-        const component = this;
-        let componentRefs = [];
-
-        if (!Hf.isEmpty(refNames)) {
-            if (Hf.DEVELOPMENT) {
-                if (!refNames.every((refName) => Hf.isString(refName))) {
-                    Hf.log(`error`, `LayoutViewComponent.lookupComponentRefs - Input component reference name is invalid.`);
-                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
-                    Hf.log(`error`, `LayoutViewComponent.lookupComponentRefs - Component reference is not found.`);
-                }
-            }
-
-            componentRefs = Hf.collect(...refNames).from(component.refCache);
-        } else {
-            Hf.log(`error`, `LayoutViewComponent.lookupComponentRefs - Input component reference name array is empty.`);
-        }
-
-        return componentRefs;
-    }
-    readjustStyle = (newStyle = {
+    _readjustStyle = (newStyle = {
         shade: Ht.Theme.view.layout.shade,
         overlay: Ht.Theme.view.layout.overlay,
         selfAlignment: `auto`,
@@ -316,6 +275,55 @@ export default class LayoutViewComponent extends Component {
         return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
             container: style
         }) : adjustedStyle;
+    }
+    /**
+     * @description - Assign the registered component's reference object.
+     *
+     * @method assignComponentRef
+     * @param {string} refName
+     * @returns function
+     */
+    assignComponentRef = (refName) => {
+        const component = this;
+
+        if (Hf.DEVELOPMENT) {
+            if (!Hf.isString(refName)) {
+                Hf.log(`error`, `LayoutViewComponent.assignComponentRef - Input component reference name is invalid.`);
+            }
+        }
+
+        /* helper function to set component ref */
+        const setComponentRef = function setComponentRef (componentRef) {
+            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
+        };
+        return setComponentRef;
+    }
+    /**
+     * @description - Lookup the registered component's reference object.
+     *
+     * @method lookupComponentRefs
+     * @param {array} refNames
+     * @returns {array}
+     */
+    lookupComponentRefs = (...refNames) => {
+        const component = this;
+        let componentRefs = [];
+
+        if (!Hf.isEmpty(refNames)) {
+            if (Hf.DEVELOPMENT) {
+                if (!refNames.every((refName) => Hf.isString(refName))) {
+                    Hf.log(`error`, `LayoutViewComponent.lookupComponentRefs - Input component reference name is invalid.`);
+                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
+                    Hf.log(`error`, `LayoutViewComponent.lookupComponentRefs - Component reference is not found.`);
+                }
+            }
+
+            componentRefs = Hf.collect(...refNames).from(component.refCache);
+        } else {
+            Hf.log(`error`, `LayoutViewComponent.lookupComponentRefs - Input component reference name array is empty.`);
+        }
+
+        return componentRefs;
     }
     getScrollDirection = () => {
         const component = this;
@@ -478,7 +486,7 @@ export default class LayoutViewComponent extends Component {
         }
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     selfAlignment,
@@ -507,7 +515,7 @@ export default class LayoutViewComponent extends Component {
         component.setState(() => {
             return {
                 scrollDirection: 0,
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     selfAlignment,

@@ -28,38 +28,43 @@
 
 import { PixelRatio } from 'react-native';
 
-/* base font size value */
-const BASE_FONT_SCALING_UNIT = PixelRatio.get() >= 3 ? 8 : 6;
+const devicePixelRatio = PixelRatio.get();
 
-/* changing font size according to ratio */
-const FONT_SCALING_UNIT = BASE_FONT_SCALING_UNIT * PixelRatio.get();
+/* get device base font size value */
+let baseFontScalingUnit = 1;
 
-const FONT_SIZE_SMALLEST = FONT_SCALING_UNIT * 0.75;
-const FONT_SIZE_SMALLER = FONT_SCALING_UNIT * 0.875;
-const FONT_SIZE_SMALL = FONT_SCALING_UNIT * 1;
-const FONT_SIZE_NORMAL = FONT_SCALING_UNIT * 1.125;
-const FONT_SIZE_LARGE = FONT_SCALING_UNIT * 1.35;
-const FONT_SIZE_LARGER = FONT_SCALING_UNIT * 1.65;
-const FONT_SIZE_LARGEST = FONT_SCALING_UNIT * 2.25;
+if (devicePixelRatio === 2) {
+    baseFontScalingUnit = 9 * PixelRatio.getFontScale();
+} else if (devicePixelRatio === 3) {
+    baseFontScalingUnit = 10.5 * PixelRatio.getFontScale();
+}
+
+const FONT_SIZE_SMALLEST = baseFontScalingUnit * 1.15;
+const FONT_SIZE_SMALLER = baseFontScalingUnit * 1.25;
+const FONT_SIZE_SMALL = baseFontScalingUnit * 1.35;
+const FONT_SIZE_NORMAL = baseFontScalingUnit * 1.45;
+const FONT_SIZE_LARGE = baseFontScalingUnit * 1.85;
+const FONT_SIZE_LARGER = baseFontScalingUnit * 2.35;
+const FONT_SIZE_LARGEST = baseFontScalingUnit * 3.35;
 
 const FONT_WEIGHT_THIN = `200`;
-const FONT_WEIGHT_NORMAL = `400`;
-const FONT_WEIGHT_BOLD = `700`;
+const FONT_WEIGHT_NORMAL = `300`;
+const FONT_WEIGHT_BOLD = `800`;
 
 const thinFontSmallestTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALLEST,
     fontWeight: FONT_WEIGHT_THIN,
-    marginVertical: 3,
-    paddingVertical: 3
+    paddingVertical: 3,
+    marginVertical: 3
 };
 
 const normalFontSmallestTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALLEST,
     fontWeight: FONT_WEIGHT_NORMAL,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -67,8 +72,8 @@ const boldFontSmallestTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALLEST,
     fontWeight: FONT_WEIGHT_BOLD,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -77,8 +82,8 @@ const italicFontSmallestTemplate = {
     fontSize: FONT_SIZE_SMALLEST,
     fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -86,8 +91,8 @@ const thinFontSmallerTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALLER,
     fontWeight: FONT_WEIGHT_THIN,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -95,8 +100,8 @@ const normalFontSmallerTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALLER,
     fontWeight: FONT_WEIGHT_NORMAL,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -104,8 +109,8 @@ const boldFontSmallerTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALLER,
     fontWeight: FONT_WEIGHT_BOLD,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -114,8 +119,8 @@ const italicFontSmallerTemplate = {
     fontSize: FONT_SIZE_SMALLER,
     fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -123,8 +128,8 @@ const thinFontSmallTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALL,
     fontWeight: FONT_WEIGHT_THIN,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -132,8 +137,8 @@ const normalFontSmallTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALL,
     fontWeight: FONT_WEIGHT_NORMAL,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -141,8 +146,8 @@ const boldFontSmallTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_SMALL,
     fontWeight: FONT_WEIGHT_BOLD,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -151,8 +156,8 @@ const italicFontSmallTemplate = {
     fontSize: FONT_SIZE_SMALL,
     fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -160,8 +165,8 @@ const thinFontTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_NORMAL,
     fontWeight: FONT_WEIGHT_THIN,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -169,8 +174,8 @@ const normalFontTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_NORMAL,
     fontWeight: FONT_WEIGHT_NORMAL,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -178,8 +183,8 @@ const boldFontTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_NORMAL,
     fontWeight: FONT_WEIGHT_BOLD,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -188,8 +193,8 @@ const italicFontTemplate = {
     fontSize: FONT_SIZE_NORMAL,
     fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -197,8 +202,8 @@ const thinFontLargeTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGE,
     fontWeight: FONT_WEIGHT_THIN,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -206,8 +211,8 @@ const normalFontLargeTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGE,
     fontWeight: FONT_WEIGHT_NORMAL,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -215,8 +220,8 @@ const boldFontLargeTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGE,
     fontWeight: FONT_WEIGHT_BOLD,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -225,8 +230,8 @@ const italicFontLargeTemplate = {
     fontSize: FONT_SIZE_LARGE,
     fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -234,8 +239,8 @@ const thinFontLargerTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGER,
     fontWeight: FONT_WEIGHT_THIN,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -243,8 +248,8 @@ const normalFontLargerTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGER,
     fontWeight: FONT_WEIGHT_NORMAL,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -252,8 +257,8 @@ const boldFontLargerTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGER,
     fontWeight: FONT_WEIGHT_BOLD,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -262,8 +267,8 @@ const italicFontLargerTemplate = {
     fontSize: FONT_SIZE_LARGER,
     fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -271,8 +276,8 @@ const thinFontLargestTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGEST,
     fontWeight: FONT_WEIGHT_THIN,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -280,8 +285,8 @@ const normalFontLargestTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGEST,
     fontWeight: FONT_WEIGHT_NORMAL,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -289,8 +294,8 @@ const boldFontLargestTemplate = {
     flexWrap: `wrap`,
     fontSize: FONT_SIZE_LARGEST,
     fontWeight: FONT_WEIGHT_BOLD,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 
@@ -299,8 +304,8 @@ const italicFontLargestTemplate = {
     fontSize: FONT_SIZE_LARGEST,
     fontWeight: FONT_WEIGHT_NORMAL,
     fontStyle: `italic`,
-    marginVertical: 3,
     paddingVertical: 3,
+    marginVertical: 3,
     backgroundColor: `transparent`
 };
 

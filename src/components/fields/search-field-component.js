@@ -40,7 +40,7 @@ import { BlurView } from 'react-native-blur';
 
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
-import debouncer from '../../common/utils/debouncer';
+import debouncer from '../../utils/debouncer';
 
 const AnimatedView = Animatable.View;
 const AnimatedBlurView = Animatable.createAnimatableComponent(BlurView);
@@ -75,8 +75,6 @@ const DEFAULT_SEARCH_FIELD_STYLE = {
         alignSelf: `flex-start`,
         justifyContent: `center`,
         maxWidth: DEVICE_WIDTH,
-        zIndex: 10,
-        elevation: 2,
         backgroundColor: `transparent`,
         overflow: `hidden`
     },
@@ -88,17 +86,24 @@ const DEFAULT_SEARCH_FIELD_STYLE = {
         justifyContent: `space-between`,
         minWidth: Ht.Theme.field.size.search.input * 1.25,
         height: Ht.Theme.field.size.search.input * 1.25,
-        zIndex: 11,
-        elevation: 2,
+        paddingVertical: 6,
         marginVertical: 6,
-        marginHorizontal: DEVICE_WIDTH * 0.015,
-        paddingVertical: 6
+        marginHorizontal: DEVICE_WIDTH * 0.015
     },
     room: {
+        contentLeft: {
+            flexDirection: `row`,
+            alignItems: `center`,
+            justifyContent: `center`,
+            minWidth: Ht.Theme.field.size.search.input,
+            maxHeight: Ht.Theme.field.size.search.input,
+            backgroundColor: `transparent`
+        },
         actionLeft: {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
+            minWidth: Ht.Theme.field.size.search.input,
             maxHeight: Ht.Theme.field.size.search.input,
             backgroundColor: `transparent`
         },
@@ -106,10 +111,12 @@ const DEFAULT_SEARCH_FIELD_STYLE = {
             flexDirection: `row`,
             alignItems: `center`,
             justifyContent: `center`,
+            minWidth: Ht.Theme.field.size.search.input,
             maxHeight: Ht.Theme.field.size.search.input,
             backgroundColor: `transparent`
         },
         filler: {
+            width: Ht.Theme.field.size.search.input,
             height: Ht.Theme.field.size.search.input,
             backgroundColor: `transparent`
         }
@@ -120,8 +127,8 @@ const DEFAULT_SEARCH_FIELD_STYLE = {
         textAlign: `left`,
         minHeight: Ht.Theme.field.size.search.input,
         lineHeight: Ht.Theme.field.size.search.line,
-        marginVertical: 0,
         paddingVertical: 0,
+        marginVertical: 0,
         backgroundColor: `transparent`
     },
     hint: {
@@ -137,10 +144,8 @@ const DEFAULT_SEARCH_FIELD_STYLE = {
         justifyContent: `center`,
         maxHeight: DEVICE_HEIGHT / 3,
         height: 0,
-        zIndex: 11,
-        elevation: 2,
-        marginHorizontal: 6,
-        borderRadius: 4
+        borderRadius: 4,
+        marginHorizontal: 6
     }
 };
 
@@ -235,8 +240,8 @@ export default class SearchFieldComponent extends Component {
         autoFocus: PropTypes.bool,
         autoCorrect: PropTypes.bool,
         suggestive: PropTypes.bool,
-        hidden: PropTypes.bool,
-        collapsed: PropTypes.bool,
+        initiallyHidden: PropTypes.bool,
+        initiallyCollapsed: PropTypes.bool,
         hint: PropTypes.string,
         debounceTime: PropTypes.number,
         onSearch: PropTypes.func,
@@ -254,8 +259,8 @@ export default class SearchFieldComponent extends Component {
         autoFocus: false,
         autoCorrect: true,
         suggestive: true,
-        hidden: false,
-        collapsed: false,
+        initiallyHidden: false,
+        initiallyCollapsed: false,
         hint: ``,
         debounceTime: DEFAULT_FIELD_DEBOUNCE_TIME_MS,
         onSearch: () => null,
@@ -273,8 +278,8 @@ export default class SearchFieldComponent extends Component {
         this.refCache = {};
         this.debounce = null;
         this.state = {
-            hidden: false,
-            collapsed: false,
+            hidden: property.initiallyHidden,
+            collapsed: property.initiallyCollapsed,
             adjustedStyle: DEFAULT_SEARCH_FIELD_STYLE,
             input: {
                 focused: false,
@@ -296,55 +301,14 @@ export default class SearchFieldComponent extends Component {
         };
     }
     /**
-     * @description - Assign the registered component's reference object.
+     * @description - Helper method to readjust current style.
      *
-     * @method assignComponentRef
-     * @param {string} refName
-     * @returns function
+     * @method _readjustStyle
+     * @param {object} newStyle
+     * @returns {object}
+     * @private
      */
-    assignComponentRef = (refName) => {
-        const component = this;
-
-        if (Hf.DEVELOPMENT) {
-            if (!Hf.isString(refName)) {
-                Hf.log(`error`, `SearchFieldComponent.assignComponentRef - Input component reference name is invalid.`);
-            }
-        }
-
-        /* helper function to set component ref */
-        const setComponentRef = function setComponentRef (componentRef) {
-            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
-        };
-        return setComponentRef;
-    }
-    /**
-     * @description - Lookup the registered component's reference object.
-     *
-     * @method lookupComponentRefs
-     * @param {array} refNames
-     * @returns {array}
-     */
-    lookupComponentRefs = (...refNames) => {
-        const component = this;
-        let componentRefs = [];
-
-        if (!Hf.isEmpty(refNames)) {
-            if (Hf.DEVELOPMENT) {
-                if (!refNames.every((refName) => Hf.isString(refName))) {
-                    Hf.log(`error`, `SearchFieldComponent.lookupComponentRefs - Input component reference name is invalid.`);
-                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
-                    Hf.log(`error`, `SearchFieldComponent.lookupComponentRefs - Component reference is not found.`);
-                }
-            }
-
-            componentRefs = Hf.collect(...refNames).from(component.refCache);
-        } else {
-            Hf.log(`error`, `SearchFieldComponent.lookupComponentRefs - Input component reference name array is empty.`);
-        }
-
-        return componentRefs;
-    }
-    readjustStyle = (newStyle = {
+    _readjustStyle = (newStyle = {
         shade: Ht.Theme.field.search.shade,
         overlay: Ht.Theme.field.search.overlay,
         corner: Ht.Theme.field.search.corner,
@@ -409,6 +373,55 @@ export default class SearchFieldComponent extends Component {
         return Hf.isObject(style) ? Hf.merge(adjustedStyle).with({
             container: style
         }) : adjustedStyle;
+    }
+    /**
+     * @description - Assign the registered component's reference object.
+     *
+     * @method assignComponentRef
+     * @param {string} refName
+     * @returns function
+     */
+    assignComponentRef = (refName) => {
+        const component = this;
+
+        if (Hf.DEVELOPMENT) {
+            if (!Hf.isString(refName)) {
+                Hf.log(`error`, `SearchFieldComponent.assignComponentRef - Input component reference name is invalid.`);
+            }
+        }
+
+        /* helper function to set component ref */
+        const setComponentRef = function setComponentRef (componentRef) {
+            component.refCache[refName] = Hf.isDefined(componentRef) ? componentRef : null;
+        };
+        return setComponentRef;
+    }
+    /**
+     * @description - Lookup the registered component's reference object.
+     *
+     * @method lookupComponentRefs
+     * @param {array} refNames
+     * @returns {array}
+     */
+    lookupComponentRefs = (...refNames) => {
+        const component = this;
+        let componentRefs = [];
+
+        if (!Hf.isEmpty(refNames)) {
+            if (Hf.DEVELOPMENT) {
+                if (!refNames.every((refName) => Hf.isString(refName))) {
+                    Hf.log(`error`, `SearchFieldComponent.lookupComponentRefs - Input component reference name is invalid.`);
+                } else if (!refNames.every((refName) => component.refCache.hasOwnProperty(refName))) {
+                    Hf.log(`error`, `SearchFieldComponent.lookupComponentRefs - Component reference is not found.`);
+                }
+            }
+
+            componentRefs = Hf.collect(...refNames).from(component.refCache);
+        } else {
+            Hf.log(`error`, `SearchFieldComponent.lookupComponentRefs - Input component reference name array is empty.`);
+        }
+
+        return componentRefs;
     }
     isCollapsed = () => {
         const component = this;
@@ -850,8 +863,8 @@ export default class SearchFieldComponent extends Component {
             overlay,
             corner,
             dropShadowed,
-            hidden,
-            collapsed,
+            initiallyHidden,
+            initiallyCollapsed,
             debounceTime,
             style
         } = component.props;
@@ -859,15 +872,15 @@ export default class SearchFieldComponent extends Component {
         component.debounce = debouncer(debounceTime);
         component.setState(() => {
             return {
-                hidden: hidden,
-                collapsed: collapsed,
-                adjustedStyle: component.readjustStyle({
+                hidden: initiallyHidden,
+                collapsed: initiallyCollapsed,
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     corner,
                     dropShadowed,
-                    hidden,
-                    collapsed,
+                    hidden: initiallyHidden,
+                    collapsed: initiallyCollapsed,
                     style
                 })
             };
@@ -915,14 +928,16 @@ export default class SearchFieldComponent extends Component {
             overlay,
             corner,
             dropShadowed,
-            hidden,
-            collapsed,
             style
         } = component.props;
+        const {
+            hidden,
+            collapsed
+        } = component.state;
 
         component.setState(() => {
             return {
-                adjustedStyle: component.readjustStyle({
+                adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
                     corner,
@@ -1000,7 +1015,7 @@ export default class SearchFieldComponent extends Component {
 
         suggestionEntries = suggestionEntries.map((entry, index) => {
             return {
-                key: index,
+                key: `${index}`,
                 ...entry
             };
         });
@@ -1016,7 +1031,7 @@ export default class SearchFieldComponent extends Component {
                 <FlatList
                     data = { suggestionEntries }
                     style = {{
-                        flexDirection: `column`,
+                        paddingVertical: 6,
                         backgroundColor: `transparent`
                     }}
                     renderItem = {(listData) => {
@@ -1038,18 +1053,21 @@ export default class SearchFieldComponent extends Component {
             shade,
             overlay,
             autoFocus,
+            onSearch,
             children
         } = component.props;
         const {
+            hidden,
             collapsed,
             adjustedStyle,
             input
         } = component.state;
         const frosted = overlay === `frosted`;
         const fieldChildProperty = {
-            shade,
-            color: adjustedStyle.input.color
+            shade
+            // color: adjustedStyle.input.color
         };
+        let fieldContentLeftChildren = null;
         let fieldActionLeftChildren = null;
         let fieldActionRightChildren = null;
 
@@ -1061,10 +1079,21 @@ export default class SearchFieldComponent extends Component {
                 } = child.props;
 
                 if (child !== null) {
-                    if (Hf.isString(room) && Hf.isString(action) && (room === `action-left` || room === `action-right`)) {
+                    if (Hf.isString(room) && room === `content-left`) {
+                        return React.cloneElement(child, fieldChildProperty);
+                    } else if (Hf.isString(room) && Hf.isString(action) && (room === `action-left` || room === `action-right`)) {
                         switch (action) {
+                        case `search`:
+                            if (!(collapsed || hidden)) {
+                                return React.cloneElement(child, {
+                                    ...fieldChildProperty,
+                                    onPress: () => component.debounce(onSearch)
+                                });
+                            } else {
+                                return null;
+                            }
                         case `clear`:
-                            if (!Hf.isEmpty(input.value)) {
+                            if (!Hf.isEmpty(input.value) && !(collapsed || hidden)) {
                                 return React.cloneElement(child, {
                                     ...fieldChildProperty,
                                     onPress: () => component.debounce(component.clear)
@@ -1073,7 +1102,7 @@ export default class SearchFieldComponent extends Component {
                                 return null;
                             }
                         case `expand`:
-                            if (collapsed) {
+                            if (collapsed && !hidden) {
                                 return React.cloneElement(child, {
                                     ...fieldChildProperty,
                                     onPress: () => component.debounce(component.expand)
@@ -1082,7 +1111,7 @@ export default class SearchFieldComponent extends Component {
                                 return null;
                             }
                         case `collapse`:
-                            if (!(collapsed)) {
+                            if (!(collapsed || hidden)) {
                                 return React.cloneElement(child, {
                                     ...fieldChildProperty,
                                     onPress: () => component.debounce(component.collapse)
@@ -1091,7 +1120,7 @@ export default class SearchFieldComponent extends Component {
                                 return null;
                             }
                         case `show`:
-                            if (collapsed) {
+                            if (collapsed && !hidden) {
                                 return React.cloneElement(child, {
                                     ...fieldChildProperty,
                                     onPress: () => component.debounce(component.show)
@@ -1100,7 +1129,7 @@ export default class SearchFieldComponent extends Component {
                                 return null;
                             }
                         case `hide`:
-                            if (!(collapsed)) {
+                            if (!(collapsed || hidden)) {
                                 return React.cloneElement(child, {
                                     ...fieldChildProperty,
                                     onPress: () => component.debounce(component.hide)
@@ -1119,6 +1148,19 @@ export default class SearchFieldComponent extends Component {
                     return null;
                 }
             }));
+            fieldContentLeftChildren = fragments.filter((child) => {
+                if (child !== null) {
+                    const {
+                        room
+                    } = child.props;
+
+                    return room === `content-left`;
+                } else {
+                    return false;
+                }
+            });
+            fieldContentLeftChildren = Hf.isEmpty(fieldContentLeftChildren) ? null : fieldContentLeftChildren;
+
             fieldActionLeftChildren = fragments.filter((child) => {
                 if (child !== null) {
                     const {
@@ -1164,6 +1206,16 @@ export default class SearchFieldComponent extends Component {
                         blurAmount = { Ht.Theme.general.frostLevel }
                         useNativeDriver = { false }
                     >
+                        {
+                            fieldContentLeftChildren === null ? <View style = {{
+                                ...adjustedStyle.room.filler,
+                                width: 0
+                            }}/> : <View style = { adjustedStyle.room.contentLeft }>
+                                {
+                                    fieldContentLeftChildren
+                                }
+                            </View>
+                        }
                         {
                             fieldActionLeftChildren === null ? <View style = { adjustedStyle.room.filler }/> : <View style = { adjustedStyle.room.actionLeft }>
                                 {
