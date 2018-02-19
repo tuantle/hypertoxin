@@ -1,8 +1,8 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-rc1",
+    "version": "0.1.0-rc2",
     "registry": "github",
-    "description": "A client native app component library (built using React Native & Hyperflow).",
+    "description": "A client native app component library (built for React Native).",
     "authors": [
         "Tuan Le <tuan.t.lei@gmail.com> (https://github.com/tuantle)"
     ],
@@ -13,14 +13,19 @@
         "url": "https://github.com/tuantle/hypertoxin.git"
     },
     "keywords": [
-        "react-native",
-        "react-component",
-        "react-native-component",
-        "react",
-        "mobile",
-        "ios",
+        "hypertoxin",
         "android",
-        "ui"
+        "ios",
+        "buttons",
+        "forms",
+        "fields",
+        "library",
+        "mobile",
+        "material",
+        "react-native",
+        "component",
+        "ui",
+        "uikit"
     ],
     "bugs": {
         "url": "https://github.com/tuantle/hypertoxin/issues"
@@ -37,35 +42,35 @@
         "preset": "react-native"
     },
     "peerDependencies": {
-        "react": "=16.0.0",
-        "react-native": "=0.50.4",
+        "react": "^16.2.0",
+        "react-native": "^0.53.2",
         "prop-types": "^15.6.0"
     },
     "dependencies": {
-        "hyperflow": "git+https://github.com/tuantle/hyperflow.git#develop",
+        "hyperflow": "^0.2.0",
         "react-native-animatable": "^1.2.4",
         "react-native-blur": "^3.2.2"
     },
     "devDependencies": {
         "babel-core": "^6.26.0",
-        "babel-eslint": "^8.0.2",
-        "babel-jest": "^21.2.0",
+        "babel-eslint": "^8.2.1",
+        "babel-jest": "^22.1.0",
         "babel-plugin-transform-class-properties": "^6.24.1",
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
         "babel-plugin-transform-strict-mode": "^6.24.1",
         "babel-preset-env": "^1.6.1",
         "babel-preset-react": "^6.23.0",
         "babel-preset-react-native": "^4.0.0",
-        "create-react-class": "^15.6.2",
-        "eslint": "^4.12.0",
-        "eslint-plugin-react": "^7.5.1",
-        "eslint-plugin-react-native": "^3.2.0",
-        "jest": "^21.2.1",
+        "create-react-class": "^15.6.3",
+        "eslint": "^4.18.0",
+        "eslint-plugin-react": "^7.6.1",
+        "eslint-plugin-react-native": "^3.2.1",
+        "jest": "^22.1.4",
         "jest-react-native": "^18.0.0",
         "prop-types": "^15.6.0",
-        "react": "=16.0.0",
-        "react-native": "=0.50.4",
-        "react-test-renderer": "=16.0.0"
+        "react": "^16.2.0",
+        "react-native": "^0.53.2",
+        "react-test-renderer": "^16.2.0"
     },
     "scripts": {
         "start-unit-tests": "NODE_ENV=development jest ./__tests__/test-suites"

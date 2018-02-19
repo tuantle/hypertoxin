@@ -2,16 +2,31 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
-**Development RC Version 0.1.0-rc1 (11/*/2017)**
+**Development RC Version 0.1.0-rc2 (12/03/2017)**
 ```
 Notes:
-- Update dependencies:
-    Added project example code
+    - Update dependencies:
+        Hyperflow to 0.2.0
+        React Native to 0.53.2
 New Features:
 Breaking Changes:
 Improvements:
+Bug fixes:
+```
+**Development RC Version 0.1.0-rc1 (12/03/2017)**
+```
+Notes:
+- Update dependencies:
+    Added project example code.
+New Features:
+    Added keyboardAvoiding property to BodyView.
+    Added offCenteredLabel property to HeaderView to allow android style header label.
+Breaking Changes:
+    Moved Divider from Ht.Divider to Ht.Misc.Divider.
+Improvements:
     Update FlatButton, RaisedButton, and ItemView ripple animation code.
     Cleaned up HeaderView, TextField, and SearchField code.
+    Cleaned up default theme and template styles.
 Bug fixes:
 ```
 **Development Beta Version 0.1.0-beta12 (11/24/2017)**
