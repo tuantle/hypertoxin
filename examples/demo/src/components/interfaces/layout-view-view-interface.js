@@ -58,7 +58,9 @@ const {
     HeadlineText
 } = Ht.Text;
 
-const Divider = Ht.Divider;
+const {
+    Divider
+} = Ht.Misc;
 
 const LayoutViewViewInterface = Hf.Interface.augment({
     composites: [

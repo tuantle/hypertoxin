@@ -59,7 +59,9 @@ const {
     IconImage
 } = Ht.Image;
 
-const Divider = Ht.Divider;
+const {
+    Divider
+} = Ht.Misc;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 

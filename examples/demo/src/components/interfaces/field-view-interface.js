@@ -174,6 +174,7 @@ const FieldTabNavigator = TabNavigator({
                 <BodyView
                     shade = { shade }
                     scrollable = { true }
+                    keyboardAvoiding = { true }
                     alignment = 'stretch'
                     style = {{
                         paddingTop: 35
@@ -437,8 +438,7 @@ const FieldTabNavigator = TabNavigator({
                         overlay = 'translucent'
                         corner = 'round50'
                         hint = 'Ask Minh Anything'
-                        hidden = { false }
-                        collapsed = { true }
+                        initiallyCollapsed = { true }
                         onGetAutocompletions = {async (text) => {
                             if (text) {
                                 const response = await fetch(`http://suggestqueries.google.com/complete/search?client=firefox&q=${text}`, {

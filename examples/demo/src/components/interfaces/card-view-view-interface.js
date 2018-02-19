@@ -60,11 +60,12 @@ const {
     HeadlineText,
     TitleText,
     SubtitleText,
-    InfoText,
-    CaptionText
+    InfoText
 } = Ht.Text;
 
-const Divider = Ht.Divider;
+const {
+    Divider
+} = Ht.Misc;
 
 const catAvatarImage = require(`../../../assets/images/cat.png`);
 

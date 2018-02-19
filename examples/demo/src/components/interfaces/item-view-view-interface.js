@@ -61,7 +61,9 @@ const {
     TitleText
 } = Ht.Text;
 
-const Divider = Ht.Divider;
+const {
+    Divider
+} = Ht.Misc;
 
 const animals = [
     {
