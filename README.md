@@ -1,5 +1,5 @@
 # [Hypertoxin](https://github.com/tuantle/hypertoxin)[![npm version](https://img.shields.io/npm/v/hypertoxin.svg?style=flat)](https://www.npmjs.com/package/hypertoxin)
-## A client native app component library (built using React Native).
+## A themable client native app component library (built using React Native).
 [![npm version](https://img.shields.io/npm/v/hypertoxin.svg?style=flat)](https://www.npmjs.com/package/hypertoxin)
 [![npm downloads](https://img.shields.io/npm/dm/hypertoxin.svg?style=flat-square)](https://www.npmjs.com/package/hypertoxin)
 
@@ -7,15 +7,54 @@
 
 `$ npm install react-native-search-header --save`
 
-### CLEAR BUTTONS
-![clear-button](/assets/screenshots/clear-button.png)
+## Documentation (WIP)
+
+### BUTTONS
+
+![buttons](/assets/screenshots/buttons.gif)
+
+Hypertoxin has two button components.
+
+FlatButton, which can be style to look like a clear button, and RaisedButton.
+
+#### FlatButton and RaisedButton Props
+
+Below are the props you can pass to both FlatButton and RaisedButton component
+
+Prop | Type | Default | description
+-----|------|---------|------------
+cId | string | None | Component Id
+room | string | `none` | Set component room which can be one of `none`, `action-left`, `action-right`
+action | string | `none` | Set component action which can be one of `none`, `toggle`, `search`, `clear`, `expand`, `collapse`, `show`, `hide`, `close`, `open`
+shade | string | `light` | Set component shade theme, can be `light` or `dark`
+overlay | string | `opaque` | Set button overplay style which can be one of `opaque`, `translucent`, `transparent`, `transparent-outlined`
+corner | string | `round25` | Set button corner style which can be one of `round25`, `round50`, `square`
+disabled | boolean | false | Disable the button
+busy | boolean | false | Enable button busy activity indicator
+rippled | boolean | true | Enable button ripple animation
+uppercasedLabel | boolean | false | Force button label to be uppercased
+label | string | `BUTTON` | Button label
+color | string | See default theme | Set button color style
+debounceTime | number | 250 | Set button debouncing time in ms
+onPress | function | None | Button press callback function
+
+#### CLEAR BUTTONS (FlatButton with overlay = `transparent`)
+
+Default
+
+![clear-button-default](/assets/screenshots/clear-button-default.png)
+
 ```jsx
-// Simple
 <FlatButton overlay = 'transparent' label = 'PRIMARY' color = 'primary' />
 <FlatButton overlay = 'transparent' label = 'SECONDARY' color = 'secondary' />
 <FlatButton overlay = 'transparent' label = 'DISABLED' disabled = { true }/>
+```
 
-// With Icon
+With Icon
+
+![clear-button-icon](/assets/screenshots/clear-button-icon.png)
+
+```jsx
 <FlatButton overlay = 'transparent' label = 'HOME PRIMARY' color = 'primary' >
     <IconImage
         room = 'content-left'
@@ -39,15 +78,42 @@
 </FlatButton>
 ```
 
-### FLAT BUTTONS
-![flat-button](/assets/screenshots/flat-button.png)
+With Badge
+
+![clear-button-badge](/assets/screenshots/clear-button-badge.png)
+
 ```jsx
-// Simple
+<FlatButton overlay = 'transparent' label = 'PRIMARY' color = 'primary' >
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >0</InfoText>
+</FlatButton>
+<FlatButton overlay = 'transparent' label = 'SECONDARY' color = 'secondary' >
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >1</InfoText>
+</FlatButton>
+<FlatButton overlay = 'transparent' label = 'DISABLED' disabled = { true } >
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >2</InfoText>
+</FlatButton>
+```
+
+
+#### FLAT BUTTONS
+
+Default
+
+![flat-button-default](/assets/screenshots/flat-button-default.png)
+
+
+```jsx
 <FlatButton label = 'PRIMARY' color = 'primary' />
 <FlatButton label = 'SECONDARY' color = 'secondary' />
 <FlatButton label = 'DISABLED' disabled = { true }/>
+```
 
-// With Icon
+With Icon
+
+![flat-button-icon](/assets/screenshots/flat-button-icon.png)
+
+
+```jsx
 <FlatButton label = 'FAVORITE PRIMARY' color = 'primary' >
     <IconImage
         room = 'content-left'
@@ -71,15 +137,53 @@
 </FlatButton>
 ```
 
-### RAISED BUTTONS
-![raised-button](/assets/screenshots/raised-button.png)
+With Badge
+
+![flat-button-badge](/assets/screenshots/flat-button-badge.png)
+
 ```jsx
-// Simple
+<FlatButton overlay = 'transparent-outlined' label = 'Profile Primary' color = 'primary' corner = 'square' >
+    <IconImage
+        room = 'content-left'
+        source = 'profile'
+        size = 'small'
+    />
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >0</InfoText>
+</FlatButton>
+<FlatButton overlay = 'transparent-outlined' label = 'Profile Secondary' color = 'secondary' corner = 'round25' >
+    <IconImage
+        room = 'content-left'
+        source = 'profile'
+        size = 'small'
+    />
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >1</InfoText>
+</FlatButton>
+<FlatButton overlay = 'transparent-outlined' label = 'Profile Disabled' disabled = { true } corner = 'round50' >
+    <IconImage
+        room = 'content-left'
+        source = 'profile'
+        size = 'small'
+    />
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >2</InfoText>
+</FlatButton>
+```
+
+#### RAISED BUTTONS
+Default
+
+![raised-button-default](/assets/screenshots/raised-button-default.png)
+
+```jsx
 <FlatButton overlay = 'transparent' label = 'PRIMARY' color = 'primary' />
 <FlatButton overlay = 'transparent' label = 'SECONDARY' color = 'secondary' />
 <FlatButton overlay = 'transparent' label = 'DISABLED' disabled = { true }/>
+```
 
-// With Icon
+With Icon
+
+![raised-button-icon](/assets/screenshots/raised-button-icon.png)
+
+```jsx
 <FlatButton overlay = 'transparent' label = 'HOME PRIMARY' color = 'primary' >
     <IconImage
         room = 'content-left'
@@ -102,6 +206,47 @@
     />
 </FlatButton>
 ```
+
+With Badge
+
+![raised-button-badge](/assets/screenshots/raised-button-badge.png)
+
+```jsx
+<RaisedButton label = 'SMILE PRIMARY' color = 'primary' corner = 'square' >
+    <IconImage
+        room = 'content-left'
+        source = 'smileyFace'
+        size = 'small'
+    />
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >0</InfoText>
+</RaisedButton>
+<RaisedButton label = 'SMILE SECONDARY' color = 'secondary' corner = 'round25' >
+    <IconImage
+        room = 'content-left'
+        source = 'smileyFace'
+        size = 'small'
+    />
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >1</InfoText>
+</RaisedButton>
+<RaisedButton label = 'SMILE DISABLED' disabled = { true } corner = 'round50' >
+    <IconImage
+        room = 'content-left'
+        source = 'smileyFace'
+        size = 'small'
+    />
+    <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >2</InfoText>
+</RaisedButton>
+```
+
+### FIELDS
+
+![fields](/assets/screenshots/fields.gif)
+
+### TEXTS
+
+### VIEWS
+
+### IMAGES
 
 ## Change Log
 - Link to [change log](https://github.com/tuantle/hypertoxin/tree/master/CHANGELOG.md)
