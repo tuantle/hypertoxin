@@ -5,7 +5,7 @@
 
 ## Installation
 
-`$ npm install react-native-search-header --save`
+`$ npm install hypertoxin --save`
 
 ## Documentation (WIP)
 
