@@ -1,4 +1,4 @@
-# [Hypertoxin](https://github.com/tuantle/hypertoxin)![hypertoxin-logo-mini](/assets/logos/hypertoxin-logo-mini.png)
+# Hypertoxin
 [![npm version](https://img.shields.io/npm/v/hypertoxin.svg?style=flat)](https://www.npmjs.com/package/hypertoxin)
 [![npm downloads](https://img.shields.io/npm/dm/hypertoxin.svg?style=flat-square)](https://www.npmjs.com/package/hypertoxin)
 ## A themable client native app component library (built using React Native).
@@ -44,7 +44,7 @@ FlatButton, which can be style to look like a clear button, and RaisedButton.
 
 #### FlatButton and RaisedButton Props
 
-Below are the props you can pass to both FlatButton and RaisedButton component
+Below are the props you can pass to both FlatButton and RaisedButton components.
 
 Prop | Type | Default | description
 -----|------|---------|------------
