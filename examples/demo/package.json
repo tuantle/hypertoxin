@@ -7,20 +7,20 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"hyperflow": "git+https://github.com/tuantle/hyperflow.git#develop",
-		"hypertoxin": "file:../../hypertoxin-0.1.0-rc2.tgz",
+		"hyperflow": "^0.2.0",
+		"hypertoxin": "^0.1.0",
 		"prop-types": "^15.5.10",
 		"react": "^16.2.0",
-		"react-native": "^0.53.2",
-		"react-navigation": "^1.0.3"
+		"react-native": "^0.53.3",
+		"react-navigation": "^1.2.0"
 	},
 	"devDependencies": {
-		"babel-eslint": "^8.2.1",
-		"babel-jest": "22.1.0",
+		"babel-eslint": "^8.2.2",
+		"babel-jest": "22.4.1",
 		"babel-preset-react-native": "4.0.0",
-		"eslint": "^4.18.0",
+		"eslint": "^4.18.1",
 		"eslint-plugin-react-native": "^3.2.1",
-		"jest": "22.1.4",
+		"jest": "22.4.1",
 		"react-test-renderer": "16.2.0"
 	},
 	"jest": {
