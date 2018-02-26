@@ -205,9 +205,9 @@ Default
 ![raised-button-default](/assets/screenshots/raised-button-default.png)
 
 ```jsx
-<FlatButton overlay = 'transparent' label = 'PRIMARY' color = 'primary' />
-<FlatButton overlay = 'transparent' label = 'SECONDARY' color = 'secondary' />
-<FlatButton overlay = 'transparent' label = 'DISABLED' disabled = { true }/>
+<RaisedButton label = 'PRIMARY' color = 'primary' />
+<RaisedButton label = 'SECONDARY' color = 'secondary' />
+<RaisedButton label = 'DISABLED' disabled = { true }/>
 ```
 
 Use with IconImage
@@ -215,27 +215,27 @@ Use with IconImage
 ![raised-button-icon](/assets/screenshots/raised-button-icon.png)
 
 ```jsx
-<FlatButton overlay = 'transparent' label = 'HOME PRIMARY' color = 'primary' >
+<RaisedButton label = 'STAR PRIMARY' color = 'primary' >
     <IconImage
         room = 'content-left'
-        source = 'home'
+        source = 'star'
         size = 'small'
     />
-</FlatButton>
-<FlatButton overlay = 'transparent' label = 'HOME SECONDARY' color = 'secondary' >
+</RaisedButton>
+<RaisedButton label = 'STAR SECONDARY' color = 'secondary' >
     <IconImage
         room = 'content-left'
-        source = 'home'
+        source = 'star'
         size = 'small'
     />
-</FlatButton>
-<FlatButton overlay = 'transparent' label = 'HOME DISABLED' disabled = { true } >
+</RaisedButton>
+<RaisedButton label = 'STAR DISABLED' disabled = { true } >
     <IconImage
         room = 'content-left'
-        source = 'home'
+        source = 'star'
         size = 'small'
     />
-</FlatButton>
+</RaisedButton>
 ```
 
 With Badge
