@@ -1,6 +1,6 @@
 {
     "name": "hypertoxin",
-    "version": "0.1.0-rc2",
+    "version": "0.1.0",
     "registry": "github",
     "description": "A client native app component library (built for React Native).",
     "authors": [
@@ -53,7 +53,7 @@
     },
     "devDependencies": {
         "babel-core": "^6.26.0",
-        "babel-eslint": "^8.2.1",
+        "babel-eslint": "^8.2.2",
         "babel-jest": "^22.1.0",
         "babel-plugin-transform-class-properties": "^6.24.1",
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -62,8 +62,8 @@
         "babel-preset-react": "^6.23.0",
         "babel-preset-react-native": "^4.0.0",
         "create-react-class": "^15.6.3",
-        "eslint": "^4.18.0",
-        "eslint-plugin-react": "^7.6.1",
+        "eslint": "^4.18.1",
+        "eslint-plugin-react": "^7.7.0",
         "eslint-plugin-react-native": "^3.2.1",
         "jest": "^22.1.4",
         "jest-react-native": "^18.0.0",

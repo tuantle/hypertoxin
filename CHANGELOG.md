@@ -2,6 +2,7 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
+**Released Version 0.1.0 (02/23/2018)**
 **Development RC Version 0.1.0-rc2 (12/03/2017)**
 ```
 Notes:
