@@ -1,15 +1,40 @@
-# [Hypertoxin](https://github.com/tuantle/hypertoxin)[![npm version](https://img.shields.io/npm/v/hypertoxin.svg?style=flat)](https://www.npmjs.com/package/hypertoxin)
-## A themable client native app component library (built using React Native).
+# [Hypertoxin](https://github.com/tuantle/hypertoxin)![hypertoxin-logo-mini](/assets/logos/hypertoxin-logo-mini.png)
 [![npm version](https://img.shields.io/npm/v/hypertoxin.svg?style=flat)](https://www.npmjs.com/package/hypertoxin)
 [![npm downloads](https://img.shields.io/npm/dm/hypertoxin.svg?style=flat-square)](https://www.npmjs.com/package/hypertoxin)
+## A themable client native app component library (built using React Native).
 
 ## Installation
 
-`$ npm install hypertoxin --save`
+`npm install hypertoxin --save`
+
+Hypertoxin has `react-native-blur` dependency which required linking. So use the link command after install.
+
+`react-native link`
 
 ## Documentation (WIP)
 
-### BUTTONS
+Import hypertoxin at the top of your app.js or index.js
+
+```javascript
+/* load and initialize hypertoxin */
+import ht from 'hypertoxin'
+
+hypertoxin.init();
+```
+
+Hypertoxin is themable. To change default theme, init hypertoxin with a custom theme object.
+Checkout `/src/themes` to see the structure of the theme object.
+
+```javascript
+/* load and initialize hypertoxin */
+import ht from 'hypertoxin'
+
+hypertoxin.init({
+    customTheme: myCustomTheme
+});
+```
+
+### BUTTON COMPONENTS
 
 ![buttons](/assets/screenshots/buttons.gif)
 
@@ -37,8 +62,8 @@ label | string | `BUTTON` | Button label
 color | string | See default theme | Set button color style
 debounceTime | number | 250 | Set button debouncing time in ms
 onPress | function | None | Button press callback function
-
-#### CLEAR BUTTONS (FlatButton with overlay = `transparent`)
+---
+#### CLEAR BUTTONS (FlatButton with `overlay = 'transparent'`)
 
 Default
 
@@ -50,9 +75,14 @@ Default
 <FlatButton overlay = 'transparent' label = 'DISABLED' disabled = { true }/>
 ```
 
-With Icon
+Use with IconImage
 
 ![clear-button-icon](/assets/screenshots/clear-button-icon.png)
+
+To add icon image to button, add a child component with a `room` assignment to button component that will handle the image rendering. See below for more info on IconImage component.
+
+*Note: room assignment prop `room = 'content-left'` will put the icon image component on the left side of the button.
+To put it on the right use `room = 'content-right'`*
 
 ```jsx
 <FlatButton overlay = 'transparent' label = 'HOME PRIMARY' color = 'primary' >
@@ -82,6 +112,8 @@ With Badge
 
 ![clear-button-badge](/assets/screenshots/clear-button-badge.png)
 
+To add badge to button, add a child component with a `room = 'badge'` assignment to button component that will handle the text rendering. See below for more info on InfoText component.
+
 ```jsx
 <FlatButton overlay = 'transparent' label = 'PRIMARY' color = 'primary' >
     <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >0</InfoText>
@@ -93,8 +125,7 @@ With Badge
     <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >2</InfoText>
 </FlatButton>
 ```
-
-
+---
 #### FLAT BUTTONS
 
 Default
@@ -108,7 +139,7 @@ Default
 <FlatButton label = 'DISABLED' disabled = { true }/>
 ```
 
-With Icon
+Use with IconImage
 
 ![flat-button-icon](/assets/screenshots/flat-button-icon.png)
 
@@ -167,7 +198,7 @@ With Badge
     <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >2</InfoText>
 </FlatButton>
 ```
-
+---
 #### RAISED BUTTONS
 Default
 
@@ -179,7 +210,7 @@ Default
 <FlatButton overlay = 'transparent' label = 'DISABLED' disabled = { true }/>
 ```
 
-With Icon
+Use with IconImage
 
 ![raised-button-icon](/assets/screenshots/raised-button-icon.png)
 
@@ -238,15 +269,15 @@ With Badge
 </RaisedButton>
 ```
 
-### FIELDS
+### FIELD COMPONENTS
 
 ![fields](/assets/screenshots/fields.gif)
 
-### TEXTS
+### TEXT COMPONENTS
 
-### VIEWS
+### VIEW COMPONENTS
 
-### IMAGES
+### IMAGE COMPONENTS
 
 ## Change Log
 - Link to [change log](https://github.com/tuantle/hypertoxin/tree/master/CHANGELOG.md)
