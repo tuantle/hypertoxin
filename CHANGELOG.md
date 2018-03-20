@@ -2,6 +2,20 @@
 ## A client native app component library (built using React Native & Hyperflow).
 
 ----
+**Development Version 0.1.1 (03/19/2018)**
+```
+Notes:
+    - Update dependencies:
+        React Native to 0.54.2
+New Features:
+Breaking Changes:
+Improvements:
+    - Font template, minor updates to smallest, smaller, and small fonts padding styles.
+    - Removed oversize prop. Added size prop to set header view size (small, normal, large) to HeaderView.
+    - Updated button badge styling for FlatButton and RaisedButton.
+Bug fixes:
+    - Updated and fixed text input styling issues with react native 0.54.x version for SearchField and TextField.
+```
 **Released Version 0.1.0 (02/23/2018)**
 **Development RC Version 0.1.0-rc2 (12/03/2017)**
 ```
