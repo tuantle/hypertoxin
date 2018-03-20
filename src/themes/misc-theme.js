@@ -30,7 +30,7 @@ import toxinPalette from './palettes/toxin-palette';
 
 export default {
     size: {
-        badge: 20,
+        badge: 27,
         divider: 1
     },
     font: {
