@@ -126,7 +126,6 @@ const DEFAULT_SEARCH_FIELD_STYLE = {
         flexGrow: 1,
         textAlign: `left`,
         minHeight: Ht.Theme.field.size.search.input,
-        lineHeight: Ht.Theme.field.size.search.line,
         paddingVertical: 0,
         marginVertical: 0,
         backgroundColor: `transparent`

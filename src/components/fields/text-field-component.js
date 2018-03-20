@@ -134,7 +134,6 @@ const DEFAULT_TEXT_FIELD_STYLE = {
         flexGrow: 1,
         textAlign: `left`,
         minHeight: Ht.Theme.field.size.text.input,
-        lineHeight: Ht.Theme.field.size.text.line,
         paddingVertical: 0,
         marginHorizontal: 6,
         marginVertical: 0
@@ -161,8 +160,6 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             ...Ht.Theme.field.font.text.label.focused,
             position: `absolute`,
             textAlign: `left`,
-            lineHeight: Ht.Theme.field.size.text.line,
-            paddingTop: 26,
             paddingVertical: 0,
             marginVertical: 0,
             opacity: 0
@@ -172,7 +169,6 @@ const DEFAULT_TEXT_FIELD_STYLE = {
             position: `absolute`,
             textAlign: `left`,
             lineHeight: Ht.Theme.field.size.text.line,
-            paddingTop: 44,
             paddingVertical: 0,
             marginVertical: 0,
             opacity: 0
@@ -360,8 +356,7 @@ export default class TextFieldComponent extends Component {
         overlay: Ht.Theme.field.text.overlay,
         focusColor: ``,
         blurColor: ``,
-        disabled: false,
-        lineLimit: 1
+        disabled: false
     }) => {
         const component = this;
         const {
@@ -370,15 +365,13 @@ export default class TextFieldComponent extends Component {
             focusColor,
             blurColor,
             disabled,
-            lineLimit,
             style
         } = Hf.fallback({
             shade: Ht.Theme.field.text.shade,
             overlay: Ht.Theme.field.text.overlay,
             focusColor: ``,
             blurColor: ``,
-            disabled: false,
-            lineLimit: 1
+            disabled: false
         }).of(newStyle);
         const {
             adjustedStyle: prevAdjustedStyle
@@ -438,7 +431,6 @@ export default class TextFieldComponent extends Component {
                 }
             },
             input: {
-                paddingTop: lineLimit === -1 || lineLimit > 1 ? 9 : 0,
                 color: themedInputColor
             },
             helper: {
@@ -687,7 +679,20 @@ export default class TextFieldComponent extends Component {
         } = component.props;
         const value = event.nativeEvent.text;
 
-        if (!Hf.isEmpty(value)) {
+        if (Hf.isEmpty(value)) {
+            component.setState((prevState) => {
+                return {
+                    input: {
+                        ...prevState.input,
+                        value: ``
+                    },
+                    validation: {
+                        validated: true,
+                        status: ``
+                    }
+                };
+            });
+        } else {
             if (inputType === `monetary`) {
                 component.setState((prevState) => {
                     return {
@@ -825,7 +830,6 @@ export default class TextFieldComponent extends Component {
             blurColor,
             disabled,
             initialValue,
-            lineLimit,
             inputType,
             debounceTime,
             onValidate,
@@ -852,7 +856,6 @@ export default class TextFieldComponent extends Component {
                             focusColor,
                             blurColor,
                             disabled,
-                            lineLimit,
                             style
                         }),
                         input: {
@@ -887,7 +890,6 @@ export default class TextFieldComponent extends Component {
                             focusColor,
                             blurColor,
                             disabled,
-                            lineLimit,
                             style
                         }),
                         input: {
@@ -917,7 +919,6 @@ export default class TextFieldComponent extends Component {
                             focusColor,
                             blurColor,
                             disabled,
-                            lineLimit,
                             style
                         }),
                         input: {
@@ -947,7 +948,6 @@ export default class TextFieldComponent extends Component {
                             focusColor,
                             blurColor,
                             disabled,
-                            lineLimit,
                             style
                         }),
                         input: {
@@ -970,7 +970,6 @@ export default class TextFieldComponent extends Component {
                         focusColor,
                         blurColor,
                         disabled,
-                        lineLimit,
                         style
                     })
                 };
@@ -1010,16 +1009,14 @@ export default class TextFieldComponent extends Component {
                         if (lineLimit === -1 || lineLimit > 1) {
                             if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
                                 animatedLabel.transitionTo({
-                                    top: 0,
+                                    top: 9,
                                     left: textInputLeft + 6,
-                                    paddingTop: 44,
                                     opacity: 1
                                 });
                             } else {
                                 animatedLabel.transitionTo({
-                                    top: -6,
+                                    top: 27,
                                     left: textInputLeft + 6,
-                                    paddingTop: 26,
                                     fontSize: Ht.Theme.field.font.text.label.focused.fontSize,
                                     opacity: 1
                                 });
@@ -1027,16 +1024,14 @@ export default class TextFieldComponent extends Component {
                         } else {
                             if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
                                 animatedLabel.transitionTo({
-                                    top: 0,
+                                    top: 9,
                                     left: textInputLeft,
-                                    paddingTop: 44,
                                     opacity: 1
                                 });
                             } else {
                                 animatedLabel.transitionTo({
-                                    top: -6,
+                                    top: -9,
                                     left: textInputLeft,
-                                    paddingTop: 26,
                                     fontSize: Ht.Theme.field.font.text.label.focused.fontSize,
                                     opacity: 1
                                 });
@@ -1075,7 +1070,8 @@ export default class TextFieldComponent extends Component {
             underlined,
             disabled,
             label,
-            hint
+            hint,
+            lineLimit
         } = component.props;
         const {
             input,
@@ -1084,22 +1080,40 @@ export default class TextFieldComponent extends Component {
 
         if (!disabled && !Hf.isEmpty(label)) {
             if (input.focused) {
-                if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
-                    animatedLabel.transitionTo({
-                        top: -6,
-                        paddingTop: 26,
-                        fontSize: Ht.Theme.field.font.text.label.focused.fontSize,
-                        opacity: 1
-                    });
+                if (lineLimit === -1 || lineLimit > 1) {
+                    if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
+                        animatedLabel.transitionTo({
+                            top: 9,
+                            fontSize: Ht.Theme.field.font.text.label.focused.fontSize,
+                            opacity: 1
+                        });
+                    }
+                } else {
+                    if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
+                        animatedLabel.transitionTo({
+                            top: -9,
+                            fontSize: Ht.Theme.field.font.text.label.focused.fontSize,
+                            opacity: 1
+                        });
+                    }
                 }
             } else {
-                if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
-                    animatedLabel.transitionTo({
-                        top: 0,
-                        paddingTop: 44,
-                        fontSize: Ht.Theme.field.font.text.label.blurred.fontSize,
-                        opacity: 1
-                    });
+                if (lineLimit === -1 || lineLimit > 1) {
+                    if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
+                        animatedLabel.transitionTo({
+                            top: 27,
+                            fontSize: Ht.Theme.field.font.text.label.blurred.fontSize,
+                            opacity: 1
+                        });
+                    }
+                } else {
+                    if (Hf.isEmpty(hint) && Hf.isEmpty(input.value)) {
+                        animatedLabel.transitionTo({
+                            top: 9,
+                            fontSize: Ht.Theme.field.font.text.label.blurred.fontSize,
+                            opacity: 1
+                        });
+                    }
                 }
             }
         }
@@ -1130,7 +1144,6 @@ export default class TextFieldComponent extends Component {
             focusColor,
             blurColor,
             disabled,
-            lineLimit,
             debounceTime,
             style
         } = nextProperty;
@@ -1144,7 +1157,6 @@ export default class TextFieldComponent extends Component {
                     focusColor,
                     blurColor,
                     disabled,
-                    lineLimit,
                     style
                 })
             };
@@ -1400,9 +1412,6 @@ export default class TextFieldComponent extends Component {
                         height: box.height
                     }}
                 >
-                    {
-                        component.renderFloatingLabel()
-                    }
                     <View style = { !(lineLimit === -1 || lineLimit > 1) ? adjustedStyle.singleLine : {
                         ...adjustedStyle.multiLine,
                         width: box.width,
@@ -1414,6 +1423,9 @@ export default class TextFieldComponent extends Component {
                                     fieldContentLeftChildren
                                 }
                             </View>
+                        }
+                        {
+                            component.renderFloatingLabel()
                         }
                         {
                             component.renderInput()
