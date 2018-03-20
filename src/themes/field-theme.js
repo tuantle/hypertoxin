@@ -52,11 +52,9 @@ export default {
     },
     size: {
         search: {
-            line: 1,
             input: 42
         },
         text: {
-            line: 1,
             input: 36,
             underline: {
                 focused: 3,
@@ -76,7 +74,7 @@ export default {
             helper: fontStyleTemplate.normalSmall,
             label: {
                 focused: fontStyleTemplate.normalSmall,
-                blurred: fontStyleTemplate.normal
+                blurred: fontStyleTemplate.normalLarge
             }
         }
     },
