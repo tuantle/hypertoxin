@@ -276,7 +276,7 @@ const ButtonTabNavigator = TabNavigator({
                                     source = 'profile'
                                     size = 'small'
                                 />
-                                <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >0</InfoText>
+                                <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >100</InfoText>
                             </FlatButton>
                             <FlatButton overlay = 'transparent-outlined' label = 'Profile Secondary' color = 'secondary' corner = 'round25' >
                                 <IconImage
@@ -284,7 +284,7 @@ const ButtonTabNavigator = TabNavigator({
                                     source = 'profile'
                                     size = 'small'
                                 />
-                                <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >1</InfoText>
+                                <InfoText size = 'small' room = 'badge' style = {{ color: `white` }} >10</InfoText>
                             </FlatButton>
                             <FlatButton overlay = 'transparent-outlined' label = 'Profile Disabled' disabled = { true } corner = 'round50' >
                                 <IconImage

@@ -293,24 +293,6 @@ const FieldTabNavigator = TabNavigator({
                                 />
                             </FlatButton>
                         </TextField>
-                        <TextField
-                            overlay = 'translucent'
-                            label = 'ABOUT ME'
-                            charLimit = { 128 }
-                            lineLimit = { 5 }
-                        >
-                            <FlatButton
-                                overlay = 'transparent'
-                                room = 'action-right'
-                                action = 'clear'
-                            >
-                                <IconImage
-                                    room = 'content-center'
-                                    source = 'close'
-                                    size = 'small'
-                                />
-                            </FlatButton>
-                        </TextField>
                         <RaisedButton label = 'SUBMIT' corner = 'square' >
                             <IconImage
                                 room = 'content-left'
@@ -326,6 +308,65 @@ const FieldTabNavigator = TabNavigator({
             return {
                 tabBarVisible: true,
                 tabBarLabel: `REGISTRATION`
+            };
+        }
+    },
+    note: {
+        screen: (props) => {
+            const {
+                screenProps
+            } = props;
+            const {
+                component
+            } = screenProps;
+            const {
+                shade
+            } = component.props;
+
+            return (
+                <BodyView
+                    shade = { shade }
+                    scrollable = { true }
+                    keyboardAvoiding = { true }
+                    alignment = 'stretch'
+                    style = {{
+                        paddingTop: 35
+                    }}
+                >
+                    <LayoutView
+                        orientation = 'horizontal'
+                        alignment = 'stretch'
+                        selfAlignment = 'stretch'
+                        style = {{
+                            paddingHorizontal: 10
+                        }}
+                    >
+                        <TextField
+                            overlay = 'translucent'
+                            label = 'NOTEPAD'
+                            charLimit = { 128 }
+                            lineLimit = { 5 }
+                        >
+                            <FlatButton
+                                overlay = 'transparent'
+                                room = 'action-right'
+                                action = 'clear'
+                            >
+                                <IconImage
+                                    room = 'content-center'
+                                    source = 'close'
+                                    size = 'small'
+                                />
+                            </FlatButton>
+                        </TextField>
+                    </LayoutView>
+                </BodyView>
+            );
+        },
+        navigationOptions: () => {
+            return {
+                tabBarVisible: true,
+                tabBarLabel: `NOTE`
             };
         }
     },

@@ -45,6 +45,10 @@ const ViewDomain = Hf.Domain.augment({
         });
     },
     setup: function setup (done) {
+        const domain = this;
+
+        domain.incoming(EVENT.ON.CHANGE_HEADER_SIZE).forward(EVENT.DO.MUTATE_HEADER_SIZE);
+
         done();
     }
 });

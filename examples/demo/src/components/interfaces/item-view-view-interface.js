@@ -67,97 +67,97 @@ const {
 
 const animals = [
     {
-        key: 0,
+        key: `0`,
         name: `Cat May`,
         avatarImage: require(`../../../assets/images/cat.png`),
         liked: true
     },
     {
-        key: 1,
+        key: `1`,
         name: `Mister Piggy`,
         avatarImage: require(`../../../assets/images/pig.png`),
         liked: true
     },
     {
-        key: 2,
+        key: `2`,
         name: `Owlo`,
         avatarImage: require(`../../../assets/images/owl.png`),
         liked: false
     },
     {
-        key: 3,
+        key: `3`,
         name: `Mr. Fantastic`,
         avatarImage: require(`../../../assets/images/fox.png`),
         liked: false
     },
     {
-        key: 4,
+        key: `4`,
         name: `Gentelman Penguin`,
         avatarImage: require(`../../../assets/images/penguin.png`),
         liked: true
     },
     {
-        key: 5,
+        key: `5`,
         name: `Doggo`,
         avatarImage: require(`../../../assets/images/dog.png`),
         liked: true
     },
     {
-        key: 6,
+        key: `6`,
         name: `Ham`,
         avatarImage: require(`../../../assets/images/hamster.png`),
         liked: true
     },
     {
-        key: 7,
+        key: `7`,
         name: `Creepy Froggy`,
         avatarImage: require(`../../../assets/images/frog.png`),
         liked: true
     },
     {
-        key: 8,
+        key: `8`,
         name: `Rabbita`,
         avatarImage: require(`../../../assets/images/rabbit.png`),
         liked: true
     },
     {
-        key: 9,
+        key: `9`,
         name: `Romkin`,
         avatarImage: require(`../../../assets/images/rat.png`),
         liked: true
     },
     {
-        key: 10,
+        key: `10`,
         name: `Seel`,
         avatarImage: require(`../../../assets/images/seal.png`),
         liked: true
     },
     {
-        key: 11,
+        key: `11`,
         name: `Stinky`,
         avatarImage: require(`../../../assets/images/skunk.png`),
         liked: true
     },
     {
-        key: 12,
+        key: `12`,
         name: `Slowa`,
         avatarImage: require(`../../../assets/images/sloth.png`),
         liked: true
     },
     {
-        key: 13,
+        key: `13`,
         name: `Kula`,
         avatarImage: require(`../../../assets/images/kuala.png`),
         liked: true
     },
     {
-        key: 14,
+        key: `14`,
         name: `Howler`,
         avatarImage: require(`../../../assets/images/wolf.png`),
         liked: true
     },
     {
-        key: 15,
+        key: `15`,
         name: `Sratchy`,
         avatarImage: require(`../../../assets/images/monkey.png`),
         liked: true

@@ -271,6 +271,7 @@ const AppDrawerNavigator = DrawerNavigator({
                         cId = 'h0'
                         ref = { component.assignComponentRef(`animated-header`) }
                         shade = { shade }
+                        size = 'small'
                         label = 'ABOUT'
                     >
                         <FlatButton
@@ -281,7 +282,7 @@ const AppDrawerNavigator = DrawerNavigator({
                         >
                             <IconImage
                                 room = 'content-center'
-                                size = 'large'
+                                size = 'small'
                                 source = 'menu'
                             />
                         </FlatButton>

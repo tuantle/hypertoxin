@@ -30,6 +30,10 @@ import EVENT from '../events/view-event';
 
 const ViewStore = Hf.Store.augment({
     state: {
+        header: {
+            size: `normal`,
+            oneOf: [ `small`, `normal`, `large` ]
+        },
         navigationStackRefreshToggle: {
             value: false
         }
@@ -41,6 +45,13 @@ const ViewStore = Hf.Store.augment({
                 navigationStackRefreshToggle: false
             }, {
                 suppressMutationEvent: true
+            });
+        });
+        store.incoming(EVENT.DO.MUTATE_HEADER_SIZE).handle((size) => {
+            store.reduce({
+                header: {
+                    size
+                }
             });
         });
         done();

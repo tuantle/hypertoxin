@@ -26,7 +26,11 @@
 import { Hf } from 'hyperflow';
 
 export default Hf.Event.create({
+    onEvents: [
+        `change-header-size`
+    ],
     doEvents: [
-        `reset`
+        `reset`,
+        `mutate-header-size`
     ]
 });

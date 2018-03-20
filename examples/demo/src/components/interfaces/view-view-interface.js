@@ -34,11 +34,15 @@ import ReactNative from 'react-native'; // eslint-disable-line
 
 import { StackNavigator } from 'react-navigation';
 
+import HeaderViewViewInterface from './header-view-view-interface';
+
 import LayoutViewViewInterface from './layout-view-view-interface';
 
 import ItemViewViewInterface from './item-view-view-interface';
 
 import CardViewViewInterface from './card-view-view-interface';
+
+import EVENT from '../events/view-event';
 
 const {
     ScreenView,
@@ -106,22 +110,30 @@ const ViewStackNavigator = StackNavigator({
                             <RaisedButton
                                 cId = 'rb0'
                                 ref = { component.assignComponentRef(`animated-button0`) }
+                                label = 'HEADER VIEW'
+                                onPress = {() => {
+                                    navigation.navigate(`headerView`);
+                                }}
+                            />
+                            <RaisedButton
+                                cId = 'rb1'
+                                ref = { component.assignComponentRef(`animated-button1`) }
                                 label = 'LAYOUT VIEW'
                                 onPress = {() => {
                                     navigation.navigate(`layoutView`);
                                 }}
                             />
                             <RaisedButton
-                                cId = 'rb1'
-                                ref = { component.assignComponentRef(`animated-button1`) }
+                                cId = 'rb2'
+                                ref = { component.assignComponentRef(`animated-button2`) }
                                 label = 'ITEM VIEW'
                                 onPress = {() => {
                                     navigation.navigate(`itemView`);
                                 }}
                             />
                             <RaisedButton
-                                cId = 'rb2'
-                                ref = { component.assignComponentRef(`animated-button2`) }
+                                cId = 'rb3'
+                                ref = { component.assignComponentRef(`animated-button3`) }
                                 label = 'CARD VIEW'
                                 onPress = {() => {
                                     navigation.navigate(`cardView`);
@@ -130,6 +142,34 @@ const ViewStackNavigator = StackNavigator({
                         </LayoutView>
                     </BodyView>
                 </ScreenView>
+            );
+        },
+        navigationOptions: {
+            header: {
+                visible: false
+            }
+        }
+    },
+    headerView: {
+        screen: (props) => {
+            const {
+                component
+            } = props.screenProps;
+            const {
+                shade
+            } = component.props;
+            const {
+                header
+            } = component.state;
+            const [
+                HeaderViewView
+            ] = component.getComponentComposites(`header-view-view`);
+            return (
+                <HeaderViewView
+                    shade = { shade }
+                    header = { header }
+                    { ...props }
+                />
             );
         },
         navigationOptions: {
@@ -236,6 +276,9 @@ const ViewViewInterface = Hf.Interface.augment({
         const intf = this;
 
         intf.composedOf(
+            HeaderViewViewInterface({
+                name: `header-view-view`
+            }),
             LayoutViewViewInterface({
                 name: `layout-view-view`
             }),
@@ -248,6 +291,10 @@ const ViewViewInterface = Hf.Interface.augment({
         );
     },
     setup: function setup (done) {
+        const intf = this;
+
+        intf.incoming(EVENT.ON.CHANGE_HEADER_SIZE).repeat();
+
         done();
     },
     render: function render () {
