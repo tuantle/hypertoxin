@@ -94,12 +94,13 @@ const DEFAULT_RAISED_BUTTON_STYLE = {
             ...Ht.Theme.general.dropShadow.shallow,
             flexDirection: `row`,
             position: `absolute`,
+            alignSelf: `stretch`,
             alignItems: `center`,
             justifyContent: `center`,
             minWidth: Ht.Theme.misc.size.badge,
             height: Ht.Theme.misc.size.badge,
-            top: -4,
-            right: -6,
+            top: -9,
+            right: -12,
             borderRadius: Ht.Theme.misc.size.badge / 2,
             backgroundColor: Ht.Theme.misc.color.badge
         }
