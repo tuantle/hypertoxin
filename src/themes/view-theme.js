@@ -37,7 +37,7 @@ export default {
     header: {
         shade: `light`,
         overlay: `opaque`,
-        oversized: false,
+        size: `normal`,
         dropShadowed: true,
         offcenteredLabel: false,
         uppercasedLabel: false
@@ -61,15 +61,22 @@ export default {
     },
     size: {
         header: {
-            normal: 48,
-            oversize: 148,
-            status: 24
+            navigation: {
+                small: 26,
+                normal: 48,
+                large: 148
+            },
+            status: 22
         },
         item: 48
     },
     font: {
         header: {
-            label: fontStyleTemplate.boldLarge
+            label: {
+                small: fontStyleTemplate.boldSmall,
+                normal: fontStyleTemplate.boldLarge,
+                large: fontStyleTemplate.boldLarge
+            }
         }
     },
     color: {
