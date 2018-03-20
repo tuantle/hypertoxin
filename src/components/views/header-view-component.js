@@ -74,39 +74,50 @@ const DEFAULT_HEADER_VIEW_STYLE = {
     navigation: {
         ...Ht.Theme.general.dropShadow.shallow,
         flexDirection: `row`,
-        alignItems: `stretch`,
+        alignItems: `flex-start`,
         justifyContent: `space-between`,
         width: DEVICE_WIDTH,
-        height: Ht.Theme.view.size.header.normal,
+        height: Ht.Theme.view.size.header.navigation.normal,
         marginTop: Ht.Theme.view.size.header.status
     },
     room: {
         actionLeft: {
-            flexDirection: `row`,
+            flexDirection: `column`,
             alignItems: `center`,
-            justifyContent: `flex-start`,
+            justifyContent: `center`,
             backgroundColor: `transparent`
         },
         contentCenter: {
-            flexGrow: 1,
-            flexDirection: `row`,
+            flexDirection: `column`,
             alignItems: `center`,
+            alignSelf: `stretch`,
+            justifyContent: `center`,
+            backgroundColor: `transparent`
+        },
+        contentBottom: {
+            flexGrow: 1,
+            flexDirection: `column`,
+            alignItems: `center`,
+            alignSelf: `stretch`,
+            justifyContent: `center`,
             backgroundColor: `transparent`
         },
         actionRight: {
-            flexDirection: `row`,
+            flexDirection: `column`,
             alignItems: `center`,
             justifyContent: `center`,
             backgroundColor: `transparent`
         },
         filler: {
             width: 0,
-            height: Ht.Theme.view.size.header.normal,
+            height: Ht.Theme.view.size.header.navigation.normal,
             backgroundColor: `transparent`
         }
     },
     label: {
-        ...Ht.Theme.view.font.header.label
+        small: Ht.Theme.view.font.header.label.small,
+        normal: Ht.Theme.view.font.header.label.normal,
+        large: Ht.Theme.view.font.header.label.large
     }
 };
 
@@ -115,7 +126,7 @@ export default class HeaderViewComponent extends Component {
         cId: PropTypes.string,
         shade: PropTypes.oneOf([ `light`, `dark` ]),
         overlay: PropTypes.oneOf([ `opaque`, `frosted`, `translucent`, `transparent` ]),
-        oversized: PropTypes.bool,
+        size: PropTypes.oneOf([ `small`, `normal`, `large` ]),
         dropShadowed: PropTypes.bool,
         offcenteredLabel: PropTypes.bool,
         uppercasedLabel: PropTypes.bool,
@@ -128,7 +139,7 @@ export default class HeaderViewComponent extends Component {
         cId: ``,
         shade: Ht.Theme.view.header.shade,
         overlay: Ht.Theme.view.header.overlay,
-        oversized: Ht.Theme.view.header.oversized,
+        size: Ht.Theme.view.header.size,
         dropShadowed: Ht.Theme.view.header.dropShadowed,
         offcenteredLabel: Ht.Theme.view.header.offcenteredLabel,
         uppercasedLabel: Ht.Theme.view.header.uppercasedLabel,
@@ -159,7 +170,7 @@ export default class HeaderViewComponent extends Component {
     _readjustStyle = (newStyle = {
         shade: Ht.Theme.view.header.shade,
         overlay: Ht.Theme.view.header.overlay,
-        oversized: Ht.Theme.view.header.oversized,
+        size: Ht.Theme.view.header.size,
         dropShadowed: Ht.Theme.view.header.dropShadowed,
         offcenteredLabel: Ht.Theme.view.header.offcenteredLabel,
         collapsed: false
@@ -168,7 +179,7 @@ export default class HeaderViewComponent extends Component {
         const {
             shade,
             overlay,
-            oversized,
+            size,
             dropShadowed,
             offcenteredLabel,
             collapsed,
@@ -176,7 +187,7 @@ export default class HeaderViewComponent extends Component {
         } = Hf.fallback({
             shade: Ht.Theme.view.header.shade,
             overlay: Ht.Theme.view.header.overlay,
-            oversized: Ht.Theme.view.header.oversized,
+            size: Ht.Theme.view.header.size,
             dropShadowed: Ht.Theme.view.header.dropShadowed,
             offcenteredLabel: Ht.Theme.view.header.offcenteredLabel,
             collapsed: false
@@ -216,7 +227,7 @@ export default class HeaderViewComponent extends Component {
                 shadowOpacity: 0,
                 backgroundColor: themedNavigationColor
             } : {
-                height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal,
+                height: Ht.Theme.view.size.header.navigation[size],
                 shadowOpacity: dropShadowed ? Ht.Theme.general.dropShadow.shallow.shadowOpacity : 0,
                 backgroundColor: themedNavigationColor
             },
@@ -233,7 +244,15 @@ export default class HeaderViewComponent extends Component {
                 backgroundColor: themedStatusColor
             },
             label: {
-                color: themedLabelColor
+                small: {
+                    color: themedLabelColor
+                },
+                normal: {
+                    color: themedLabelColor
+                },
+                large: {
+                    color: themedLabelColor
+                }
             }
         });
 
@@ -443,7 +462,7 @@ export default class HeaderViewComponent extends Component {
         }).of(option);
         const {
             cId,
-            oversized,
+            size,
             onExpand
         } = component.props;
         const {
@@ -463,7 +482,7 @@ export default class HeaderViewComponent extends Component {
             }, duration, `ease-out`);
             animatedNavigationView.transitionTo({
                 opacity: 1,
-                height: oversized ? Ht.Theme.view.size.header.oversize : Ht.Theme.view.size.header.normal
+                height: Ht.Theme.view.size.header.navigation[size]
             }, duration, easing);
             component.setState(() => {
                 return {
@@ -498,7 +517,7 @@ export default class HeaderViewComponent extends Component {
         const {
             shade,
             overlay,
-            oversized,
+            size,
             dropShadowed,
             offcenteredLabel,
             initiallyCollapsed,
@@ -511,7 +530,7 @@ export default class HeaderViewComponent extends Component {
                 adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
-                    oversized,
+                    size,
                     dropShadowed,
                     offcenteredLabel,
                     collapsed: initiallyCollapsed,
@@ -530,7 +549,7 @@ export default class HeaderViewComponent extends Component {
         const {
             shade,
             overlay,
-            oversized,
+            size,
             dropShadowed,
             offcenteredLabel,
             style
@@ -544,7 +563,7 @@ export default class HeaderViewComponent extends Component {
                 adjustedStyle: component._readjustStyle({
                     shade,
                     overlay,
-                    oversized,
+                    size,
                     dropShadowed,
                     offcenteredLabel,
                     collapsed,
@@ -565,6 +584,7 @@ export default class HeaderViewComponent extends Component {
             cId,
             shade,
             overlay,
+            size,
             uppercasedLabel,
             label,
             children
@@ -576,12 +596,14 @@ export default class HeaderViewComponent extends Component {
         const frosted = overlay === `frosted`;
         const headerViewActionChildProperty = {
             shade,
-            color: adjustedStyle.label.color
+            size,
+            color: adjustedStyle.label[size].color
         };
         const headerViewContentChildProperty = {
             shade,
+            size,
             uppercased: uppercasedLabel,
-            color: adjustedStyle.label.color
+            color: adjustedStyle.label[size].color
         };
         let headerViewActionLeftChildren = null;
         let headerViewContentCenterChildren = null;
@@ -677,7 +699,7 @@ export default class HeaderViewComponent extends Component {
                             style = { adjustedStyle.room.contentCenter }
                         >
                             {
-                                headerViewContentCenterChildren !== null ? headerViewContentCenterChildren : <Text style = { adjustedStyle.label }>
+                                headerViewContentCenterChildren !== null ? headerViewContentCenterChildren : <Text style = { adjustedStyle.label[size] }>
                                     {
                                         uppercasedLabel ? label.toUpperCase() : label
                                     }
@@ -736,7 +758,7 @@ export default class HeaderViewComponent extends Component {
                             style = { adjustedStyle.room.contentCenter }
                         >
                             {
-                                headerViewContentCenterChildren !== null ? headerViewContentCenterChildren : <Text style = { adjustedStyle.label }>
+                                headerViewContentCenterChildren !== null ? headerViewContentCenterChildren : <Text style = { adjustedStyle.label[size] }>
                                     {
                                         uppercasedLabel ? label.toUpperCase() : label
                                     }
