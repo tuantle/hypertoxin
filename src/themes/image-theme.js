@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Image theme.
+ * @description - Default image theme.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -24,61 +24,118 @@
  */
 'use strict'; // eslint-disable-line
 
-import toxinPalette from './palettes/toxin-palette';
-
-import colorTheme from './color-theme.js';
+import ColorTheme from './color-theme';
 
 export default {
     avatar: {
+        shade: `light`,
+        overlay: `opaque`,
         size: `normal`,
+        margin: `narrow`,
+        color: `default`,
         dropShadowed: true,
-        frame: `thin`,
-        frameColor: toxinPalette.lightGrey
+        initialAnimation: `none`
     },
     icon: {
         shade: `light`,
         size: `normal`,
+        margin: `narrow`,
         dropShadowed: true,
-        color: `primary`
+        color: `primary`,
+        initialAnimation: `none`
     },
-    wallpaper: {
-        resizeMode: `stretch`
+    cover: {
+        shade: `light`,
+        corner: `sharp`,
+        margin: `narrow`,
+        dropShadowed: false
     },
-    frame: {
-        none: 0,
-        thin: 1,
-        normal: 2,
-        think: 4
+    corner: {
+        cover: {
+            circular: 0.5,
+            round: 0.1,
+            sharp: 0
+        }
     },
     size: {
         avatar: {
-            small: 36,
-            normal: 48,
-            large: 56
+            small: 24,
+            normal: 27,
+            large: 36
         },
         icon: {
             small: 18,
             normal: 24,
-            large: 28
+            large: 27
+        }
+    },
+    margin: {
+        avatar: {
+            narrow: 0,
+            wide: 3
+        },
+        icon: {
+            narrow: 0,
+            wide: 3
+        },
+        cover: {
+            narrow: 0,
+            wide: 3
         }
     },
     color: {
-        icon: {
+        avatar: {
             accent: {
-                dark: colorTheme.dark.accent,
-                light: colorTheme.light.accent
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
             },
             primary: {
-                dark: colorTheme.dark.primary,
-                light: colorTheme.light.primary
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
             },
             secondary: {
-                dark: colorTheme.dark.secondary,
-                light: colorTheme.light.secondary
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.palette.white,
+                light: ColorTheme.palette.white
+            }
+        },
+        icon: {
+            accent: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
+            },
+            primary: {
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
+            },
+            secondary: {
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.dark.default,
+                light: ColorTheme.light.default
             },
             disabled: {
-                dark: colorTheme.dark.disabled,
-                light: colorTheme.light.disabled
+                dark: ColorTheme.dark.disabled,
+                light: ColorTheme.light.disabled
+            }
+        }
+    },
+    animation: {
+        avatar: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        },
+        icon: {
+            none: {
+                refName: ``,
+                transitions: []
             }
         }
     }

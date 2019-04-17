@@ -15,8 +15,8 @@
  *
  *------------------------------------------------------------------------
  *
- * @module Hypertoxin (Ht) (A React Native & Hyperflow component library for developing native app)
- * @description - Hf namespace setup. Initialize Hf, adding core modules, and apply settings.
+ * @module Hypertoxin (Ht)
+ * @description - A themeable ReactNative component library for developing native apps.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -24,254 +24,79 @@
  */
 'use strict'; // eslint-disable-line
 
-/* load and initialize hyperflow */
-const Hf = require('hyperflow').init({ // eslint-disable-line
-    target: `client-native`,
-    enableProductionMode: false,
-    enableInfo0Logging: false,
-    enableInfo1Logging: true,
-    enableWarn0Logging: false,
-    enableWarn1Logging: true
-});
+import FlatButton from './components/buttons/flat-button';
+import RaisedButton from './components/buttons/raised-button';
+import AreaButton from './components/buttons/area-button';
 
-/* load hypertoxin default theme */
-const defaultTheme = require(`./themes/default-theme`).default;
+import AvatarImage from './components/images/avatar-image';
+import IconImage from './components/images/icon-image';
+import CoverImage from './components/images/cover-image';
 
-/* hypertoxin global object */
-let Ht = null;
+import TextField from './components/fields/text-field';
+import SearchField from './components/fields/search-field';
 
-/**
- * @description - Setup and initialize modules & dependencies for Ht`s namespaces.
- *
- * @function init
- * @param {object} setting - Ht's global settings.
- * @returns {object}
- */
-const init = function init (option = {
-    customTheme: {}
-}) {
-    const {
-        customTheme
-    } = Hf.fallback({
-        customTheme: {}
-    }).of(option);
+import HorizontalDivider from './components/dividers/horizontal-divider';
+import VeriticalDivider from './components/dividers/vertical-divider';
 
-    if (Ht === null) {
-        Ht = {
-            VERSION: `0.1.1`,
-            Theme: Hf.isNonEmptyObject(customTheme) ? Hf.merge(defaultTheme).with(customTheme) : defaultTheme
-        };
+import HeadlineText from './components/texts/headline-text';
+import TitleText from './components/texts/title-text';
+import SubtitleText from './components/texts/subtitle-text';
+import InfoText from './components/texts/info-text';
+import CaptionText from './components/texts/caption-text';
 
-        const HtProperty = {
-            Button: {},
-            Image: {},
-            Field: {},
-            Misc: {},
-            Text: {},
-            View: {},
-            ViewComposite: {}
-        };
+import HeaderScreen from './components/screens/header-screen';
+import BodyScreen from './components/screens/body-screen';
 
-        const HtComposite = {
-            View: {
-                HeaderViewSlideAndFadeAnimation: require(`./composites/views/header-view-slide-and-fade-animation-composite`).default
-            }
-        };
-        const HtComponent = {
-            /* load button components */
-            Button: {
-                FlatButton: require(`./components/buttons/flat-button-component`).default,
-                RaisedButton: require(`./components/buttons/raised-button-component`).default
-            },
-            /* load image components */
-            Image: {
-                AvatarImage: require(`./components/images/avatar-image-component`).default,
-                IconImage: require(`./components/images/icon-image-component`).default,
-                WallpaperImage: require(`./components/images/wallpaper-image-component`).default
-            },
-            /* load field components */
-            Field: {
-                TextField: require(`./components/fields/text-field-component`).default,
-                SearchField: require(`./components/fields/search-field-component`).default
-            },
-            /* load misc components */
-            Misc: {
-                Divider: require(`./components/misc/divider-component`).default
-            },
-            /* load text components */
-            Text: {
-                HeadlineText: require(`./components/texts/headline-text-component`).default,
-                TitleText: require(`./components/texts/title-text-component`).default,
-                SubtitleText: require(`./components/texts/subtitle-text-component`).default,
-                InfoText: require(`./components/texts/info-text-component`).default,
-                CaptionText: require(`./components/texts/caption-text-component`).default
-            },
-            /* load view components */
-            View: {
-                ScreenView: require(`./components/views/screen-view-component`).default,
-                HeaderView: require(`./components/views/header-view-component`).default,
-                BodyView: require(`./components/views/body-view-component`).default,
-                LayoutView: require(`./components/views/layout-view-component`).default,
-                CardView: require(`./components/views/card-view-component`).default,
-                ItemView: require(`./components/views/item-view-component`).default
-            }
-        };
+import RowLayout from './components/layouts/row-layout';
+import ColumnLayout from './components/layouts/column-layout';
 
-        Object.defineProperty(HtProperty.Button, `FlatButton`, {
-            get: function get () {
-                return HtComponent.Button.FlatButton;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Button, `RaisedButton`, {
-            get: function get () {
-                return HtComponent.Button.RaisedButton;
-            },
-            configurable: false,
-            enumerable: true
-        });
+import {
+    DefaultTheme as Theme,
+    DefaultThemeContext as ThemeContext
+} from './themes/default-theme';
 
-        Object.defineProperty(HtProperty.Image, `AvatarImage`, {
-            get: function get () {
-                return HtComponent.Image.AvatarImage;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Image, `IconImage`, {
-            get: function get () {
-                return HtComponent.Image.IconImage;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Image, `WallpaperImage`, {
-            get: function get () {
-                return HtComponent.Image.WallpaperImage;
-            },
-            configurable: false,
-            enumerable: true
-        });
+import createFontTemplate from './fonts/templates/create-font-template';
+import RobotoFont from './fonts/roboto-font';
+import SanFranciscoFont from './fonts/san-francisco-font';
 
-        Object.defineProperty(HtProperty.Field, `TextField`, {
-            get: function get () {
-                return HtComponent.Field.TextField;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Field, `SearchField`, {
-            get: function get () {
-                return HtComponent.Field.SearchField;
-            },
-            configurable: false,
-            enumerable: true
-        });
+const Font = {
+    createFontTemplate,
+    RobotoFont,
+    SanFranciscoFont
+};
 
-        Object.defineProperty(HtProperty.Misc, `Divider`, {
-            get: function get () {
-                return HtComponent.Misc.Divider;
-            },
-            configurable: false,
-            enumerable: true
-        });
+const Ht = {
+    VERSION: `0.2.0`,
+    FlatButton,
+    RaisedButton,
+    AreaButton,
 
-        Object.defineProperty(HtProperty.Text, `HeadlineText`, {
-            get: function get () {
-                return HtComponent.Text.HeadlineText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Text, `TitleText`, {
-            get: function get () {
-                return HtComponent.Text.TitleText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Text, `SubtitleText`, {
-            get: function get () {
-                return HtComponent.Text.SubtitleText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Text, `InfoText`, {
-            get: function get () {
-                return HtComponent.Text.InfoText;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.Text, `CaptionText`, {
-            get: function get () {
-                return HtComponent.Text.CaptionText;
-            },
-            configurable: false,
-            enumerable: true
-        });
+    AvatarImage,
+    IconImage,
+    CoverImage,
 
-        Object.defineProperty(HtProperty.View, `ScreenView`, {
-            get: function get () {
-                return HtComponent.View.ScreenView;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.View, `HeaderView`, {
-            get: function get () {
-                return HtComponent.View.HeaderView;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.ViewComposite, `HeaderViewSlideAndFadeAnimation`, {
-            get: function get () {
-                return HtComposite.View.HeaderViewSlideAndFadeAnimation;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.View, `BodyView`, {
-            get: function get () {
-                return HtComponent.View.BodyView;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.View, `LayoutView`, {
-            get: function get () {
-                return HtComponent.View.LayoutView;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.View, `CardView`, {
-            get: function get () {
-                return HtComponent.View.CardView;
-            },
-            configurable: false,
-            enumerable: true
-        });
-        Object.defineProperty(HtProperty.View, `ItemView`, {
-            get: function get () {
-                return HtComponent.View.ItemView;
-            },
-            configurable: false,
-            enumerable: true
-        });
+    TextField,
+    SearchField,
 
-        Ht = Hf.mix(Ht).with(HtProperty);
+    HorizontalDivider,
+    VeriticalDivider,
 
-        /* create an Ht object */
-        Ht = Object.freeze(Ht);
-    }
-    return Ht;
+    HeadlineText,
+    TitleText,
+    SubtitleText,
+    InfoText,
+    CaptionText,
+
+    BodyScreen,
+    HeaderScreen,
+
+    RowLayout,
+    ColumnLayout
 };
 
 export {
     Ht,
-    init
+    Theme,
+    ThemeContext,
+    Font
 };

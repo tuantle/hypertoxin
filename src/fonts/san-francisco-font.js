@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Hypertoxin default toxin icon preset.
+ * @description - Default font (using default San Francisco for iOS).
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -23,7 +23,15 @@
  * @flow
  *
  */
-'use strict'; // eslint-disable-line
 
-export default {
-};
+'use strict'; //eslint-disable-line
+
+import createFontTemplate from './templates/create-font-template';
+
+const SanFranciscoFont = createFontTemplate({
+    fontFamily: `System`
+    // fontWeights: [],
+    // fontScalings: []
+});
+
+export default SanFranciscoFont;

@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Misc theme.
+ * @description - Default misc theme.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -24,22 +24,82 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './style-templates/font-style-template';
+import FontTheme from '../fonts/san-francisco-font';
 
-import toxinPalette from './palettes/toxin-palette';
+import ColorTheme from './color-theme';
 
-export default {
+const MiscTheme = {
+    divider: {
+        horizontal: {
+            shade: `light`,
+            margin: `narrow`,
+            color: `themed`
+        },
+        vertical: {
+            shade: `light`,
+            margin: `narrow`,
+            color: `themed`
+        }
+    },
+    badge: {
+        shade: `light`
+    },
     size: {
-        badge: 27,
-        divider: 1
+        divider: {
+            horizontal: 1,
+            vertical: 1
+        },
+        badge: {
+            small: 21,
+            normal: 24,
+            large: 27
+        }
+    },
+    margin: {
+        divider: {
+            horizontal: {
+                narrow: {
+                    vertical: 9
+                },
+                wide: {
+                    vertical: 18
+                }
+            },
+            vertical: {
+                narrow: {
+                    horizontal: 3
+                },
+                wide: {
+                    horizontal: 6
+                }
+            }
+        }
     },
     font: {
         badge: {
-            label: fontStyleTemplate.boldSmaller
+            label: {
+                small: FontTheme.thinSmallest,
+                normal: FontTheme.normalSmallest,
+                large: FontTheme.normalSmaller
+            }
         }
     },
     color: {
-        divider: toxinPalette.lightGrey,
-        badge: toxinPalette.red
+        divider: {
+            horizontal: {
+                dark: ColorTheme.palette.deepGrey,
+                light: ColorTheme.palette.silver
+            },
+            vertical: {
+                dark: ColorTheme.palette.deepGrey,
+                light: ColorTheme.palette.silver
+            }
+        },
+        badge: {
+            dark: ColorTheme.palette.red,
+            light: ColorTheme.palette.red
+        }
     }
 };
+
+export default MiscTheme;

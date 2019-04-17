@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Hypertoxin default color theme.
+ * @description - Default color theme.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -24,22 +24,65 @@
  */
 'use strict'; // eslint-disable-line
 
-import toxinPalette from './palettes/toxin-palette';
+const Palette = {
+    red: `#ee3d3d`,
+    deepRed: `#b63939`,
+    lightRed: `#fb6c6c`,
 
-export default {
-    opacity: `dd`,
+    pink: `#e8739b`,
+
+    purple: `#9c67fb`,
+    deepPurple: `#6543b8`,
+    lightPurple: `#b793f7`,
+
+    indigo: `#576eee`,
+
+    blue: `#249bfa`,
+    deepBlue: `#0c60a3`,
+    lightBlue: `#49adfc`,
+
+    cyan: `#53f2f7`,
+    teal: `#38d1c3`,
+
+    green: `#6cc855`,
+    deepGreen: `#30861b`,
+    lightGreen: `#9ed65b`,
+
+    yellow: `#f6e761`,
+    amber: `#fac72f`,
+
+    orange: `#ff9b26`,
+    deepOrange: `#d2770c`,
+    lightOrange: `#fec47f`,
+
+    grey: `#8299a3`,
+    deepGrey: `#576970`,
+    lightGrey: `#b2c9d4`,
+
+    beige: `#edecea`,
+    white: `#fafafa`,
+    silver: `#ececec`,
+    charcoal: `#355260`,
+    black: `#2d424c`
+};
+
+const ColorTheme = {
+    opacity: `b4`,
     dark: {
-        default: toxinPalette.white,
-        accent: toxinPalette.orange,
-        primary: toxinPalette.blue,
-        secondary: toxinPalette.pink,
-        disabled: toxinPalette.deepGrey
+        default: Palette.white,
+        accent: Palette.orange,
+        primary: Palette.blue,
+        secondary: Palette.pink,
+        disabled: Palette.grey
     },
     light: {
-        default: toxinPalette.black,
-        accent: toxinPalette.orange,
-        primary: toxinPalette.blue,
-        secondary: toxinPalette.pink,
-        disabled: toxinPalette.lightGrey
-    }
+        default: Palette.charcoal,
+        accent: Palette.orange,
+        primary: Palette.blue,
+        secondary: Palette.pink,
+        disabled: Palette.grey
+    },
+    palette: Palette
 };
+
+export default ColorTheme;

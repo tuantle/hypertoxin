@@ -24,42 +24,44 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './style-templates/font-style-template';
+import React from 'react';
 
-import dropShadowStyleTemplate from './style-templates/drop-shadow-style-template';
+import ColorTheme from './color-theme';
 
-// import toxinIconPreset from './icons/toxin-preset';
+import ButtonTheme from './button-theme';
 
-import toxinPalette from './palettes/toxin-palette';
+import FieldTheme from './field-theme';
 
-import colorTheme from './color-theme.js';
+import ImageTheme from './image-theme';
 
-import buttonTheme from './button-theme.js';
+import MiscTheme from './misc-theme';
 
-import fieldTheme from './field-theme.js';
+import TextTheme from './text-theme';
 
-import miscTheme from './misc-theme.js';
+import LayoutTheme from './layout-theme';
 
-import textTheme from './text-theme.js';
+import ScreenTheme from './screen-theme';
 
-import viewTheme from './view-theme.js';
+import FontTheme from '../fonts/san-francisco-font';
 
-import imageTheme from './image-theme.js';
+const DefaultTheme = {
+    name: `default`,
+    color: ColorTheme,
+    font: FontTheme,
+    misc: MiscTheme,
+    field: FieldTheme,
+    image: ImageTheme,
+    button: ButtonTheme,
+    text: TextTheme,
+    layout: LayoutTheme,
+    screen: ScreenTheme
+};
 
-export default {
-    palette: toxinPalette,
-    icon: {},
-    // icon: toxinIconPreset,
-    font: fontStyleTemplate,
-    general: {
-        frostLevel: 25,
-        dropShadow: dropShadowStyleTemplate,
-        color: colorTheme
-    },
-    misc: miscTheme,
-    field: fieldTheme,
-    button: buttonTheme,
-    text: textTheme,
-    view: viewTheme,
-    image: imageTheme
+const DefaultThemeContext = React.createContext({
+    Theme: DefaultTheme
+});
+
+export {
+    DefaultTheme,
+    DefaultThemeContext
 };

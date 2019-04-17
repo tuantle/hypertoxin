@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Button theme.
+ * @description - Default button theme.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -24,95 +24,232 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './style-templates/font-style-template';
+import FontTheme from '../fonts/san-francisco-font';
 
-import toxinPalette from './palettes/toxin-palette';
+import ColorTheme from './color-theme';
 
-import colorTheme from './color-theme.js';
-
-export default {
+const ButtonTheme = {
     flat: {
         shade: `light`,
         overlay: `opaque`,
-        corner: `square`,
+        corner: `sharp`,
         color: `primary`,
+        size: `normal`,
+        margin: `narrow`,
         rippled: true,
-        uppercasedLabel: true
+        initialAnimation: `none`
     },
     raised: {
         shade: `light`,
         overlay: `opaque`,
-        corner: `square`,
+        corner: `sharp`,
         color: `primary`,
+        size: `normal`,
+        margin: `narrow`,
         rippled: true,
-        uppercasedLabel: true
+        initialAnimation: `none`
+    },
+    area: {
+        shade: `light`,
+        overlay: `opaque`,
+        size: `normal`,
+        margin: `narrow`,
+        rippled: true,
+        initialAnimation: `none`
     },
     font: {
-        label: fontStyleTemplate.bold
-    },
-    corner: {
-        square: 4,
-        round25: 9,
-        round50: 18
-    },
-    size: {
-        flat: 36,
-        raised: 36
-    },
-    color: {
         flat: {
-            opacity: colorTheme.opacity,
-            accent: {
-                dark: colorTheme.dark.accent,
-                light: colorTheme.light.accent
-            },
-            primary: {
-                dark: colorTheme.dark.primary,
-                light: colorTheme.light.primary
-            },
-            secondary: {
-                dark: colorTheme.dark.secondary,
-                light: colorTheme.light.secondary
-            },
-            disabled: {
-                dark: colorTheme.dark.disabled,
-                light: colorTheme.light.disabled
-            },
             label: {
-                dark: colorTheme.light.default,
-                light: colorTheme.dark.default
-            },
-            ripple: {
-                dark: toxinPalette.white,
-                light: toxinPalette.lightGrey
+                small: FontTheme.boldSmallest,
+                normal: FontTheme.boldSmall,
+                large: FontTheme.bold
             }
         },
         raised: {
-            opacity: colorTheme.opacity,
+            label: {
+                small: FontTheme.boldSmallest,
+                normal: FontTheme.boldSmall,
+                large: FontTheme.bold
+            }
+        }
+    },
+    corner: {
+        flat: {
+            circular: 0.5,
+            round: 0.1,
+            sharp: 0,
+            pinched: {
+                topLeft: 0,
+                bottomLeft: 0.5,
+                topRight: 0.5,
+                bottomRight: 0
+            },
+            teardrop: {
+                topLeft: 0.5,
+                bottomLeft: 0.5,
+                topRight: 0,
+                bottomRight: 0.5
+            }
+        },
+        raised: {
+            circular: 0.5,
+            round: 0.1,
+            sharp: 0,
+            pinched: {
+                topLeft: 0,
+                bottomLeft: 0.5,
+                topRight: 0.5,
+                bottomRight: 0
+            },
+            teardrop: {
+                topLeft: 0.5,
+                bottomLeft: 0.5,
+                topRight: 0,
+                bottomRight: 0.5
+            }
+        }
+
+    },
+    size: {
+        flat: {
+            small: 27,
+            normal: 36,
+            large: 48
+        },
+        raised: {
+            small: 27,
+            normal: 36,
+            large: 48
+        },
+        area: {
+            small: 36,
+            normal: 48,
+            large: 54
+        }
+    },
+    margin: {
+        flat: {
+            narrow: 3,
+            wide: 6
+        },
+        raised: {
+            narrow: 3,
+            wide: 6
+        },
+        area: {
+            narrow: {
+                vertical: 3
+            },
+            wide: {
+                vertical: 6
+            }
+        }
+    },
+    color: {
+        flat: {
+            opacity: ColorTheme.opacity,
             accent: {
-                dark: colorTheme.dark.accent,
-                light: colorTheme.light.accent
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
             },
             primary: {
-                dark: colorTheme.dark.primary,
-                light: colorTheme.light.primary
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
             },
             secondary: {
-                dark: colorTheme.dark.secondary,
-                light: colorTheme.light.secondary
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.dark.default,
+                light: ColorTheme.light.default
             },
             disabled: {
-                dark: colorTheme.dark.disabled,
-                light: colorTheme.light.disabled
+                dark: ColorTheme.dark.disabled,
+                light: ColorTheme.light.disabled
+            },
+            busy: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
             },
             label: {
-                dark: colorTheme.light.default,
-                light: colorTheme.dark.default
+                dark: ColorTheme.light.default,
+                light: ColorTheme.dark.default
             },
             ripple: {
-                dark: toxinPalette.white,
-                light: toxinPalette.lightGrey
+                dark: ColorTheme.palette.white,
+                light: ColorTheme.palette.lightGrey
+            }
+        },
+        raised: {
+            opacity: ColorTheme.opacity,
+            accent: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
+            },
+            primary: {
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
+            },
+            secondary: {
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.dark.default,
+                light: ColorTheme.light.default
+            },
+            disabled: {
+                dark: ColorTheme.dark.disabled,
+                light: ColorTheme.light.disabled
+            },
+            busy: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
+            },
+            label: {
+                dark: ColorTheme.light.default,
+                light: ColorTheme.dark.default
+            },
+            ripple: {
+                dark: ColorTheme.palette.white,
+                light: ColorTheme.palette.lightGrey
+            }
+        },
+        area: {
+            opacity: ColorTheme.opacity,
+            dark: ColorTheme.light.default,
+            light: ColorTheme.dark.default,
+            disabled: {
+                dark: ColorTheme.dark.disabled,
+                light: ColorTheme.light.disabled
+            },
+            ripple: {
+                dark: ColorTheme.palette.white,
+                light: ColorTheme.palette.lightGrey
+            }
+        }
+    },
+    animation: {
+        flat: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        },
+        raised: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        },
+        area: {
+            none: {
+                refName: ``,
+                transitions: []
             }
         }
     }
 };
+
+export default ButtonTheme;

@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Text theme.
+ * @description - Default text theme.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -24,75 +24,190 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './style-templates/font-style-template';
+import FontTheme from '../fonts/san-francisco-font';
 
-import colorTheme from './color-theme.js';
+import ColorTheme from './color-theme';
 
 export default {
     headline: {
         shade: `light`,
         size: `normal`,
-        // weight: `normal`,
-        alignment: `center`,
-        decoration: `none`
+        color: `default`,
+        initialAnimation: `none`
     },
     title: {
         shade: `light`,
         size: `normal`,
-        // weight: `bold`,
-        alignment: `center`,
-        decoration: `none`
+        color: `default`,
+        initialAnimation: `none`
     },
     subtitle: {
         shade: `light`,
         size: `normal`,
-        // weight: `normal`,
-        alignment: `center`,
-        decoration: `none`
+        color: `default`,
+        initialAnimation: `none`
     },
     info: {
         shade: `light`,
         size: `normal`,
-        // weight: `normal`,
-        alignment: `left`,
-        decoration: `none`
+        color: `default`,
+        initialAnimation: `none`
     },
     caption: {
         shade: `light`,
         size: `normal`,
-        // weight: `normal`,
-        alignment: `left`,
-        decoration: `none`
+        color: `default`,
+        initialAnimation: `none`
     },
     font: {
         headline: {
-            small: fontStyleTemplate.normalLarge,
-            normal: fontStyleTemplate.normalLarger,
-            large: fontStyleTemplate.normalLargest
+            small: FontTheme.normalLarge,
+            normal: FontTheme.normalLarger,
+            large: FontTheme.normalLargest
         },
         title: {
-            small: fontStyleTemplate.bold,
-            normal: fontStyleTemplate.boldLarge,
-            large: fontStyleTemplate.boldLarger
+            small: FontTheme.boldLarge,
+            normal: FontTheme.boldLarger,
+            large: FontTheme.boldLargest
         },
         subtitle: {
-            small: fontStyleTemplate.normal,
-            normal: fontStyleTemplate.normalLarge,
-            large: fontStyleTemplate.normalLarger
+            small: FontTheme.normalLarge,
+            normal: FontTheme.normalLarger,
+            large: FontTheme.normalLargest
         },
         info: {
-            small: fontStyleTemplate.normalSmall,
-            normal: fontStyleTemplate.normal,
-            large: fontStyleTemplate.normalLarge
+            small: FontTheme.normalSmaller,
+            normal: FontTheme.normalSmall,
+            large: FontTheme.normal
         },
         caption: {
-            small: fontStyleTemplate.italicSmallest,
-            normal: fontStyleTemplate.italicSmaller,
-            large: fontStyleTemplate.italicSmall
+            small: FontTheme.italicSmallest,
+            normal: FontTheme.italicSmaller,
+            large: FontTheme.italicSmall
         }
     },
     color: {
-        dark: colorTheme.dark.default,
-        light: colorTheme.light.default
+        headline: {
+            accent: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
+            },
+            primary: {
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
+            },
+            secondary: {
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.dark.default,
+                light: ColorTheme.light.default
+            }
+        },
+        title: {
+            accent: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
+            },
+            primary: {
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
+            },
+            secondary: {
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.dark.default,
+                light: ColorTheme.light.default
+            }
+        },
+        subtitle: {
+            accent: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
+            },
+            primary: {
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
+            },
+            secondary: {
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.dark.default,
+                light: ColorTheme.light.default
+            }
+        },
+        info: {
+            accent: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
+            },
+            primary: {
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
+            },
+            secondary: {
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.dark.default,
+                light: ColorTheme.light.default
+            }
+        },
+        caption: {
+            accent: {
+                dark: ColorTheme.dark.accent,
+                light: ColorTheme.light.accent
+            },
+            primary: {
+                dark: ColorTheme.dark.primary,
+                light: ColorTheme.light.primary
+            },
+            secondary: {
+                dark: ColorTheme.dark.secondary,
+                light: ColorTheme.light.secondary
+            },
+            default: {
+                dark: ColorTheme.dark.default,
+                light: ColorTheme.light.default
+            }
+        }
+    },
+    animation: {
+        headline: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        },
+        title: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        },
+        subtitle: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        },
+        info: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        },
+        caption: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        }
     }
 };

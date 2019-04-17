@@ -15,7 +15,7 @@
  *
  *------------------------------------------------------------------------
  *
- * @description - Field theme.
+ * @description - Default field theme.
  *
  * @author Tuan Le (tuan.t.lei@gmail.com)
  *
@@ -24,101 +24,180 @@
  */
 'use strict'; // eslint-disable-line
 
-import fontStyleTemplate from './style-templates/font-style-template';
+import FontTheme from '../fonts/san-francisco-font';
 
-import toxinPalette from './palettes/toxin-palette';
+import ColorTheme from './color-theme';
 
-import colorTheme from './color-theme.js';
-
-export default {
+const FieldTheme = {
     search: {
         shade: `light`,
         overlay: `opaque`,
-        corner: `square`,
-        dropShadowed: true
+        corner: `sharp`,
+        size: `normal`,
+        margin: `narrow`,
+        dropShadowed: true,
+        initialAnimation: `none`
     },
     text: {
         shade: `light`,
         overlay: `opaque`,
+        corner: `round`,
+        size: `normal`,
+        margin: `narrow`,
         underlined: true,
-        uppercasedLabel: false
+        initialAnimation: `none`
     },
     corner: {
         search: {
-            square: 4,
-            round25: 13,
-            round50: 26
+            circular: 0.5,
+            round: 0.1,
+            sharp: 0
+        },
+        text: {
+            circular: {
+                topLeft: 0.5,
+                topRight: 0.5
+            },
+            round: {
+                topLeft: 0.1,
+                topRight: 0.1
+            },
+            sharp: 0
         }
     },
     size: {
         search: {
-            input: 42
+            input: {
+                small: 27,
+                normal: 36,
+                large: 48
+            }
         },
         text: {
-            input: 36,
+            input: {
+                small: 27,
+                normal: 36,
+                large: 48
+            },
             underline: {
-                focused: 3,
-                blurred: 1
+                focused: {
+                    small: 1,
+                    normal: 3,
+                    large: 3
+                },
+                blurred: {
+                    small: 1,
+                    normal: 3,
+                    large: 3
+                }
             }
+        }
+    },
+    margin: {
+        search: {
+            narrow: 3,
+            wide: 6
+        },
+        text: {
+            narrow: 3,
+            wide: 6
         }
     },
     font: {
         search: {
-            input: fontStyleTemplate.normalLarge,
-            hint: fontStyleTemplate.normalLarge
+            input: {
+                small: FontTheme.normalSmall,
+                normal: FontTheme.normal,
+                large: FontTheme.normalLarge
+            }
         },
         text: {
-            input: fontStyleTemplate.normalLarge,
-            hint: fontStyleTemplate.normalLarger,
-            status: fontStyleTemplate.italicSmall,
-            helper: fontStyleTemplate.normalSmall,
+            input: {
+                small: FontTheme.normalSmall,
+                normal: FontTheme.normal,
+                large: FontTheme.normalLarge
+            },
             label: {
-                focused: fontStyleTemplate.normalSmall,
-                blurred: fontStyleTemplate.normalLarge
-            }
+                focused: {
+                    small: FontTheme.normalSmallest,
+                    normal: FontTheme.normalSmaller,
+                    large: FontTheme.normalSmall
+                },
+                blurred: {
+                    small: FontTheme.normalSmall,
+                    normal: FontTheme.normal,
+                    large: FontTheme.normalLarge
+                }
+            },
+            status: FontTheme.italicSmaller,
+            helper: FontTheme.normalSmaller
         }
     },
     color: {
         search: {
-            opacity: colorTheme.opacity,
-            box: {
-                dark: toxinPalette.deepGrey,
-                light: toxinPalette.white
-            },
-            input: {
-                dark: toxinPalette.white,
-                light: toxinPalette.deepGrey
-            },
-            hint: toxinPalette.grey
-        },
-        text: {
-            opacity: colorTheme.opacity,
+            opacity: ColorTheme.opacity,
             focused: {
-                dark: toxinPalette.orange,
-                light: toxinPalette.orange
+                dark: ColorTheme.palette.orange,
+                light: ColorTheme.palette.orange
             },
             blurred: {
-                dark: toxinPalette.grey,
-                light: toxinPalette.grey
-            },
-            disabled: {
-                dark: colorTheme.dark.disabled,
-                light: colorTheme.light.disabled
+                dark: ColorTheme.palette.deepGrey,
+                light: ColorTheme.palette.white
             },
             box: {
-                dark: toxinPalette.charcoal,
-                light: toxinPalette.silver
+                dark: ColorTheme.palette.deepGrey,
+                light: ColorTheme.palette.white
             },
             input: {
-                dark: toxinPalette.white,
-                light: toxinPalette.deepGrey
+                dark: ColorTheme.palette.white,
+                light: ColorTheme.palette.deepGrey
+            },
+            hint: ColorTheme.palette.grey
+        },
+        text: {
+            opacity: ColorTheme.opacity,
+            focused: {
+                dark: ColorTheme.palette.orange,
+                light: ColorTheme.palette.orange
+            },
+            blurred: {
+                dark: ColorTheme.palette.lightGrey,
+                light: ColorTheme.palette.lightGrey
+            },
+            disabled: {
+                dark: ColorTheme.dark.disabled,
+                light: ColorTheme.light.disabled
+            },
+            box: {
+                dark: ColorTheme.palette.charcoal,
+                light: ColorTheme.palette.silver
+            },
+            input: {
+                dark: ColorTheme.palette.white,
+                light: ColorTheme.palette.deepGrey
             },
             helper: {
-                dark: toxinPalette.grey,
-                light: toxinPalette.grey
+                dark: ColorTheme.palette.grey,
+                light: ColorTheme.palette.grey
             },
-            hint: toxinPalette.lightGrey,
-            status: toxinPalette.red
+            hint: ColorTheme.palette.lightGrey,
+            status: ColorTheme.palette.red
+        }
+    },
+    animation: {
+        search: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
+        },
+        text: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
         }
     }
 };
+
+export default FieldTheme;
