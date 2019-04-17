@@ -97,13 +97,13 @@ export default class App extends Component {
     - [Screen Components](#screen-components)
     - [Animation API](#animation-api)
     - [Theme-customization](#text-components)
-- [Demo & Showcase](#demo-showcase)
+- [Demo](#demo)
 - [Change Log](#change-log)
 - [License](#license)
 
-# Documentations {#documentations}
+# Documentations
 
-## Button Components {#button-components}
+## Button Components
 
 <p align="center">
     <img src="/assets/screen-records/buttons.gif">
@@ -129,7 +129,7 @@ rippled | boolean, string | `themed` | Enable button ripple animation
 label | string | None | Button string label
 color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
 debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animations](## Animations) section for details
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
 onPress | function | None | Button press action callback
 style | object | None | Flat button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
 
@@ -150,7 +150,7 @@ rippled | boolean, string | `themed` | Enable button ripple animation
 label | string | None | Button string label
 color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
 debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animations](## Animations) section for details
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
 onPress | function | None | Button press action callback
 style | object | None | Raised button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
 
@@ -168,7 +168,7 @@ margin | string, number, object | None | Set button's margin styles. As a number
 disabled | boolean | false | Disable the button
 rippled | boolean, string | `themed` | Enable button ripple animation
 debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animations](## Animations) section for details
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
 onPress | function | None | Button press action callback
 style | object | None | Area button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, ripple: {...}`. Unlike flat and raised buttons, there is no middle room styling. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
 
@@ -444,7 +444,7 @@ Raised buttons styled as FABs.
 />
 ```
 
-## Field Components {#field-components}
+## Field Components
 
 <p align="center">
     <img src="/assets/screen-records/text-fields.gif">
@@ -477,7 +477,7 @@ lineLimit  | number  | 1 | Set text input's max lines count. Set lineLimit > 1 f
 inputType  | string  | `default` | Set text input's type which can be one of `default`, `numeric`, `monetary`, `phone-pad`, `email-address`, `credit-card-visa`, `credit-card-master`, `credit-card-discover`, `credit-card-american-express`
 disableValidation  | bool  | false | Disable text input validation
 disableFormatting  | bool  | false | Disable text input formatting
-initialAnimation | string, object | None  | See [Animations](## Animations) section for details
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
 style | object | None | Button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
 
 onValidate: PropTypes.func,
@@ -596,7 +596,7 @@ Text field with selectable pullups.
 </TextField>
 ```
 
-## Text Components {#text-components}
+## Text Components
 
 Text components with default theme and San-Francisco font.
 
@@ -665,27 +665,27 @@ style | object | None | Standard React Native text style properties
 <CaptionText size = 'small' color = 'secondary' > Headline Small </CaptionText>
 ```
 
-## Screen Components {#screen-components}
+## Screen Components
 
 Hypertoxin has two screen components, [*BodyScreen*](https://github.com/tuantle/hypertoxin/blob/master/src/components/screens/body-screen.js), [*HeaderScreen*](https://github.com/tuantle/hypertoxin/blob/master/src/components/screens/header-screen.js)
 
-## Layout Components {#layout-components}
+## Layout Components}
 
 Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/column-layout.js)
 
-## Image Components {#image-components}
+## Image Components
 
 Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/column-layout.js)
 
-## Animations API {#animation-api}
+## Animation API
 
-## Theme Customization {#theme-customization}
+## Theme Customization
 
-# Demo & Showcase {#demo-showcase}
+# Demo
 
-# Change Log {#change-log}
+# Change Log
 - Link to [change log](https://github.com/tuantle/hypertoxin/tree/master/CHANGELOG.md)
 
-# License {#license}
+# License
 
 Hyperflow is [MIT licensed](./LICENSE).
