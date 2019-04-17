@@ -88,14 +88,22 @@ export default class App extends Component {
 
 ---
 
-- [Documentations & Examples](# Documentations)
-    - [Button Components](## Button Components)
-- [Change Log](# Change Log)
-- [License](# License)
+- [Documentations & Examples](#documentations)
+    - [Button Components](#button-components)
+    - [Field Components](#field-components)
+    - [Text Components](#text-components)
+    - [Image Components](#image-components)
+    - [Layout Components](#layout-components)
+    - [Screen Components](#screen-components)
+    - [Animation API](#animation-api)
+    - [Theme-customization](#text-components)
+- [Demo & Showcase](#demo-showcase)
+- [Change Log](#change-log)
+- [License](#license)
 
-# Documentations
+# Documentations {#documentations}
 
-## Button Components
+## Button Components {#button-components}
 
 <p align="center">
     <img src="/assets/screen-records/buttons.gif">
@@ -436,7 +444,7 @@ Raised buttons styled as FABs.
 />
 ```
 
-## Fields Components
+## Field Components {#field-components}
 
 <p align="center">
     <img src="/assets/screen-records/text-fields.gif">
@@ -588,7 +596,7 @@ Text field with selectable pullups.
 </TextField>
 ```
 
-## Text Components
+## Text Components {#text-components}
 
 Text components with default theme and San-Francisco font.
 
@@ -657,27 +665,27 @@ style | object | None | Standard React Native text style properties
 <CaptionText size = 'small' color = 'secondary' > Headline Small </CaptionText>
 ```
 
-## Screen Components
+## Screen Components {#screen-components}
 
 Hypertoxin has two screen components, [*BodyScreen*](https://github.com/tuantle/hypertoxin/blob/master/src/components/screens/body-screen.js), [*HeaderScreen*](https://github.com/tuantle/hypertoxin/blob/master/src/components/screens/header-screen.js)
 
-## Layout Components
+## Layout Components {#layout-components}
 
 Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/column-layout.js)
 
-## Image Components
+## Image Components {#image-components}
 
 Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/column-layout.js)
 
-## Animations API & Examples
+## Animations API {#animation-api}
 
-## Theme Customization
+## Theme Customization {#theme-customization}
 
-## Demo & Showcase
+# Demo & Showcase {#demo-showcase}
 
-# Change Log
+# Change Log {#change-log}
 - Link to [change log](https://github.com/tuantle/hypertoxin/tree/master/CHANGELOG.md)
 
-# License
+# License {#license}
 
 Hyperflow is [MIT licensed](./LICENSE).
