@@ -1,0 +1,36 @@
+{
+	"name": "Demo",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start-dev": "NODE_ENV=development react-devtools & node node_modules/react-native/local-cli/cli.js start --reset-cache",
+		"test": "jest"
+	},
+	"dependencies": {
+		"hyperflow": "file:../../hyperflow/hyperflow-0.2.1.tgz",
+		"hypertoxin": "file:../hypertoxin-0.2.0.tgz",
+		"prop-types": "^15.7.2",
+		"react-native-gesture-handler": "^1.1.0",
+		"react-native-svg": "^9.3.7",
+		"react-navigation": "^3.7.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.4.3",
+		"@babel/preset-env": "^7.4.3",
+		"@babel/preset-react": "^7.0.0",
+		"babel-eslint": "^10.0.1",
+		"babel-jest": "^24.7.1",
+		"eslint": "^5.16.0",
+		"eslint-plugin-react": "^7.12.4",
+		"eslint-plugin-react-native": "^3.6.0",
+		"jest": "^24.7.1",
+		"metro-react-native-babel-preset": "^0.53.1",
+		"prop-types": "^15.7.2",
+		"react": "^16.8.6",
+		"react-native": "^0.59.4",
+		"react-test-renderer": "^16.8.6"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}
