@@ -88,10 +88,10 @@ export default class App extends Component {
 
 ---
 
-- [Documentations & Examples](##documentations)
-    - [Button Components](#### BUTTON Components)
-- [Change Log](#change-log)
-- [License](#license)
+- [Documentations & Examples](# Documentations)
+    - [Button Components](## Button Components)
+- [Change Log](# Change Log)
+- [License](# License)
 
 # Documentations
 
@@ -121,7 +121,7 @@ rippled | boolean, string | `themed` | Enable button ripple animation
 label | string | None | Button string label
 color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
 debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animations](#### ANIMATIONS) section for details
+initialAnimation | string, object | None  | See [Animations](## Animations) section for details
 onPress | function | None | Button press action callback
 style | object | None | Flat button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
 
@@ -142,7 +142,7 @@ rippled | boolean, string | `themed` | Enable button ripple animation
 label | string | None | Button string label
 color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
 debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animations](#### ANIMATIONS) section for details
+initialAnimation | string, object | None  | See [Animations](## Animations) section for details
 onPress | function | None | Button press action callback
 style | object | None | Raised button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
 
@@ -160,7 +160,7 @@ margin | string, number, object | None | Set button's margin styles. As a number
 disabled | boolean | false | Disable the button
 rippled | boolean, string | `themed` | Enable button ripple animation
 debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animations](#### ANIMATIONS) section for details
+initialAnimation | string, object | None  | See [Animations](## Animations) section for details
 onPress | function | None | Button press action callback
 style | object | None | Area button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, ripple: {...}`. Unlike flat and raised buttons, there is no middle room styling. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
 
@@ -460,16 +460,16 @@ autoCorrect | boolean | true | Enable text field's auto correct spelling
 secured | boolean | false | Enable text field's secure mode
 underlined | boolean, string | `themed` | Enable text field's underlined animation
 disabled | boolean | false | Disable text field's input
-initialValue  | string, number  | `` | Set text input's initial value
+initialValue  | string, number  | None | Set text input's initial value
 selectableValues  | [string], [number], [object]  | [] | A list of selectable values
 label  | string  | None | Set text field's label
 hint  | string  | None | Set text field's hint
-charLimit  | string  | None | Set text input's max characters count
-lineLimit  | string  | None | Set text input's max lines count
+charLimit  | number  | -1 | Set text input's max characters count. Set charLimit > -1 for no character limit. When charLimit > 1, a little character counter will be visible in the bottom right
+lineLimit  | number  | 1 | Set text input's max lines count. Set lineLimit > 1 for multilined text input 
 inputType  | string  | `default` | Set text input's type which can be one of `default`, `numeric`, `monetary`, `phone-pad`, `email-address`, `credit-card-visa`, `credit-card-master`, `credit-card-discover`, `credit-card-american-express`
 disableValidation  | bool  | false | Disable text input validation
 disableFormatting  | bool  | false | Disable text input formatting
-initialAnimation | string, object | None  | See [Animations](#### ANIMATIONS) section for details
+initialAnimation | string, object | None  | See [Animations](## Animations) section for details
 style | object | None | Button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
 
 onValidate: PropTypes.func,
@@ -625,7 +625,7 @@ uppercased  | boolean  | False  | Force uppercased text
 lowercased  | boolean  | False  | Force lowercased text
 indentation  | number  | 0  | Set text indentation
 color | string | `themed` | Set text's color style. Can be hex string, default color name, or themed color name
-initialAnimation | string, object | None  | See [Animations](#### ANIMATIONS) section for details
+initialAnimation | string, object | None  | See [Animations](## Animations) section for details
 style | object | None | Standard React Native text style properties
 
 ```jsx
