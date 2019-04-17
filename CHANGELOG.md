@@ -1,7 +1,18 @@
 # [Hypertoxin](https://github.com/tuantle/hypertoxin)
-## A client native app component library (built using React Native & Hyperflow).
+## A themeable ReactNative component library for developing native apps.
 
 ----
+**Development Version 0.2.0 (04/17/2019)**
+```
+Notes:
+    - Update dependencies:
+        React Native to 0.59.4
+New Features:
+Breaking Changes:
+    - Complete code refactored.
+Improvements:
+Bug fixes:
+```
 **Development Version 0.1.1 (03/19/2018)**
 ```
 Notes:
