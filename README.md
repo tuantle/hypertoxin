@@ -810,7 +810,7 @@ Below are some component animation examples.
     <em>An example of animating sequences of a simple submit button</em>
 </p>
 
-[*Code example*(https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L310)
+[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L310)
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/button-animation1.gif">
@@ -819,7 +819,7 @@ Below are some component animation examples.
     <em>An example of animating sequences of payment submit button</em>
 </p>
 
-[*Code example](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121)
+[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121)
 
 <p align="center">
     <img width="15%" height="15%" src="/assets/screen-records/button-animation3.gif">
@@ -828,7 +828,7 @@ Below are some component animation examples.
     <em>An example of animating sequences of an expanding FAB menu</em>
 </p>
 
-[*Code example*(https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444)
+[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444)
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/button-animation4.gif">
