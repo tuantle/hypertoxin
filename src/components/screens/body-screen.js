@@ -30,7 +30,7 @@ import ReactNative from 'react-native'; // eslint-disable-line
 
 import PropTypes from 'prop-types';
 
-import * as Animatable from 'react-native-animatable';
+import { View as AnimatedView } from 'react-native-animatable';
 
 import {
     DefaultTheme,
@@ -45,8 +45,6 @@ const {
     ScrollView,
     PanResponder
 } = ReactNative;
-
-const AnimatedView = Animatable.View;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 const DEVICE_HEIGHT = Dimensions.get(`window`).height;
@@ -368,9 +366,9 @@ export default class BodyScreen extends React.Component {
             });
         }
     }
-    animate (definition = {
-        onAnimationTransitionBegin: () => null,
-        onAnimationTransitionEnd: () => null,
+    animate (animation = {
+        onTransitionBegin: () => null,
+        onTransitionEnd: () => null,
         onAnimationBegin: () => null,
         onAnimationEnd: () => null
     }) {
@@ -378,113 +376,115 @@ export default class BodyScreen extends React.Component {
         const {
             Theme
         } = component.context;
-        const {
-            refName,
-            animations,
-            onAnimationTransitionBegin,
-            onAnimationTransitionEnd,
-            onAnimationBegin,
-            onAnimationEnd
-        } = definition;
 
-        const componentRef = component.refCache[refName];
-        if (componentRef !== undefined && Array.isArray(animations)) {
-            let transitionDuration = 0;
+        if (typeof animation === `string` && animation !== `none`) {
+            const animationName = animation.replace(/-([a-z])/g, (match, word) => word.toUpperCase());
+            if (Theme.screen.animation.body.hasOwnProperty(animationName)) {
+                animation = Theme.screen.animation.body[animationName];
+            }
+        }
 
-            const animationPromises = animations.map((animation, transitionIndex) => {
-                let animationTransitionBeginPromise;
-                let animationTransitionEndPromise;
+        if (typeof animation === `object`) {
+            const {
+                refName,
+                transitions,
+                onTransitionBegin,
+                onTransitionEnd,
+                onAnimationBegin,
+                onAnimationEnd
+            } = animation;
 
-                if (typeof animation === `string` && animation !== `none`) {
-                    const animationName = animation.replace(/-([a-z])/g, (match, word) => word.toUpperCase());
-                    if (Theme.screen.animation.hasOwnProperty(animationName)) {
-                        animation = Theme.screen.animation[animationName];
-                    }
-                }
+            const componentRef = component.refCache[refName];
+            if (componentRef !== undefined && Array.isArray(transitions)) {
+                let transitionDuration = 0;
 
-                if (typeof animation === `object`) {
-                    let transitionType;
-                    let componentRefAnimation = {
-                        from: {},
-                        to: {}
-                    };
-                    let componentRefAnimationOption = {
-                        duration: DEFAULT_ANIMATION_DURATION_MS,
-                        delay: 0,
-                        easing: `linear`
-                    };
+                const transitionPromises = transitions.map((transition, transitionIndex) => {
+                    let transitionBeginPromise;
+                    let transitionEndPromise;
 
-                    if (animation.hasOwnProperty(`from`)) {
-                        let from = typeof animation.from === `function` ? animation.from(component.props, component.state, component.context) : animation.from;
-                        componentRefAnimation.from = typeof from === `object` ? from : {};
-                        transitionType = `from`;
-                    }
-                    if (animation.hasOwnProperty(`to`)) {
-                        let to = typeof animation.to === `function` ? animation.to(component.props, component.state, component.context) : animation.to;
-                        componentRefAnimation.to = typeof to === `object` ? to : {};
-                        transitionType = transitionType === `from` ? `from-to` : `to`;
-                    }
-                    if (animation.hasOwnProperty(`option`) && typeof animation.option === `object`) {
-                        componentRefAnimationOption = {
-                            ...componentRefAnimationOption,
-                            ...animation.option
+                    if (typeof transition === `object`) {
+                        let transitionType;
+                        let componentRefTransition = {
+                            from: {},
+                            to: {}
                         };
+                        let componentRefTransitionOption = {
+                            duration: DEFAULT_ANIMATION_DURATION_MS,
+                            delay: 0,
+                            easing: `linear`
+                        };
+
+                        if (transition.hasOwnProperty(`from`)) {
+                            let from = typeof transition.from === `function` ? transition.from(component.props, component.state, component.context) : transition.from;
+                            componentRefTransition.from = typeof from === `object` ? from : {};
+                            transitionType = `from`;
+                        }
+                        if (transition.hasOwnProperty(`to`)) {
+                            let to = typeof transition.to === `function` ? transition.to(component.props, component.state, component.context) : transition.to;
+                            componentRefTransition.to = typeof to === `object` ? to : {};
+                            transitionType = transitionType === `from` ? `from-to` : `to`;
+                        }
+                        if (transition.hasOwnProperty(`option`) && typeof transition.option === `object`) {
+                            componentRefTransitionOption = {
+                                ...componentRefTransitionOption,
+                                ...transition.option
+                            };
+                        }
+
+                        transitionBeginPromise = new Promise((resolve) => {
+                            setTimeout(() => {
+                                if (transitionType === `to`) {
+                                    componentRef.transitionTo(
+                                        componentRefTransition.to,
+                                        componentRefTransitionOption.duration,
+                                        componentRefTransitionOption.easing,
+                                        componentRefTransitionOption.delay
+                                    );
+                                } else if (transitionType === `from-to`) {
+                                    setTimeout(() => {
+                                        componentRef.transition(
+                                            componentRefTransition.from,
+                                            componentRefTransition.to,
+                                            componentRefTransitionOption.duration,
+                                            componentRefTransitionOption.easing
+                                        );
+                                    }, componentRefTransitionOption.delay);
+                                }
+                                (typeof onTransitionBegin === `function` ? onTransitionBegin : () => null)(transitionIndex);
+                                resolve((_onTransitionBegin) => (typeof _onTransitionBegin === `function` ? _onTransitionBegin : () => null)(_onTransitionBegin));
+                            }, transitionDuration + 5);
+                        });
+
+                        transitionDuration += componentRefTransitionOption.duration + componentRefTransitionOption.delay;
+
+                        transitionEndPromise = new Promise((resolve) => {
+                            setTimeout(() => {
+                                (typeof onTransitionEnd === `function` ? onTransitionEnd : () => null)(transitionIndex);
+                                resolve((_onTransitionEnd) => (typeof _onTransitionEnd === `function` ? _onTransitionEnd : () => null)(transitionIndex));
+                            }, transitionDuration);
+                        });
                     }
 
-                    animationTransitionBeginPromise = new Promise((resolve) => {
-                        setTimeout(() => {
-                            (typeof onAnimationTransitionBegin === `function` ? onAnimationTransitionBegin : () => null)(transitionIndex);
-                            resolve((_onAnimationTransitionBegin) => (typeof _onAnimationTransitionBegin === `function` ? _onAnimationTransitionBegin : () => null)(_onAnimationTransitionBegin));
-                        }, transitionDuration);
-                    });
+                    return [ transitionBeginPromise, transitionEndPromise ];
+                });
 
-                    if (transitionType === `to`) {
-                        componentRef.transitionTo(
-                            componentRefAnimation.to,
-                            componentRefAnimationOption.duration,
-                            componentRefAnimationOption.easing,
-                            componentRefAnimationOption.delay
-                        );
-                    } else if (transitionType === `from-to`) {
-                        setTimeout(() => {
-                            componentRef.transition(
-                                componentRefAnimation.from,
-                                componentRefAnimation.to,
-                                componentRefAnimationOption.duration,
-                                componentRefAnimationOption.easing
-                            );
-                        }, componentRefAnimationOption.delay);
-                    }
+                const animationBeginPromise = new Promise((resolve) => {
+                    (typeof onAnimationBegin === `function` ? onAnimationBegin : () => null)();
+                    resolve((_onAnimationBegin) => (typeof _onAnimationBegin === `function` ? _onAnimationBegin : () => null)());
+                });
+                const animationEndPromise = new Promise((resolve) => {
+                    setTimeout(() => {
+                        (typeof onAnimationEnd === `function` ? onAnimationEnd : () => null)();
+                        resolve((_onAnimationEnd) => (typeof _onAnimationEnd === `function` ? _onAnimationEnd : () => null)());
+                    }, transitionDuration + 5);
+                });
 
-                    transitionDuration += componentRefAnimationOption.duration + componentRefAnimationOption.delay;
-
-                    animationTransitionEndPromise = new Promise((resolve) => {
-                        setTimeout(() => {
-                            (typeof onAnimationTransitionEnd === `function` ? onAnimationTransitionEnd : () => null)(transitionIndex);
-                            resolve((_onAnimationTransitionEnd) => (typeof _onAnimationTransitionEnd === `function` ? _onAnimationTransitionEnd : () => null)(transitionIndex));
-                        }, transitionDuration);
-                    });
-                }
-
-                return [ animationTransitionBeginPromise, animationTransitionEndPromise ];
-            });
-
-            const animationBeginPromise = new Promise((resolve) => {
-                (typeof onAnimationBegin === `function` ? onAnimationBegin : () => null)();
-                resolve((_onAnimationBegin) => (typeof _onAnimationBegin === `function` ? _onAnimationBegin : () => null)());
-            });
-            const animationEndPromise = new Promise((resolve) => {
-                setTimeout(() => {
-                    (typeof onAnimationEnd === `function` ? onAnimationEnd : () => null)();
-                    resolve((_onAnimationEnd) => (typeof _onAnimationEnd === `function` ? _onAnimationEnd : () => null)());
-                }, transitionDuration);
-            });
-
-            return Promise.all([
-                animationBeginPromise,
-                ...animationPromises.flat(),
-                animationEndPromise
-            ].filter((animationPromise) => animationPromise !== undefined));
+                return Promise.all([
+                    animationBeginPromise,
+                    ...transitionPromises.flat(),
+                    animationEndPromise
+                ].filter((animationPromise) => animationPromise !== undefined));
+            }
         }
     }
     componentDidMount () {
@@ -533,6 +533,7 @@ export default class BodyScreen extends React.Component {
                 ref = {(componentRef) => {
                     component.refCache[`animated-content-top-room-view`] = componentRef;
                 }}
+                useNativeDriver = { true }
                 style = { adjustedStyle.contentTopRoom }
             >
                 {
@@ -544,6 +545,7 @@ export default class BodyScreen extends React.Component {
                 ref = {(componentRef) => {
                     component.refCache[`animated-content-middle-room-view`] = componentRef;
                 }}
+                useNativeDriver = { true }
                 style = { adjustedStyle.contentMiddleRoom }
             >
                 {
@@ -555,6 +557,7 @@ export default class BodyScreen extends React.Component {
                 ref = {(componentRef) => {
                     component.refCache[`animated-content-bottom-room-view`] = componentRef;
                 }}
+                useNativeDriver = { true }
                 style = { adjustedStyle.contentBottomRoom }
             >
                 {

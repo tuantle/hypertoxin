@@ -30,7 +30,7 @@ import ReactNative from 'react-native'; // eslint-disable-line
 
 import PropTypes from 'prop-types';
 
-import * as Animatable from 'react-native-animatable';
+import { View as AnimatedView } from 'react-native-animatable';
 
 import {
     DefaultTheme,
@@ -44,8 +44,6 @@ const {
     Text,
     View
 } = ReactNative;
-
-const AnimatedView = Animatable.View;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 
@@ -922,6 +920,7 @@ export default class HeaderScreen extends React.Component {
                     ref = {(componentRef) => {
                         component.refCache[`animated-navigation-content-left-room-view`] = componentRef;
                     }}
+                    useNativeDriver = { true }
                     style = { adjustedStyle.contentLeftRoom }
                 >
                     {
@@ -933,6 +932,7 @@ export default class HeaderScreen extends React.Component {
                     ref = {(componentRef) => {
                         component.refCache[`animated-navigation-content-middle-room-view`] = componentRef;
                     }}
+                    useNativeDriver = { true }
                     style = { adjustedStyle.contentMiddleRoom }
                 >
                     {
@@ -944,6 +944,7 @@ export default class HeaderScreen extends React.Component {
                     ref = {(componentRef) => {
                         component.refCache[`animated-navigation-content-right-room-view`] = componentRef;
                     }}
+                    useNativeDriver = { true }
                     style = { adjustedStyle.contentRightRoom }
                 >
                     {

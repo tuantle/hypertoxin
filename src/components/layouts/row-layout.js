@@ -30,7 +30,7 @@ import ReactNative from 'react-native'; // eslint-disable-line
 
 import PropTypes from 'prop-types';
 
-import * as Animatable from 'react-native-animatable';
+import { View as AnimatedView } from 'react-native-animatable';
 
 import {
     DefaultTheme,
@@ -42,8 +42,6 @@ const {
     ScrollView,
     PanResponder
 } = ReactNative;
-
-const AnimatedView = Animatable.View;
 
 const DEVICE_WIDTH = Dimensions.get(`window`).width;
 const DEVICE_HEIGHT = Dimensions.get(`window`).height;
@@ -836,6 +834,7 @@ export default class RowLayout extends React.Component {
                 ref = {(componentRef) => {
                     component.refCache[`animated-content-top-room-view`] = componentRef;
                 }}
+                useNativeDriver = { true }
                 style = { adjustedStyle.contentTopRoom }
             >
                 {
@@ -847,6 +846,7 @@ export default class RowLayout extends React.Component {
                 ref = {(componentRef) => {
                     component.refCache[`animated-content-middle-room-view`] = componentRef;
                 }}
+                useNativeDriver = { true }
                 style = { adjustedStyle.contentMiddleRoom }
             >
                 {
@@ -858,6 +858,7 @@ export default class RowLayout extends React.Component {
                 ref = {(componentRef) => {
                     component.refCache[`animated-content-bottom-room-view`] = componentRef;
                 }}
+                useNativeDriver = { true }
                 style = { adjustedStyle.contentBottomRoom }
             >
                 {
