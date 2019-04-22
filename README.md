@@ -832,7 +832,7 @@ Below are some component animation examples.
 <p align="center">
     <em>An example of animating sequences of a popup menu</em>
 </p>
-[*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675)
+[Code example](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675)
 
 ## Theme Customization
 
