@@ -3,32 +3,36 @@
 [![npm downloads](https://img.shields.io/npm/dm/hypertoxin.svg?style=flat-square)](https://www.npmjs.com/package/hypertoxin)
 ## A themeable and declarative React Native component library for developing native mobile apps.
 
-Screenshots with some example themes.
-
 <p align="center">
     <img width="25%" height="25%" src="/assets/screenshots/screenshot-6.png">
     <img width="25%" height="25%" src="/assets/screenshots/screenshot-5.png">
     <img width="25%" height="25%" src="/assets/screenshots/screenshot-7.png">
 </p>
-
-Dynamic theme switching.
+<p align="center">
+    <em>Screenshots with some example themes</em>
+</p>
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/theme-switching.gif">
 </p>
-
-Mock up shopping app screenshots with default theme.
+<p align="center">
+    <em>Dynamic theme switching</em>
+</p>
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screenshots/screenshot-1.png">
     <img width="25%" height="25%" src="/assets/screenshots/screenshot-2.png">
 </p>
-
-Mock up shopping app screenshots with bubble theme.
+<p align="center">
+    <em>Mock up shopping app screenshots with default theme</em>
+</p>
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screenshots/screenshot-3.png">
     <img width="25%" height="25%" src="/assets/screenshots/screenshot-4.png">
+</p>
+<p align="center">
+    <em>Mock up shopping app screenshots with bubble theme</em>
 </p>
 
 # Installation
@@ -37,11 +41,12 @@ Mock up shopping app screenshots with bubble theme.
 
 # Usage
 
-To animate things you must use the `createAnimatableComponent` composer similar to the `Animated.createAnimatedComponent`. The common components `View`, `Text` and `Image` are precomposed and exposed under the `Animatable` namespace. If you have your own component that you wish to animate, simply wrap it with a `Animatable.View` or compose it with:
+The imported `hypertoxin` object is consists of `Ht`, `ThemeContext`, and `Theme`. `Ht` is an object containing all available components. `Theme` is the default global theme object which is used as a reference for making custom themes. `ThemeContext` the a react context provider which is required for setting custom themes.
 
 ```js
 import React, { Component } from 'react';
-import { Hf, ThemeContext, Theme as DefaultTheme } from 'hyperflow';
+import ReactNative from 'react-native'
+import { Ht, ThemeContext, Theme as DefaultTheme } from 'hyperflow';
 
 // All current available components. More to come...
 const {
@@ -86,8 +91,6 @@ export default class App extends Component {
 
 ```
 
----
-
 - [Documentations & Examples](#documentations)
     - [Button Components](#button-components)
     - [Field Components](#field-components)
@@ -101,6 +104,8 @@ export default class App extends Component {
 - [Change Log](#change-log)
 - [License](#license)
 
+---
+
 # Documentations
 
 ## Button Components
@@ -109,7 +114,7 @@ export default class App extends Component {
     <img src="/assets/screen-records/buttons.gif">
 </p>
 
-Hypertoxin has three button components, [*FlatButton*](https://github.com/tuantle/hypertoxin/blob/master/src/components/buttons/flat-button.js), [*RaisedButton*](https://github.com/tuantle/hypertoxin/blob/master/src/components/buttons/raised-button.js), [*AreaButton*](https://github.com/tuantle/hypertoxin/blob/master/src/components/buttons/area-button.js)
+Hypertoxin has three button components, [*FlatButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/flat-button.js), [*RaisedButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/raised-button.js), and [*AreaButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/area-button.js)
 
 #### Flat Button Properties
 
@@ -131,7 +136,7 @@ color | string | `themed` | Set button's color style. Can be hex string, default
 debounced | boolean | false | Enable button debouncing at 250 ms
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
 onPress | function | None | Button press action callback
-style | object | None | Flat button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
+style | object | None | Flat button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/flat-button.js#L53)
 
 #### Raised Button Properties
 
@@ -152,7 +157,7 @@ color | string | `themed` | Set button's color style. Can be hex string, default
 debounced | boolean | false | Enable button debouncing at 250 ms
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
 onPress | function | None | Button press action callback
-style | object | None | Raised button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
+style | object | None | Raised button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/raised-button.js#L63)
 
 #### Area Button Properties
 
@@ -170,7 +175,7 @@ rippled | boolean, string | `themed` | Enable button ripple animation
 debounced | boolean | false | Enable button debouncing at 250 ms
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
 onPress | function | None | Button press action callback
-style | object | None | Area button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, ripple: {...}`. Unlike flat and raised buttons, there is no middle room styling. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
+style | object | None | Area button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, ripple: {...}`. Unlike flat and raised buttons, there is no middle room styling. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/area-button.js#L55)
 
 *Note: `themed` propperty indicates using values defined by the global theme provider.*
 
@@ -182,12 +187,20 @@ By default, flat button component passes `shade`, `size`, and `color` properties
 </FlatButton>
 ```
 
-#### Flat Button Examples
+#### Button Component Public Methods Access Via Reference
 
-JSX code for standard flat buttons with colors defined by global theme.
+Methods | description
+-----|------
+animate | Do animation. See [Animation API](#animation-api)
+
+
+#### Flat Button Examples
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/flat-buttons.png">
+</p>
+<p align="center">
+    <em>Standard flat buttons with colors defined by global theme</em>
 </p>
 
 ```jsx
@@ -197,10 +210,13 @@ JSX code for standard flat buttons with colors defined by global theme.
 <FlatButton overlay = 'opaque' label = 'BUTTON' color = 'accent' />
 ```
 
-And as clear buttons when styled with `overlay = 'transparent'` property. The component will adjust the label text color accordingly.
+Clear buttons can be created when styling flat buttons with `overlay = 'transparent'` property. The component will auto-adjust the label text color accordingly.
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/clear-buttons.png">
+</p>
+<p align="center">
+    <em>Standard clear buttons with colors defined by global theme</em>
 </p>
 
 ```jsx
@@ -210,16 +226,18 @@ And as clear buttons when styled with `overlay = 'transparent'` property. The co
 <FlatButton overlay = 'transparent' label = 'BUTTON' color = 'accent' />
 ```
 
-JSX code for flat buttons in 3 available sizes with icon images to the left.
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/flat-buttons-with-l-icons.png">
 </p>
-
-And icon images to the right.
+<p align="center">
+    <em>Flat buttons in 3 available sizes with icon images to the left</em>
+</p>
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/flat-buttons-with-r-icons.png">
+</p>
+<p align="center">
+    <em>And icon images to the right</em>
 </p>
 
 To add icon image to button, add a child icon image component (more details for IconImage component below) with a content `room` property. All button components have 4 child rooms, `content-left`, `content-middle`, `content-right`, and `badge`.
@@ -247,11 +265,12 @@ Internally, a room is just a convient way for creating child Views, thus allowin
 </FlatButton>
 ```
 
-And similarly as clear buttons.
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/clear-buttons-with-l-icons.png">
     <img width="50%" height="50%" src="/assets/screenshots/clear-buttons-with-r-icons.png">
+</p>
+<p align="center">
+    <em>Clear buttons in 3 available sizes with icon images to the left & right</em>
 </p>
 
 ```jsx
@@ -275,10 +294,11 @@ And similarly as clear buttons.
 </FlatButton>
 ```
 
-A few examples of corner styling.
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/flat-buttons-with-corners.png">
+</p>
+<p align="center">
+    <em>A few examples of corner styling</em>
 </p>
 
 ```jsx
@@ -287,7 +307,7 @@ A few examples of corner styling.
 <FlatButton overlay = 'opaque' label = 'BUTTON' color = 'accent' corner = 'circular' />
 ```
 
-To create a button with a badge, add a child text component (more details for InfoText component below) with a `room = 'badge'`.
+To create a button with a badge, add a child text component with a `room = 'badge'`.
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screenshots/flat-button-with-badge.png">
@@ -300,10 +320,12 @@ To create a button with a badge, add a child text component (more details for In
 </FlatButton>
 ```
 
-Below are JSX code for flat outlined buttons when styled with `overlay = 'transparent-outline'` property
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/flat-buttons-with-outlines.png">
+</p>
+<p align="center">
+    <em>Flat outlined buttons when styled with `overlay = 'transparent-outline'` property
+</em>
 </p>
 
 ```jsx
@@ -316,10 +338,11 @@ Below are JSX code for flat outlined buttons when styled with `overlay = 'transp
 <FlatButton overlay = 'transparent-outline' size = 'large' label = 'BUTTON' color = 'accent' corner = 'circular' />
 ```
 
-Flat buttons styled as icon buttons.
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/icon-buttons.png">
+</p>
+<p align="center">
+    <em>Flat buttons styled as icon buttons</em>
 </p>
 
 ```jsx
@@ -342,10 +365,11 @@ Flat buttons styled as icon buttons.
 
 #### Raised Button Examples
 
-JSX code for standard raised buttons with colors defined by global theme.
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/raised-buttons.png">
+</p>
+<p align="center">
+    <em>Standard raised buttons with colors defined by global theme</em>
 </p>
 
 ```jsx
@@ -355,16 +379,12 @@ JSX code for standard raised buttons with colors defined by global theme.
 <RaisedButton label = 'BUTTON' color = 'accent' />
 ```
 
-JSX code for raised buttons in 3 available sizes with icon images to the left.
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/raised-buttons-with-l-icons.png">
-</p>
-
-And icon images to the right.
-
-<p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/raised-buttons-with-r-icons.png">
+</p>
+<p align="center">
+    <em>Raised buttons in 3 available sizes with icon images to the left & right</em>
 </p>
 
 ```jsx
@@ -388,10 +408,11 @@ And icon images to the right.
 </RaisedButton>
 ```
 
-A few examples of corner styling.
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/raised-buttons-with-corners.png">
+</p>
+<p align="center">
+    <em>A few examples of corner styling</em>
 </p>
 
 ```jsx
@@ -400,10 +421,11 @@ A few examples of corner styling.
 <RaisedButton label = 'BUTTON' color = 'accent' corner = 'circular' />
 ```
 
-Raised buttons styled as FABs.
-
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/fab-buttons.png">
+</p>
+<p align="center">
+    <em>Raised buttons styled as floating action buttons</em>
 </p>
 
 ```jsx
@@ -430,7 +452,7 @@ Raised buttons styled as FABs.
     renderItem = {(listData) => {
         const animal = listData.item;
         return (
-            <AreaButton ref = {(componentRef) => component.itemViewRefs.push(componentRef)} shade = { shade }>
+            <AreaButton shade = { shade }>
                 <ColumnLayout room = 'content-left' roomAlignment = 'center' >
                     <AvatarImage room = 'content-left' source = { animal.avatarImage } dropShadowed = { false } />
                     <TitleText room = 'content-right' size = 'small' indentation = { 20 }>{ animal.name }</TitleText>
@@ -448,9 +470,44 @@ Raised buttons styled as FABs.
 
 <p align="center">
     <img src="/assets/screen-records/text-fields.gif">
+    <img src="/assets/screen-records/search-field.gif">
 </p>
 
-Hypertoxin has two field components, [*TextField*](https://github.com/tuantle/hypertoxin/blob/master/src/components/fields/text-field.js), [*SearchField*](https://github.com/tuantle/hypertoxin/blob/master/src/components/fields/search-field.js)
+Hypertoxin has two field components, [*TextField*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/fields/text-field.js) and [*SearchField*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/fields/search-field.js)
+
+#### Search Field Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
+room | string | `none` | Set search field's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+shade | string, object | `themed` | Set search field's shade theme, can be `themed`, `light`, or `dark`
+overlay | string | `themed` | Set search field's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+corner | string, number, object | `themed` | Set search field's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+size  | string  | `themed`  | Set search field's size which can be one of `themed`, `small`, `normal`, `large`
+margin | string, number, object | None | Set search field's margin styles. As a number, the margin is equally set around search field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+dropShadowed | boolean, string | `themed` | Enable search field's container drop shadow
+autoFocus | boolean | true | Enable search field's auto focus
+autoCorrect | boolean | true | Enable search field's auto correct spelling
+suggestive | boolean | true | Enable search field's suggestion pullup view
+pinnedSuggestionValues  | [string], [number], [object]  | [] | A list of pinned suggestion values
+hint  | string  | None | Set search field's hint
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
+style | object | None | Search field style is an object with the following properties: `container: {...}, box, {...}, contentLeftRoom: {...}, contentRightRoom: {...}, input: {...}, suggestion: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/search-field.js#L68)
+onSearch | function | None | Called after search field's text input onSubmitEditing. Takes submitted search text value as argument
+onGetAutocompletionValues | async function | None | Async retrieve autocompletion string value array for suggestion pullup view
+onEditing | function | None |
+onFocus | function | None | Called after search field's text input is focused. Takes no argument
+onBlur | function | None | Called after search field's text input is blurred. Takes no argument
+onCollapse | function | None |
+onExpand | function | None |
+onHide | function | None |
+onShow | function | None |
+onHideSuggestion | function | None |
+onShowSuggestion | function | None |
+onClear | function | None | Called after search field's text input is cleared. Takes no argument
+onClearSuggestion | function | None |
+renderSuggestionItem | function | None |
 
 #### Text Field Properties
 
@@ -473,46 +530,51 @@ selectableValues  | [string], [number], [object]  | [] | A list of selectable va
 label  | string  | None | Set text field's label
 hint  | string  | None | Set text field's hint
 charLimit  | number  | -1 | Set text input's max characters count. Set charLimit > -1 for no character limit. When charLimit > 1, a little character counter will be visible in the bottom right
-lineLimit  | number  | 1 | Set text input's max lines count. Set lineLimit > 1 for multilined text input 
+lineLimit  | number  | 1 | Set text input's max lines count. Set lineLimit > 1 for multilined text input
 inputType  | string  | `default` | Set text input's type which can be one of `default`, `numeric`, `monetary`, `phone-pad`, `email-address`, `credit-card-visa`, `credit-card-master`, `credit-card-discover`, `credit-card-american-express`
 disableValidation  | bool  | false | Disable text input validation
 disableFormatting  | bool  | false | Disable text input formatting
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme
-
-onValidate: PropTypes.func,
-onFormat: PropTypes.func,
-onEditing: PropTypes.func,
-onDoneEdit: PropTypes.func,
-onSelect: PropTypes.func,
-onFocus: PropTypes.func,
-onBlur: PropTypes.func,
-onHideSelection: PropTypes.func,
-onShowSelection: PropTypes.func,
-onClear: PropTypes.func,
-renderSelectableItem: PropTypes.func
+style | object | None | Text field style is an object with the following properties: `container: {...}, box: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, input: {...}, helper: {...}, status: {...}, label: {...}, underline: {...}, selection: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L55)
+onValidate | function | See [default onValidate](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L1022) | Called after text field's text input onChangeText or onEndEditing. Takes current text input value and inputType as arguments. Expects return object with a `validate` boolean property and a `status` string property
+onFormat | function | See [default onFormat](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L1075) | Called after text field's text input onChangeText. Takes current text input value as argument. Return formated value
+onEditing | function | None | Called when text field's text input onChangeText. Takes current text input value as argument.
+onDoneEdit | function | None | Called when a value in text field's selectable pullup view is selected or after text field's text input onSubmitEditing. Takes current text input value or selected value as argument
+onSelect | function | None  | Called when a value in text field's selectable pullup view is selected. Takes selected value as argument
+onFocus | function | None | Called after text field's text input is focused. Takes no argument
+onBlur | function | None | Called after text field's text input is blurred. Takes no argument
+onHideSelection | function | None | Called after text field's selectable pullup view is hidden. Takes no argument
+onShowSelection | function | None | Called after text field's selectable pullup view is visible. Takes no argument
+onClear | function | None | Called after text field's text input is cleared. Takes no argument
+renderSelectableItem | function | None |
 
 *Note: `themed` propperty indicates using values defined by the global theme provider.*
 
 By default, text field component passes `shade`, `size`, and `disabled` properties down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. This behaviour can be overide by child components with the `exclusions` property.
 
-#### Text Field Public Methods Access Via Reference
+#### Text Field Component Public Methods Access Via Reference
 
 Methods | description
 -----|------
 isValidated | Check if text input's value is validated
-isSelectionVisible | Check if selectable pullups view is visible
+isSelectionVisible | Check if selectable pullup view is visible
 isFocused | Check if text input's value is focused
-showSelection | Call to show selectable pullups view if `selectableValues` is provided
-hideSelection | Call to hide selectable pullups view if `selectableValues` is provided
+showSelection | Call to show selectable pullup view if `selectableValues` is provided
+hideSelection | Call to hide selectable pullup view if `selectableValues` is provided
 focus | Call to focus text input
 blur | Call to blur text input
 clear | Call to clear text input
+animate | Do animation. See [Animation API](#animation-api)
 
-Text field with formatting and validation.
+#### Search Field Examples
+
+#### Text Field Examples
 
 <p align="center">
     <img width="35%" height="35%" src="/assets/screen-records/text-field-with-formatting-validation.gif">
+</p>
+<p align="center">
+    <em>Text field with formatting and validation</em>
 </p>
 
 ```jsx
@@ -557,10 +619,11 @@ Text field with formatting and validation.
 </TextField>
 ```
 
-Text field with selectable pullups.
-
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/text-field-selectable.gif">
+</p>
+<p align="center">
+    <em>Text field with selectable pullup view</em>
 </p>
 
 ```jsx
@@ -586,7 +649,10 @@ Text field with selectable pullups.
             </AreaButton>
         );
     }}
->
+
+    <FlatButton room = 'content-right' overlay = 'transparent' action = 'clear' corner = 'circular' >
+        <IconImage room = 'content-middle' source = 'cancel' />
+    </FlatButton>
     <FlatButton room = 'content-right' overlay = 'transparent' action = 'show-selection' corner = 'circular' >
         <IconImage room = 'content-middle' source = 'collapse' />
     </FlatButton>
@@ -598,27 +664,30 @@ Text field with selectable pullups.
 
 ## Text Components
 
-Text components with default theme and San-Francisco font.
-
 <p align="center">
     <img width="35%" height="35%" src="/assets/screenshots/screenshot-text-default-theme.png">
 </p>
-
-Text components with bubble theme and Arial font.
+<p align="center">
+    <em>Text components with default theme and San-Francisco font</em>
+</p>
 
 <p align="center">
     <img width="35%" height="35%" src="/assets/screenshots/screenshot-text-bubble-theme.png">
 </p>
-
-Text components with coffee theme and Futura font.
+<p align="center">
+    <em>Text components with bubble theme and Arial font</em>
+</p>
 
 <p align="center">
     <img width="35%" height="35%" src="/assets/screenshots/screenshot-text-coffee-theme.png">
 </p>
+<p align="center">
+    <em>Text components with coffee theme and Futura font</em>
+</p>
 
-Hypertoxin has five text components, [*CaptionText*](https://github.com/tuantle/hypertoxin/blob/master/src/components/texts/caption-text.js), [*InfoText*](https://github.com/tuantle/hypertoxin/blob/master/src/components/texts/info-text.js), [*SubtitleText*](https://github.com/tuantle/hypertoxin/blob/master/src/components/texts/subtitle-text.js), [*TitleText*](https://github.com/tuantle/hypertoxin/blob/master/src/components/texts/title-text.js), [*HeadlineText*](https://github.com/tuantle/hypertoxin/blob/master/src/components/texts/headline-text.js)
+Hypertoxin has five text components, [*CaptionText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/caption-text.js), [*InfoText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/info-text.js), [*SubtitleText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/subtitle-text.js), [*TitleText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/title-text.js), [*HeadlineText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/headline-text.js)
 
-#### Text (Caption, Info, Subtitle, Title, & Headline) Property
+#### Text (Caption, Info, Subtitle, Title, & Headline) Properties
 
 Prop | Type | Default | description
 -----|------|---------|------------
@@ -633,8 +702,15 @@ uppercased  | boolean  | False  | Force uppercased text
 lowercased  | boolean  | False  | Force lowercased text
 indentation  | number  | 0  | Set text indentation
 color | string | `themed` | Set text's color style. Can be hex string, default color name, or themed color name
-initialAnimation | string, object | None  | See [Animations](## Animations) section for details
-style | object | None | Standard React Native text style properties
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
+style | object | None | Standard React Native text style properties.
+
+#### Text Components Public Methods Access Via Reference
+
+Methods | description
+-----|------
+animate | Do animation. See [Animation API](#animation-api)
+
 
 ```jsx
 <HeadlineText size = 'large' color = 'default' > Headline Large </HeadlineText>
@@ -667,24 +743,102 @@ style | object | None | Standard React Native text style properties
 
 ## Screen Components
 
-Hypertoxin has two screen components, [*BodyScreen*](https://github.com/tuantle/hypertoxin/blob/master/src/components/screens/body-screen.js), [*HeaderScreen*](https://github.com/tuantle/hypertoxin/blob/master/src/components/screens/header-screen.js)
+Hypertoxin has two screen components, [*BodyScreen*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/screens/body-screen.js), [*HeaderScreen*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/screens/header-screen.js)
 
 ## Layout Components}
 
-Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/column-layout.js)
+Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/column-layout.js)
 
 ## Image Components
 
-Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/master/src/components/layouts/column-layout.js)
+Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/column-layout.js)
+
+## Divider Components
+
+Hypertoxin has two divider components, [*HorizontalDivider*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/dividers/horizontal-divider.js), [*VeriticalDivider*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/dividers/vertical-divider.js)
+
+#### Divider (Horizontal and Vertical) Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
+room | string | `none` | Set divider's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+shade | string, object | `themed` | Set divider shade theme, can be `themed`, `light`, or `dark`
+thickness | number, string | `themed` | Set divider line thickness
+edgeToEdge | boolean | false | Force divider line to the edges of screen
+margin | string, number, object | None | Set text field's margin styles. As a number, the margin is equally set around text field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+color | string | `themed` | Set divider's color style. Can be hex string, default color name, or themed color name
+style | object | None | Standard React Native view style properties
 
 ## Animation API
 
+In Hypertoxin component library, all components, except for HorizontalDivider, VeriticalDivider, and CoverImage, have an `animate` method and an `initialAnimation` property. At it core, Hypertoxin uses [react-native-animatable](https://github.com/oblador/react-native-animatable) library for animation transistion.
+
+#### Property `initialAnimation`
+
+This property is set for initial component animation right after mounting. It can be either a string or an object. As a object, this property has a PropTypes shape of:
+
+```js
+PropTypes.shape({
+    refName: PropTypes.string,
+    transitions: PropTypes.arrayOf(PropTypes.shape({
+        to: PropTypes.object,
+        from: PropTypes.object,
+        option: PropTypes.shape({
+            duration: PropTypes.number,
+            delay: PropTypes.number,
+            easing: PropTypes.string
+        })
+    })),
+    onTransitionBegin: PropTypes.func,
+    onTransitionEnd: PropTypes.func,
+    onAnimationBegin: PropTypes.func,
+    onAnimationEnd: PropTypes.func
+})
+```
+
+Where `refName` is reference name of animated child content component. See child component reference names [table](#child-component-references). And `transitions` is an array of transition object that has `to`, `from`, and `option` properties. From contains the starting transition animation style, and to contains the ending transition animation style. See [react-native-animatable](https://github.com/oblador/react-native-animatable) documentation for more details.
+
+#### Method `animate`
+
+Below are some component animation examples.
+
+<p align="center">
+    <img width="25%" height="25%" src="/assets/screen-records/button-animation2.gif">
+</p>
+<p align="center">
+    <em>An example of animating sequences of a simple submit button. [*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L310)</em>
+</p>
+
+<p align="center">
+    <img width="25%" height="25%" src="/assets/screen-records/button-animation1.gif">
+</p>
+<p align="center">
+    <em>An example of animating sequences of payment submit button. [*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121)</em>
+</p>
+
+<p align="center">
+    <img width="15%" height="15%" src="/assets/screen-records/button-animation3.gif">
+</p>
+<p align="center">
+    <em>An example of animating sequences of an expanding FAB menu. [*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444)</em>
+</p>
+
+<p align="center">
+    <img width="25%" height="25%" src="/assets/screen-records/button-animation4.gif">
+</p>
+<p align="center">
+    <em>An example of animating sequences of a popup menu. [*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675)</em>
+</p>
+
 ## Theme Customization
+
+## Child Component References
 
 # Demo
 
 # Change Log
-- Link to [change log](https://github.com/tuantle/hypertoxin/tree/master/CHANGELOG.md)
+- Link to [change log](https://github.com/tuantle/hypertoxin/tree/develop/CHANGELOG.md)
 
 # License
 
