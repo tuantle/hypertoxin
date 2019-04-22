@@ -91,6 +91,12 @@ export default {
                 refName: ``,
                 transitions: []
             }
+        },
+        body: {
+            none: {
+                refName: ``,
+                transitions: []
+            }
         }
     }
 };
