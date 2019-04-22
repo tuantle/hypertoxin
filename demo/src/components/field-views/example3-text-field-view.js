@@ -174,6 +174,17 @@ const RegistrationTextFieldView = (props) => {
                     <FlatButton
                         room = 'content-right'
                         overlay = 'transparent'
+                        action = 'clear'
+                        corner = 'circular'
+                    >
+                        <IconImage
+                            room = 'content-middle'
+                            source = 'cancel'
+                        />
+                    </FlatButton>
+                    <FlatButton
+                        room = 'content-right'
+                        overlay = 'transparent'
                         action = 'show-selection'
                         corner = 'circular'
                     >

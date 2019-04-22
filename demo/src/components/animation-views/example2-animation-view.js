@@ -692,7 +692,7 @@ export default class Example2AnimationView extends React.Component {
                         style = {{
                             container: {
                                 width: 155,
-                                height: 175,
+                                height: 170,
                                 transform: [{
                                     scaleX: 0
                                 }, {
