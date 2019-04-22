@@ -1989,7 +1989,8 @@ export default class TextField extends React.Component {
             disabled,
             label,
             hint,
-            onDoneEdit
+            onDoneEdit,
+            onSelect
         } = component.props;
         const {
             input
@@ -2030,6 +2031,7 @@ export default class TextField extends React.Component {
                                 });
                             }
                             (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(item.value);
+                            (typeof onSelect === `function` ? onSelect : () => null)(item.value);
                         });
                     }
                 });
@@ -2049,6 +2051,7 @@ export default class TextField extends React.Component {
                         });
                     }
                     (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(item.value);
+                    (typeof onSelect === `function` ? onSelect : () => null)(item.value);
                 });
             }
         }
