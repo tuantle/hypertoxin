@@ -807,29 +807,37 @@ Below are some component animation examples.
     <img width="25%" height="25%" src="/assets/screen-records/button-animation2.gif">
 </p>
 <p align="center">
-    <em>An example of animating sequences of a simple submit button. [*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L310)</em>
+    <em>An example of animating sequences of a simple submit button</em>
 </p>
+
+[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L310)
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/button-animation1.gif">
 </p>
 <p align="center">
-    <em>An example of animating sequences of payment submit button. [*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121)</em>
+    <em>An example of animating sequences of payment submit button</em>
 </p>
+
+[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121)
 
 <p align="center">
     <img width="15%" height="15%" src="/assets/screen-records/button-animation3.gif">
 </p>
 <p align="center">
-    <em>An example of animating sequences of an expanding FAB menu. [*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444)</em>
+    <em>An example of animating sequences of an expanding FAB menu</em>
 </p>
+
+[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444)
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/button-animation4.gif">
 </p>
 <p align="center">
-    <em>An example of animating sequences of a popup menu. [*Full code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675)</em>
+    <em>An example of animating sequences of a popup menu</em>
 </p>
+
+[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675)
 
 ## Theme Customization
 
