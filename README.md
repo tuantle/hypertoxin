@@ -4,9 +4,9 @@
 ## A themeable and declarative React Native component library for developing native mobile apps.
 
 <p align="center">
-    <img width="35%" height="35%" src="/assets/screenshots/screenshot-home-default-theme.png">
-    <img width="35%" height="35%" src="/assets/screenshots/screenshot-home-bubble-theme.png">
-    <img width="35%" height="35%" src="/assets/screenshots/screenshot-home-coffee-theme.png">
+    <img width="25%" height="25%" src="/assets/screenshots/screenshot-home-default-theme.png">
+    <img width="25%" height="25%" src="/assets/screenshots/screenshot-home-bubble-theme.png">
+    <img width="25%" height="25%" src="/assets/screenshots/screenshot-home-coffee-theme.png">
 </p>
 <p align="center">
     <em>Screenshots with some example themes</em>
@@ -20,18 +20,18 @@
 </p>
 
 <p align="center">
-    <img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-home-default-theme.png">
-    <img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-cart-default-theme.png">
-    <img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-checkout-default-theme.png">
+    <img width="25%" height="25%" src="/assets/screenshots/screenshot-shopping-home-default-theme.png">
+    <img width="25%" height="25%" src="/assets/screenshots/screenshot-shopping-cart-default-theme.png">
+    <img width="25%" height="25%" src="/assets/screenshots/screenshot-shopping-checkout-default-theme.png">
 </p>
 <p align="center">
     <em>Mock up shopping app screenshots with default theme</em>
 </p>
 
 <p align="center">
-<img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-home-bubble-theme.png">
-<img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-cart-bubble-theme.png">
-<img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-checkout-bubble-theme.png">
+<img width="25%" height="25%" src="/assets/screenshots/screenshot-shopping-home-bubble-theme.png">
+<img width="25%" height="25%" src="/assets/screenshots/screenshot-shopping-cart-bubble-theme.png">
+<img width="25%" height="25%" src="/assets/screenshots/screenshot-shopping-checkout-bubble-theme.png">
 </p>
 <p align="center">
     <em>Mock up shopping app screenshots with bubble theme</em>
@@ -52,14 +52,14 @@ $ cd hypertoxin/demo
 npm install
 ```
 
-This will install the required modules such as React Native, Hypertoxin, [Hyperfloe](https://github.com/tuantle/hyperflow), and others. Then open `hypertoxin/demo/ios` with Xcode, select your ios simulator/device, and build. The default build scheme is release.
+This will install the required modules such as React Native, Hypertoxin, [Hyperflow](https://github.com/tuantle/hyperflow), and others. Then open `hypertoxin/demo/ios` with Xcode, select your ios simulator/device, and build. The default build scheme is release.
 When use successfully, you will see the following on your device or simulator.
 
 <p align="center">
     <img width="35%" height="35%" src="/assets/screen-records/demo.gif">
 </p>
 <p align="center">
-    <em>[*Demo source code*](https://github.com/tuantle/hypertoxin/tree/develop/demo/src)</em>
+    <em>https://github.com/tuantle/hypertoxin/tree/develop/demo/src</em>
 </p>
 
 
@@ -1457,8 +1457,7 @@ Below are a few more examples of animations and code.
 </p>
 <p align="center">
     <em>An example of animation sequences of payment submit button.</em>
-    <em>[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121)
-</em>
+    <em>https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121</em>
 </p>
 
 <p align="center">
@@ -1466,7 +1465,7 @@ Below are a few more examples of animations and code.
 </p>
 <p align="center">
     <em>An example of animation sequences of an expanding FAB menu.</em>
-    <em>[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444)</em>
+    <em>https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444</em>
 </p>
 
 <p align="center">
@@ -1474,7 +1473,7 @@ Below are a few more examples of animations and code.
 </p>
 <p align="center">
     <em>An example of animation sequences for popup menu.</em>
-    <em>[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675)</em>
+    <em>https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675</em>
 </p>
 
 <p align="center">
@@ -1482,7 +1481,7 @@ Below are a few more examples of animations and code.
 </p>
 <p align="center">
     <em>An example of animation sequences for header screen entry & exit.</em>
-    <em>[*Code example*](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/components/animation-views/example1-animation-view.js)</em>
+    <em>https://github.com/tuantle/hypertoxin/blob/develop/demo/src/components/animation-views/example1-animation-view.js</em>
 </p>
 
 ## Global Theme Customization
