@@ -4,32 +4,34 @@
 ## A themeable and declarative React Native component library for developing native mobile apps.
 
 <p align="center">
-    <img width="25%" height="25%" src="/assets/screenshots/screenshot-6.png">
-    <img width="25%" height="25%" src="/assets/screenshots/screenshot-5.png">
-    <img width="25%" height="25%" src="/assets/screenshots/screenshot-7.png">
+    <img width="35%" height="35%" src="/assets/screenshots/screenshot-home-default-theme.png">
+    <img width="35%" height="35%" src="/assets/screenshots/screenshot-home-bubble-theme.png">
+    <img width="35%" height="35%" src="/assets/screenshots/screenshot-home-coffee-theme.png">
 </p>
 <p align="center">
     <em>Screenshots with some example themes</em>
 </p>
 
 <p align="center">
-    <img width="25%" height="25%" src="/assets/screen-records/theme-switching.gif">
+    <img width="35%" height="35%" src="/assets/screen-records/theme-switching.gif">
 </p>
 <p align="center">
     <em>Dynamic theme switching</em>
 </p>
 
 <p align="center">
-    <img width="25%" height="25%" src="/assets/screenshots/screenshot-1.png">
-    <img width="25%" height="25%" src="/assets/screenshots/screenshot-2.png">
+    <img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-home-default-theme.png">
+    <img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-cart-default-theme.png">
+    <img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-checkout-default-theme.png">
 </p>
 <p align="center">
     <em>Mock up shopping app screenshots with default theme</em>
 </p>
 
 <p align="center">
-    <img width="25%" height="25%" src="/assets/screenshots/screenshot-3.png">
-    <img width="25%" height="25%" src="/assets/screenshots/screenshot-4.png">
+<img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-home-bubble-theme.png">
+<img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-cart-bubble-theme.png">
+<img width="35%" height="35%" src="/assets/screenshots/screenshot-shopping-checkout-bubble-theme.png">
 </p>
 <p align="center">
     <em>Mock up shopping app screenshots with bubble theme</em>
@@ -37,7 +39,29 @@
 
 # Installation
 
-`$ npm install hypertoxin --save`
+```bash
+$ npm install hypertoxin --save
+```
+
+# Demo & Showcase
+
+Hypertoxin comes with a full demo that you can build and run on your device. All of the examples in this README are from the demo. To build the demo for iOS,
+
+```bash
+$ cd hypertoxin/demo
+npm install
+```
+
+This will install the required modules such as React Native, Hypertoxin, [Hyperfloe](https://github.com/tuantle/hyperflow), and others. Then open `hypertoxin/demo/ios` with Xcode, select your ios simulator/device, and build. The default build scheme is release.
+When use successfully, you will see the following on your device or simulator.
+
+<p align="center">
+    <img width="35%" height="35%" src="/assets/screen-records/demo.gif">
+</p>
+<p align="center">
+    <em>[*Demo source code*](https://github.com/tuantle/hypertoxin/tree/develop/demo/src)</em>
+</p>
+
 
 # Usage
 
@@ -98,9 +122,9 @@ export default class App extends Component {
     - [Image Components](#image-components)
     - [Layout Components](#layout-components)
     - [Screen Components](#screen-components)
+    - [Using Room Property](#using-room-property)
     - [Animation API](#animation-api)
-    - [Theme-customization](#text-components)
-- [Demo](#demo)
+    - [Theme Customization](#theme-customization)
 - [Change Log](#change-log)
 - [License](#license)
 
@@ -111,7 +135,7 @@ export default class App extends Component {
 ## Button Components
 
 <p align="center">
-    <img src="/assets/screen-records/buttons.gif">
+    <img width="35%" height="35%"  src="/assets/screen-records/buttons.gif">
 </p>
 
 Hypertoxin has three button components, [*FlatButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/flat-button.js), [*RaisedButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/raised-button.js), and [*AreaButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/area-button.js)
@@ -159,6 +183,23 @@ initialAnimation | string, object | None  | See [Animation API](#animation-api) 
 onPress | function | None | Button press action callback
 style | object | None | Raised button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/raised-button.js#L63)
 
+#### Flat & Raised Button Child View Compositions
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/flat-raised-button-compositions.png">
+</p>
+
+#### Flat & Raised Buttons Animated Child View Component References
+
+RefName | description
+--------|------------
+`animated-container-view` | Reference name of button animated container child view
+`animated-content-left-room-view` |
+`animated-content-middle-room-view` |
+`animated-content-right-room-view` |
+`animated-activity-indicator-room-view` |
+`animated-badge-room-view` | Reference name of button animated badge child view
+
 #### Area Button Properties
 
 Prop | Type | Default | description
@@ -177,6 +218,20 @@ initialAnimation | string, object | None  | See [Animation API](#animation-api) 
 onPress | function | None | Button press action callback
 style | object | None | Area button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, ripple: {...}`. Unlike flat and raised buttons, there is no middle room styling. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/area-button.js#L55)
 
+#### Area Button Child View Compositions
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/area-button-compositions.png">
+</p>
+
+#### Area Button Animated Component References
+
+RefName | description
+--------|------------
+`animated-container-view` |
+`animated-content-left-room-view` |
+`animated-content-right-room-view` |
+
 *Note: `themed` propperty indicates using values defined by the global theme provider.*
 
 By default, flat button component passes `shade`, `size`, and `color` properties down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. This behaviour can be overide by child components with the `exclusions` property. For example, the icon image component below will not receice the `color = 'primary'` property from he parent button.
@@ -190,7 +245,7 @@ By default, flat button component passes `shade`, `size`, and `color` properties
 #### Button Component Public Methods Access Via Reference
 
 Methods | description
------|------
+--------|------------
 animate | Do animation. See [Animation API](#animation-api)
 
 
@@ -310,7 +365,7 @@ Internally, a room is just a convient way for creating child Views, thus allowin
 To create a button with a badge, add a child text component with a `room = 'badge'`.
 
 <p align="center">
-    <img width="25%" height="25%" src="/assets/screenshots/flat-button-with-badge.png">
+    <img width="20%" height="20%" src="/assets/screenshots/flat-button-with-badge.png">
 </p>
 
 ```jsx
@@ -422,7 +477,7 @@ To create a button with a badge, add a child text component with a `room = 'badg
 ```
 
 <p align="center">
-    <img width="50%" height="50%" src="/assets/screenshots/fab-buttons.png">
+    <img width="35%" height="35%" src="/assets/screenshots/fab-buttons.png">
 </p>
 <p align="center">
     <em>Raised buttons styled as floating action buttons</em>
@@ -469,8 +524,8 @@ To create a button with a badge, add a child text component with a `room = 'badg
 ## Field Components
 
 <p align="center">
-    <img src="/assets/screen-records/text-fields.gif">
-    <img src="/assets/screen-records/search-field.gif">
+    <img width="35%" height="35%" src="/assets/screen-records/text-fields.gif">
+    <img width="35%" height="35%" src="/assets/screen-records/search-field.gif">
 </p>
 
 Hypertoxin has two field components, [*TextField*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/fields/text-field.js) and [*SearchField*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/fields/search-field.js)
@@ -499,15 +554,31 @@ onGetAutocompletionValues | async function | None | Async retrieve autocompletio
 onEditing | function | None |
 onFocus | function | None | Called after search field's text input is focused. Takes no argument
 onBlur | function | None | Called after search field's text input is blurred. Takes no argument
-onCollapse | function | None |
-onExpand | function | None |
-onHide | function | None |
-onShow | function | None |
-onHideSuggestion | function | None |
-onShowSuggestion | function | None |
+onCollapse | function | None | Called after search field view collapsed
+onExpand | function | None | Called after search field view expanded
+onHide | function | None | Called when search field view becomes hidden
+onShow | function | None | Called when search field view becomes visible
+onHideSuggestion | function | None | Called when search field's suggestion view becomes hidden
+onShowSuggestion | function | None | Called when search field's suggestion view becomes visible
 onClear | function | None | Called after search field's text input is cleared. Takes no argument
-onClearSuggestion | function | None |
-renderSuggestionItem | function | None |
+onClearSuggestion | function | None | Called after search field's suggestion is clear
+renderSuggestionItem | function | None | Takes an item from a list of suggestion items (pinned, autocompleted, & history) and renders them into the list in pullup suggestion view. Takes suggestion item, onPressSelectAndSubmit, and onPressSelect as argument. See below for examples
+
+#### Search Field Child View Compositions
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/search-field-compositions.png">
+</p>
+
+#### Search Field Animated Child View Component References
+
+RefName | animated | description
+--------|----------|------------
+`animated-container-view` |
+`animated-box-view` |
+`animated-content-left-room-view` |
+`animated-content-right-room-view` |
+`animated-suggestion-view` |
 
 #### Text Field Properties
 
@@ -546,7 +617,25 @@ onBlur | function | None | Called after text field's text input is blurred. Take
 onHideSelection | function | None | Called after text field's selectable pullup view is hidden. Takes no argument
 onShowSelection | function | None | Called after text field's selectable pullup view is visible. Takes no argument
 onClear | function | None | Called after text field's text input is cleared. Takes no argument
-renderSelectableItem | function | None |
+renderSelectableItem | function | None | Takes an item from a list of selectable items and renders them into the list in pullup selection view. Takes selectable item and onPressSelect as argument. See below for examples
+
+#### Text Field Child View Compositions
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/text-field-compositions.png">
+</p>
+
+#### Text Field Animated Child View Component References
+
+RefName | animated | description
+--------|----------|------------
+`animated-container-view` |
+`animated-box-view` |
+`animated-label-text` |
+`animated-underline-focused-view` |
+`animated-content-left-room-view` |
+`animated-content-right-room-view` |
+`animated-selection-view` |
 
 *Note: `themed` propperty indicates using values defined by the global theme provider.*
 
@@ -555,7 +644,7 @@ By default, text field component passes `shade`, `size`, and `disabled` properti
 #### Text Field Component Public Methods Access Via Reference
 
 Methods | description
------|------
+--------|------------
 isValidated | Check if text input's value is validated
 isSelectionVisible | Check if selectable pullup view is visible
 isFocused | Check if text input's value is focused
@@ -567,6 +656,83 @@ clear | Call to clear text input
 animate | Do animation. See [Animation API](#animation-api)
 
 #### Search Field Examples
+
+<p align="center">
+    <img width="35%" height="35%" src="/assets/screen-records/search-field-suggestion.gif">
+</p>
+<p align="center">
+    <em>Search field with suggestion using Google's autocompletes</em>
+</p>
+
+```jsx
+<SearchField
+    hint = 'Search...'
+    pinnedSuggestionValues = {[ `Hypertoxin`, `React Native` ]}
+    onGetAutocompletionValues = {async (text) => {
+        if (text) {
+            const response = await fetch(`http://suggestqueries.google.com/complete/search?client=firefox&q=${text}`, {
+                method: `get`
+            });
+            const data = await response.json();
+            return data[1].slice(0, 6);
+        }
+        return [];
+    }}
+    renderSuggestionItem = {(item, onPressSelectAndSubmit, onPressSelect) => {
+        // item = {
+        //     value: ...             String value of the suggestion item
+        //     suggestionType: ..     String value to indicate the suggestion types: pin, autocompletion, or history
+        // }
+        // onPressSelect              Callback to indicate which item was selected
+        // onPressSelectAndSubmit     Callback to indicate which item was selected and then submitted
+        return (
+            <AreaButton shade = { shade } overlay = 'transparent' size = 'small' onPress = {() => onPressSelectAndSubmit(item)}>
+                <ColumnLayout room = 'content-left' roomAlignment = 'center'
+                >
+                    <IconImage
+                        room = 'content-left'
+                        source = {(() => {
+                            switch (item.suggestionType) { // eslint-disable-line
+                            case `pin`:
+                                return `star`;
+                            case `history`:
+                                return `history`;
+                            case `autocompletion`:
+                                return `search`;
+                            default:
+                                return null;
+                            }
+                        })()}
+                        margin = {{ left: 10 }}
+                    />
+                    <InfoText room = 'content-right' indentation = { 10 }>{ item.value }</InfoText>
+                </ColumnLayout>
+                {
+                    item.suggestionType !== `pin` ?
+                    <FlatButton room = 'content-right' overlay = 'transparent' corner = 'circular' onPress = {() => onPressSelect(item)} margin = {{ right: 10 }}>
+                        <IconImage room = 'content-middle' source = 'recall' size = 'small' />
+                    </FlatButton> : null
+                }
+            </AreaButton>
+        );
+    }}
+    style = {{
+        suggestion: {
+            left: -10
+        }
+    }}
+>
+    <FlatButton room = 'content-left' action = 'expand' overlay = 'transparent' corner = 'circular' >
+        <IconImage room = 'content-middle' source = 'search' />
+    </FlatButton>
+    <FlatButton room = 'content-left' action = 'collapse' overlay = 'transparent' corner = 'circular' >
+        <IconImage room = 'content-middle' source = 'go-back' />
+    </FlatButton>
+    <FlatButton room = 'content-right' action = 'clear' overlay = 'transparent' corner = 'circular' >
+        <IconImage room = 'content-middle' source = 'cancel' />
+    </FlatButton>
+</SearchField>
+```
 
 #### Text Field Examples
 
@@ -631,6 +797,11 @@ animate | Do animation. See [Animation API](#animation-api)
     label = 'LABEL'
     selectableValues = {[ `VALUE A`, `VALUE B`, `VALUE C` ]}
     renderSelectableItem = {(item, onPressSelect) => {
+        // item = {
+        //     value: ...       String value of the seleactable item
+        //     selected: ..     Boolean to indicates that the item is selected or not
+        // }
+        // onPressSelect        Callback to indicate which item was selected
         return (
             <AreaButton
                 shade = { shade }
@@ -708,9 +879,8 @@ style | object | None | Standard React Native text style properties.
 #### Text Components Public Methods Access Via Reference
 
 Methods | description
------|------
+--------|------------
 animate | Do animation. See [Animation API](#animation-api)
-
 
 ```jsx
 <HeadlineText size = 'large' color = 'default' > Headline Large </HeadlineText>
@@ -743,15 +913,365 @@ animate | Do animation. See [Animation API](#animation-api)
 
 ## Screen Components
 
+<p align="center">
+    <img width="35%" height="35%" src="/assets/screen-records/header-screens.gif">
+</p>
+
 Hypertoxin has two screen components, [*BodyScreen*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/screens/body-screen.js), [*HeaderScreen*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/screens/header-screen.js)
 
-## Layout Components}
+#### Header Screen Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+shade | string, object | `themed` | Set header screen's shade theme, can be `themed`, `light`, or `dark`
+overlay | string | `themed` | Set header screen's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+size  | string  | `themed`  | Set header screen's size which can be one of `themed`, `small`, `normal`, `large`
+dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
+coverImageSource | | |
+label  | string  | None | Set header screen's label
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
+style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+onHideNavigation | function | None | Called when header screen's navigator view becomes hidden
+onShowNavigation | function | None | Called when header screen's  navigator view becomes visible
+onHideMedia | function | None | Called when header screen's media view becomes hidden
+onShowMedia | function | None | Called when header screen's media view  becomes visible
+
+#### Header Screen Child View Compositions
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/header-screen-compositions.png">
+</p>
+
+#### Header Screen Animated Component References
+
+RefName | description
+--------|------------
+`animated-container-view` | Reference name of header screen animated container child view
+`animated-navigation-room-view` |
+`animated-content-left-room-view` |
+`animated-content-middle-room-view` |
+`animated-content-right-room-view` |
+`animated-media-room-view` |
+
+#### Body Screen Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+shade | string, object | `themed` | Set body screen's shade theme, can be `themed`, `light`, or `dark`
+coverImageSource | React Native image source | None | Background cover image source
+contentTopRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentMiddleRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentBottomRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+scrollable | boolean | False | Enable to allow scrolling
+keyboardAvoiding | boolean | False | Enable to allow keyboard avoiding. Works best with `scrollable = true`
+style | object | None | Body screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+onScroll | function | None | Called when scrolling with `scrollable = true`
+
+#### Body Screen Child View Compositions
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/body-screen-compositions.png">
+</p>
+
+#### Body Screen Animated Component References
+
+RefName | description
+--------|------------
+`animated-content-top-room-view` |
+`animated-content-middle-room-view` |
+`animated-content-bottom-room-view` |
+
+#### Header Screen Examples
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/screenshots/header-screen-small.png">
+    <img width="50%" height="50%" src="/assets/screenshots/header-screen-normal.png">
+    <img width="50%" height="50%" src="/assets/screenshots/header-screen-large.png">
+</p>
+<p align="center">
+    <em>Header screen in 3 available sizes with default theme</em>
+</p>
+
+```jsx
+<HeaderScreen
+    // size = `small`
+    size = `normal`
+    // size = `large`
+    label = 'HEADER SCREEN'
+>
+    <FlatButton room = 'content-left' overlay = 'transparent' corner = 'circular' onPress = {() => navigation.toggleDrawer()}>
+        <IconImage room = 'content-middle' source = 'menu' />
+    </FlatButton>
+</HeaderScreen>
+```
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/screenshots/header-screen-with-media.png">
+</p>
+<p align="center">
+    <em>Header screen with media</em>
+</p>
+
+```jsx
+<HeaderScreen shade = 'light' label = 'HEADER SCREEN' >
+    <FlatButton room = 'content-left' overlay = 'transparent' corner = 'circular' onPress = {() => navigation.toggleDrawer()}>
+        <IconImage room = 'content-middle' source = 'menu' />
+    </FlatButton>
+    <ColumnLayout room = 'media' overlay = 'opaque' roomAlignment = 'center' corner = 'sharp' >
+        <HeadlineText room = 'content-left' shade = 'light' size = 'small' indentation = { 10 }> Media section </HeadlineText>
+        <FlatButton room = 'content-right' overlay = 'transparent-outline' corner = 'circular' size = 'small' label = 'BUTTON A' color = { Theme.color.palette.teal } margin = { 10 }/>
+        <FlatButton room = 'content-right' overlay = 'transparent-outline' corner = 'circular' size = 'small' label = 'BUTTON B' color = { Theme.color.palette.teal } margin = { 10 }/>
+    </ColumnLayout>
+</HeaderScreen>
+```
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/screenshots/header-screen-with-search-field.png">
+</p>
+<p align="center">
+    <em>Header screen with icon button and search field</em>
+</p>
+
+```jsx
+<HeaderScreen shade = 'light' >
+    <FlatButton room = 'content-left' overlay = 'transparent' corner = 'circular' onPress = {() => navigation.toggleDrawer()} >
+        <IconImage room = 'content-middle' source = 'menu' />
+    </FlatButton>
+    <SearchField room = 'content-middle' exclusions = {[ `size` ]} size = 'small' hint = 'Search...' dropShadowed = { false } initiallyCollapsed = { false } suggestive = { false }>
+        <FlatButton room = 'content-left' overlay = 'transparent' corner = 'circular' >
+            <IconImage room = 'content-middle' source = 'search' />
+        </FlatButton>
+        <FlatButton room = 'content-right' action = 'clear' overlay = 'transparent' corner = 'circular' >
+            <IconImage room = 'content-middle' source = 'cancel' />
+        </FlatButton>
+    </SearchField>
+    <FlatButton room = 'content-right' overlay = 'transparent' corner = 'circular' >
+        <IconImage room = 'content-middle' size = 'large' source = 'info' />
+    </FlatButton>
+</HeaderScreen>
+```
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/screenshots/header-screen-profile.png">
+</p>
+<p align="center">
+    <em>An example of user profile header screen</em>
+</p>
+
+```jsx
+<HeaderScreen shade = 'light' overlay = 'transparent' coverImageSource = { require(`../../../assets/images/geometric-wallpaper.png`) } label = 'PROFILE' >
+    <FlatButton room = 'content-left' overlay = 'transparent' corner = 'circular' onPress = {() => navigation.toggleDrawer()}>
+        <IconImage room = 'content-middle' source = 'menu' />
+    </FlatButton>
+    <ColumnLayout room = 'media' overlay = 'transparent' roomAlignment = 'center' corner = 'sharp' >
+        <AvatarImage room = 'content-left' source = { require(`../../../assets/images/fox.png`) } size = 'large' dropShadowed = { false }
+            margin = {{
+                vertical: 5,
+                right: 10
+            }}
+        />
+        <RowLayout room = 'content-left' overlay = 'transparent'
+            margin = {{
+                vertical: 5,
+                right: 10
+            }}
+        >
+            <TitleText room = 'content-top' shade = 'light' size = 'small' > Mr. Fantastic Fox </TitleText>
+            <SubtitleText room = 'content-middle' > A cool fox! </SubtitleText>
+        </RowLayout>
+        <FlatButton room = 'content-right' overlay = 'transparent-outline' corner = 'circular' size = 'small' label = 'LIKE' color = { Theme.color.palette.teal }
+            margin = {{
+                right: 10,
+                vertical: 5
+            }}
+        />
+    </ColumnLayout>
+    <FlatButton room = 'content-right' overlay = 'transparent' corner = 'circular' >
+        <IconImage room = 'content-middle' size = 'large' source = 'info' />
+    </FlatButton>
+</HeaderScreen>
+```
+
+## Layout Components
+
+<p align="center">
+    <img width="35%" height="35%" src="/assets/screen-records/row-layout.gif">
+    <img width="35%" height="35%" src="/assets/screen-records/column-layout.gif">
+</p>
 
 Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/column-layout.js)
+
+#### Row Layout Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
+room | string | `none` | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+shade | string, object | `themed` | Set header screen's shade theme, can be `themed`, `light`, or `dark`
+overlay | string | `themed` | Set header screen's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+corner | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+margin | string, number, object | None | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
+dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
+roomAlignment | | |
+contentTopRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentMiddleRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentBottomRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+scrollable | boolean | False | Enable to allow scrolling
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
+style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+onScroll | function | None | Called when scrolling with `scrollable = true`
+
+#### Row Layout Child View Compositions
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/row-layout-compositions.png">
+</p>
+
+#### Row Layout Animated Component References
+
+RefName | description
+--------|------------
+`animated-container-view` | Reference name of row layout animated container child view
+`animated-content-top-room-view` |
+`animated-content-middle-room-view` |
+`animated-content-bottom-room-view` |
+
+#### Column Layout Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
+room | string | `none` | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+shade | string, object | `themed` | Set header screen's shade theme, can be `themed`, `light`, or `dark`
+overlay | string | `themed` | Set header screen's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+corner | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+margin | string, number, object | None | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
+dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
+roomAlignment | | |
+contentTopRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentMiddleRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentBottomRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+scrollable | boolean | False | Enable to allow scrolling
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
+style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+onScroll | function | None | Called when scrolling with `scrollable = true`
+
+#### Column Layout Child View Compositions
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/column-layout-compositions.png">
+</p>
+
+#### Column Layout Animated Component References
+
+RefName | description
+--------|------------
+`animated-container-view` | Reference name of column animated container child view
+`animated-content-left-room-view` |
+`animated-content-middle-room-view` |
+`animated-content-right-room-view` |
 
 ## Image Components
 
-Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/column-layout.js)
+Hypertoxin has three image components, [*AvatarImage*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/avatar-image.js), [*IconImage*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/icon-image.js), and [*CoverImage*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/cover-image.js)
+
+#### Avatar Image Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
+room | string | `none` | Set avatar image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
+shade | string, object | `themed` | Set avatar image's shade theme, can be `themed`, `light`, or `dark`
+overlay | string | `themed` | Set avatar image's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+size  | string  | `themed`  | Set avatar image's size which can be one of `themed`, `small`, `normal`, `large`
+margin | string, number, object | None | Set avatar image's margin styles. As a number, the margin is equally set around avatar image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
+color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
+source | React Native image source | None | Image source
+defaultSource | React Native image source | None | Image source
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
+style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+
+#### Icon Image Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
+room | string | `none` | Set icon image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
+shade | string, object | `themed` | Set icon image's shade theme, can be `themed`, `light`, or `dark`
+size  | string  | `themed`  | Set icon image's size which can be one of `themed`, `small`, `normal`, `large`
+margin | string, number, object | None | Set icon image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
+color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
+source | React Native image source | None | Image source
+defaultSource | React Native image source | None | Image source
+initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
+style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+
+#### Cover Image Properties
+
+Prop | Type | Default | description
+-----|------|---------|------------
+exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
+room | string | `none` | Set icon image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
+shade | string, object | `themed` | Set icon image's shade theme, can be `themed`, `light`, or `dark`
+margin | string, number, object | None | Set icon image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+width | | |
+height | | |
+corner | string, number, object | `themed` | Set text field's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
+resizeMode | | |
+source | React Native image source | None | Image source
+defaultSource | React Native image source | None | Image source
+
+#### Avatar Image Examples
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/screenshots/avatar-images.png">
+</p>
+<p align="center">
+    <em>Avatar images in 3 available sizes with colors defined by global theme</em>
+</p>
+
+```jsx
+<AvatarImage source = { require(`../../../assets/images/fox.png`) } size = 'small' color = 'default' dropShadowed = { true }/>
+<AvatarImage source = { require(`../../../assets/images/fox.png`) } size = 'normal' color = 'primary' dropShadowed = { true }/>
+<AvatarImage source = { require(`../../../assets/images/fox.png`) } size = 'large' color = 'secondary' dropShadowed = { true }/>
+```
+<p align="center">
+    <img width="50%" height="50%" src="/assets/screenshots/avatar-images-with-outlines.png">
+</p>
+<p align="center">
+    <em>Same but with border outlines</em>
+</p>
+
+```jsx
+<AvatarImage source = { require(`../../../assets/images/fox.png`) } overlay = 'transparent-outline' size = 'small' color = 'default' />
+<AvatarImage source = { require(`../../../assets/images/fox.png`) } overlay = 'transparent-outline' size = 'normal' color = 'primary' />
+<AvatarImage source = { require(`../../../assets/images/fox.png`) } overlay = 'transparent-outline' size = 'large' color = 'secondary' />
+```
+
+#### Icon Image Examples
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/screenshots/icon-images.png">
+</p>
+<p align="center">
+    <em>Some icon images with various colors</em>
+</p>
+
+```jsx
+<IconImage source = 'socialShare' color = 'default' dropShadowed = { false }margin = { 10 }/>
+<IconImage source = 'facebook' color = 'default' dropShadowed = { false } margin = { 10 }/>
+<IconImage source = 'twitter' color = 'primary' dropShadowed = { false } margin = { 10 }/>
+<IconImage source = 'googlePlus' color = 'primary' dropShadowed = { false } margin = { 10 }/>
+<IconImage source = 'github' color = 'secondary' dropShadowed = { false } margin = { 10 }/>
+<IconImage source = 'home' color = 'secondary' dropShadowed = { false } margin = { 10 }/>
+<IconImage source = 'profile' color = 'accent' dropShadowed = { false } margin = { 10 }/>
+<IconImage source = 'ellipsis' color = 'accent' dropShadowed = { false } margin = { 10 }/>
+```
 
 ## Divider Components
 
@@ -769,6 +1289,32 @@ edgeToEdge | boolean | false | Force divider line to the edges of screen
 margin | string, number, object | None | Set text field's margin styles. As a number, the margin is equally set around text field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
 color | string | `themed` | Set divider's color style. Can be hex string, default color name, or themed color name
 style | object | None | Standard React Native view style properties
+
+## Using Room Property
+
+Rooms are predefined child views of the button container view. The reason for this is to keep JSX code short and concise while maintaining a consistent theme for all buttons globally.
+
+For example, JSX code for a flat button with left and right icons using `room` property.
+
+```jsx
+<FlatButton overlay = 'opaque' size = 'small' label = 'SMALL' color = 'primary' >
+    <IconImage room = 'content-left' source = 'home' />
+    <IconImage room = 'content-right' source = 'profile' />
+</FlatButton>
+```
+
+JSX code for a flat button with left and right icons without using `room` property.
+
+```jsx
+<FlatButton overlay = 'opaque' size = 'small' label = 'SMALL' color = 'primary' >
+    <View style = { leftChildViewStyle }>
+        <IconImage source = 'home' />
+    </VIew>
+    <View style = { rightChildViewStyle }>
+        <IconImage source = 'profile' />
+    </VIew>
+</FlatButton>
+```
 
 ## Animation API
 
@@ -797,53 +1343,209 @@ PropTypes.shape({
 })
 ```
 
-Where `refName` is reference name of animated child content component. See child component reference names [table](#child-component-references). And `transitions` is an array of transition object that has `to`, `from`, and `option` properties. From contains the starting transition animation style, and to contains the ending transition animation style. See [react-native-animatable](https://github.com/oblador/react-native-animatable) documentation for more details.
+Where `refName` is reference name of animated child content component. See child component reference names above. And `transitions` is an array of transition object that has `to`, `from`, and `option` properties. From contains the starting transition animation style, and to contains the ending transition animation style. See [react-native-animatable](https://github.com/oblador/react-native-animatable) documentation for more details.
 
 #### Method `animate`
 
-Below are some component animation examples.
+All animatable components have an animate method which take an animation object as arg that is the same as the `initialAnimation` property described above.
+
+```js
+function animate (animation = {
+    refName,
+    transitions,
+    onTransitionBegin,
+    onTransitionEnd,
+    onAnimationBegin,
+    onAnimationEnd
+}) {
+    ...
+};
+```
+
+Now to see how use the animate method, let's do a simple send mail button animation shown here below.
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/button-animation2.gif">
 </p>
-<p align="center">
-    <em>An example of animating sequences of a simple submit button</em>
-</p>
 
-[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L310)
+The animation sequences of this button are onPress -> fade out SEND label and email icon -> fade in activity indicator and button in busy mode -> fade out activity indicator -> fade in SENT label with different color and a check icon to the left.
+First let's create a raised button inside some other parent component. The parent component with track the raised button ref with `raisedButtonRef`, and also have two states, `mailSent` and `sendingMail`.
+Property `color` switches value that depends on the state mailSent. Property `label`
+
+```js
+<RaisedButton
+    ref = {(componentRef) => {
+        component.raisedButtonRef = componentRef;
+    }}
+    busy = { sendingMail }
+    rippled = { false }
+    room = 'content-right'
+    color = { mailSent ? `secondary` : `accent` }
+    label = { mailSent ? `SENT` : sendingMail ? `` : `SEND` }
+    margin = { 10 }
+>
+    <ActivityIndicator
+        room = 'activity-indicator'
+        size = 'small'
+        color = { Theme.color.palette.pink }
+    />
+    <IconImage
+        room = 'content-left'
+        source = { !mailSent ? `email` : `check` }
+    />
+</RaisedButton>
+```
+
+Next, defines the onPress button that triggers the animation sequences.
+
+```js
+onPress = {() => {
+    if (!mailSent) {
+        // Fade out the left email icon
+        component.raisedButtonRef.animate({
+            refName: `animated-content-left-room-view`,
+            transitions: [{
+                from: { opacity: 1 },
+                to: { opacity: 0 },
+                option: { duration: 300 }
+            }]
+        });
+        // Fade out the center label
+        component.raisedButtonRef.animate({
+            refName: `animated-content-middle-room-view`,
+            transitions: [{
+                from: { opacity: 1 },
+                to: { opacity: 0 },
+                option: { duration: 300 }
+            }],
+            onAnimationEnd: () => {
+                component.setState(() => { sendingMail: true }, () => {
+                    // Let the activity indicator runs for 2s. Using setTimeout to emulate waiting for server response.
+                    setTimeout(() => {
+                        component.setState(() => { mailSent: true, sendingMail: false }, () => {
+                            // Fade in the check icon
+                            component.raisedButton1Ref.animate({
+                                refName: `animated-content-left-room-view`,
+                                transitions: [{
+                                    from: { opacity: 0 },
+                                    to: { opacity: 1 },
+                                    option: { duration: 300 }
+                                }]
+                            });
+                            // Fade in the center label
+                            component.raisedButton1Ref.animate({
+                                refName: `animated-content-middle-room-view`,
+                                transitions: [{
+                                    from: { opacity: 0 },
+                                    to: { opacity: 1 },
+                                    option: { duration: 300 }
+                                }]
+                            });
+                        });
+                    }, 2000);
+                });
+            }
+        });
+    }
+}}
+```
+
+Below are a few more examples of animations and code.
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/button-animation1.gif">
 </p>
 <p align="center">
-    <em>An example of animating sequences of payment submit button</em>
+    <em>An example of animation sequences of payment submit button.</em>
+    <em>[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121)
+</em>
 </p>
-
-[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121)
 
 <p align="center">
-    <img width="15%" height="15%" src="/assets/screen-records/button-animation3.gif">
+    <img width="10%" height="10%" src="/assets/screen-records/button-animation3.gif">
 </p>
 <p align="center">
-    <em>An example of animating sequences of an expanding FAB menu</em>
+    <em>An example of animation sequences of an expanding FAB menu.</em>
+    <em>[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444)</em>
 </p>
-
-[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444)
 
 <p align="center">
     <img width="25%" height="25%" src="/assets/screen-records/button-animation4.gif">
 </p>
 <p align="center">
-    <em>An example of animating sequences of a popup menu</em>
+    <em>An example of animation sequences for popup menu.</em>
+    <em>[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675)</em>
 </p>
 
-[*Code example*](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675)
+<p align="center">
+    <img width="25%" height="25%" src="/assets/screen-records/header-screen-animations.gif">
+</p>
+<p align="center">
+    <em>An example of animation sequences for header screen entry & exit.</em>
+    <em>[*Code example*](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/components/animation-views/example1-animation-view.js)</em>
+</p>
 
-## Theme Customization
+## Global Theme Customization
 
-## Child Component References
+Hypertoxin gloabl theme is highly customizable and one of the way to make your own customized theme is to modify the default theme. For example, import the `Theme` object from `hyperflow` as `DefaultTheme`.
 
-# Demo
+```js
+import { ThemeContext, Theme as DefaultTheme } from 'hyperflow';
+```
+Next modify the DefaultTheme object using standard object destructuring method. For example, adding a customized global button corner theme called `semi-sharp`
+
+```js
+const MyTheme = {
+    ...DefaultTheme,
+    button: {
+        ...DefaultTheme.button,
+        flat: {
+            ...DefaultTheme.button.flat,
+            corner: `semi-round`
+        },
+        raised: {
+            ...DefaultTheme.button.raised,
+            corner: `semi-round`
+        },
+        corner: {
+            ...DefaultTheme.button.corner,
+            flat: {
+                ...DefaultTheme.button.corner.flat,
+                semiRound: 0.1
+            },
+            raised: {
+                ...DefaultTheme.button.corner.raised,
+                semiRound: 0.1
+            }
+
+        }
+    }
+};
+```
+
+Or using lodash library merge function.
+
+```js
+const MyTheme = _.merge(DefaultTheme, {
+    button: {
+        flat: {
+            corner: `semi-round`
+        },
+        raised: {
+            corner: `semi-round`
+        },
+        corner: {
+            flat: {
+                semiRound: 0.1
+            },
+            raised: {
+                semiRound: 0.1
+            }
+
+        }
+    }
+});
+```
 
 # Change Log
 - Link to [change log](https://github.com/tuantle/hypertoxin/tree/develop/CHANGELOG.md)
