@@ -1424,7 +1424,7 @@ export default class SearchField extends React.Component {
             });
         }
     }
-    onPressSelectAndSubmitSuggestion = (item) => {
+    onPressSelectAndSubmit = (item) => {
         const component = this;
         const {
             suggestive,
@@ -1521,7 +1521,7 @@ export default class SearchField extends React.Component {
             });
         }
     }
-    onPressSelectSuggestion = (item) => {
+    onPressSelect = (item) => {
         const component = this;
 
         component.setState((prevState) => {
@@ -1798,8 +1798,8 @@ export default class SearchField extends React.Component {
                         }) => {
                             return renderSuggestionItem(
                                 item,
-                                component.onPressSelectAndSubmitSuggestion,
-                                component.onPressSelectSuggestion,
+                                component.onPressSelectAndSubmit,
+                                component.onPressSelect,
                             );
                         }}
                     />
