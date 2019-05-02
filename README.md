@@ -1,4 +1,7 @@
-# Hypertoxin
+# [Hypertoxin](https://github.com/tuantle/hypertoxin)
+
+![Image](/assets/logos/hypertoxin-logo-mini.png "logo")
+
 [![npm version](https://img.shields.io/npm/v/hypertoxin.svg?style=flat)](https://www.npmjs.com/package/hypertoxin)
 [![npm downloads](https://img.shields.io/npm/dm/hypertoxin.svg?style=flat-square)](https://www.npmjs.com/package/hypertoxin)
 ## A themeable and declarative React Native component library for developing native mobile apps.
@@ -36,6 +39,23 @@
 <p align="center">
     <em>Mock up shopping app screenshots with bubble theme</em>
 </p>
+
+---
+
+- [Documentations & Examples](#documentations)
+    - [Button Components](#button-components)
+    - [Field Components](#field-components)
+    - [Text Components](#text-components)
+    - [Image Components](#image-components)
+    - [Layout Components](#layout-components)
+    - [Screen Components](#screen-components)
+    - [Using Room Property](#using-room-property)
+    - [Animation API](#animation-api)
+    - [Theme Customization](#theme-customization)
+- [Change Log](#change-log)
+- [License](#license)
+
+---
 
 # Installation
 
@@ -114,19 +134,6 @@ export default class App extends Component {
 }
 
 ```
-
-- [Documentations & Examples](#documentations)
-    - [Button Components](#button-components)
-    - [Field Components](#field-components)
-    - [Text Components](#text-components)
-    - [Image Components](#image-components)
-    - [Layout Components](#layout-components)
-    - [Screen Components](#screen-components)
-    - [Using Room Property](#using-room-property)
-    - [Animation API](#animation-api)
-    - [Theme Customization](#theme-customization)
-- [Change Log](#change-log)
-- [License](#license)
 
 ---
 
