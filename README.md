@@ -59,7 +59,7 @@ When use successfully, you will see the following on your device or simulator.
     <img width="35%" height="35%" src="/assets/screen-records/demo.gif">
 </p>
 <p align="center">
-    <em>https://github.com/tuantle/hypertoxin/tree/develop/demo/src</em>
+    <a href="https://github.com/tuantle/hypertoxin/tree/develop/demo/src"><em>Demo source</em></a>
 </p>
 
 
@@ -926,7 +926,7 @@ Prop | Type | Default | description
 shade | string, object | `themed` | Set header screen's shade theme, can be `themed`, `light`, or `dark`
 overlay | string | `themed` | Set header screen's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
 size  | string  | `themed`  | Set header screen's size which can be one of `themed`, `small`, `normal`, `large`
-dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
+dropShadowed | boolean, string | `themed` | Enable header screen's drop shadow
 coverImageSource | | |
 label  | string  | None | Set header screen's label
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
@@ -959,12 +959,12 @@ Prop | Type | Default | description
 -----|------|---------|------------
 shade | string, object | `themed` | Set body screen's shade theme, can be `themed`, `light`, or `dark`
 coverImageSource | React Native image source | None | Background cover image source
-contentTopRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentMiddleRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentBottomRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentTopRoomAlignment | string | `none` | Child component top room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentMiddleRoomAlignment | string | `none` | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentBottomRoomAlignment | string | `none` | Child component bottom room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
 scrollable | boolean | False | Enable to allow scrolling
 keyboardAvoiding | boolean | False | Enable to allow keyboard avoiding. Works best with `scrollable = true`
-style | object | None | Body screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+style | object | None | Body screen style is an object with the following properties: `container: {...}, contentTopRoom: {...}, contentMiddleRoom: {...}, contentBottomRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/screens/body-screen.js#L54)
 onScroll | function | None | Called when scrolling with `scrollable = true`
 
 #### Body Screen Child View Compositions
@@ -1106,20 +1106,20 @@ Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/h
 Prop | Type | Default | description
 -----|------|---------|------------
 exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-shade | string, object | `themed` | Set header screen's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set header screen's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-corner | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-margin | string, number, object | None | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
-dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
-roomAlignment | | |
-contentTopRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentMiddleRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentBottomRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+room | string | `none` | Set row layout's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+shade | string, object | `themed` | Set row layout's shade theme, can be `themed`, `light`, or `dark`
+overlay | string | `themed` | Set row layout's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+corner | string, number, object | `themed` | Set row layout's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+margin | string, number, object | None | Set row layout's margin styles. As a number, the margin is equally set around the layout. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+color | string | `themed` | Set row layout's color style. Can be hex string, default color name, or themed color name
+dropShadowed | boolean, string | `themed` | Enable row layout's drop shadow
+roomAlignment | string | `none` | Component self's room property with respect to parent component's room, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentTopRoomAlignment | string | `none` | Child component top room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentMiddleRoomAlignment | string | `none` | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentBottomRoomAlignment | string | `none` | Child component bottom room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
 scrollable | boolean | False | Enable to allow scrolling
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+style | object | None | Header screen style is an object with the following properties: `container: {...}, contentTopRoom: {...}, contentMiddleRoom: {...}, contentBottomRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/layouts/row-layout.js#L61)
 onScroll | function | None | Called when scrolling with `scrollable = true`
 
 #### Row Layout Child View Compositions
@@ -1142,20 +1142,20 @@ RefName | description
 Prop | Type | Default | description
 -----|------|---------|------------
 exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-shade | string, object | `themed` | Set header screen's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set header screen's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-corner | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-margin | string, number, object | None | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
-dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
-roomAlignment | | |
-contentTopRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentMiddleRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentBottomRoomAlignment | string | `none` |  which can be one of `none`, `start`, `center`, `end`, or `stretch`
+room | string | `none` | Set column layout's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+shade | string, object | `themed` | Set column layout's shade theme, can be `themed`, `light`, or `dark`
+overlay | string | `themed` | Set column layouy's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+corner | string, number, object | `themed` | Set column layout's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+margin | string, number, object | None | Set column layout's margin styles. As a number, the margin is equally set around the layout. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+color | string | `themed` | Set column layout's color style. Can be hex string, default color name, or themed color name
+dropShadowed | boolean, string | `themed` | Enable column layout's drop shadow
+roomAlignment | string | `none` | Component self's room property with respect to parent component's room, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentLeftRoomAlignment | string | `none` | Child component left room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentMiddleRoomAlignment | string | `none` | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+contentRightRoomAlignment | string | `none` | Child component right room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
 scrollable | boolean | False | Enable to allow scrolling
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+style | object | None | Header screen style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/layouts/column-layout.js#L61)
 onScroll | function | None | Called when scrolling with `scrollable = true`
 
 #### Column Layout Child View Compositions
@@ -1187,12 +1187,12 @@ shade | string, object | `themed` | Set avatar image's shade theme, can be `them
 overlay | string | `themed` | Set avatar image's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
 size  | string  | `themed`  | Set avatar image's size which can be one of `themed`, `small`, `normal`, `large`
 margin | string, number, object | None | Set avatar image's margin styles. As a number, the margin is equally set around avatar image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
-color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
+dropShadowed | boolean, string | `themed` | Enable avatar image drop shadow
+color | string | `themed` | Set avatar's color style. Can be hex string, default color name, or themed color name
 source | React Native image source | None | Image source
 defaultSource | React Native image source | None | Image source
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+style | object | None | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/avatar-image.js#L56)
 
 #### Icon Image Properties
 
@@ -1203,28 +1203,30 @@ room | string | `none` | Set icon image's room with respect to parent component 
 shade | string, object | `themed` | Set icon image's shade theme, can be `themed`, `light`, or `dark`
 size  | string  | `themed`  | Set icon image's size which can be one of `themed`, `small`, `normal`, `large`
 margin | string, number, object | None | Set icon image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
-color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
+dropShadowed | boolean, string | `themed` | Enableicon image drop shadow
+color | string | `themed` | Set icon image's color style. Can be hex string, default color name, or themed color name
 source | React Native image source | None | Image source
 defaultSource | React Native image source | None | Image source
 initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+style | object | None | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/icon-image.js#L52)
 
 #### Cover Image Properties
 
 Prop | Type | Default | description
 -----|------|---------|------------
 exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set icon image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
-shade | string, object | `themed` | Set icon image's shade theme, can be `themed`, `light`, or `dark`
-margin | string, number, object | None | Set icon image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+room | string | `none` | Set cover image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
+shade | string, object | `themed` | Set cover image's shade theme, can be `themed`, `light`, or `dark`
+margin | string, number, object | None | Set cover image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
 width | | |
 height | | |
-corner | string, number, object | `themed` | Set text field's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-dropShadowed | boolean, string | `themed` | Enable header screen's container drop shadow
-resizeMode | | |
+corner | string, number, object | `themed` | Set cover image's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+dropShadowed | boolean, string | `themed` | Enable cover image drop shadow
+resizeMode | string | `contain` | React Native image resize property
 source | React Native image source | None | Image source
 defaultSource | React Native image source | None | Image source
+style | object | None | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/cover-image.js#L56)
+
 
 #### Avatar Image Examples
 
@@ -1457,7 +1459,7 @@ Below are a few more examples of animations and code.
 </p>
 <p align="center">
     <em>An example of animation sequences of payment submit button.</em>
-    <em>https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121</em>
+    <a href="https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L121"><em>Source</em></a>
 </p>
 
 <p align="center">
@@ -1465,7 +1467,7 @@ Below are a few more examples of animations and code.
 </p>
 <p align="center">
     <em>An example of animation sequences of an expanding FAB menu.</em>
-    <em>https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444</em>
+    <a href="https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L444"><em>Source</em></a>
 </p>
 
 <p align="center">
@@ -1473,7 +1475,7 @@ Below are a few more examples of animations and code.
 </p>
 <p align="center">
     <em>An example of animation sequences for popup menu.</em>
-    <em>https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675</em>
+    <a href="https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/demo/src/components/animation-views/example2-animation-view.js#L675"><em>Source</em></a>
 </p>
 
 <p align="center">
@@ -1481,7 +1483,7 @@ Below are a few more examples of animations and code.
 </p>
 <p align="center">
     <em>An example of animation sequences for header screen entry & exit.</em>
-    <em>https://github.com/tuantle/hypertoxin/blob/develop/demo/src/components/animation-views/example1-animation-view.js</em>
+    <a href="https://github.com/tuantle/hypertoxin/blob/develop/demo/src/components/animation-views/example1-animation-view.js"><em>Source</em></a>
 </p>
 
 ## Global Theme Customization
