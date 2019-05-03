@@ -227,7 +227,6 @@ export default class ShoppingCartView extends React.Component {
             >
                 <TextField
                     room = 'content-left'
-                    overlay = 'translucent'
                     label = 'COUPON'
                     charLimit = { 4 }
                     margin = {{

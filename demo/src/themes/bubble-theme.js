@@ -42,7 +42,7 @@ const BubbleTheme = Hf.merge(DefaultTheme).with({
         },
         text: {
             shade: `light`,
-            overlay: `translucent`,
+            overlay: `transparent`,
             size: `normal`,
             underlined: true,
             initialAnimation: `none`
