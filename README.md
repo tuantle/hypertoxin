@@ -4,6 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/hypertoxin.svg?style=flat)](https://www.npmjs.com/package/hypertoxin)
 [![npm downloads](https://img.shields.io/npm/dm/hypertoxin.svg?style=flat-square)](https://www.npmjs.com/package/hypertoxin)
+
 ## A themeable and declarative React Native component library for developing native mobile apps.
 
 <p align="center">
@@ -40,22 +41,23 @@
     <em>Mock up shopping app screenshots with bubble theme</em>
 </p>
 
----
+* * *
 
-- [Documentations & Examples](#documentations)
-    - [Button Components](#button-components)
-    - [Field Components](#field-components)
-    - [Text Components](#text-components)
-    - [Image Components](#image-components)
-    - [Layout Components](#layout-components)
-    - [Screen Components](#screen-components)
-    - [Using Room Property](#using-room-property)
-    - [Animation API](#animation-api)
-    - [Theme Customization](#theme-customization)
-- [Change Log](#change-log)
-- [License](#license)
+-   [Documentations & Examples](#documentations)
+    -   [Button Components](#button-components)
+    -   [Field Components](#field-components)
+    -   [Text Components](#text-components)
+    -   [Image Components](#image-components)
+    -   [Layout Components](#layout-components)
+    -   [Screen Components](#screen-components)
+    -   [Using Action Property](#using-action-property)
+    -   [Using Room Property](#using-room-property)
+    -   [Animation API](#animation-api)
+    -   [Theme Customization](#theme-customization)
+-   [Change Log](#change-log)
+-   [License](#license)
 
----
+* * *
 
 # Installation
 
@@ -81,7 +83,6 @@ When use successfully, you will see the following on your device or simulator.
 <p align="center">
     <a href="https://github.com/tuantle/hypertoxin/tree/develop/demo/src"><em>Demo source</em></a>
 </p>
-
 
 # Usage
 
@@ -132,10 +133,9 @@ export default class App extends Component {
       );
   }
 }
-
 ```
 
----
+* * *
 
 # Documentations
 
@@ -145,101 +145,70 @@ export default class App extends Component {
     <img width="35%" height="35%"  src="/assets/screen-records/buttons.gif">
 </p>
 
-Hypertoxin has three button components, [*FlatButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/flat-button.js), [*RaisedButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/raised-button.js), and [*AreaButton*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/area-button.js)
+Hypertoxin has three button components, [_FlatButton_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/flat-button.js), [_RaisedButton_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/raised-button.js), and [_AreaButton_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/buttons/area-button.js)
 
 #### Flat Button Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-action | string, object | `none` | Set button's onPress callback action to be defined by the parent component. This property is used when a button is set as a child search button for parent components such as SearchField, TextField, or HeaderScreen
-shade | string, object | `themed` | Set button's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set button's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-corner | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-size  | string  | `themed`  | Set button's size which can be one of `themed`, `small`, `normal`, `large`
-margin | string, number, object | None | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-disabled | boolean | false | Disable the button
-busy | boolean | false | Enable button busy activity indicator
-rippled | boolean, string | `themed` | Enable button ripple animation
-label | string | None | Button string label
-color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
-debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-onPress | function | None | Button press action callback
-style | object | None | Flat button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/flat-button.js#L53)
+| Prop             | Type                   | Default  | Description
+| ---------------- | ---------------------- | -------- | -----------
+| exclusions       | [string]               | []       | Set which properties from parent component to ignore or exclude
+| room             | string                 | `none`   | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+| action           | string, object         | `none`   | Set button's onPress callback action to be defined by the parent component. This property is used when a button is set as a child search button for parent components such as SearchField, TextField, or HeaderScreen. See [Using Action Property](#using-action-property) section for details
+| shade            | string, object         | `themed` | Set button's shade theme, can be `themed`, `light`, or `dark`
+| overlay          | string                 | `themed` | Set button's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+| corner           | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner \* size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+| size             | string                 | `themed` | Set button's size which can be one of `themed`, `small`, `normal`, `large`
+| margin           | string, number, object | None     | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| disabled         | boolean                | false    | Disable the button
+| busy             | boolean                | false    | Enable button busy activity indicator
+| rippled          | boolean, string        | `themed` | Enable button ripple animation
+| label            | string                 | None     | Button string label
+| color            | string                 | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
+| debounced        | boolean                | false    | Enable button debouncing at 250 ms
+| initialAnimation | string, object         | None     | See [Animation API](#animation-api) section for details
+| onPress          | function               | None     | Button press action callback
+| style            | object                 | None     | Flat button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/flat-button.js#L53)
 
 #### Raised Button Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-action | string, object | `none` | Set button's onPress callback action to be defined by the parent component. This property is used when a button is set as a child search button for parent components such as SearchField, TextField, or HeaderScreen
-shade | string, object | `themed` | Set button's shade theme, can be `themed`, `light`, or `dark`
-corner | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-size  | string  | `themed`  | Set button's size which can be one of `themed`, `small`, `normal`, `large`
-margin | string, number, object | None | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-disabled | boolean | false | Disable the button
-busy | boolean | false | Enable button busy activity indicator
-rippled | boolean, string | `themed` | Enable button ripple animation
-label | string | None | Button string label
-color | string | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
-debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-onPress | function | None | Button press action callback
-style | object | None | Raised button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/raised-button.js#L63)
-
-#### Flat & Raised Button Child View Compositions
-
-<p align="center">
-    <img width="50%" height="50%" src="/assets/images/flat-raised-button-compositions.png">
-</p>
-
-#### Flat & Raised Buttons Animated Child View Component References
-
-RefName | description
---------|------------
-`animated-container-view` | Reference name of button animated container child view
-`animated-content-left-room-view` |
-`animated-content-middle-room-view` |
-`animated-content-right-room-view` |
-`animated-activity-indicator-room-view` |
-`animated-badge-room-view` | Reference name of button animated badge child view
+| Prop             | Type                   | Default  | Description
+| ---------------- | ---------------------- | -------- | -----------
+| exclusions       | [string]               | []       | Set which properties from parent component to ignore or exclude
+| room             | string                 | `none`   | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+| action           | string, object         | `none`   | Set button's onPress callback action to be defined by the parent component. This property is used when a button is set as a child search button for parent components such as SearchField, TextField, or HeaderScreen. See [Using Action Property](#using-action-property) section for details
+| shade            | string, object         | `themed` | Set button's shade theme, can be `themed`, `light`, or `dark`
+| corner           | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner \* size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+| size             | string                 | `themed` | Set button's size which can be one of `themed`, `small`, `normal`, `large`
+| margin           | string, number, object | None     | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| disabled         | boolean                | false    | Disable the button
+| busy             | boolean                | false    | Enable button busy activity indicator
+| rippled          | boolean, string        | `themed` | Enable button ripple animation
+| label            | string                 | None     | Button string label
+| color            | string                 | `themed` | Set button's color style. Can be hex string, default color name, or themed color name
+| debounced        | boolean                | false    | Enable button debouncing at 250 ms
+| initialAnimation | string, object         | None     | See [Animation API](#animation-api) section for details
+| onPress          | function               | None     | Button press action callback
+| style            | object                 | None     | Raised button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, badgeRoom: {...}, activityIndicatorRoom: {...}, label: {...}, ripple: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/raised-button.js#L63) |
 
 #### Area Button Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-action | string, object | `none` | Set button's onPress callback action to be defined by the parent component. This property is used when a button is set as a child search button for parent components such as SearchField, TextField, or HeaderScreen
-shade | string, object | `themed` | Set button's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set button's overplay style which can be one of `themed`, `opaque`, `translucent`, `transparent`
-size  | string  | `themed`  | Set button's size which can be one of `themed`, `small`, `normal`, `large`
-margin | string, number, object | None | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-disabled | boolean | false | Disable the button
-rippled | boolean, string | `themed` | Enable button ripple animation
-debounced | boolean | false | Enable button debouncing at 250 ms
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-onPress | function | None | Button press action callback
-style | object | None | Area button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, ripple: {...}`. Unlike flat and raised buttons, there is no middle room styling. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/area-button.js#L55)
+| Prop             | Type                   | Default  | Description
+| ---------------- | ---------------------- | -------- | -----------
+| exclusions       | [string]               | []       | Set which properties from parent component to ignore or exclude
+| room             | string                 | `none`   | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+| action           | string, object         | `none`   | Set button's onPress callback action to be defined by the parent component. This property is used when a button is set as a child search button for parent components such as SearchField, TextField, or HeaderScreen. See [Using Action Property](#using-action-property) section for details
+| shade            | string, object         | `themed` | Set button's shade theme, can be `themed`, `light`, or `dark`
+| overlay          | string                 | `themed` | Set button's overplay style which can be one of `themed`, `opaque`, `translucent`, `transparent`
+| size             | string                 | `themed` | Set button's size which can be one of `themed`, `small`, `normal`, `large`
+| margin           | string, number, object | None     | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| disabled         | boolean                | false    | Disable the button
+| rippled          | boolean, string        | `themed` | Enable button ripple animation
+| debounced        | boolean                | false    | Enable button debouncing at 250 ms
+| initialAnimation | string, object         | None     | See [Animation API](#animation-api) section for details
+| onPress          | function               | None     | Button press action callback
+| style            | object                 | None     | Area button style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, ripple: {...}`. Unlike flat and raised buttons, there is no middle room styling. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/buttons/area-button.js#L55)
 
-#### Area Button Child View Compositions
-
-<p align="center">
-    <img width="50%" height="50%" src="/assets/images/area-button-compositions.png">
-</p>
-
-#### Area Button Animated Component References
-
-RefName | description
---------|------------
-`animated-container-view` |
-`animated-content-left-room-view` |
-`animated-content-right-room-view` |
-
-*Note: `themed` propperty indicates using values defined by the global theme provider.*
+_Note: `themed` propperty indicates using values defined by the global theme provider._
 
 By default, flat button component passes `shade`, `size`, and `color` properties down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. This behaviour can be overide by child components with the `exclusions` property. For example, the icon image component below will not receice the `color = 'primary'` property from he parent button.
 
@@ -249,12 +218,42 @@ By default, flat button component passes `shade`, `size`, and `color` properties
 </FlatButton>
 ```
 
+#### Flat & Raised Button Compositions & Animated References
+
+Flat & raised button internal view composistions. All can be animated using `animate` method and reference name.
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/flat-raised-button-compositions.png">
+</p>
+
+| RefName
+| ----------------------------------
+| `animated-container-view`
+| `animated-content-left-room-view`
+| `animated-content-middle-room-view`
+| `animated-content-right-room-view`
+| `animated-activity-indicator-room-view`
+| `animated-badge-room-view`
+
+#### Area Button Compositions & Animated References
+
+Area button internal view composistions. All can be animated using `animate` method and reference name.
+
+<p align="center">
+    <img width="50%" height="50%" src="/assets/images/area-button-compositions.png">
+</p>
+
+| RefName
+| ----------------------------------
+| `animated-container-view`
+| `animated-content-left-room-view`
+| `animated-content-right-room-view`
+
 #### Button Component Public Methods Access Via Reference
 
-Methods | description
---------|------------
-animate | Do animation. See [Animation API](#animation-api)
-
+| Methods | Description
+| ------- | -----------
+| animate | Do animation. See [Animation API](#animation-api)
 
 #### Flat Button Examples
 
@@ -535,132 +534,151 @@ To create a button with a badge, add a child text component with a `room = 'badg
     <img width="35%" height="35%" src="/assets/screen-records/search-field.gif">
 </p>
 
-Hypertoxin has two field components, [*TextField*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/fields/text-field.js) and [*SearchField*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/fields/search-field.js)
+Hypertoxin has two field components, [_TextField_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/fields/text-field.js) and [_SearchField_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/fields/search-field.js)
 
 #### Search Field Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set search field's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-shade | string, object | `themed` | Set search field's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set search field's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-corner | string, number, object | `themed` | Set search field's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-size  | string  | `themed`  | Set search field's size which can be one of `themed`, `small`, `normal`, `large`
-margin | string, number, object | None | Set search field's margin styles. As a number, the margin is equally set around search field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-dropShadowed | boolean, string | `themed` | Enable search field's container drop shadow
-autoFocus | boolean | true | Enable search field's auto focus
-autoCorrect | boolean | true | Enable search field's auto correct spelling
-suggestive | boolean | true | Enable search field's suggestion pullup view
-pinnedSuggestionValues  | [string], [number], [object]  | [] | A list of pinned suggestion values
-hint  | string  | None | Set search field's hint
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Search field style is an object with the following properties: `container: {...}, box, {...}, contentLeftRoom: {...}, contentRightRoom: {...}, input: {...}, suggestion: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/search-field.js#L68)
-onSearch | function | None | Called after search field's text input onSubmitEditing. Takes submitted search text value as argument
-onGetAutocompletionValues | async function | None | Async retrieve autocompletion string value array for suggestion pullup view
-onEditing | function | None |
-onFocus | function | None | Called after search field's text input is focused. Takes no argument
-onBlur | function | None | Called after search field's text input is blurred. Takes no argument
-onCollapse | function | None | Called after search field view collapsed
-onExpand | function | None | Called after search field view expanded
-onHide | function | None | Called when search field view becomes hidden
-onShow | function | None | Called when search field view becomes visible
-onHideSuggestion | function | None | Called when search field's suggestion view becomes hidden
-onShowSuggestion | function | None | Called when search field's suggestion view becomes visible
-onClear | function | None | Called after search field's text input is cleared. Takes no argument
-onClearSuggestion | function | None | Called after search field's suggestion is clear
-renderSuggestionItem | function | None | Takes an item from a list of suggestion items (pinned, autocompleted, & history) and renders them into the list in pullup suggestion view. Takes suggestion item, onPressSelectAndSubmit, and onPressSelect as argument. See below for examples
+| Prop                      | Type                         | Default  | Description
+| ------------------------- | ---------------------------- | -------- | -----------
+| exclusions                | [string]                     | []       | Set which properties from parent component to ignore or exclude
+| room                      | string                       | `none`   | Set search field's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+| shade                     | string, object               | `themed` | Set search field's shade theme, can be `themed`, `light`, or `dark`
+| overlay                   | string                       | `themed` | Set search field's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+| corner                    | string, number, object       | `themed` | Set search field's corner styles. As a number, corner is a scaler where border radius = corner \* size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+| size                      | string                       | `themed` | Set search field's size which can be one of `themed`, `small`, `normal`, `large`
+| margin                    | string, number, object       | None     | Set search field's margin styles. As a number, the margin is equally set around search field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| dropShadowed              | boolean, string              | `themed` | Enable search field's container drop shadow
+| autoFocus                 | boolean                      | true     | Enable search field's auto focus
+| autoCorrect               | boolean                      | true     | Enable search field's auto correct spelling
+| suggestive                | boolean                      | true     | Enable search field's suggestion pullup view
+| pinnedSuggestionValues    | [string], [number], [object] | []       | A list of pinned suggestion values
+| hint                      | string                       | None     | Set search field's hint
+| initialAnimation          | string, object               | None     | See [Animation API](#animation-api) section for details
+| style                     | object                       | None     | Search field style is an object with the following properties: `container: {...}, box, {...}, contentLeftRoom: {...}, contentRightRoom: {...}, input: {...}, suggestion: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/search-field.js#L68) |
+| onSearch                  | function                     | None     | Called after search field's text input onSubmitEditing. Takes submitted search text value as argument
+| onGetAutocompletionValues | async function               | None     | Async retrieve autocompletion string value array for suggestion pullup view
+| onEditing                 | function                     | None     |
+| onFocus                   | function                     | None     | Called after search field's text input is focused. Takes no argument
+| onBlur                    | function                     | None     | Called after search field's text input is blurred. Takes no argument
+| onCollapse                | function                     | None     | Called after search field view collapsed
+| onExpand                  | function                     | None     | Called after search field view expanded
+| onHide                    | function                     | None     | Called when search field view becomes hidden
+| onShow                    | function                     | None     | Called when search field view becomes visible
+| onHideSuggestion          | function                     | None     | Called when search field's suggestion view becomes hidden
+| onShowSuggestion          | function                     | None     | Called when search field's suggestion view becomes visible
+| onClear                   | function                     | None     | Called after search field's text input is cleared. Takes no argument
+| onClearSuggestion         | function                     | None     | Called after search field's suggestion is clear
+| renderSuggestionItem      | function                     | None     | Takes an item from a list of suggestion items (pinned, autocompleted, & history) and renders them into the list in pullup suggestion view. Takes suggestion item, onPressSelectAndSubmit, and onPressSelect as argument. See below for examples
 
-#### Search Field Child View Compositions
+#### Text Field Properties
+
+| Prop                 | Type                         | Default   | Description
+| -------------------- | ---------------------------- | --------- | -----------
+| exclusions           | [string]                     | []        | Set which properties from parent component to ignore or exclude
+| room                 | string                       | `none`    | Set text field's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+| shade                | string, object               | `themed`  | Set text field's shade theme, can be `themed`, `light`, or `dark`
+| overlay              | string                       | `themed`  | Set text field's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+| corner               | string, number, object       | `themed`  | Set text field's corner styles. As a number, corner is a scaler where border radius = corner \* size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+| size                 | string                       | `themed`  | Set text field's size which can be one of `themed`, `small`, `normal`, `large`
+| margin               | string, number, object       | None      | Set text field's margin styles. As a number, the margin is equally set around text field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| autoFocus            | boolean                      | true      | Enable text field's auto focus
+| autoCorrect          | boolean                      | true      | Enable text field's auto correct spelling
+| secured              | boolean                      | false     | Enable text field's secure mode
+| underlined           | boolean, string              | `themed`  | Enable text field's underlined animation
+| disabled             | boolean                      | false     | Disable text field's input
+| initialValue         | string, number               | None      | Set text input's initial value
+| selectableValues     | [string], [number], [object] | []        | A list of selectable values
+| label                | string                       | None      | Set text field's label
+| hint                 | string                       | None      | Set text field's hint
+| charLimit            | number                       | -1        | Set text input's max characters count. Set charLimit > -1 for no character limit. When charLimit > 1, a little character counter will be visible in the bottom right
+| lineLimit            | number                       | 1         | Set text input's max lines count. Set lineLimit > 1 for multilined text input
+| inputType            | string                       | `default` | Set text input's type which can be one of `default`, `numeric`, `monetary`, `phone-pad`, `email-address`, `credit-card-visa`, `credit-card-master`, `credit-card-discover`, `credit-card-american-express`
+| disableValidation    | bool                         | false     | Disable text input validation
+| disableFormatting    | bool                         | false     | Disable text input formatting
+| initialAnimation     | string, object               | None      | See [Animation API](#animation-api) section for details
+| style                | object                       | None      | Text field style is an object with the following properties: `container: {...}, box: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, input: {...}, helper: {...}, status: {...}, label: {...}, underline: {...}, selection: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L55)
+| onValidate           | function                     | None      | Called after text field's text input onChangeText or onEndEditing. Takes current text input value and inputType as arguments. Expects return object with a `validate` boolean property and a `status` string property. See [default onValidate](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L1022)
+| onFormat             | function                     | None      | Called after text field's text input onChangeText. Takes current text input value as argument. Return formated value. See [default onFormat](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L1075)
+| onEditing            | function                     | None      | Called when text field's text input onChangeText. Takes current text input value as argument
+| onDoneEdit           | function                     | None      | Called when a value in text field's selectable pullup view is selected or after text field's text input onSubmitEditing. Takes current text input value or selected value as argument
+| onSelect             | function                     | None      | Called when a value in text field's selectable pullup view is selected. Takes selected value as argument
+| onFocus              | function                     | None      | Called after text field's text input is focused. Takes no argument
+| onBlur               | function                     | None      | Called after text field's text input is blurred. Takes no argument
+| onHideSelection      | function                     | None      | Called after text field's selectable pullup view is hidden. Takes no argument
+| onShowSelection      | function                     | None      | Called after text field's selectable pullup view is visible. Takes no argument
+| onClear              | function                     | None      | Called after text field's text input is cleared. Takes no argument
+| renderSelectableItem | function                     | None      | Takes an item from a list of selectable items and renders them into the list in pullup selection view. Takes selectable item and onPressSelect as argument. See below for examples
+
+_Note: `themed` propperty indicates using values defined by the global theme provider._
+
+By default, text field component passes `shade`, `size`, and `disabled` properties down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. This behaviour can be overide by child components with the `exclusions` property.
+
+#### Search Field Compositions & Animated References
+
+Search field internal view composistions. All can be animated using `animate` method and reference name.
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/search-field-compositions.png">
 </p>
 
-#### Search Field Animated Child View Component References
+| RefName
+| ----------------------------------
+| `animated-container-view`
+| `animated-box-view`
+| `animated-content-left-room-view`
+| `animated-content-right-room-view`
+| `animated-suggestion-view`
 
-RefName | animated | description
---------|----------|------------
-`animated-container-view` |
-`animated-box-view` |
-`animated-content-left-room-view` |
-`animated-content-right-room-view` |
-`animated-suggestion-view` |
+#### Search Field Actions
 
-#### Text Field Properties
+| Action            | Description
+| ----------------- | -----------
+| search            |
+| clear             |
+| expand            |
+| collapse          |
+| show              |
+| hide              |
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set text field's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-shade | string, object | `themed` | Set text field's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set text field's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-corner | string, number, object | `themed` | Set text field's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-size  | string  | `themed`  | Set text field's size which can be one of `themed`, `small`, `normal`, `large`
-margin | string, number, object | None | Set text field's margin styles. As a number, the margin is equally set around text field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-autoFocus | boolean | true | Enable text field's auto focus
-autoCorrect | boolean | true | Enable text field's auto correct spelling
-secured | boolean | false | Enable text field's secure mode
-underlined | boolean, string | `themed` | Enable text field's underlined animation
-disabled | boolean | false | Disable text field's input
-initialValue  | string, number  | None | Set text input's initial value
-selectableValues  | [string], [number], [object]  | [] | A list of selectable values
-label  | string  | None | Set text field's label
-hint  | string  | None | Set text field's hint
-charLimit  | number  | -1 | Set text input's max characters count. Set charLimit > -1 for no character limit. When charLimit > 1, a little character counter will be visible in the bottom right
-lineLimit  | number  | 1 | Set text input's max lines count. Set lineLimit > 1 for multilined text input
-inputType  | string  | `default` | Set text input's type which can be one of `default`, `numeric`, `monetary`, `phone-pad`, `email-address`, `credit-card-visa`, `credit-card-master`, `credit-card-discover`, `credit-card-american-express`
-disableValidation  | bool  | false | Disable text input validation
-disableFormatting  | bool  | false | Disable text input formatting
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Text field style is an object with the following properties: `container: {...}, box: {...}, contentLeftRoom: {...}, contentRightRoom: {...}, input: {...}, helper: {...}, status: {...}, label: {...}, underline: {...}, selection: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L55)
-onValidate | function | See [default onValidate](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L1022) | Called after text field's text input onChangeText or onEndEditing. Takes current text input value and inputType as arguments. Expects return object with a `validate` boolean property and a `status` string property
-onFormat | function | See [default onFormat](https://github.com/tuantle/hypertoxin/blob/c61f4bf96ac92efb550fb5264404f72cc0e1443f/src/components/fields/text-field.js#L1075) | Called after text field's text input onChangeText. Takes current text input value as argument. Return formated value
-onEditing | function | None | Called when text field's text input onChangeText. Takes current text input value as argument.
-onDoneEdit | function | None | Called when a value in text field's selectable pullup view is selected or after text field's text input onSubmitEditing. Takes current text input value or selected value as argument
-onSelect | function | None  | Called when a value in text field's selectable pullup view is selected. Takes selected value as argument
-onFocus | function | None | Called after text field's text input is focused. Takes no argument
-onBlur | function | None | Called after text field's text input is blurred. Takes no argument
-onHideSelection | function | None | Called after text field's selectable pullup view is hidden. Takes no argument
-onShowSelection | function | None | Called after text field's selectable pullup view is visible. Takes no argument
-onClear | function | None | Called after text field's text input is cleared. Takes no argument
-renderSelectableItem | function | None | Takes an item from a list of selectable items and renders them into the list in pullup selection view. Takes selectable item and onPressSelect as argument. See below for examples
+#### Text Field Compositions & Animated References
 
-#### Text Field Child View Compositions
+Text field internal view composistions. All can be animated using `animate` method and reference name.
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/text-field-compositions.png">
 </p>
 
-#### Text Field Animated Child View Component References
+| RefName
+| ----------------------------------
+| `animated-container-view`
+| `animated-box-view`
+| `animated-label-text`
+| `animated-underline-focused-view`
+| `animated-content-left-room-view`
+| `animated-content-right-room-view`
+| `animated-selection-view`
 
-RefName | animated | description
---------|----------|------------
-`animated-container-view` |
-`animated-box-view` |
-`animated-label-text` |
-`animated-underline-focused-view` |
-`animated-content-left-room-view` |
-`animated-content-right-room-view` |
-`animated-selection-view` |
+#### Text Field Actions
 
-*Note: `themed` propperty indicates using values defined by the global theme provider.*
-
-By default, text field component passes `shade`, `size`, and `disabled` properties down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. This behaviour can be overide by child components with the `exclusions` property.
+| Action            | Description
+| ----------------- | -----------
+| clear             |
+| show-selection    |
+| hide-selection    |
 
 #### Text Field Component Public Methods Access Via Reference
 
-Methods | description
---------|------------
-isValidated | Check if text input's value is validated
-isSelectionVisible | Check if selectable pullup view is visible
-isFocused | Check if text input's value is focused
-showSelection | Call to show selectable pullup view if `selectableValues` is provided
-hideSelection | Call to hide selectable pullup view if `selectableValues` is provided
-focus | Call to focus text input
-blur | Call to blur text input
-clear | Call to clear text input
-animate | Do animation. See [Animation API](#animation-api)
+| Methods            | Description
+| ------------------ | -----------
+| isValidated        | Check if text input's value is validated
+| isSelectionVisible | Check if selectable pullup view is visible
+| isFocused          | Check if text input's value is focused
+| showSelection      | Call to show selectable pullup view if `selectableValues` is provided
+| hideSelection      | Call to hide selectable pullup view if `selectableValues` is provided
+| focus              | Call to focus text input
+| blur               | Call to blur text input
+| clear              | Call to clear text input
+| animate            | Do animation. See [Animation API](#animation-api)
 
 #### Search Field Examples
 
@@ -742,6 +760,43 @@ animate | Do animation. See [Animation API](#animation-api)
 ```
 
 #### Text Field Examples
+
+<p align="center">
+    <img width="35%" height="35%" src="/assets/screen-records/text-field-login.gif">
+</p>
+<p align="center">
+    <em>Using Text field to create simple logins</em>
+</p>
+
+```jsx
+<TextField label = 'EMAIL' hint = 'user@gmail.com' inputType = 'email-address' >
+    <IconImage room = 'content-left' source = 'email' />
+    <FlatButton room = 'content-right' overlay = 'transparent' action = 'clear' corner = 'circular' >
+        <IconImage room = 'content-middle' source = 'cancel' />
+    </FlatButton>
+</TextField>
+<TextField secured = { true } label = 'PASSWORD' >
+    <IconImage room = 'content-left' source = 'lock' />
+    <FlatButton room = 'content-right' overlay = 'transparent' action = 'clear' corner = 'circular' >
+        <IconImage room = 'content-middle' source = 'cancel' />
+    </FlatButton>
+</TextField>
+```
+
+<p align="center">
+    <img width="35%" height="35%" src="/assets/screen-records/text-field-multiline.gif">
+</p>
+<p align="center">
+    <em>Using Text field to create a simple note</em>
+</p>
+
+```jsx
+<TextField label = 'ADD NOTE' charLimit = { 128 } lineLimit = { 5 }>
+    <FlatButton overlay = 'transparent' room = 'content-right' action = 'clear' corner = 'circular' >
+        <IconImage room = 'content-middle' source = 'cancel' />
+    </FlatButton>
+</TextField>
+```
 
 <p align="center">
     <img width="35%" height="35%" src="/assets/screen-records/text-field-with-formatting-validation.gif">
@@ -863,37 +918,38 @@ animate | Do animation. See [Animation API](#animation-api)
     <em>Text components with coffee theme and Futura font</em>
 </p>
 
-Hypertoxin has five text components, [*CaptionText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/caption-text.js), [*InfoText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/info-text.js), [*SubtitleText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/subtitle-text.js), [*TitleText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/title-text.js), [*HeadlineText*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/headline-text.js)
+Hypertoxin has five text components, [_CaptionText_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/caption-text.js), [_InfoText_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/info-text.js), [_SubtitleText_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/subtitle-text.js), [_TitleText_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/title-text.js), [_HeadlineText_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/texts/headline-text.js)
 
 #### Text (Caption, Info, Subtitle, Title, & Headline) Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set text's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
-shade | string, object | `themed` | Set text shade theme, can be `themed`, `light`, or `dark`
-size  | string  | `themed`  | Set text font's size which can be one of `themed`, `small`, `normal`, `large`
-alignment  | string  | `left`  | Set text's alignment which can be one of `left`, `center`, `right`
-decoration  | string  | `none`  | Set text's decoration which can be one of `none`, `underline`, `line-through`
-font  | string  | `themed`  | Set text font's family which can be `themed` or font family name
-uppercased  | boolean  | False  | Force uppercased text
-lowercased  | boolean  | False  | Force lowercased text
-indentation  | number  | 0  | Set text indentation
-color | string | `themed` | Set text's color style. Can be hex string, default color name, or themed color name
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Standard React Native text style properties.
+| Prop             | Type           | Default  | Description
+| ---------------- | -------------- | -------- | -----------
+| exclusions       | [string]       | []       | Set which properties from parent component to ignore or exclude
+| room             | string         | `none`   | Set text's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
+| shade            | string, object | `themed` | Set text shade theme, can be `themed`, `light`, or `dark`
+| size             | string         | `themed` | Set text font's size which can be one of `themed`, `small`, `normal`, `large`
+| alignment        | string         | `left`   | Set text's alignment which can be one of `left`, `center`, `right`
+| decoration       | string         | `none`   | Set text's decoration which can be one of `none`, `underline`, `line-through`
+| font             | string         | `themed` | Set text font's family which can be `themed` or font family name
+| uppercased       | boolean        | False    | Force uppercased text
+| lowercased       | boolean        | False    | Force lowercased text
+| indentation      | number         | 0        | Set text indentation
+| color            | string         | `themed` | Set text's color style. Can be hex string, default color name, or themed color name
+| initialAnimation | string, object | None     | See [Animation API](#animation-api) section for details
+| style            | object         | None     | Standard React Native text style properties
 
 #### Text Components Public Methods Access Via Reference
 
-Methods | description
---------|------------
-animate | Do animation. See [Animation API](#animation-api)
+| Methods | Description
+| ------- | -----------
+| animate | Do animation. See [Animation API](#animation-api)
 
 ```jsx
 <HeadlineText size = 'large' color = 'default' > Headline Large </HeadlineText>
 <HeadlineText size = 'normal' color = 'primary' > Headline Normal </HeadlineText>
 <HeadlineText size = 'small' color = 'secondary' > Headline Small </HeadlineText>
 ```
+
 ```jsx
 <TitleText size = 'large' color = 'default' > Headline Large </TitleText>
 <TitleText size = 'normal' color = 'primary' > Headline Normal </TitleText>
@@ -924,69 +980,76 @@ animate | Do animation. See [Animation API](#animation-api)
     <img width="35%" height="35%" src="/assets/screen-records/header-screens.gif">
 </p>
 
-Hypertoxin has two screen components, [*BodyScreen*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/screens/body-screen.js), [*HeaderScreen*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/screens/header-screen.js)
+Hypertoxin has two screen components, [_BodyScreen_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/screens/body-screen.js), [_HeaderScreen_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/screens/header-screen.js)
 
 #### Header Screen Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-shade | string, object | `themed` | Set header screen's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set header screen's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-size  | string  | `themed`  | Set header screen's size which can be one of `themed`, `small`, `normal`, `large`
-dropShadowed | boolean, string | `themed` | Enable header screen's drop shadow
-coverImageSource | | |
-label  | string  | None | Set header screen's label
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
-onHideNavigation | function | None | Called when header screen's navigator view becomes hidden
-onShowNavigation | function | None | Called when header screen's  navigator view becomes visible
-onHideMedia | function | None | Called when header screen's media view becomes hidden
-onShowMedia | function | None | Called when header screen's media view  becomes visible
+| Prop             | Type                      | Default  | Description
+| ---------------- | ------------------------- | -------- | -----------
+| shade            | string, object            | `themed` | Set header screen's shade theme, can be `themed`, `light`, or `dark`
+| overlay          | string                    | `themed` | Set header screen's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+| size             | string                    | `themed` | Set header screen's size which can be one of `themed`, `small`, `normal`, `large`
+| dropShadowed     | boolean, string           | `themed` | Enable header screen's drop shadow
+| coverImageSource | React Native image source | None     | Header screen's background cover image source
+| label            | string                    | None     | Set header screen's label
+| initialAnimation | string, object            | None     | See [Animation API](#animation-api) section for details
+| style            | object                    | None     | Header screen style is an object with the following properties: `container: {...}, status: {...}, navigation: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}, mediaRoom: {...}, label: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/5d52bd4b55f810a27386516a958d398881f57133/src/components/screens/header-screen.js#L62)
+| onHideNavigation | function                  | None     | Called when header screen's navigator view becomes hidden
+| onShowNavigation | function                  | None     | Called when header screen's  navigator view becomes visible
+| onHideMedia      | function                  | None     | Called when header screen's media view becomes hidden
+| onShowMedia      | function                  | None     | Called when header screen's media view  becomes visible
 
-#### Header Screen Child View Compositions
+#### Body Screen Properties
+
+| Prop                       | Type                      | Default  | Description
+| -------------------------- | ------------------------- | -------- | -----------
+| shade                      | string, object            | `themed` | Set body screen's shade theme, can be `themed`, `light`, or `dark`
+| coverImageSource           | React Native image source | None     | Body screen's background cover image source
+| contentTopRoomAlignment    | string                    | `none`   | Child component top room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| contentMiddleRoomAlignment | string                    | `none`   | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| contentBottomRoomAlignment | string                    | `none`   | Child component bottom room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| scrollable                 | boolean                   | False    | Enable to allow scrolling
+| keyboardAvoiding           | boolean                   | False    | Enable to allow keyboard avoiding. Works best with `scrollable = true`
+| style                      | object                    | None     | Body screen style is an object with the following properties: `container: {...}, contentTopRoom: {...}, contentMiddleRoom: {...}, contentBottomRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/screens/body-screen.js#L54)
+| onScroll                   | function                  | None     | Called when scrolling with `scrollable = true`
+
+#### Header Screen Compositions & Animated References
+
+Header screen internal view composistions. All can be animated using `animate` method and reference name.
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/header-screen-compositions.png">
 </p>
 
-#### Header Screen Animated Component References
+| RefName
+| -----------------------------------
+| `animated-container-view`
+| `animated-navigation-room-view`
+| `animated-content-left-room-view`
+| `animated-content-middle-room-view`
+| `animated-content-right-room-view`
+| `animated-media-room-view`
 
-RefName | description
---------|------------
-`animated-container-view` | Reference name of header screen animated container child view
-`animated-navigation-room-view` |
-`animated-content-left-room-view` |
-`animated-content-middle-room-view` |
-`animated-content-right-room-view` |
-`animated-media-room-view` |
+#### Header Screen Actions
 
-#### Body Screen Properties
+| Action        | Description
+| ------------- | -----------
+| show-media    |
+| hide-media    |
 
-Prop | Type | Default | description
------|------|---------|------------
-shade | string, object | `themed` | Set body screen's shade theme, can be `themed`, `light`, or `dark`
-coverImageSource | React Native image source | None | Background cover image source
-contentTopRoomAlignment | string | `none` | Child component top room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentMiddleRoomAlignment | string | `none` | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentBottomRoomAlignment | string | `none` | Child component bottom room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-scrollable | boolean | False | Enable to allow scrolling
-keyboardAvoiding | boolean | False | Enable to allow keyboard avoiding. Works best with `scrollable = true`
-style | object | None | Body screen style is an object with the following properties: `container: {...}, contentTopRoom: {...}, contentMiddleRoom: {...}, contentBottomRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/screens/body-screen.js#L54)
-onScroll | function | None | Called when scrolling with `scrollable = true`
+#### Body Screen Compositions & Animated References
 
-#### Body Screen Child View Compositions
+Body screen internal view composistions. All, except for container view, can be animated using `animate` method and reference name.
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/body-screen-compositions.png">
 </p>
 
-#### Body Screen Animated Component References
-
-RefName | description
---------|------------
-`animated-content-top-room-view` |
-`animated-content-middle-room-view` |
-`animated-content-bottom-room-view` |
+| RefName
+| -----------------------------------
+| `animated-content-top-room-view`
+| `animated-content-middle-room-view`
+| `animated-content-bottom-room-view`
 
 #### Header Screen Examples
 
@@ -1106,134 +1169,133 @@ RefName | description
     <img width="35%" height="35%" src="/assets/screen-records/column-layout.gif">
 </p>
 
-Hypertoxin has two layout components, [*RowLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/row-layout.js), [*ColumnLayout*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/column-layout.js)
+Hypertoxin has two layout components, [_RowLayout_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/row-layout.js), [_ColumnLayout_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/layouts/column-layout.js)
 
 #### Row Layout Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set row layout's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-shade | string, object | `themed` | Set row layout's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set row layout's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-corner | string, number, object | `themed` | Set row layout's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-margin | string, number, object | None | Set row layout's margin styles. As a number, the margin is equally set around the layout. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-color | string | `themed` | Set row layout's color style. Can be hex string, default color name, or themed color name
-dropShadowed | boolean, string | `themed` | Enable row layout's drop shadow
-roomAlignment | string | `none` | Component self's room property with respect to parent component's room, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentTopRoomAlignment | string | `none` | Child component top room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentMiddleRoomAlignment | string | `none` | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentBottomRoomAlignment | string | `none` | Child component bottom room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-scrollable | boolean | False | Enable to allow scrolling
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Header screen style is an object with the following properties: `container: {...}, contentTopRoom: {...}, contentMiddleRoom: {...}, contentBottomRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/layouts/row-layout.js#L61)
-onScroll | function | None | Called when scrolling with `scrollable = true`
+| Prop                       | Type                   | Default  | Description
+| -------------------------- | ---------------------- | -------- | -----------
+| exclusions                 | [string]               | []       | Set which properties from parent component to ignore or exclude
+| room                       | string                 | `none`   | Set row layout's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+| shade                      | string, object         | `themed` | Set row layout's shade theme, can be `themed`, `light`, or `dark`
+| overlay                    | string                 | `themed` | Set row layout's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+| corner                     | string, number, object | `themed` | Set row layout's corner styles. As a number, corner is a scaler where border radius = corner \* size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+| margin                     | string, number, object | None     | Set row layout's margin styles. As a number, the margin is equally set around the layout. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| color                      | string                 | `themed` | Set row layout's color style. Can be hex string, default color name, or themed color name
+| dropShadowed               | boolean, string        | `themed` | Enable row layout's drop shadow
+| roomAlignment              | string                 | `none`   | Component self's room property with respect to parent component's room, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| contentTopRoomAlignment    | string                 | `none`   | Child component top room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| contentMiddleRoomAlignment | string                 | `none`   | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| contentBottomRoomAlignment | string                 | `none`   | Child component bottom room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| scrollable                 | boolean                | False    | Enable to allow scrolling
+| initialAnimation           | string, object         | None     | See [Animation API](#animation-api) section for details
+| style                      | object                 | None     | Header screen style is an object with the following properties: `container: {...}, contentTopRoom: {...}, contentMiddleRoom: {...}, contentBottomRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/layouts/row-layout.js#L61)
+| onScroll                   | function               | None     | Called when scrolling with `scrollable = true`
 
-#### Row Layout Child View Compositions
+#### Column Layout Properties
+
+| Prop                       | Type                   | Default  | Description
+| -------------------------- | ---------------------- | -------- | -----------
+| exclusions                 | [string]               | []       | Set which properties from parent component to ignore or exclude
+| room                       | string                 | `none`   | Set column layout's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+| shade                      | string, object         | `themed` | Set column layout's shade theme, can be `themed`, `light`, or `dark`
+| overlay                    | string                 | `themed` | Set column layouy's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+| corner                     | string, number, object | `themed` | Set column layout's corner styles. As a number, corner is a scaler where border radius = corner \* size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+| margin                     | string, number, object | None     | Set column layout's margin styles. As a number, the margin is equally set around the layout. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| color                      | string                 | `themed` | Set column layout's color style. Can be hex string, default color name, or themed color name
+| dropShadowed               | boolean, string        | `themed` | Enable column layout's drop shadow
+| roomAlignment              | string                 | `none`   | Component self's room property with respect to parent component's room, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| contentLeftRoomAlignment   | string                 | `none`   | Child component left room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| contentMiddleRoomAlignment | string                 | `none`   | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| contentRightRoomAlignment  | string                 | `none`   | Child component right room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
+| scrollable                 | boolean                | False    | Enable to allow scrolling
+| initialAnimation           | string, object         | None     | See [Animation API](#animation-api) section for details
+| style                      | object                 | None     | Header screen style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/layouts/column-layout.js#L61)
+| onScroll                   | function               | None     | Called when scrolling with `scrollable = true`
+
+#### Row Layout Compositions & Animated References
+
+Row layout internal view composistions. All can be animated using `animate` method and reference name.
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/row-layout-compositions.png">
 </p>
 
-#### Row Layout Animated Component References
+| RefName
+| -----------------------------------
+| `animated-container-view`
+| `animated-content-top-room-view`
+| `animated-content-middle-room-view`
+| `animated-content-bottom-room-view`
 
-RefName | description
---------|------------
-`animated-container-view` | Reference name of row layout animated container child view
-`animated-content-top-room-view` |
-`animated-content-middle-room-view` |
-`animated-content-bottom-room-view` |
+#### Column Layout Compositions & Animated References
 
-#### Column Layout Properties
-
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set column layout's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-shade | string, object | `themed` | Set column layout's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set column layouy's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-corner | string, number, object | `themed` | Set column layout's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-margin | string, number, object | None | Set column layout's margin styles. As a number, the margin is equally set around the layout. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-color | string | `themed` | Set column layout's color style. Can be hex string, default color name, or themed color name
-dropShadowed | boolean, string | `themed` | Enable column layout's drop shadow
-roomAlignment | string | `none` | Component self's room property with respect to parent component's room, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentLeftRoomAlignment | string | `none` | Child component left room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentMiddleRoomAlignment | string | `none` | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-contentRightRoomAlignment | string | `none` | Child component right room property, which can be one of `none`, `start`, `center`, `end`, or `stretch`
-scrollable | boolean | False | Enable to allow scrolling
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Header screen style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/layouts/column-layout.js#L61)
-onScroll | function | None | Called when scrolling with `scrollable = true`
-
-#### Column Layout Child View Compositions
+Column layout internal view composistions. All can be animated using `animate` method and reference name.
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/column-layout-compositions.png">
 </p>
 
-#### Column Layout Animated Component References
-
-RefName | description
---------|------------
-`animated-container-view` | Reference name of column animated container child view
-`animated-content-left-room-view` |
-`animated-content-middle-room-view` |
-`animated-content-right-room-view` |
+| RefName
+| -----------------------------------
+| `animated-container-view`
+| `animated-content-left-room-view`
+| `animated-content-middle-room-view`
+| `animated-content-right-room-view` 
 
 ## Image Components
 
-Hypertoxin has three image components, [*AvatarImage*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/avatar-image.js), [*IconImage*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/icon-image.js), and [*CoverImage*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/cover-image.js)
+Hypertoxin has three image components, [_AvatarImage_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/avatar-image.js), [_IconImage_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/icon-image.js), and [_CoverImage_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/images/cover-image.js)
 
 #### Avatar Image Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set avatar image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
-shade | string, object | `themed` | Set avatar image's shade theme, can be `themed`, `light`, or `dark`
-overlay | string | `themed` | Set avatar image's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
-size  | string  | `themed`  | Set avatar image's size which can be one of `themed`, `small`, `normal`, `large`
-margin | string, number, object | None | Set avatar image's margin styles. As a number, the margin is equally set around avatar image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-dropShadowed | boolean, string | `themed` | Enable avatar image drop shadow
-color | string | `themed` | Set avatar's color style. Can be hex string, default color name, or themed color name
-source | React Native image source | None | Image source
-defaultSource | React Native image source | None | Image source
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/avatar-image.js#L56)
+| Prop             | Type                      | Default  | Description
+| ---------------- | ------------------------- | -------- | -----------
+| exclusions       | [string]                  | []       | Set which properties from parent component to ignore or exclude
+| room             | string                    | `none`   | Set avatar image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
+| shade            | string, object            | `themed` | Set avatar image's shade theme, can be `themed`, `light`, or `dark`
+| overlay          | string                    | `themed` | Set avatar image's overplay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline`
+| size             | string                    | `themed` | Set avatar image's size which can be one of `themed`, `small`, `normal`, `large`
+| margin           | string, number, object    | None     | Set avatar image's margin styles. As a number, the margin is equally set around avatar image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| dropShadowed     | boolean, string           | `themed` | Enable avatar image drop shadow
+| color            | string                    | `themed` | Set avatar's color style. Can be hex string, default color name, or themed color name
+| source           | React Native image source | None     | Image source
+| defaultSource    | React Native image source | None     | Image source
+| initialAnimation | string, object            | None     | See [Animation API](#animation-api) section for details
+| style            | object                    | None     | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/avatar-image.js#L56)
 
 #### Icon Image Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set icon image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
-shade | string, object | `themed` | Set icon image's shade theme, can be `themed`, `light`, or `dark`
-size  | string  | `themed`  | Set icon image's size which can be one of `themed`, `small`, `normal`, `large`
-margin | string, number, object | None | Set icon image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-dropShadowed | boolean, string | `themed` | Enableicon image drop shadow
-color | string | `themed` | Set icon image's color style. Can be hex string, default color name, or themed color name
-source | React Native image source | None | Image source
-defaultSource | React Native image source | None | Image source
-initialAnimation | string, object | None  | See [Animation API](#animation-api) section for details
-style | object | None | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/icon-image.js#L52)
+| Prop             | Type                      | Default  | Description
+| ---------------- | ------------------------- | -------- | -----------
+| exclusions       | [string]                  | []       | Set which properties from parent component to ignore or exclude
+| room             | string                    | `none`   | Set icon image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
+| shade            | string, object            | `themed` | Set icon image's shade theme, can be `themed`, `light`, or `dark`
+| size             | string                    | `themed` | Set icon image's size which can be one of `themed`, `small`, `normal`, `large`
+| margin           | string, number, object    | None     | Set icon image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| dropShadowed     | boolean, string           | `themed` | Enableicon image drop shadow
+| color            | string                    | `themed` | Set icon image's color style. Can be hex string, default color name, or themed color name
+| source           | React Native image source | None     | Image source
+| defaultSource    | React Native image source | None     | Image source
+| initialAnimation | string, object            | None     | See [Animation API](#animation-api) section for details
+| style            | object                    | None     | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/icon-image.js#L52)
 
 #### Cover Image Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set cover image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
-shade | string, object | `themed` | Set cover image's shade theme, can be `themed`, `light`, or `dark`
-margin | string, number, object | None | Set cover image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-width | | |
-height | | |
-corner | string, number, object | `themed` | Set cover image's corner styles. As a number, corner is a scaler where border radius = corner * size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
-dropShadowed | boolean, string | `themed` | Enable cover image drop shadow
-resizeMode | string | `contain` | React Native image resize property
-source | React Native image source | None | Image source
-defaultSource | React Native image source | None | Image source
-style | object | None | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/cover-image.js#L56)
-
+| Prop          | Type                      | Default   | Description
+| ------------- | ------------------------- | --------- | -----------
+| exclusions    | [string]                  | []        | Set which properties from parent component to ignore or exclude
+| room          | string                    | `none`    | Set cover image's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`, `activity-indicator`
+| shade         | string, object            | `themed`  | Set cover image's shade theme, can be `themed`, `light`, or `dark`
+| margin        | string, number, object    | None      | Set cover image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| width         |                           |           |
+| height        |                           |           |
+| corner        | string, number, object    | `themed`  | Set cover image's corner styles. As a number, corner is a scaler where border radius = corner \* size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}`
+| dropShadowed  | boolean, string           | `themed`  | Enable cover image drop shadow
+| resizeMode    | string                    | `contain` | React Native image resize property
+| source        | React Native image source | None      | Image source
+| defaultSource | React Native image source | None      | Image source
+| style         | object                    | None      | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/cover-image.js#L56)
 
 #### Avatar Image Examples
 
@@ -1249,6 +1311,7 @@ style | object | None | Standard React Native style properties. Changes to these
 <AvatarImage source = { require(`../../../assets/images/fox.png`) } size = 'normal' color = 'primary' dropShadowed = { true }/>
 <AvatarImage source = { require(`../../../assets/images/fox.png`) } size = 'large' color = 'secondary' dropShadowed = { true }/>
 ```
+
 <p align="center">
     <img width="50%" height="50%" src="/assets/screenshots/avatar-images-with-outlines.png">
 </p>
@@ -1284,20 +1347,20 @@ style | object | None | Standard React Native style properties. Changes to these
 
 ## Divider Components
 
-Hypertoxin has two divider components, [*HorizontalDivider*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/dividers/horizontal-divider.js), [*VeriticalDivider*](https://github.com/tuantle/hypertoxin/blob/develop/src/components/dividers/vertical-divider.js)
+Hypertoxin has two divider components, [_HorizontalDivider_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/dividers/horizontal-divider.js), [_VeriticalDivider_](https://github.com/tuantle/hypertoxin/blob/develop/src/components/dividers/vertical-divider.js)
 
 #### Divider (Horizontal and Vertical) Properties
 
-Prop | Type | Default | description
------|------|---------|------------
-exclusions | [string] | [] | Set which properties from parent component to ignore or exclude
-room | string | `none` | Set divider's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
-shade | string, object | `themed` | Set divider shade theme, can be `themed`, `light`, or `dark`
-thickness | number, string | `themed` | Set divider line thickness
-edgeToEdge | boolean | false | Force divider line to the edges of screen
-margin | string, number, object | None | Set text field's margin styles. As a number, the margin is equally set around text field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
-color | string | `themed` | Set divider's color style. Can be hex string, default color name, or themed color name
-style | object | None | Standard React Native view style properties
+| Prop       | Type                   | Default  | Description
+| ---------- | ---------------------- | -------- | -----------
+| exclusions | [string]               | []       | Set which properties from parent component to ignore or exclude
+| room       | string                 | `none`   | Set divider's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`
+| shade      | string, object         | `themed` | Set divider shade theme, can be `themed`, `light`, or `dark`
+| thickness  | number, string         | `themed` | Set divider line thickness
+| edgeToEdge | boolean                | false    | Force divider line to the edges of screen
+| margin     | string, number, object | None     | Set text field's margin styles. As a number, the margin is equally set around text field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}`
+| color      | string                 | `themed` | Set divider's color style. Can be hex string, default color name, or themed color name
+| style      | object                 | None     | Standard React Native view style properties
 
 ## Using Room Property
 
@@ -1324,6 +1387,8 @@ JSX code for a flat button with left and right icons without using `room` proper
     </VIew>
 </FlatButton>
 ```
+
+## Using Action Property
 
 ## Animation API
 
@@ -1500,6 +1565,7 @@ Hypertoxin gloabl theme is highly customizable and one of the way to make your o
 ```js
 import { ThemeContext, Theme as DefaultTheme } from 'hyperflow';
 ```
+
 Next modify the DefaultTheme object using standard object destructuring method. For example, adding a customized global button corner theme called `semi-sharp`
 
 ```js
@@ -1556,7 +1622,8 @@ const MyTheme = _.merge(DefaultTheme, {
 ```
 
 # Change Log
-- Link to [change log](https://github.com/tuantle/hypertoxin/tree/develop/CHANGELOG.md)
+
+-   Link to [change log](https://github.com/tuantle/hypertoxin/tree/develop/CHANGELOG.md)
 
 # License
 
