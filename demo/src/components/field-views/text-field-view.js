@@ -146,7 +146,7 @@ export default class TextFieldView extends React.Component {
                             status
                         };
                     }}
-                    onFormat = {(value) => {
+                    onReformat = {(value) => {
                         return value.split(``).filter((char) => char !== `-` && char !== `(` && char !== `)` && char !== ` `).map((char, index) => {
                             if (index === 0) {
                                 return `(${char}`;

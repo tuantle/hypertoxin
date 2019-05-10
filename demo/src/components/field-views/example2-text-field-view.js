@@ -84,7 +84,7 @@ const NoteTextFieldView = (props) => {
                 hint = 'mm/dd/yy'
                 inputType = 'numeric'
                 charLimit = { 8 }
-                onFormat = {(value) => {
+                onReformat = {(value) => {
                     return value.split(``).filter((char) => char !== `/`).map((char, index) => {
                         return index === 2 || index === 4 ? `/${char}` : char;
                     }).join(``);

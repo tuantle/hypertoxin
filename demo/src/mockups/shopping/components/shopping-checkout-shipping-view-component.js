@@ -304,7 +304,7 @@ export default class ShoppingCheckoutShippingView extends React.Component {
                         }}
                         room = 'content-top'
                         label = 'CITY'
-                        onFormat = {(value) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`}
+                        onReformat = {(value) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`}
                         onDoneEdit = {(value) => {
                             component.setState((prevState) => {
                                 const shippingInfoForm = {
@@ -370,7 +370,7 @@ export default class ShoppingCheckoutShippingView extends React.Component {
                                     }
                                 });
                             }}
-                            onFormat = {(value) => value.toUpperCase()}
+                            onReformat = {(value) => value.toUpperCase()}
                             renderSelectableItem = {(item, onPressSelect) => {
                                 return (
                                     <AreaButton
@@ -478,7 +478,7 @@ export default class ShoppingCheckoutShippingView extends React.Component {
                         label = 'PHONE NUMBER'
                         inputType = 'phone-pad'
                         charLimit = { 12 }
-                        onFormat = {(value) => {
+                        onReformat = {(value) => {
                             return value.split(``).filter((char) => char !== `-`).map((char, index) => {
                                 return index === 2 || index === 5 ? `${char}-` : char;
                             }).join(``);

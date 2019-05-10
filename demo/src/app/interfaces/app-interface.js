@@ -121,10 +121,6 @@ const AppInterface = Hf.Interface.augment({
                                     top: 100
                                 }}
                             >
-                                <HeadlineText
-                                    room = 'content-top'
-                                    size = 'large'
-                                >  </HeadlineText>
                                 <TitleText room = 'content-top' > Mockup App Showcases </TitleText>
                                 <SubtitleText room = 'content-top' size = 'small' >
                                     Showing how Hypertoxing is been

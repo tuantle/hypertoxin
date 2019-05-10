@@ -211,7 +211,7 @@ const RegistrationTextFieldView = (props) => {
                 label = 'PHONE NUMBER'
                 inputType = 'phone-pad'
                 charLimit = { 12 }
-                onFormat = {(value) => {
+                onReformat = {(value) => {
                     return value.split(``).filter((char) => char !== `-`).map((char, index) => {
                         return index === 2 || index === 5 ? `${char}-` : char;
                     }).join(``);
