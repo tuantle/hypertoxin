@@ -2,6 +2,8 @@
 ## A themeable ReactNative component library for developing native apps.
 
 ----
+**Released Version 0.2.0 (05/10/2019)**
+
 **Development Version 0.2.0 (04/17/2019)**
 ```
 Notes:
@@ -28,6 +30,7 @@ Bug fixes:
     - Updated and fixed text input styling issues with react native 0.54.x version for SearchField and TextField.
 ```
 **Released Version 0.1.0 (02/23/2018)**
+
 **Development RC Version 0.1.0-rc2 (12/03/2017)**
 ```
 Notes:
