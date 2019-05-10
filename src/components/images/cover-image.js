@@ -44,7 +44,7 @@ const DEVICE_WIDTH = Dimensions.get(`window`).width;
 const DEVICE_HEIGHT = Dimensions.get(`window`).height;
 
 const DEFAULT_DROP_SHADOW_STYLE = {
-    shadowColor: DefaultTheme.color.palette.black,
+    shadowColor: `#000000`,
     shadowRadius: 2,
     shadowOpacity: 0.3,
     shadowOffset: {

@@ -986,7 +986,7 @@ export default class TextField extends React.Component {
             })
         ]),
         onValidate: PropTypes.func,
-        onFormat: PropTypes.func,
+        onReformat: PropTypes.func,
         onEditing: PropTypes.func,
         onDoneEdit: PropTypes.func,
         onSelect: PropTypes.func,
@@ -1072,24 +1072,24 @@ export default class TextField extends React.Component {
                 status
             };
         },
-        onFormat: (value, inputType) => {
-            let formattedValue = value;
+        onReformat: (value, inputType) => {
+            let reformattedValue = value;
 
             switch(inputType) { //eslint-disable-line
             case `monetary`:
-                formattedValue = `${parseFloat(value).toFixed(2)}`;
+                reformattedValue = `${parseFloat(value).toFixed(2)}`;
                 break;
             case `numeric`:
-                formattedValue = `${parseFloat(value)}`;
+                reformattedValue = `${parseFloat(value)}`;
                 break;
             case `phone-pad` || `credit-card-visa` || `credit-card-master` || `credit-card-discover` || `credit-card-american-express`:
-                formattedValue = `${parseInt(value, 10)}`;
+                reformattedValue = `${parseInt(value, 10)}`;
                 break;
             default:
-                formattedValue = value;
+                reformattedValue = value;
                 break;
             }
-            return formattedValue;
+            return reformattedValue;
         },
         onEditing: () => null,
         onDoneEdit: () => null,
@@ -1682,7 +1682,7 @@ export default class TextField extends React.Component {
         const {
             inputType,
             disableFormatting,
-            onFormat,
+            onReformat,
             onEditing
         } = component.props;
         const value = text;
@@ -1700,7 +1700,7 @@ export default class TextField extends React.Component {
             });
         } else if (disableFormatting) {
             if (inputType === `monetary`) {
-                const formattedValue = (typeof onFormat === `function` ? onFormat : () => {
+                const reformattedValue = (typeof onReformat === `function` ? onReformat : () => {
                     return `${parseFloat(value).toFixed(2)}`;
                 })(value, inputType);
 
@@ -1708,14 +1708,14 @@ export default class TextField extends React.Component {
                     return {
                         input: {
                             ...prevState.input,
-                            value: formattedValue
+                            value: reformattedValue
                         }
                     };
                 }, () => {
-                    (typeof onEditing === `function` ? onEditing : () => null)(formattedValue);
+                    (typeof onEditing === `function` ? onEditing : () => null)(reformattedValue);
                 });
             } else if (inputType === `numeric`) {
-                const formattedValue = (typeof onFormat === `function` ? onFormat : () => {
+                const reformattedValue = (typeof onReformat === `function` ? onReformat : () => {
                     return `${parseFloat(value)}`;
                 })(value, inputType);
 
@@ -1723,11 +1723,11 @@ export default class TextField extends React.Component {
                     return {
                         input: {
                             ...prevState.input,
-                            value: formattedValue
+                            value: reformattedValue
                         }
                     };
                 }, () => {
-                    (typeof onEditing === `function` ? onEditing : () => null)(formattedValue);
+                    (typeof onEditing === `function` ? onEditing : () => null)(reformattedValue);
                 });
             } else if (inputType === `phone-pad` ||
                        inputType === `credit-card-visa` ||
@@ -1735,7 +1735,7 @@ export default class TextField extends React.Component {
                        inputType === `credit-card-discover` ||
                        inputType === `credit-card-american-express`
             ) {
-                const formattedValue = (typeof onFormat === `function` ? onFormat : () => {
+                const reformattedValue = (typeof onReformat === `function` ? onReformat : () => {
                     return `${parseInt(value, 10)}`;
                 })(value, inputType);
 
@@ -1743,14 +1743,14 @@ export default class TextField extends React.Component {
                     return {
                         input: {
                             ...prevState.input,
-                            value: formattedValue
+                            value: reformattedValue
                         }
                     };
                 }, () => {
-                    (typeof onEditing === `function` ? onEditing : () => null)(formattedValue);
+                    (typeof onEditing === `function` ? onEditing : () => null)(reformattedValue);
                 });
             } else {
-                const formattedValue = (typeof onFormat === `function` ? onFormat : () => {
+                const reformattedValue = (typeof onReformat === `function` ? onReformat : () => {
                     return value;
                 })(value, inputType);
 
@@ -1758,11 +1758,11 @@ export default class TextField extends React.Component {
                     return {
                         input: {
                             ...prevState.input,
-                            value: formattedValue
+                            value: reformattedValue
                         }
                     };
                 }, () => {
-                    (typeof onEditing === `function` ? onEditing : () => null)(formattedValue);
+                    (typeof onEditing === `function` ? onEditing : () => null)(reformattedValue);
                 });
             }
         } else {

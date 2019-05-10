@@ -50,7 +50,7 @@ const DEVICE_WIDTH = Dimensions.get(`window`).width;
 const DEFAULT_ANIMATION_DURATION_MS = 300;
 
 const DEFAULT_DROP_SHADOW_STYLE = {
-    shadowColor: DefaultTheme.color.palette.black,
+    shadowColor: `#000000`,
     shadowRadius: 2,
     shadowOpacity: 0.3,
     shadowOffset: {
