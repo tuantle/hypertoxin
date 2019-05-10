@@ -7,7 +7,7 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"hyperflow": "file:../../hyperflow/hyperflow-0.2.1.tgz",
+		"hyperflow": "^0.2.1",
 		"hypertoxin": "file:../hypertoxin-0.2.0.tgz",
 		"prop-types": "^15.7.2",
 		"react-native-gesture-handler": "^1.2.1",
