@@ -43,7 +43,7 @@
 
 * * *
 
--   [Documentations & Examples](#documentations)
+-   [Documentations](#documentations)
     -   [Button Components](#button-components)
     -   [Field Components](#field-components)
     -   [Text Components](#text-components)
@@ -139,7 +139,9 @@ export default class App extends Component {
 
 * * *
 
-# Documentations (WIP)
+# Documentations
+
+Documeantations are still WIP. 
 
 ## Button Components
 
@@ -1715,7 +1717,7 @@ For a more elaborate animation sequence transitions, use `onTransitionBegin`, `o
 Now to see how use the animate method, let's do a simple send mail button animation shown here below.
 
 <p align="center">
-    <img width="25%" height="25%" src="/assets/screen-records/button-animation2.gif">
+    <img width="20%" height="20%" src="/assets/screen-records/button-animation2.gif">
 </p>
 
 The animation sequences of this button are onPress -> fade out SEND label and email icon -> fade in activity indicator and button in busy mode -> fade out activity indicator -> fade in SENT label with different color and a check icon to the left.
@@ -1834,7 +1836,7 @@ Below are a few more examples of animations and code.
     <a href="https://github.com/tuantle/hypertoxin/blob/develop/demo/src/components/animation-views/example1-animation-view.js"><em>Source</em></a>
 </p>
 
-## Global Theme Customization
+## Theme Customization
 
 Hypertoxin global theme is highly customizable and one of the way to make your own customized theme is to modify the default theme.
 
