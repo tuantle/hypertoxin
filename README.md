@@ -141,7 +141,7 @@ export default class App extends Component {
 
 # Documentations
 
-Documeantations are still WIP. 
+Documeantations are still WIP.
 
 ## Button Components
 
@@ -1359,7 +1359,7 @@ Body screen Methods & Callbacks:
 
 #### Body Screen Examples
 
-Below is an example
+Below is an example of a basic app view that consists of a header and body screen where the render function returns an array of header and body screen component.
 
 ```jsx
 render () {
@@ -1372,7 +1372,7 @@ render () {
 }
 ```
 
-Below is another example where you want the header screen to minimize (hide navigation view) when the body screen is scrolling down and maximize when scrolling up.
+Another example where you want the header screen to minimize (hide navigation view) when the body screen is scrolling down and maximize when scrolling up. This is achieved calling hideNavigation & showNavigation functions inside the onScroll callback of body screen component. onScroll provides scrolling direction that determines when to call hideNavigation or showNavigation function. 
 
 ```jsx
 render () {
