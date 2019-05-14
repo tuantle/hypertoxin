@@ -219,6 +219,8 @@ _Note: `themed` property indicates using values defined by the global theme prov
 
 By default, flat, raised, and area button components pass `shade`, `size`, `color` (flat & raised only), and `disabled` properties down to their child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. This behavior can be override by child components with the `exclusions` property. . See [Using Exclusions Property](#using-exclusions-property) section for details.
 
+# ---
+
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/flat-raised-button-compositions.png">
 </p>
@@ -248,13 +250,15 @@ Area button animated internal view composition reference names. See [Animation A
 -   `animated-content-left-room-view`
 -   `animated-content-right-room-view`
 
-Flat, Raised & Area Button Methods & Callbacks:
+Flat, raised & area button methods & callbacks:
 
 -   `animate` - See [Animation API](#animation-api) for details
 -   `onPress` - Button press callback
     *   arguments:
         -   `event` (object) - React Native event
     *   return: None
+
+# ---
 
 #### Flat Button Examples
 
@@ -425,6 +429,8 @@ To create a button with a badge, add a child text component with a `room = 'badg
 </FlatButton>
 ```
 
+# ---
+
 #### Raised Button Examples
 
 <p align="center">
@@ -501,6 +507,8 @@ To create a button with a badge, add a child text component with a `room = 'badg
     <IconImage room = 'content-middle' source = 'star' />
 </RaisedButton>
 ```
+
+# ---
 
 #### Area Button Examples
 
@@ -619,6 +627,8 @@ _Note: `themed` property indicates using values defined by the global theme prov
 
 By default, text field component passes `shade`, `size`, and `disabled` properties down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. By default, search field component passes `shade` property down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. This behavior can be override by child components with the `exclusions` property. See [Using Exclusions Property](#using-exclusions-property) section for details.
 
+# ---
+
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/search-field-compositions.png">
 </p>
@@ -643,7 +653,7 @@ Search field available actions:
 -   `show`
 -   `hide`
 
-Search Field Methods & Callbacks:
+Search field methods & callbacks:
 
 -   `animate` - See [Animation API](#animation-api) for details
 -   `isCollapsed`
@@ -742,6 +752,8 @@ Search Field Methods & Callbacks:
             *   return: None
     *   return - Component
 
+# ---
+
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/text-field-compositions.png">
 </p>
@@ -765,7 +777,7 @@ Text field available actions:
 -   show-selection
 -   hide-selection
 
-Text Field Methods & Callbacks:
+Text field methods & callbacks:
 
 -   `animate` - See [Animation API](#animation-api) for details
 -   `isValidated` - Check if text input's value is validated
@@ -829,6 +841,8 @@ Text Field Methods & Callbacks:
     *   arguments: None
     *   return: None
 -   `renderSelectableItem` - Render an item from a list of selectable items and renders them into the list in pull-up selection view.See below for examples
+
+# ---
 
 #### Search Field Examples
 
@@ -908,6 +922,8 @@ Text Field Methods & Callbacks:
     </FlatButton>
 </SearchField>
 ```
+
+# ---
 
 #### Text Field Examples
 
@@ -1087,11 +1103,17 @@ Hypertoxin has five text components, [_CaptionText_](https://github.com/tuantle/
 | color            | string          | `themed` | Set text's color style. Can be hex string, default color name, or themed color name |
 | style            | object          | None     | Standard React Native text style properties |
 
-#### Text Components Public Methods Access Via Reference
+Text (caption, info, subtitle, title, & headline) animated internal view composition reference names. See [Animation API](#animation-api) for details:
 
-| Methods | Description |
-| ------- | ----------- |
-| animate | Do animation. See [Animation API](#animation-api) |
+-   `animated-text`
+
+Text (caption, info, subtitle, title, & headline) methods & callbacks:
+
+-   `animate` - See [Animation API](#animation-api) for details
+
+# ---
+
+#### Text (Caption, Info, Subtitle, Title, & Headline)
 
 ```jsx
 <HeadlineText size = 'large' color = 'default' > Headline Large </HeadlineText>
@@ -1165,6 +1187,8 @@ Use header screen to create navigation top bar.
 
 By default, header screen component passes `shade`, `size`, and `color` properties down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. By default, body screen component passes `shade` property down to it child components. This behavior can be override by child components with the `exclusions` property. See [Using Exclusions Property](#using-exclusions-property) section for details.
 
+# ---
+
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/header-screen-compositions.png">
 </p>
@@ -1186,7 +1210,7 @@ Header screen available actions:
 -   `show-media`
 -   `hide-media`
 
-Header screen Methods & Callbacks:
+Header screen methods & callbacks:
 
 -   `animate` - See [Animation API](#animation-api) for details
 -   `isNavigationVisible` - Check if header screen's navigation view is visible
@@ -1224,6 +1248,8 @@ Header screen Methods & Callbacks:
     *   arguments: None
     *   return: None
 
+# ---
+
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/body-screen-compositions.png">
 </p>
@@ -1237,7 +1263,7 @@ Body screen animated internal view composition reference names. See [Animation A
 -   `animated-content-middle-room-view`
 -   `animated-content-bottom-room-view`
 
-Body screen Methods & Callbacks:
+Body screen methods & callbacks:
 
 -   `animate` - See [Animation API](#animation-api) for details
 -   `onScroll` - Calls when scrolling with `scrollable = true`
@@ -1245,6 +1271,8 @@ Body screen Methods & Callbacks:
         -   `scrollEvent` (object): Scroll event object with the following schema:
             -   `direction` (number): 1 = scrolling up, 0 = no scrolling, -1 = scrolling down
     *   return: None
+
+# ---
 
 #### Header Screen Examples
 
@@ -1357,6 +1385,8 @@ Body screen Methods & Callbacks:
 </HeaderScreen>
 ```
 
+# ---
+
 #### Body Screen Examples
 
 Below is an example of a basic app view that consists of a header and body screen where the render function returns an array of header and body screen component.
@@ -1451,6 +1481,8 @@ Hypertoxin has two layout components, [_RowLayout_](https://github.com/tuantle/h
 
 By default, row and column layout components pass `shade` property down to their child components. This behavior can be override by child components with the `exclusions` property. See [Using Exclusions Property](#using-exclusions-property) section for details.
 
+# ---
+
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/row-layout-compositions.png">
 </p>
@@ -1465,7 +1497,7 @@ Row layout animated internal view composition reference names. See [Animation AP
 -   `animated-content-middle-room-view`
 -   `animated-content-bottom-room-view`
 
-Row layout  Methods & Callbacks:
+Row layout methods & callbacks:
 
 -   `animate` - See [Animation API](#animation-api) for details
 -   `onScroll` - Calls when scrolling with `scrollable = true`
@@ -1473,6 +1505,8 @@ Row layout  Methods & Callbacks:
         -   `scrollEvent` (object): Scroll event object with the following schema:
             -   `direction` (number): 1 = scrolling up, 0 = no scrolling, -1 = scrolling down
     *   return: None
+
+# ---
 
 <p align="center">
     <img width="50%" height="50%" src="/assets/images/column-layout-compositions.png">
@@ -1549,6 +1583,8 @@ Hypertoxin has three image components, [_AvatarImage_](https://github.com/tuantl
 | defaultSource | React Native image source | None      | Image source |
 | style         | object                    | None      | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/cover-image.js#L56) |
 
+# ---
+
 #### Avatar Image Examples
 
 <p align="center">
@@ -1576,6 +1612,8 @@ Hypertoxin has three image components, [_AvatarImage_](https://github.com/tuantl
 <AvatarImage source = { require(`../../../assets/images/fox.png`) } overlay = 'transparent-outline' size = 'normal' color = 'primary' />
 <AvatarImage source = { require(`../../../assets/images/fox.png`) } overlay = 'transparent-outline' size = 'large' color = 'secondary' />
 ```
+
+# ---
 
 #### Icon Image Examples
 
