@@ -1971,6 +1971,7 @@ Hypertoxin demo has three custom themes that you can take a look for references.
 -   Use React Hooks
 -   Add Switcher (Button group) component
 -   Add expand/collapse actions to row and column layout components
+-   Add proper testings
 -   More mockup app examples
 
 # Change Log:
