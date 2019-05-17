@@ -59,6 +59,8 @@
 -   [Change Log](#change-log)
 -   [License](#license)
 
+Documeantations are still WIP.
+
 * * *
 
 # Installation
@@ -140,8 +142,6 @@ export default class App extends Component {
 * * *
 
 # Documentations
-
-Documeantations are still WIP.
 
 ## Button Components
 
@@ -1103,6 +1103,8 @@ Hypertoxin has five text components, [_CaptionText_](https://github.com/tuantle/
 | color            | string          | `themed` | Set text's color style. Can be hex string, default color name, or themed color name |
 | style            | object          | None     | Standard React Native text style properties |
 
+_Note: `themed` property indicates using values defined by the global theme provider._
+
 #
 
 Text (caption, info, subtitle, title, & headline) animated internal view composition reference names. See [Animation API](#animation-api) for details:
@@ -1186,6 +1188,8 @@ Use header screen to create navigation top bar.
 | keyboardAvoiding           | boolean                   | False    | Enable to allow keyboard avoiding. Works best with `scrollable = true` |
 | style                      | object                    | None     | Body screen style is an object with the following properties: `container: {...}, contentTopRoom: {...}, contentMiddleRoom: {...}, contentBottomRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/screens/body-screen.js#L54) |
 | onScroll                   | function                  | None     | Calls when scrolling with `scrollable = true` |
+
+_Note: `themed` property indicates using values defined by the global theme provider._
 
 By default, header screen component passes `shade`, `size`, and `color` properties down to it child components and at the same time set `margin = { 0 }` and `indentation = { 0 }` properties onto its children. By default, body screen component passes `shade` property down to it child components. This behavior can be override by child components with the `exclusions` property. See [Using Exclusions Property](#using-exclusions-property) section for details.
 
@@ -1404,7 +1408,7 @@ render () {
 }
 ```
 
-Another example where you want the header screen to minimize (hide navigation view) when the body screen is scrolling down and maximize when scrolling up. This is achieved calling hideNavigation & showNavigation functions inside the onScroll callback of body screen component. onScroll provides scrolling direction that determines when to call hideNavigation or showNavigation function. 
+Another example where you want the header screen to minimize (hide navigation view) when the body screen is scrolling down and maximize when scrolling up. This is achieved calling hideNavigation & showNavigation functions inside the onScroll callback of body screen component. onScroll provides scrolling direction that determines when to call hideNavigation or showNavigation function.
 
 ```jsx
 render () {
@@ -1480,6 +1484,8 @@ Hypertoxin has two layout components, [_RowLayout_](https://github.com/tuantle/h
 | scrollable                 | boolean                | False    | Enable to allow scrolling |
 | style                      | object                 | None     | Column layout style is an object with the following properties: `container: {...}, contentLeftRoom: {...}, contentMiddleRoom: {...}, contentRightRoom: {...}`. Standard React Native style properties go inside these properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/layouts/column-layout.js#L61) |
 | onScroll                   | function               | None     | Calls when scrolling with `scrollable = true`. Takes scroll direction object as argument |
+
+_Note: `themed` property indicates using values defined by the global theme provider._
 
 By default, row and column layout components pass `shade` property down to their child components. This behavior can be override by child components with the `exclusions` property. See [Using Exclusions Property](#using-exclusions-property) section for details.
 
@@ -1564,8 +1570,8 @@ Hypertoxin has three image components, [_AvatarImage_](https://github.com/tuantl
 | margin           | string, number, object    | None     | Set icon image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | dropShadowed     | boolean, string           | `themed` | Enable icon image drop shadow |
 | color            | string                    | `themed` | Set icon image's color style. Can be hex string, default color name, or themed color name |
-| source           | React Native image source | None     | Image source |
-| defaultSource    | React Native image source | None     | Image source |
+| source           | React Native image source | None     | Image source or icon name in provided preset. See [Theme Customization](#theme-customization) for details |
+| defaultSource    | React Native image source | None     | Image source or icon name in provided preset. See [Theme Customization](#theme-customization) for details |
 | style            | object                    | None     | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/icon-image.js#L52) |
 
 #### Cover Image Properties
@@ -1584,6 +1590,8 @@ Hypertoxin has three image components, [_AvatarImage_](https://github.com/tuantl
 | source        | React Native image source | None      | Image source |
 | defaultSource | React Native image source | None      | Image source |
 | style         | object                    | None      | Standard React Native style properties. Changes to these properties will override the global theme. See [default style object](https://github.com/tuantle/hypertoxin/blob/29ebfe7ccf97fc934f56287afd1b8bffebf4bea0/src/components/images/cover-image.js#L56) |
+
+_Note: `themed` property indicates using values defined by the global theme provider._
 
 #
 
@@ -1627,7 +1635,7 @@ Hypertoxin has three image components, [_AvatarImage_](https://github.com/tuantl
 </p>
 
 ```jsx
-<IconImage source = 'socialShare' color = 'default' dropShadowed = { false }margin = { 10 }/>
+<IconImage source = 'socialShare' color = 'default' dropShadowed = { false } margin = { 10 }/>
 <IconImage source = 'facebook' color = 'default' dropShadowed = { false } margin = { 10 }/>
 <IconImage source = 'twitter' color = 'primary' dropShadowed = { false } margin = { 10 }/>
 <IconImage source = 'googlePlus' color = 'primary' dropShadowed = { false } margin = { 10 }/>
@@ -1653,6 +1661,8 @@ Hypertoxin has two divider components, [_HorizontalDivider_](https://github.com/
 | margin     | string, number, object | None     | Set text field's margin styles. As a number, the margin is equally set around text field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | color      | string                 | `themed` | Set divider's color style. Can be hex string, default color name, or themed color name |
 | style      | object                 | None     | Standard React Native view style properties |
+
+_Note: `themed` property indicates using values defined by the global theme provider._
 
 ## Using Room Property
 
@@ -1883,6 +1893,7 @@ Hypertoxin global theme is highly customizable and one of the way to make your o
 Default global theme object schema:
 
 -   `name` (string) - Theme name
+-   `icon` (object) - Put your custom icon preset sources here
 -   `color` (object) - [Default color theme object](https://github.com/tuantle/hypertoxin/blob/develop/src/themes/color-theme.js)
 -   `font` (object) - [Default font theme object](https://github.com/tuantle/hypertoxin/blob/develop/src/themes/font-theme.js)
 -   `misc` (object) - [Default misc theme object](https://github.com/tuantle/hypertoxin/blob/develop/src/themes/misc-theme.js)
@@ -1961,6 +1972,27 @@ And to apply custom theme, simply set the top level ThemeContext provider value 
     <App/>
 </ThemeContext.Provider>
 ```
+
+#
+
+To setup custom icon preset, simply import your icon images to icon property of your custom theme object like so below.
+
+```js
+MyTheme.icon = {
+    home: require(`my_home_icon.png`)
+    profile: require(`my_profile_icon.png`)
+}
+```
+
+And to use your custom icon, just set the `source` property of icon image component to the name of the icon. This behavior is only applied to icon image component.
+
+
+```js
+<IconImage source = 'home' />
+<IconImage source = 'profile' />
+```
+
+#
 
 Hypertoxin demo has three custom themes that you can take a look for references. [Bubble Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/bubble-theme.js), [Coffee Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/coffee-theme.js), and [Wire Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/wire-theme.js)
 
