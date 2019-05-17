@@ -1994,7 +1994,7 @@ And to use your custom icon, just set the `source` property of icon image compon
 
 #
 
-Hypertoxin demo has three custom themes that you can take a look for references. [Bubble Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/bubble-theme.js), [Coffee Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/coffee-theme.js), and [Wire Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/wire-theme.js)
+Hypertoxin demo has three custom theme examples that you can take a look for references. [Bubble Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/bubble-theme.js), [Coffee Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/coffee-theme.js), and [Wire Theme](https://github.com/tuantle/hypertoxin/blob/develop/demo/src/themes/wire-theme.js)
 
 * * *
 
