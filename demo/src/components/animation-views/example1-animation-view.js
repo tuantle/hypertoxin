@@ -65,12 +65,6 @@ export default class Example1AnimationView extends React.Component {
                 }}
                 shade = { shade }
                 label = 'EXAMPLE 1 ANIMATION'
-                // initialAnimation = 'fade-in'
-                // style = {{
-                //     container: {
-                //         opacity: 0
-                //     }
-                // }}
             >
                 <FlatButton
                     room = 'content-left'

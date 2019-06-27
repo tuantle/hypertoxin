@@ -1,16 +1,3 @@
-/**
- * Copyright (c) 2017-present, Virida YEAwareness, Org. All rights reserved.
- *
- *------------------------------------------------------------------------
- *
- * @module MovingWave
- * @description - Virida client-native app decorative moving wave component.
- *
- * @author Tuan Le (tuan.t.lei@gmail.com)
- *
- *------------------------------------------------------------------------
- * @flow
- */
 'use strict'; // eslint-disable-line
 
 import React from 'react';
