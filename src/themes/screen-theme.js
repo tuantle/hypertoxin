@@ -30,7 +30,9 @@ import ColorTheme from './color-theme';
 
 export default {
     body: {
-        shade: `light`
+        shade: `light`,
+        overlay: `opaque`,
+        color: `default`
     },
     header: {
         shade: `light`,
@@ -50,6 +52,13 @@ export default {
             media: 72
         }
     },
+    padding: {
+        body: {
+            none: 0,
+            narrow: 3,
+            wide: 6
+        }
+    },
     font: {
         header: {
             label: {
@@ -62,8 +71,22 @@ export default {
     color: {
         body: {
             opacity: ColorTheme.opacity,
-            dark: ColorTheme.light.default,
-            light: ColorTheme.dark.default
+            accent: {
+                dark: ColorTheme.light.accent,
+                light: ColorTheme.dark.accent
+            },
+            primary: {
+                dark: ColorTheme.light.primary,
+                light: ColorTheme.dark.primary
+            },
+            secondary: {
+                dark: ColorTheme.light.secondary,
+                light: ColorTheme.dark.secondary
+            },
+            default: {
+                dark: ColorTheme.light.default,
+                light: ColorTheme.dark.default
+            }
         },
         header: {
             opacity: ColorTheme.opacity,

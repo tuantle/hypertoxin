@@ -75,37 +75,117 @@ const ButtonTheme = {
     },
     corner: {
         flat: {
-            circular: 0.5,
-            round: 0.1,
-            sharp: 0,
+            circular: {
+                small: 14,
+                normal: 18,
+                large: 24
+            },
+            round: {
+                small: 6,
+                normal: 6,
+                large: 9
+            },
+            sharp: {
+                small: 2,
+                normal: 2,
+                large: 2
+            },
             pinched: {
-                topLeft: 0,
-                bottomLeft: 0.5,
-                topRight: 0.5,
-                bottomRight: 0
+                small: {
+                    topLeft: 2,
+                    bottomLeft: 14,
+                    topRight: 14,
+                    bottomRight: 2
+                },
+                normal: {
+                    topLeft: 2,
+                    bottomLeft: 18,
+                    topRight: 18,
+                    bottomRight: 2
+                },
+                large: {
+                    topLeft: 2,
+                    bottomLeft: 24,
+                    topRight: 24,
+                    bottomRight: 2
+                }
             },
             teardrop: {
-                topLeft: 0.5,
-                bottomLeft: 0.5,
-                topRight: 0,
-                bottomRight: 0.5
+                small: {
+                    topLeft: 14,
+                    bottomLeft: 14,
+                    topRight: 2,
+                    bottomRight: 14
+                },
+                normal: {
+                    topLeft: 18,
+                    bottomLeft: 18,
+                    topRight: 2,
+                    bottomRight: 18
+                },
+                large: {
+                    topLeft: 24,
+                    bottomLeft: 24,
+                    topRight: 2,
+                    bottomRight: 24
+                }
             }
         },
         raised: {
-            circular: 0.5,
-            round: 0.1,
-            sharp: 0,
+            circular: {
+                small: 14,
+                normal: 18,
+                large: 24
+            },
+            round: {
+                small: 6,
+                normal: 6,
+                large: 9
+            },
+            sharp: {
+                small: 2,
+                normal: 2,
+                large: 2
+            },
             pinched: {
-                topLeft: 0,
-                bottomLeft: 0.5,
-                topRight: 0.5,
-                bottomRight: 0
+                small: {
+                    topLeft: 2,
+                    bottomLeft: 14,
+                    topRight: 14,
+                    bottomRight: 2
+                },
+                normal: {
+                    topLeft: 2,
+                    bottomLeft: 18,
+                    topRight: 18,
+                    bottomRight: 2
+                },
+                large: {
+                    topLeft: 2,
+                    bottomLeft: 24,
+                    topRight: 24,
+                    bottomRight: 2
+                }
             },
             teardrop: {
-                topLeft: 0.5,
-                bottomLeft: 0.5,
-                topRight: 0,
-                bottomRight: 0.5
+                small: {
+                    topLeft: 14,
+                    bottomLeft: 14,
+                    topRight: 2,
+                    bottomRight: 14
+                },
+                normal: {
+                    topLeft: 18,
+                    bottomLeft: 18,
+                    topRight: 2,
+                    bottomRight: 18
+                },
+                large: {
+                    topLeft: 24,
+                    bottomLeft: 24,
+                    topRight: 2,
+                    bottomRight: 24
+                }
             }
         }
 
@@ -129,14 +209,17 @@ const ButtonTheme = {
     },
     margin: {
         flat: {
+            none: 0,
             narrow: 3,
             wide: 6
         },
         raised: {
+            none: 0,
             narrow: 3,
             wide: 6
         },
         area: {
+            none: 0,
             narrow: {
                 vertical: 3
             },

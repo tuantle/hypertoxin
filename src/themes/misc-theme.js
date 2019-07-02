@@ -58,6 +58,7 @@ const MiscTheme = {
     margin: {
         divider: {
             horizontal: {
+                none: 0,
                 narrow: {
                     vertical: 9
                 },
@@ -66,6 +67,7 @@ const MiscTheme = {
                 }
             },
             vertical: {
+                none: 0,
                 narrow: {
                     horizontal: 3
                 },

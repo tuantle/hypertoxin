@@ -52,8 +52,7 @@ export default {
     },
     corner: {
         cover: {
-            circular: 0.5,
-            round: 0.1,
+            round: 6,
             sharp: 0
         }
     },
@@ -71,14 +70,17 @@ export default {
     },
     margin: {
         avatar: {
+            none: 0,
             narrow: 0,
             wide: 3
         },
         icon: {
+            none: 0,
             narrow: 0,
             wide: 3
         },
         cover: {
+            none: 0,
             narrow: 0,
             wide: 3
         }

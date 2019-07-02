@@ -49,20 +49,38 @@ const FieldTheme = {
     },
     corner: {
         search: {
-            circular: 0.5,
-            round: 0.1,
-            sharp: 0
+            circular: {
+                small: 14,
+                normal: 18,
+                large: 24
+            },
+            round: {
+                small: 6,
+                normal: 6,
+                large: 9
+            },
+            sharp: {
+                small: 2,
+                normal: 2,
+                large: 2
+            }
         },
         text: {
             circular: {
-                topLeft: 0.5,
-                topRight: 0.5
+                small: 14,
+                normal: 18,
+                large: 24
             },
             round: {
-                topLeft: 0.1,
-                topRight: 0.1
+                small: 6,
+                normal: 6,
+                large: 9
             },
-            sharp: 0
+            sharp: {
+                small: 2,
+                normal: 2,
+                large: 2
+            }
         }
     },
     size: {
@@ -95,10 +113,12 @@ const FieldTheme = {
     },
     margin: {
         search: {
+            none: 0,
             narrow: 3,
             wide: 6
         },
         text: {
+            none: 0,
             narrow: 3,
             wide: 6
         }

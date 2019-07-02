@@ -31,7 +31,8 @@ export default {
         shade: `light`,
         overlay: `transparent`,
         corner: `sharp`,
-        margin: 0,
+        padding: `narrow`,
+        margin: `none`,
         color: `default`,
         dropShadowed: false,
         initialAnimation: `none`
@@ -40,29 +41,42 @@ export default {
         shade: `light`,
         overlay: `transparent`,
         corner: `sharp`,
-        margin: 0,
+        padding: `narrow`,
+        margin: `none`,
         color: `default`,
         dropShadowed: false,
         initialAnimation: `none`
     },
     corner: {
         row: {
-            circular: 0.5,
-            round: 0.1,
-            sharp: 0
+            round: 6,
+            sharp: 2
         },
         column: {
-            circular: 0.5,
-            round: 0.1,
-            sharp: 0
+            round: 6,
+            sharp: 2
         }
     },
-    margin: {
+    padding: {
         row: {
+            none: 0,
             narrow: 3,
             wide: 6
         },
         column: {
+            none: 0,
+            narrow: 3,
+            wide: 6
+        }
+    },
+    margin: {
+        row: {
+            none: 0,
+            narrow: 3,
+            wide: 6
+        },
+        column: {
+            none: 0,
             narrow: 3,
             wide: 6
         }
