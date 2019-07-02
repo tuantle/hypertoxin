@@ -76,22 +76,121 @@ const DEFAULT_BODY_SCREEN_STYLE = {
 
 const readjustStyle = (newStyle = {
     shade: `themed`,
+    overlay: `themed`,
+    color: `themed`,
+    padding: `themed`,
+    roomAlignment: `start`,
     contentTopRoomAlignment: `none`,
     contentMiddleRoomAlignment: `none`,
     contentBottomRoomAlignment: `none`
 }, prevAdjustedStyle = DEFAULT_BODY_SCREEN_STYLE, Theme = DefaultTheme) => {
     const {
         shade,
+        overlay,
+        color,
+        padding,
+        roomAlignment,
         contentTopRoomAlignment,
         contentMiddleRoomAlignment,
         contentBottomRoomAlignment,
         style
     } = newStyle;
     const themedShade = shade === `themed` ? Theme.screen.body.shade : shade;
-    const themedColor = Theme.screen.color.body[themedShade];
+    const themedOverlay = overlay === `themed` ? Theme.screen.body.overlay : overlay;
+    const nullPadding = {
+        padding: null,
+        paddingTop: null,
+        paddingBottom: null,
+        paddingLeft: null,
+        paddingRight: null,
+        paddingHorizontal: null,
+        paddingVertical: null
+    };
+    let themedColor;
+    let themedPadding;
+    let themedRoomAlignment = {};
     let themedContentTopRoomAlignment = {};
     let themedContentMiddleRoomAlignment = {};
     let themedContentBottomRoomAlignment = {};
+
+    if (color === `themed`) {
+        if (Theme.screen.color.body.hasOwnProperty(Theme.screen.body.color)) {
+            themedColor = Theme.screen.color.body[Theme.screen.body.color][themedShade];
+        } else {
+            themedColor = Theme.screen.body.color;
+        }
+    } else if (Theme.screen.color.body.hasOwnProperty(color)) {
+        themedColor = Theme.screen.color.body[color][themedShade];
+    } else {
+        themedColor = color;
+    }
+
+    if (typeof padding === `string`) {
+        if (padding === `themed`) {
+            if (typeof Theme.screen.body.padding === `string` && Theme.screen.padding.bodyhasOwnProperty(Theme.screen.body.padding)) {
+                themedPadding = Theme.screen.padding.body[Theme.screen.body.padding];
+            } else {
+                themedPadding = Theme.screen.body.padding;
+            }
+        } else if (Theme.screen.padding.bodyhasOwnProperty(padding)) {
+            themedPadding = Theme.screen.padding.body[padding];
+        } else {
+            themedPadding = 0;
+        }
+    } else {
+        themedPadding = padding;
+    }
+    if (typeof themedPadding === `number`) {
+        themedPadding = {
+            ...nullPadding,
+            padding: themedPadding
+        };
+    } else if (typeof themedPadding === `object`) {
+        themedPadding = Object.entries(themedPadding).reduce((_themedPadding, [ key, value ]) => {
+            let _padding = nullPadding;
+
+            _padding[`padding${key.charAt(0).toUpperCase()}${key.slice(1)}`] = value;
+            _themedPadding = {
+                ..._themedPadding,
+                ..._padding
+            };
+            return _themedPadding;
+        }, nullPadding);
+    }
+
+    switch (themedOverlay) { // eslint-disable-line
+    case `opaque`:
+        break;
+    case `translucent`:
+        themedColor = `${themedColor}${Theme.screen.color.body.opacity}`;
+        break;
+    case `transparent`:
+        themedColor = `transparent`;
+        break;
+    }
+
+    switch (roomAlignment) { // eslint-disable-line
+    case `start`:
+        themedRoomAlignment = {
+            justifyContent: `flex-start`
+        };
+        break;
+    case `center`:
+        themedRoomAlignment = {
+            justifyContent: `center`
+        };
+        break;
+    case `end`:
+        themedRoomAlignment = {
+            justifyContent: `flex-end`
+        };
+        break;
+    case `stretch`:
+        themedRoomAlignment = {
+            justifyContent: `space-between`
+        };
+        break;
+    }
 
     switch (contentTopRoomAlignment) { // eslint-disable-line
     case `start`:
@@ -207,6 +306,8 @@ const readjustStyle = (newStyle = {
     return {
         container: {
             ...prevAdjustedStyle.container,
+            ...themedRoomAlignment,
+            ...themedPadding,
             backgroundColor: themedColor,
             ...(typeof style === `object` && style.hasOwnProperty(`container`) && typeof style.container === `object` ? style.container : {})
         },
@@ -249,6 +350,20 @@ export default class BodyScreen extends React.Component {
     static contextType = DefaultThemeContext
     static propTypes = {
         shade: PropTypes.oneOf([ `themed`, `light`, `dark` ]),
+        overlay: PropTypes.oneOf([ `themed`, `opaque`, `translucent`, `transparent` ]),
+        color: PropTypes.string,
+        pading: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.shape({
+                top: PropTypes.number,
+                bottom: PropTypes.number,
+                left: PropTypes.number,
+                right: PropTypes.number,
+                horizontal: PropTypes.number,
+                vertical: PropTypes.number
+            })
+        ]),
         coverImageSource: PropTypes.oneOfType([
             () => null,
             PropTypes.string,
@@ -256,6 +371,7 @@ export default class BodyScreen extends React.Component {
             ImageURISourcePropType,
             PropTypes.arrayOf(ImageURISourcePropType)
         ]),
+        roomAlignment: PropTypes.oneOf([ `start`, `center`, `end`, `stretch` ]),
         contentTopRoomAlignment: PropTypes.oneOf([ `none`, `start`, `center`, `end`, `stretch` ]),
         contentMiddleRoomAlignment: PropTypes.oneOf([ `none`, `start`, `center`, `end`, `stretch` ]),
         contentBottomRoomAlignment: PropTypes.oneOf([ `none`, `start`, `center`, `end`, `stretch` ]),
@@ -265,7 +381,11 @@ export default class BodyScreen extends React.Component {
     }
     static defaultProps = {
         shade: `themed`,
+        overlay: `themed`,
+        color: `themed`,
+        pading: `themed`,
         coverImageSource: null,
+        roomAlignment: `start`,
         contentTopRoomAlignment: `none`,
         contentMiddleRoomAlignment: `none`,
         contentBottomRoomAlignment: `none`,
@@ -276,6 +396,10 @@ export default class BodyScreen extends React.Component {
     static getDerivedStateFromProps (props, state) {
         const {
             shade,
+            overlay,
+            color,
+            pading,
+            roomAlignment,
             contentTopRoomAlignment,
             contentMiddleRoomAlignment,
             contentBottomRoomAlignment,
@@ -288,6 +412,10 @@ export default class BodyScreen extends React.Component {
         return {
             adjustedStyle: readjustStyle({
                 shade,
+                overlay,
+                color,
+                pading,
+                roomAlignment,
                 contentTopRoomAlignment,
                 contentMiddleRoomAlignment,
                 contentBottomRoomAlignment,
@@ -491,6 +619,10 @@ export default class BodyScreen extends React.Component {
         const component = this;
         const {
             shade,
+            overlay,
+            color,
+            pading,
+            roomAlignment,
             contentTopRoomAlignment,
             contentMiddleRoomAlignment,
             contentBottomRoomAlignment,
@@ -507,6 +639,10 @@ export default class BodyScreen extends React.Component {
                 },
                 adjustedStyle: readjustStyle({
                     shade,
+                    overlay,
+                    color,
+                    pading,
+                    roomAlignment,
                     contentTopRoomAlignment,
                     contentMiddleRoomAlignment,
                     contentBottomRoomAlignment,
@@ -678,7 +814,7 @@ export default class BodyScreen extends React.Component {
                                     directionalLockEnabled = { true }
                                     scrollEventThrottle = { 16 }
                                     onScroll = {() => {
-                                        (typeof onScroll === `function` ? onScroll : () => null)(scrollEvent);
+                                        onScroll(scrollEvent);
                                     }}
                                     { ...component.panResponder.panHandlers }
                                 >
@@ -703,7 +839,7 @@ export default class BodyScreen extends React.Component {
                             directionalLockEnabled = { true }
                             scrollEventThrottle = { 16 }
                             onScroll = {() => {
-                                (typeof onScroll === `function` ? onScroll : () => null)(scrollEvent);
+                                onScroll(scrollEvent);
                             }}
                             { ...component.panResponder.panHandlers }
                         >
@@ -775,7 +911,7 @@ export default class BodyScreen extends React.Component {
                             directionalLockEnabled = { true }
                             scrollEventThrottle = { 16 }
                             onScroll = {() => {
-                                (typeof onScroll === `function` ? onScroll : () => null)(scrollEvent);
+                                onScroll(scrollEvent);
                             }}
                             { ...component.panResponder.panHandlers }
                         >
@@ -798,7 +934,7 @@ export default class BodyScreen extends React.Component {
                         directionalLockEnabled = { true }
                         scrollEventThrottle = { 16 }
                         onScroll = {() => {
-                            (typeof onScroll === `function` ? onScroll : () => null)(scrollEvent);
+                            onScroll(scrollEvent);
                         }}
                         { ...component.panResponder.panHandlers }
                     >
