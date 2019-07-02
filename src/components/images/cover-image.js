@@ -45,11 +45,11 @@ const DEVICE_HEIGHT = Dimensions.get(`window`).height;
 
 const DEFAULT_DROP_SHADOW_STYLE = {
     shadowColor: `#000000`,
-    shadowRadius: 2,
-    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    shadowOpacity: 0.25,
     shadowOffset: {
-        width: 0,
-        height: 1
+        width: 1,
+        height: 2
     }
 };
 
@@ -107,7 +107,6 @@ const CoverImage = (props) => {
                     const {
                         Theme
                     } = context;
-                    const size = Math.min(width, height);
                     const nullMargin = {
                         margin: null,
                         marginTop: null,
@@ -145,14 +144,13 @@ const CoverImage = (props) => {
                     }
                     if (typeof themedCorner === `number`) {
                         themedBorderRadius = {
-                            ...nullBorderRadius,
-                            borderRadius: Math.floor(themedCorner * size)
+                            borderRadius: themedCorner
                         };
                     } else if (typeof themedCorner === `object`) {
                         themedBorderRadius = Object.entries(themedCorner).reduce((_themedBorderRadius, [ key, value ]) => {
                             let _borderRadius = nullBorderRadius;
 
-                            _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(size * value);
+                            _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
 
                             _themedBorderRadius = {
                                 ..._themedBorderRadius,
