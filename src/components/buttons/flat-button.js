@@ -325,50 +325,81 @@ const readjustStyle = (newStyle = {
     if (typeof themedCorner === `number`) {
         themedBorderRadius = {
             small: {
-                ...nullBorderRadius,
-                borderRadius: Math.floor(Theme.button.size.flat.small * themedCorner)
+                borderRadius: themedCorner
             },
             normal: {
-                ...nullBorderRadius,
-                borderRadius: Math.floor(Theme.button.size.flat.normal * themedCorner)
+                borderRadius: themedCorner
             },
             large: {
-                ...nullBorderRadius,
-                borderRadius: Math.floor(Theme.button.size.flat.large * themedCorner)
+                borderRadius: themedCorner
             }
         };
     } else if (typeof themedCorner === `object`) {
-        themedBorderRadius = Object.entries(themedCorner).reduce((_themedBorderRadius, [ key, value ]) => {
-            let _borderRadius = {
-                small: nullBorderRadius,
-                normal: nullBorderRadius,
-                large: nullBorderRadius
+        if (themedCorner.hasOwnProperty(`small`) && typeof themedCorner.small === `object` &&
+            themedCorner.hasOwnProperty(`normal`) && typeof themedCorner.normal === `object` &&
+            themedCorner.hasOwnProperty(`large`) && typeof themedCorner.large === `object`) {
+            themedBorderRadius = {
+                small: Object.entries(themedCorner.small).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius),
+                normal: Object.entries(themedCorner.normal).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius),
+                large: Object.entries(themedCorner.large).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius)
             };
-
-            _borderRadius.small[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.button.size.flat.small * value);
-            _borderRadius.normal[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.button.size.flat.normal * value);
-            _borderRadius.large[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.button.size.flat.large * value);
-
-            _themedBorderRadius = {
+        } else if (themedCorner.hasOwnProperty(`small`) && typeof themedCorner.small === `number` &&
+                   themedCorner.hasOwnProperty(`normal`) && typeof themedCorner.normal === `number` &&
+                   themedCorner.hasOwnProperty(`large`) && typeof themedCorner.large === `number`) {
+            themedBorderRadius = {
                 small: {
-                    ..._themedBorderRadius.small,
-                    ..._borderRadius.small
+                    borderRadius: themedCorner.small
                 },
                 normal: {
-                    ..._themedBorderRadius.normal,
-                    ..._borderRadius.normal
+                    borderRadius: themedCorner.normal
                 },
                 large: {
-                    ..._themedBorderRadius.large,
-                    ..._borderRadius.large
+                    borderRadius: themedCorner.large
                 }
             };
-            return _themedBorderRadius;
-        }, {
-            small: nullBorderRadius,
-            normal: nullBorderRadius,
-            large: nullBorderRadius
-        });
+        } else {
+            themedBorderRadius = {
+                small: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                },
+                normal: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                },
+                large: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                }
+            };
+        }
     }
 
     if (typeof margin === `string`) {
@@ -776,7 +807,7 @@ export default class FlatButton extends React.Component {
             const debounce = (task, ...args) => {
                 const context = this;
                 if (timeoutId === null) {
-                    task.call(context, ...args);
+                    task.apply(context, args);
 
                     timeoutId = setTimeout(() => {
                         clearTimeout(timeoutId);
@@ -893,12 +924,12 @@ export default class FlatButton extends React.Component {
                             }
                         };
                     }, () => {
-                        (typeof onPress === `function` ? onPress : () => null)(event);
+                        onPress(event);
                     });
                 });
             });
         } else {
-            (typeof onPress === `function` ? onPress : () => null)(event);
+            onPress(event);
         }
     }
     animate (animation = {
