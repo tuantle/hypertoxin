@@ -50,8 +50,8 @@ const DEFAULT_ANIMATION_DURATION_MS = 300;
 
 const DEFAULT_DROP_SHADOW_STYLE = {
     shadowColor: `#000000`,
-    shadowRadius: 2,
-    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    shadowOpacity: 0.25,
     shadowOffset: {
         width: 0,
         height: 1
@@ -82,7 +82,7 @@ const readjustStyle = (newStyle = {
     shade: `themed`,
     overlay: `themed`,
     corner: `themed`,
-    size: 0,
+    padding: `themed`,
     margin: `themed`,
     color: `themed`,
     dropShadowed: `themed`,
@@ -95,7 +95,7 @@ const readjustStyle = (newStyle = {
         shade,
         overlay,
         corner,
-        size,
+        padding,
         margin,
         color,
         dropShadowed,
@@ -107,6 +107,15 @@ const readjustStyle = (newStyle = {
     } = newStyle;
     const themedShade = shade === `themed` ? Theme.layout.row.shade : shade;
     const themedOverlay = overlay === `themed` ? Theme.layout.row.overlay : overlay;
+    const nullPadding = {
+        padding: null,
+        paddingTop: null,
+        paddingBottom: null,
+        paddingLeft: null,
+        paddingRight: null,
+        paddingHorizontal: null,
+        paddingVertical: null
+    };
     const nullMargin = {
         margin: null,
         marginTop: null,
@@ -131,6 +140,7 @@ const readjustStyle = (newStyle = {
     let themedBorderRadius;
     let themedBorderWidth = 0;
     let themedCorner;
+    let themedPadding;
     let themedMargin;
     let dropShadow;
 
@@ -177,14 +187,13 @@ const readjustStyle = (newStyle = {
     }
     if (typeof themedCorner === `number`) {
         themedBorderRadius = {
-            ...nullBorderRadius,
-            borderRadius: Math.floor(themedCorner * size)
+            borderRadius: themedCorner
         };
     } else if (typeof themedCorner === `object`) {
         themedBorderRadius = Object.entries(themedCorner).reduce((_themedBorderRadius, [ key, value ]) => {
             let _borderRadius = nullBorderRadius;
 
-            _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(size * value);
+            _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
 
             _themedBorderRadius = {
                 ..._themedBorderRadius,
@@ -192,6 +201,39 @@ const readjustStyle = (newStyle = {
             };
             return _themedBorderRadius;
         }, nullBorderRadius);
+    }
+
+    if (typeof padding === `string`) {
+        if (padding === `themed`) {
+            if (typeof Theme.layout.row.padding === `string` && Theme.layout.padding.row.hasOwnProperty(Theme.layout.row.padding)) {
+                themedPadding = Theme.layout.padding.row[Theme.layout.row.padding];
+            } else {
+                themedPadding = Theme.layout.row.padding;
+            }
+        } else if (Theme.layout.padding.row.hasOwnProperty(padding)) {
+            themedPadding = Theme.layout.padding.row[padding];
+        } else {
+            themedPadding = 0;
+        }
+    } else {
+        themedPadding = padding;
+    }
+    if (typeof themedPadding === `number`) {
+        themedPadding = {
+            ...nullPadding,
+            padding: themedPadding
+        };
+    } else if (typeof themedPadding === `object`) {
+        themedPadding = Object.entries(themedPadding).reduce((_themedPadding, [ key, value ]) => {
+            let _padding = nullPadding;
+
+            _padding[`padding${key.charAt(0).toUpperCase()}${key.slice(1)}`] = value;
+            _themedPadding = {
+                ..._themedPadding,
+                ..._padding
+            };
+            return _themedPadding;
+        }, nullPadding);
     }
 
     if (typeof margin === `string`) {
@@ -398,6 +440,7 @@ const readjustStyle = (newStyle = {
             ...prevAdjustedStyle.container,
             ...dropShadow,
             ...themedRoomAlignment,
+            ...themedPadding,
             ...themedMargin,
             ...themedBorderRadius,
             borderWidth: themedBorderWidth,
@@ -446,6 +489,18 @@ export default class RowLayout extends React.Component {
                 topRight: PropTypes.number,
                 bottomLeft: PropTypes.number,
                 bottomRight: PropTypes.number
+            })
+        ]),
+        pading: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.shape({
+                top: PropTypes.number,
+                bottom: PropTypes.number,
+                left: PropTypes.number,
+                right: PropTypes.number,
+                horizontal: PropTypes.number,
+                vertical: PropTypes.number
             })
         ]),
         margin: PropTypes.oneOfType([
@@ -503,6 +558,8 @@ export default class RowLayout extends React.Component {
         shade: `themed`,
         overlay: `themed`,
         corner: `themed`,
+        pading: `themed`,
+        margin: `themed`,
         color: `themed`,
         dropShadowed: `themed`,
         roomAlignment: `start`,
@@ -518,6 +575,7 @@ export default class RowLayout extends React.Component {
             shade,
             overlay,
             corner,
+            padding,
             margin,
             color,
             dropShadowed,
@@ -528,10 +586,6 @@ export default class RowLayout extends React.Component {
             style
         } = props;
         const {
-            width,
-            height
-        } = state;
-        const {
             Theme
         } = state.context;
 
@@ -540,7 +594,7 @@ export default class RowLayout extends React.Component {
                 shade,
                 overlay,
                 corner,
-                size: Math.min(width, height),
+                padding,
                 margin,
                 color,
                 dropShadowed,
@@ -593,9 +647,7 @@ export default class RowLayout extends React.Component {
                 pageY: 0,
                 locationX: 0,
                 locationY: 0
-            },
-            width: 0,
-            height: 0
+            }
         };
     }
     getScrollEvent = () => {
@@ -630,20 +682,6 @@ export default class RowLayout extends React.Component {
                 animated
             });
         }
-    }
-    onLayout = (event) => {
-        const component = this;
-        const {
-            width,
-            height
-        } = event.nativeEvent.layout;
-
-        component.setState(() => {
-            return {
-                width,
-                height
-            };
-        });
     }
     animate (animation = {
         onTransitionBegin: () => null,
@@ -772,6 +810,7 @@ export default class RowLayout extends React.Component {
             shade,
             overlay,
             corner,
+            padding,
             margin,
             color,
             dropShadowed,
@@ -782,10 +821,6 @@ export default class RowLayout extends React.Component {
             initialAnimation,
             style
         } = component.props;
-        const {
-            width,
-            height
-        } = component.state;
         const {
             Theme
         } = component.context;
@@ -799,7 +834,7 @@ export default class RowLayout extends React.Component {
                     shade,
                     overlay,
                     corner,
-                    size: Math.min(width, height),
+                    padding,
                     margin,
                     color,
                     dropShadowed,
@@ -953,7 +988,6 @@ export default class RowLayout extends React.Component {
                     ref = {(componentRef) => {
                         component.refCache[`animated-container-view`] = componentRef;
                     }}
-                    onLayout = { component.onLayout }
                     style = { adjustedStyle.container }
                     useNativeDriver = { true }
                 >
@@ -967,7 +1001,7 @@ export default class RowLayout extends React.Component {
                         directionalLockEnabled = { true }
                         scrollEventThrottle = { 16 }
                         onScroll = {() => {
-                            (typeof onScroll === `function` ? onScroll : () => null)(scrollEvent);
+                            onScroll(scrollEvent);
                         }}
                         { ...component.panResponder.panHandlers }
                     >
@@ -983,7 +1017,6 @@ export default class RowLayout extends React.Component {
                 ref = {(componentRef) => {
                     component.refCache[`animated-container-view`] = componentRef;
                 }}
-                onLayout = { component.onLayout }
                 style = { adjustedStyle.container }
                 useNativeDriver = { true }
             >
