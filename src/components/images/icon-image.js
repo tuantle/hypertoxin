@@ -41,8 +41,8 @@ const DEFAULT_ANIMATION_DURATION_MS = 300;
 
 const DEFAULT_DROP_SHADOW_STYLE = {
     shadowColor: `#000000`,
-    shadowRadius: 2,
-    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    shadowOpacity: 0.25,
     shadowOffset: {
         width: 0,
         height: 1
