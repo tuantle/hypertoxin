@@ -86,6 +86,7 @@ export default class SearchFieldView extends React.Component {
                                 >
                                     <IconImage
                                         room = 'content-left'
+                                        color = { item.suggestionType === `pin` || item.suggestionType === `history` ? `accent` : `primary` }
                                         source = {(() => {
                                             switch (item.suggestionType) { // eslint-disable-line
                                             case `pin`:
@@ -102,7 +103,12 @@ export default class SearchFieldView extends React.Component {
                                             left: 10
                                         }}
                                     />
-                                    <InfoText room = 'content-right' indentation = { 10 }>{ item.value }</InfoText>
+                                    <InfoText
+                                        room = 'content-right'
+                                        indentation = { 10 }
+                                        color = { item.suggestionType === `pin` || item.suggestionType === `history` ? `accent` : `default` }
+
+                                    >{ item.value }</InfoText>
                                 </ColumnLayout>
                                 {
                                     item.suggestionType !== `pin` ? <FlatButton
