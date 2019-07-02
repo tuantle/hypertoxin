@@ -53,12 +53,12 @@ const DEVICE_HEIGHT = Dimensions.get(`window`).height;
 
 const DEFAULT_ANIMATION_DURATION_MS = 300;
 
-const DEFAULT_SUGGESTION_HISTORY_ITEM_COUNT = 8;
+const DEFAULT_SUGGESTION_HISTORY_ITEM_COUNT = 6;
 
 const DEFAULT_DROP_SHADOW_STYLE = {
     shadowColor: `#000000`,
-    shadowRadius: 2,
-    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    shadowOpacity: 0.25,
     shadowOffset: {
         width: 0,
         height: 1
@@ -362,50 +362,81 @@ const readjustStyle = (newStyle = {
     if (typeof themedCorner === `number`) {
         themedBorderRadius = {
             small: {
-                ...nullBorderRadius,
-                borderRadius: (Math.floor(Theme.field.size.search.input.small + 6) * themedCorner)
+                borderRadius: themedCorner
             },
             normal: {
-                ...nullBorderRadius,
-                borderRadius: (Math.floor(Theme.field.size.search.input.normal + 6) * themedCorner)
+                borderRadius: themedCorner
             },
             large: {
-                ...nullBorderRadius,
-                borderRadius: (Math.floor(Theme.field.size.search.input.large + 6) * themedCorner)
+                borderRadius: themedCorner
             }
         };
     } else if (typeof themedCorner === `object`) {
-        themedBorderRadius = Object.entries(themedCorner).reduce((_themedBorderRadius, [ key, value ]) => {
-            let _borderRadius = {
-                small: nullBorderRadius,
-                normal: nullBorderRadius,
-                large: nullBorderRadius
+        if (themedCorner.hasOwnProperty(`small`) && typeof themedCorner.small === `object` &&
+            themedCorner.hasOwnProperty(`normal`) && typeof themedCorner.normal === `object` &&
+            themedCorner.hasOwnProperty(`large`) && typeof themedCorner.large === `object`) {
+            themedBorderRadius = {
+                small: Object.entries(themedCorner.small).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius),
+                normal: Object.entries(themedCorner.normal).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius),
+                large: Object.entries(themedCorner.large).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius)
             };
-
-            _borderRadius.small[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.field.size.search.input.small * value);
-            _borderRadius.normal[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.field.size.search.input.normal * value);
-            _borderRadius.large[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.field.size.search.input.large * value);
-
-            _themedBorderRadius = {
+        } else if (themedCorner.hasOwnProperty(`small`) && typeof themedCorner.small === `number` &&
+                   themedCorner.hasOwnProperty(`normal`) && typeof themedCorner.normal === `number` &&
+                   themedCorner.hasOwnProperty(`large`) && typeof themedCorner.large === `number`) {
+            themedBorderRadius = {
                 small: {
-                    ..._themedBorderRadius.small,
-                    ..._borderRadius.small
+                    borderRadius: themedCorner.small
                 },
                 normal: {
-                    ..._themedBorderRadius.normal,
-                    ..._borderRadius.normal
+                    borderRadius: themedCorner.normal
                 },
                 large: {
-                    ..._themedBorderRadius.large,
-                    ..._borderRadius.large
+                    borderRadius: themedCorner.large
                 }
             };
-            return _themedBorderRadius;
-        }, {
-            small: nullBorderRadius,
-            normal: nullBorderRadius,
-            large: nullBorderRadius
-        });
+        } else {
+            themedBorderRadius = {
+                small: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                },
+                normal: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                },
+                large: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                }
+            };
+        }
     }
 
     if (typeof margin === `string`) {
@@ -505,7 +536,7 @@ const readjustStyle = (newStyle = {
             },
             suggestion: {
                 ...prevAdjustedStyle.small.suggestion,
-                // ...dropShadow,
+                ...dropShadow,
                 backgroundColor: themedSuggestionColor,
                 ...(typeof style === `object` && style.hasOwnProperty(`suggestion`) && typeof style.suggestion === `object` ? style.suggestion : {})
             }
@@ -557,7 +588,7 @@ const readjustStyle = (newStyle = {
             },
             suggestion: {
                 ...prevAdjustedStyle.normal.suggestion,
-                // ...dropShadow,
+                ...dropShadow,
                 backgroundColor: themedSuggestionColor,
                 ...(typeof style === `object` && style.hasOwnProperty(`suggestion`) && typeof style.suggestion === `object` ? style.suggestion : {})
             }
@@ -609,7 +640,7 @@ const readjustStyle = (newStyle = {
             },
             suggestion: {
                 ...prevAdjustedStyle.large.suggestion,
-                // ...dropShadow,
+                ...dropShadow,
                 backgroundColor: themedSuggestionColor,
                 ...(typeof style === `object` && style.hasOwnProperty(`suggestion`) && typeof style.suggestion === `object` ? style.suggestion : {})
             }
@@ -824,7 +855,6 @@ export default class SearchField extends React.Component {
                 value: ``
             },
             suggestion: {
-                historyItemIndex: 0,
                 historyItems: [],
                 autocompleteItems: []
             }
@@ -946,8 +976,8 @@ export default class SearchField extends React.Component {
                             }]
                         });
                     }
-                    (typeof onCollapse === `function` ? onCollapse : () => null)();
-                    (typeof onClear === `function` ? onClear : () => null)();
+                    onCollapse();
+                    onClear();
                 });
                 return animationPromises;
             }
@@ -1002,7 +1032,7 @@ export default class SearchField extends React.Component {
                                 collapsed: false
                             };
                         }, () => {
-                            (typeof onExpand === `function` ? onExpand : () => null)();
+                            onExpand();
                         });
                     }
                 });
@@ -1063,7 +1093,7 @@ export default class SearchField extends React.Component {
                         }
                     };
                 }, () => {
-                    (typeof onShow === `function` ? onShow : () => null)();
+                    onShow();
                 });
                 return animationPromises;
             }
@@ -1138,7 +1168,7 @@ export default class SearchField extends React.Component {
                         }
                     };
                 }, () => {
-                    (typeof onHide === `function` ? onHide : () => null)();
+                    onHide();
                 });
                 return animationPromises;
             }
@@ -1178,7 +1208,7 @@ export default class SearchField extends React.Component {
                 }
             };
         }, () => {
-            (typeof onClear === `function` ? onClear : () => null)();
+            onClear();
         });
     }
     clearSuggestion = () => {
@@ -1190,13 +1220,12 @@ export default class SearchField extends React.Component {
         component.setState(() => {
             return {
                 suggestion: {
-                    historyItemIndex: 0,
                     historyItems: [],
                     autocompleteItems: []
                 }
             };
         }, () => {
-            (typeof onClearSuggestion === `function` ? onClearSuggestion : () => null)();
+            onClearSuggestion();
         });
     }
     onLayout = (event) => {
@@ -1251,27 +1280,27 @@ export default class SearchField extends React.Component {
                     visibility: {
                         ...prevState.visibility,
                         suggestion: true
+                    },
+                    input: {
+                        ...prevState.input,
+                        focused: true
                     }
                 };
             }, () => {
-                (typeof onShowSuggestion === `function` ? onShowSuggestion : () => null)();
+                onShowSuggestion();
+            });
+        } else {
+            component.setState((prevState) => {
+                return {
+                    input: {
+                        ...prevState.input,
+                        focused: true
+                    }
+                };
+            }, () => {
+                onFocus();
             });
         }
-
-        component.setState((prevState) => {
-            return {
-                input: {
-                    ...prevState.input,
-                    focused: true
-                },
-                suggestion: {
-                    ...prevState.suggestion,
-                    autocompleteItems: []
-                }
-            };
-        }, () => {
-            (typeof onFocus === `function` ? onFocus : () => null)();
-        });
     }
     onBlur = () => {
         const component = this;
@@ -1307,23 +1336,32 @@ export default class SearchField extends React.Component {
                     visibility: {
                         ...prevState.visibility,
                         suggestion: false
+                    },
+                    input: {
+                        ...prevState.input,
+                        focused: false
+                    },
+                    suggestion: {
+                        ...prevState.suggestion,
+                        autocompleteItems: []
                     }
                 };
             }, () => {
-                (typeof onHideSuggestion === `function` ? onHideSuggestion : () => null)();
+                onHideSuggestion();
+                onBlur();
+            });
+        } else {
+            component.setState((prevState) => {
+                return {
+                    input: {
+                        ...prevState.input,
+                        focused: false
+                    }
+                };
+            }, () => {
+                onBlur();
             });
         }
-
-        component.setState((prevState) => {
-            return {
-                input: {
-                    ...prevState.input,
-                    focused: false
-                }
-            };
-        }, () => {
-            (typeof onBlur === `function` ? onBlur : () => null)();
-        });
     }
     onChangeText = (text) => {
         const component = this;
@@ -1349,6 +1387,7 @@ export default class SearchField extends React.Component {
         const component = this;
         const {
             suggestive,
+            pinnedSuggestionValues,
             onHideSuggestion,
             onSearch
         } = component.props;
@@ -1382,45 +1421,35 @@ export default class SearchField extends React.Component {
                     }
                 };
             }, () => {
-                (typeof onHideSuggestion === `function` ? onHideSuggestion : () => null)();
+                onHideSuggestion();
             });
         }
 
-        if (!isEmptyInputValue(value) && !suggestion.historyItems.some((item) => item.value === value)) {
+        if (!isEmptyInputValue(value) &&
+            !suggestion.historyItems.some((item) => item.value === value) &&
+            !pinnedSuggestionValues.some((_value) => _value === value)) {
             component.setState((prevState) => {
                 let {
-                    historyItemIndex,
                     historyItems
                 } = prevState.suggestion;
 
-                if (historyItemIndex === DEFAULT_SUGGESTION_HISTORY_ITEM_COUNT) {
-                    historyItemIndex = 0;
+                if (historyItems.length >= DEFAULT_SUGGESTION_HISTORY_ITEM_COUNT) {
+                    historyItems.pop();
                 }
-                if (historyItemIndex === historyItems.length) {
-                    historyItems.push({
-                        suggestionType: `history`,
-                        value,
-                        timestamp: new Date().getTime()
-                    });
-                } else if (historyItemIndex < historyItems.length) {
-                    historyItems[historyItemIndex] = {
-                        suggestionType: `history`,
-                        value,
-                        timestamp: new Date().getTime()
-                    };
-                }
-                historyItemIndex++;
-                historyItems = historyItems.sort((itemA, itemB) => itemB.timestamp - itemA.timestamp);
+                historyItems.push({
+                    suggestionType: `history`,
+                    value,
+                    timestamp: new Date().getTime()
+                });
 
                 return {
                     suggestion: {
                         ...prevState.suggestion,
-                        historyItemIndex,
                         historyItems
                     }
                 };
             }, () => {
-                (typeof onSearch === `function` ? onSearch : () => null)(value);
+                onSearch(value);
             });
         }
     }
@@ -1428,6 +1457,7 @@ export default class SearchField extends React.Component {
         const component = this;
         const {
             suggestive,
+            pinnedSuggestionValues,
             onHideSuggestion,
             onSearch
         } = component.props;
@@ -1460,35 +1490,25 @@ export default class SearchField extends React.Component {
                     }
                 };
             }, () => {
-                (typeof onHideSuggestion === `function` ? onHideSuggestion : () => null)();
+                onHideSuggestion();
             });
         }
 
-        if (!suggestion.historyItems.some((_item) => _item.value === item.value)) {
+        if (!suggestion.historyItems.some((_item) => _item.value === item.value) &&
+            !pinnedSuggestionValues.some((value) => value === item.value)) {
             component.setState((prevState) => {
                 let {
-                    historyItemIndex,
                     historyItems
                 } = prevState.suggestion;
 
-                if (historyItemIndex === DEFAULT_SUGGESTION_HISTORY_ITEM_COUNT) {
-                    historyItemIndex = 0;
+                if (historyItems.length >= DEFAULT_SUGGESTION_HISTORY_ITEM_COUNT) {
+                    historyItems.pop();
                 }
-                if (historyItemIndex === historyItems.length) {
-                    historyItems.push({
-                        suggestionType: `history`,
-                        value: item.value,
-                        timestamp: new Date().getTime()
-                    });
-                } else if (historyItemIndex < historyItems.length) {
-                    historyItems[historyItemIndex] = {
-                        suggestionType: `history`,
-                        value: item.value,
-                        timestamp: new Date().getTime()
-                    };
-                }
-                historyItemIndex++;
-                historyItems = historyItems.sort((itemA, itemB) => itemB.timestamp - itemA.timestamp);
+                historyItems.push({
+                    suggestionType: `history`,
+                    value: item.value,
+                    timestamp: new Date().getTime()
+                });
 
                 return {
                     input: {
@@ -1497,12 +1517,11 @@ export default class SearchField extends React.Component {
                     },
                     suggestion: {
                         ...prevState.suggestion,
-                        historyItemIndex,
                         historyItems
                     }
                 };
             }, () => {
-                (typeof onSearch === `function` ? onSearch : () => null)(item.value);
+                onSearch(item.value);
             });
         } else {
             component.setState((prevState) => {
@@ -1517,7 +1536,7 @@ export default class SearchField extends React.Component {
                     }
                 };
             }, () => {
-                (typeof onSearch === `function` ? onSearch : () => null)(item.value);
+                onSearch(item.value);
             });
         }
     }
@@ -1747,7 +1766,6 @@ export default class SearchField extends React.Component {
         } = component.props;
         const {
             adjustedStyle,
-            input,
             container,
             suggestion
         } = component.state;
@@ -1763,11 +1781,9 @@ export default class SearchField extends React.Component {
                     value
                 };
             });
-            let suggestionItems = pinnedSuggestionItems.concat(suggestion.historyItems.filter((item) => {
-                return item.value.toLowerCase().charAt(0) === input.value.toLowerCase().charAt(0);
-            }).concat(suggestion.autocompleteItems));
-
-            suggestionItems = suggestionItems.map((item, index) => {
+            const suggestionItems = pinnedSuggestionItems.concat(suggestion.historyItems.sort((itemA, itemB) => {
+                return itemB.timestamp - itemA.timestamp;
+            })).concat(suggestion.autocompleteItems).map((item, index) => {
                 return {
                     key: `${index}`,
                     ...item
@@ -1926,7 +1942,9 @@ export default class SearchField extends React.Component {
                             if (!collapsed && visibility.box) {
                                 return React.cloneElement(child, {
                                     ...inheritedProps,
-                                    onPress: () => (typeof onSearch === `function` ? onSearch : () => null)()
+                                    onPress: () => {
+                                        onSearch(input.value);
+                                    }
                                 });
                             }
                             return null;
