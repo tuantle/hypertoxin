@@ -496,50 +496,81 @@ const readjustStyle = (newStyle = {
     if (typeof themedCorner === `number`) {
         themedBorderRadius = {
             small: {
-                ...nullBorderRadius,
-                borderRadius: Math.floor(Theme.field.size.text.input.small * themedCorner)
+                borderRadius: themedCorner
             },
             normal: {
-                ...nullBorderRadius,
-                borderRadius: Math.floor(Theme.field.size.text.input.normal * themedCorner)
+                borderRadius: themedCorner
             },
             large: {
-                ...nullBorderRadius,
-                borderRadius: Math.floor(Theme.field.size.text.input.large * themedCorner)
+                borderRadius: themedCorner
             }
         };
     } else if (typeof themedCorner === `object`) {
-        themedBorderRadius = Object.entries(themedCorner).reduce((_themedBorderRadius, [ key, value ]) => {
-            let _borderRadius = {
-                small: nullBorderRadius,
-                normal: nullBorderRadius,
-                large: nullBorderRadius
+        if (themedCorner.hasOwnProperty(`small`) && typeof themedCorner.small === `object` &&
+            themedCorner.hasOwnProperty(`normal`) && typeof themedCorner.normal === `object` &&
+            themedCorner.hasOwnProperty(`large`) && typeof themedCorner.large === `object`) {
+            themedBorderRadius = {
+                small: Object.entries(themedCorner.small).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius),
+                normal: Object.entries(themedCorner.normal).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius),
+                large: Object.entries(themedCorner.large).reduce((_themedBorderRadius, [ key, value ]) => {
+                    let _borderRadius = nullBorderRadius;
+
+                    _borderRadius[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = value;
+
+                    return {
+                        ..._themedBorderRadius,
+                        ..._borderRadius
+                    };
+                }, nullBorderRadius)
             };
-
-            _borderRadius.small[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.field.size.text.input.small * value);
-            _borderRadius.normal[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.field.size.text.input.normal * value);
-            _borderRadius.large[`border${key.charAt(0).toUpperCase()}${key.slice(1)}Radius`] = Math.floor(Theme.field.size.text.input.large * value);
-
-            _themedBorderRadius = {
+        } else if (themedCorner.hasOwnProperty(`small`) && typeof themedCorner.small === `number` &&
+                   themedCorner.hasOwnProperty(`normal`) && typeof themedCorner.normal === `number` &&
+                   themedCorner.hasOwnProperty(`large`) && typeof themedCorner.large === `number`) {
+            themedBorderRadius = {
                 small: {
-                    ..._themedBorderRadius.small,
-                    ..._borderRadius.small
+                    borderRadius: themedCorner.small
                 },
                 normal: {
-                    ..._themedBorderRadius.normal,
-                    ..._borderRadius.normal
+                    borderRadius: themedCorner.normal
                 },
                 large: {
-                    ..._themedBorderRadius.large,
-                    ..._borderRadius.large
+                    borderRadius: themedCorner.large
                 }
             };
-            return _themedBorderRadius;
-        }, {
-            small: nullBorderRadius,
-            normal: nullBorderRadius,
-            large: nullBorderRadius
-        });
+        } else {
+            themedBorderRadius = {
+                small: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                },
+                normal: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                },
+                large: {
+                    ...nullBorderRadius,
+                    ...themedCorner
+                }
+            };
+        }
     }
 
     if (typeof margin === `string`) {
@@ -1016,8 +1047,8 @@ export default class TextField extends React.Component {
         charLimit: -1,
         lineLimit: 1,
         inputType: `default`,
-        disableValidation: true,
-        disableFormatting: true,
+        disableValidation: false,
+        disableFormatting: false,
         initialAnimation: `themed`,
         onValidate: (value, inputType) => {
             let regex;
@@ -1109,6 +1140,7 @@ export default class TextField extends React.Component {
             margin,
             disabled,
             inputType,
+            disableValidation,
             onValidate,
             style
         } = props;
@@ -1116,113 +1148,26 @@ export default class TextField extends React.Component {
             Theme
         } = state.context;
 
-        if (!isEmptyInputValue(state.value)) {
-            if (inputType === `monetary`) {
-                const {
+        if (disableValidation || !isEmptyInputValue(state.value)) {
+            const {
+                validated,
+                status
+            } = onValidate(state.value, inputType);
+
+            return {
+                adjustedStyle: readjustStyle({
+                    shade,
+                    overlay,
+                    corner,
+                    margin,
+                    disabled,
+                    style
+                }, state.adjustedStyle, Theme),
+                validation: {
                     validated,
                     status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(state.value, inputType);
-
-                return {
-                    adjustedStyle: readjustStyle({
-                        shade,
-                        overlay,
-                        corner,
-                        margin,
-                        disabled,
-                        style
-                    }, state.adjustedStyle, Theme),
-                    validation: {
-                        validated,
-                        status
-                    }
-                };
-            } else if (inputType === `phone-pad` ||
-                       inputType === `credit-card-visa` ||
-                       inputType === `credit-card-master` ||
-                       inputType === `credit-card-discover` ||
-                       inputType === `credit-card-american-express`
-            ) {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(state.value, inputType);
-
-                return {
-                    adjustedStyle: readjustStyle({
-                        shade,
-                        overlay,
-                        corner,
-                        margin,
-                        disabled,
-                        style
-                    }, state.adjustedStyle, Theme),
-                    validation: {
-                        validated,
-                        status
-                    }
-                };
-            } else if (inputType === `numeric`) {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(state.value, inputType);
-
-                return {
-                    adjustedStyle: readjustStyle({
-                        shade,
-                        overlay,
-                        corner,
-                        margin,
-                        disabled,
-                        style
-                    }, state.adjustedStyle, Theme),
-                    validation: {
-                        validated,
-                        status
-                    }
-                };
-            } else { // eslint-disable-line
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(state.value, inputType);
-
-                return {
-                    adjustedStyle: readjustStyle({
-                        shade,
-                        overlay,
-                        corner,
-                        margin,
-                        disabled,
-                        style
-                    }, state.adjustedStyle, Theme),
-                    validation: {
-                        validated,
-                        status
-                    }
-                };
-            }
+                }
+            };
         }
         return {
             adjustedStyle: readjustStyle({
@@ -1279,6 +1224,7 @@ export default class TextField extends React.Component {
         const {
             validation
         } = component.state;
+
         return validation.validated;
     }
     isSelectionVisible = () => {
@@ -1360,7 +1306,7 @@ export default class TextField extends React.Component {
                         }
                     };
                 }, () => {
-                    (typeof onShowSelection === `function` ? onShowSelection : () => null)();
+                    onShowSelection();
                 });
                 return animationPromises;
             }
@@ -1427,7 +1373,7 @@ export default class TextField extends React.Component {
                         }
                     };
                 }, () => {
-                    (typeof onHideSelection === `function` ? onHideSelection : () => null)();
+                    onHideSelection();
                 });
                 return animationPromises;
             }
@@ -1497,7 +1443,7 @@ export default class TextField extends React.Component {
                     }
                 };
             }, () => {
-                (typeof onClear === `function` ? onClear : () => null)();
+                onClear();
             });
         }
     }
@@ -1560,7 +1506,7 @@ export default class TextField extends React.Component {
                 }
             };
         }, () => {
-            (typeof onFocus === `function` ? onFocus : () => null)();
+            onFocus();
         });
     }
     onBlur = () => {
@@ -1623,7 +1569,7 @@ export default class TextField extends React.Component {
                 }
             };
         }, () => {
-            (typeof onBlur === `function` ? onBlur : () => null)();
+            onBlur();
         });
     }
     onLayout = (event) => {
@@ -1696,75 +1642,21 @@ export default class TextField extends React.Component {
                     }
                 };
             }, () => {
-                (typeof onEditing === `function` ? onEditing : () => null)(value);
+                onEditing(value);
             });
-        } else if (disableFormatting) {
-            if (inputType === `monetary`) {
-                const reformattedValue = (typeof onReformat === `function` ? onReformat : () => {
-                    return `${parseFloat(value).toFixed(2)}`;
-                })(value, inputType);
+        } else if (!disableFormatting) {
+            const reformattedValue = onReformat(value, inputType);
 
-                component.setState((prevState) => {
-                    return {
-                        input: {
-                            ...prevState.input,
-                            value: reformattedValue
-                        }
-                    };
-                }, () => {
-                    (typeof onEditing === `function` ? onEditing : () => null)(reformattedValue);
-                });
-            } else if (inputType === `numeric`) {
-                const reformattedValue = (typeof onReformat === `function` ? onReformat : () => {
-                    return `${parseFloat(value)}`;
-                })(value, inputType);
-
-                component.setState((prevState) => {
-                    return {
-                        input: {
-                            ...prevState.input,
-                            value: reformattedValue
-                        }
-                    };
-                }, () => {
-                    (typeof onEditing === `function` ? onEditing : () => null)(reformattedValue);
-                });
-            } else if (inputType === `phone-pad` ||
-                       inputType === `credit-card-visa` ||
-                       inputType === `credit-card-master` ||
-                       inputType === `credit-card-discover` ||
-                       inputType === `credit-card-american-express`
-            ) {
-                const reformattedValue = (typeof onReformat === `function` ? onReformat : () => {
-                    return `${parseInt(value, 10)}`;
-                })(value, inputType);
-
-                component.setState((prevState) => {
-                    return {
-                        input: {
-                            ...prevState.input,
-                            value: reformattedValue
-                        }
-                    };
-                }, () => {
-                    (typeof onEditing === `function` ? onEditing : () => null)(reformattedValue);
-                });
-            } else {
-                const reformattedValue = (typeof onReformat === `function` ? onReformat : () => {
-                    return value;
-                })(value, inputType);
-
-                component.setState((prevState) => {
-                    return {
-                        input: {
-                            ...prevState.input,
-                            value: reformattedValue
-                        }
-                    };
-                }, () => {
-                    (typeof onEditing === `function` ? onEditing : () => null)(reformattedValue);
-                });
-            }
+            component.setState((prevState) => {
+                return {
+                    input: {
+                        ...prevState.input,
+                        value: reformattedValue
+                    }
+                };
+            }, () => {
+                onEditing(reformattedValue);
+            });
         } else {
             component.setState((prevState) => {
                 return {
@@ -1774,7 +1666,7 @@ export default class TextField extends React.Component {
                     }
                 };
             }, () => {
-                (typeof onEditing === `function` ? onEditing : () => null)(value);
+                onEditing(value);
             });
         }
     }
@@ -1787,89 +1679,20 @@ export default class TextField extends React.Component {
         } = component.props;
         const value = event.nativeEvent.text;
 
-        if (disableValidation) {
-            if (inputType === `monetary`) {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(value, inputType);
+        if (!disableValidation) {
+            const {
+                validated,
+                status
+            } = onValidate(value, inputType);
 
-                component.setState(() => {
-                    return {
-                        validation: {
-                            validated,
-                            status
-                        }
-                    };
-                });
-            } else if (inputType === `phone-pad` ||
-                       inputType === `credit-card-visa` ||
-                       inputType === `credit-card-master` ||
-                       inputType === `credit-card-discover` ||
-                       inputType === `credit-card-american-express`
-            ) {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(value, inputType);
-
-                component.setState(() => {
-                    return {
-                        validation: {
-                            validated,
-                            status
-                        }
-                    };
-                });
-            } else if (inputType === `numeric`) {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(value, inputType);
-
-                component.setState(() => {
-                    return {
-                        validation: {
-                            validated,
-                            status
-                        }
-                    };
-                });
-            } else {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(value, inputType);
-
-                component.setState(() => {
-                    return {
-                        validation: {
-                            validated,
-                            status
-                        }
-                    };
-                });
-            }
+            component.setState(() => {
+                return {
+                    validation: {
+                        validated,
+                        status
+                    }
+                };
+            });
         }
     }
     onSubmitEditing = (event) => {
@@ -1887,99 +1710,24 @@ export default class TextField extends React.Component {
             dismissKeyboard();
         }
 
-        if (disableValidation) {
-            if (inputType === `monetary`) {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(value, inputType);
+        if (!disableValidation) {
+            const {
+                validated,
+                status
+            } = onValidate(value, inputType);
 
-                component.setState(() => {
-                    return {
-                        validation: {
-                            validated,
-                            status
-                        }
-                    };
-                }, () => {
-                    (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(value);
-                });
-            } else if (inputType === `phone-pad` ||
-                       inputType === `credit-card-visa` ||
-                       inputType === `credit-card-master` ||
-                       inputType === `credit-card-discover` ||
-                       inputType === `credit-card-american-express`
-            ) {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(value, inputType);
-
-                component.setState(() => {
-                    return {
-                        validation: {
-                            validated,
-                            status
-                        }
-                    };
-                }, () => {
-                    (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(value);
-                });
-            } else if (inputType === `numeric`) {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(value, inputType);
-
-                component.setState(() => {
-                    return {
-                        validation: {
-                            validated,
-                            status
-                        }
-                    };
-                }, () => {
-                    (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(value);
-                });
-            } else {
-                const {
-                    validated,
-                    status
-                } = (typeof onValidate === `function` ? onValidate : () => {
-                    return {
-                        validated: true,
-                        status: ``
-                    };
-                })(value, inputType);
-
-                component.setState(() => {
-                    return {
-                        validation: {
-                            validated,
-                            status
-                        }
-                    };
-                }, () => {
-                    (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(value);
-                });
-            }
+            component.setState(() => {
+                return {
+                    validation: {
+                        validated,
+                        status
+                    }
+                };
+            }, () => {
+                onDoneEdit(value);
+            });
         } else {
-            (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(value);
+            onDoneEdit(value);
         }
     }
     onPressSelect = (item) => {
@@ -2030,8 +1778,8 @@ export default class TextField extends React.Component {
                                     text: item.value
                                 });
                             }
-                            (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(item.value);
-                            (typeof onSelect === `function` ? onSelect : () => null)(item.value);
+                            onDoneEdit(item.value);
+                            onSelect(item.value);
                         });
                     }
                 });
@@ -2050,8 +1798,8 @@ export default class TextField extends React.Component {
                             text: item.value
                         });
                     }
-                    (typeof onDoneEdit === `function` ? onDoneEdit : () => null)(item.value);
-                    (typeof onSelect === `function` ? onSelect : () => null)(item.value);
+                    onDoneEdit(item.value);
+                    onSelect(item.value);
                 });
             }
         }
