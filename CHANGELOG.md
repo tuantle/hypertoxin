@@ -2,6 +2,22 @@
 ## A themeable ReactNative component library for developing native apps.
 
 ----
+**Development Version 0.2.1 (06/27/2019)**
+```
+Notes:
+New Features:
+Breaking Changes:
+    - Changed corner theme implementations for RowLayout, ColumnLayout, CoverImage, SearchField, TextField, FlatButton, and RaisedButton.
+Improvements:
+    - Added color property to BodyScreen.
+    - Added padding property to RowLayout, ColumnLayout, and BodyScreen.
+    - Minor changes to shadow styling.
+    - Code cleanups.
+Bug fixes:
+    - Fixed validation & reformat bugs for TextField.
+    - Fixed history items rollover for SearchField.
+```
+
 **Released Version 0.2.0 (05/10/2019)**
 
 **Development Version 0.2.0 (04/17/2019)**

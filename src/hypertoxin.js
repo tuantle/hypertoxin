@@ -36,7 +36,7 @@ import TextField from './components/fields/text-field';
 import SearchField from './components/fields/search-field';
 
 import HorizontalDivider from './components/dividers/horizontal-divider';
-import VeriticalDivider from './components/dividers/vertical-divider';
+import VerticalDivider from './components/dividers/vertical-divider';
 
 import HeadlineText from './components/texts/headline-text';
 import TitleText from './components/texts/title-text';
@@ -66,7 +66,7 @@ const Font = {
 };
 
 const Ht = {
-    VERSION: `0.2.0`,
+    VERSION: `0.2.1`,
     FlatButton,
     RaisedButton,
     AreaButton,
@@ -79,7 +79,7 @@ const Ht = {
     SearchField,
 
     HorizontalDivider,
-    VeriticalDivider,
+    VerticalDivider,
 
     HeadlineText,
     TitleText,

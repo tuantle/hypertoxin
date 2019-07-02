@@ -162,7 +162,7 @@ A standard button component that can be styled as an icon, a clear, or simply a 
 | action           | string, object         | `none`   | Set button's onPress callback action to be defined by the parent component. This property is used when a button is set as a child search button for parent components such as SearchField, TextField, or HeaderScreen. See [Using Action Property](#using-action-property) section for details |
 | shade            | string, object         | `themed` | Set button's shade theme, can be `themed`, `light`, or `dark` |
 | overlay          | string                 | `themed` | Set button's overlay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline` |
-| corner           | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| corner           | string, number, object | `themed` | Set button's corner styles. As a number, border radius = corner. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
 | size             | string                 | `themed` | Set button's size which can be one of `themed`, `small`, `normal`, `large` |
 | margin           | string, number, object | None     | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | disabled         | boolean                | false    | Disable the button |
@@ -184,7 +184,7 @@ Raised button is similar to flat button with the exceptions that it has permanen
 | room             | string                 | `none`   | Set button's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`. See [Using Room Property](#using-room-property) section for details |
 | action           | string, object         | `none`   | Set button's onPress callback action to be defined by the parent component. This property is used when a button is set as a child search button for parent components such as SearchField, TextField, or HeaderScreen. See [Using Action Property](#using-action-property) section for details |
 | shade            | string, object         | `themed` | Set button's shade theme, can be `themed`, `light`, or `dark` |
-| corner           | string, number, object | `themed` | Set button's corner styles. As a number, corner is a scaler where border radius = corner size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| corner           | string, number, object | `themed` | Set button's corner styles. As a number, border radius = corner. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
 | size             | string                 | `themed` | Set button's size which can be one of `themed`, `small`, `normal`, `large` |
 | margin           | string, number, object | None     | Set button's margin styles. As a number, the margin is equally set around the button. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | disabled         | boolean                | false    | Disable the button |
@@ -558,7 +558,7 @@ Use search field to create functional search bar. Notable feature is suggestion 
 | room                      | string                             | `none`   | Set search field's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`. See [Using Room Property](#using-room-property) section for details  |
 | shade                     | string, object                     | `themed` | Set search field's shade theme, can be `themed`, `light`, or `dark` |
 | overlay                   | string                             | `themed` | Set search field's overlay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline` |
-| corner                    | string, number, object             | `themed` | Set search field's corner styles. As a number, corner is a scaler where border radius = corner size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| corner                    | string, number, object             | `themed` | Set search field's corner styles. As a number, border radius = corner. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
 | size                      | string                             | `themed` | Set search field's size which can be one of `themed`, `small`, `normal`, `large` |
 | margin                    | string, number, object             | None     | Set search field's margin styles. As a number, the margin is equally set around search field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | dropShadowed              | boolean, string                    | `themed` | Enable search field's container drop shadow |
@@ -593,7 +593,7 @@ Use text fields to create beautiful input forms. Notable features are input refo
 | room                 | string                              | `none`    | Set text field's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`. See [Using Room Property](#using-room-property) section for details  |
 | shade                | string, object                      | `themed`  | Set text field's shade theme, can be `themed`, `light`, or `dark` |
 | overlay              | string                              | `themed`  | Set text field's overlay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline` |
-| corner               | string, number, object              | `themed`  | Set text field's corner styles. As a number, corner is a scaler where border radius = corner size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| corner               | string, number, object              | `themed`  | Set text field's corner styles. As a number, border radius = corner. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
 | size                 | string                              | `themed`  | Set text field's size which can be one of `themed`, `small`, `normal`, `large` |
 | margin               | string, number, object              | None      | Set text field's margin styles. As a number, the margin is equally set around text field container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | autoFocus            | boolean                             | true      | Enable text field's auto focus |
@@ -1180,6 +1180,9 @@ Use header screen to create navigation top bar.
 | Prop                       | Type                      | Default  | Description |
 | -------------------------- | ------------------------- | -------- | ----------- |
 | shade                      | string, object            | `themed` | Set body screen's shade theme, can be `themed`, `light`, or `dark` |
+| overlay                    | string                    | `themed` | Set body screen's overlay style which can be one of `themed`, `opaque`, `translucent`, `transparent` |
+| color                      | string                    | `themed` | Set body screen's color style. Can be hex string, default color name, or themed color name |
+| padding                    | string, number, object    | None     | Set body screen's padding styles. As a number, the padding is equally set around the screen. Set padding as an object for more control. For example `padding = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | coverImageSource           | React Native image source | None     | Body screen's background cover image source |
 | contentTopRoomAlignment    | string                    | `none`   | Child component top room property, which can be one of `none`, `start`, `center`, `end`, or `stretch` |
 | contentMiddleRoomAlignment | string                    | `none`   | Child component middle room property, which can be one of `none`, `start`, `center`, `end`, or `stretch` |
@@ -1453,7 +1456,8 @@ Hypertoxin has two layout components, [_RowLayout_](https://github.com/tuantle/h
 | room                       | string                 | `none`   | Set row layout's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`. See [Using Room Property](#using-room-property) section for details |
 | shade                      | string, object         | `themed` | Set row layout's shade theme, can be `themed`, `light`, or `dark` |
 | overlay                    | string                 | `themed` | Set row layout's overlay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline` |
-| corner                     | string, number, object | `themed` | Set row layout's corner styles. As a number, corner is a scaler where border radius = corner size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| corner                     | string, number, object | `themed` | Set row layout's corner styles. As a number, border radius = corner. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| padding                    | string, number, object | None     | Set row layout's padding styles. As a number, the padding is equally set around the layout. Set padding as an object for more control. For example `padding = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | margin                     | string, number, object | None     | Set row layout's margin styles. As a number, the margin is equally set around the layout. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | color                      | string                 | `themed` | Set row layout's color style. Can be hex string, default color name, or themed color name |
 | dropShadowed               | boolean, string        | `themed` | Enable row layout's drop shadow |
@@ -1473,7 +1477,8 @@ Hypertoxin has two layout components, [_RowLayout_](https://github.com/tuantle/h
 | room                       | string                 | `none`   | Set column layout's room with respect to parent component which can be one of `none`, `content-left`, `content-middle`, `content-right`, `content-bottom`, `content-top`, `media`. See [Using Room Property](#using-room-property) section for details |
 | shade                      | string, object         | `themed` | Set column layout's shade theme, can be `themed`, `light`, or `dark` |
 | overlay                    | string                 | `themed` | Set column layout's overlay style which can be one of `themed`, `opaque`, `translucent`, `translucent-outline`, `transparent`, `transparent-outline` |
-| corner                     | string, number, object | `themed` | Set column layout's corner styles. As a number, corner is a scaler where border radius = corner size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| corner                     | string, number, object | `themed` | Set column layout's corner styles. As a number, border radius = corner. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| padding                    | string, number, object | None     | Set column layout's padding styles. As a number, the padding is equally set around the layout. Set padding as an object for more control. For example `padding = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | margin                     | string, number, object | None     | Set column layout's margin styles. As a number, the margin is equally set around the layout. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | color                      | string                 | `themed` | Set column layout's color style. Can be hex string, default color name, or themed color name |
 | dropShadowed               | boolean, string        | `themed` | Enable column layout's drop shadow |
@@ -1584,7 +1589,7 @@ Hypertoxin has three image components, [_AvatarImage_](https://github.com/tuantl
 | margin        | string, number, object    | None      | Set cover image's margin styles. As a number, the margin is equally set around icon image container. Set margin as an object for more control. For example `margin = { top: 5, bottom: 5, left: 5, right: 5, horizontal: 5, vertical: 5}` |
 | width         | number                    | None      | Set cover image's width |
 | height        | number                    | None      | Set cover image's height  |
-| corner        | string, number, object    | `themed`  | Set cover image's corner styles. As a number, corner is a scaler where border radius = corner size. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
+| corner        | string, number, object    | `themed`  | Set cover image's corner styles. As a number, border radius = corner. Set corner as an object for more control. For example `corner = { topLeft: 0.1, topRight: 0.1, bottomLeft: 0.1, bottomRight: 0.1}` |
 | dropShadowed  | boolean, string           | `themed`  | Enable cover image drop shadow |
 | resizeMode    | string                    | `contain` | React Native image resize property |
 | source        | React Native image source | None      | Image source |

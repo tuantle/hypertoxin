@@ -1,6 +1,6 @@
 {
     "name": "hypertoxin",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "registry": "github",
     "description": "A themeable ReactNative component library for developing native apps",
     "authors": [
@@ -51,19 +51,19 @@
         "react-native-animatable": ">=1.3.x"
     },
     "devDependencies": {
-        "@babel/core": ">=7.4.x",
-        "@babel/preset-env": ">=7.4.x",
+        "@babel/core": "^7.4.5",
+        "@babel/preset-env": "^7.4.5",
         "@babel/preset-react": ">=7.0.x",
-        "babel-eslint": ">=9.0.x",
-        "babel-jest": ">=24.7.x",
-        "eslint": ">=5.16.x",
-        "eslint-plugin-react": ">=7.13.x",
+        "babel-eslint": "^10.0.2",
+        "babel-jest": "^24.8.0",
+        "eslint": "^6.0.1",
+        "eslint-plugin-react": "^7.14.2",
         "eslint-plugin-react-native": ">=3.7.x",
-        "jest": ">=24.7.x",
-        "metro-react-native-babel-preset": ">=0.54.x",
+        "jest": "^24.8.0",
+        "metro-react-native-babel-preset": "^0.54.1",
         "prop-types": ">=15.7.x",
         "react": ">=16.8.x",
-        "react-native": ">=0.59.x",
+        "react-native": "^0.59.10",
         "react-test-renderer": ">=16.8.x"
     },
     "scripts": {
