@@ -470,7 +470,7 @@ export default class AreaButton extends React.Component {
             const debounce = (task, ...args) => {
                 const context = this;
                 if (timeoutId === null) {
-                    task.call(context, ...args);
+                    task.apply(context, args);
 
                     timeoutId = setTimeout(() => {
                         clearTimeout(timeoutId);
@@ -587,12 +587,12 @@ export default class AreaButton extends React.Component {
                             }
                         };
                     }, () => {
-                        (typeof onPress === `function` ? onPress : () => null)(event);
+                        onPress(event);
                     });
                 });
             });
         } else {
-            (typeof onPress === `function` ? onPress : () => null)(event);
+            onPress(event);
         }
     }
     animate (animation = {
