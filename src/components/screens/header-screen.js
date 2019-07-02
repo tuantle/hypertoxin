@@ -51,8 +51,8 @@ const DEFAULT_ANIMATION_DURATION_MS = 300;
 
 const DEFAULT_DROP_SHADOW_STYLE = {
     shadowColor: `#000000`,
-    shadowRadius: 2,
-    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    shadowOpacity: 0.25,
     shadowOffset: {
         width: 0,
         height: 1
@@ -487,7 +487,7 @@ export default class HeaderScreen extends React.Component {
                         }
                     };
                 }, () => {
-                    (typeof onHideNavigation === `function` ? onHideNavigation : () => null)();
+                    onHideNavigation();
                 });
             }
             return animationPromises;
@@ -561,7 +561,7 @@ export default class HeaderScreen extends React.Component {
                         }
                     };
                 }, () => {
-                    (typeof onShowNavigation === `function` ? onShowNavigation : () => null)();
+                    onShowNavigation();
                 });
             }
             return animationPromises;
@@ -624,7 +624,7 @@ export default class HeaderScreen extends React.Component {
                         }
                     };
                 }, () => {
-                    (typeof onHideMedia === `function` ? onHideMedia : () => null)();
+                    onHideMedia();
                 });
             }
             return animationPromises;
@@ -708,7 +708,7 @@ export default class HeaderScreen extends React.Component {
                         }
                     };
                 }, () => {
-                    (typeof onShowMedia === `function` ? onShowMedia : () => null)();
+                    onShowMedia();
                 });
             }
             return animationPromises;
