@@ -43,7 +43,7 @@
 
 * * *
 
-## Published Open-source App (Virida)[https://github.com/tuantle/virida-air-quality-monitor-app] built with Hypertoxin component library.
+## Published Open-source App [Virida](https://github.com/tuantle/virida-air-quality-monitor-app) built with Hypertoxin component library.
 
 <p align="center">
    <img width="20%" height="20%" src="https://github.com/tuantle/virida-air-quality-monitor-app/blob/master/assets/screenshots/iphone-xs-max-1.png">
@@ -51,6 +51,8 @@
    <img width="20%" height="20%" src="https://github.com/tuantle/virida-air-quality-monitor-app/blob/master/assets/screenshots/iphone-xs-max-3.png">
    <img width="20%" height="20%" src="https://github.com/tuantle/virida-air-quality-monitor-app/blob/master/assets/screenshots/iphone-xs-max-4.png">
 </p>
+
+[Checkout Virida on the app store!](https://apps.apple.com/us/app/virida/id1315223443?ls=1)
 
 * * *
 
