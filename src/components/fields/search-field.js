@@ -926,6 +926,41 @@ export default class SearchField extends React.Component {
             let animationPromises = [];
 
             if (!collapsed) {
+                animationPromises = component.animate({
+                    refName: `animated-box-view`,
+                    transitions: Array.isArray(transitions) ? transitions : [{
+                        to: {
+                            width: Theme.field.size.search.input[themedSize] + 6
+                        },
+                        option: {
+                            duration: DEFAULT_ANIMATION_DURATION_MS,
+                            delay: 0,
+                            easing: `linear`
+                        }
+                    }],
+                    onTransitionBegin,
+                    onTransitionEnd,
+                    onAnimationBegin,
+                    onAnimationEnd
+                });
+
+                if (visibility.suggestion) {
+                    component.animate({
+                        refName: `animated-suggestion-view`,
+                        transitions: [{
+                            to: {
+                                opacity: 0,
+                                translateY: DEVICE_HEIGHT
+                            },
+                            option: {
+                                duration: DEFAULT_ANIMATION_DURATION_MS,
+                                delay: 0,
+                                easing: `linear`
+                            }
+                        }]
+                    });
+                }
+
                 component.setState((prevState) => {
                     return {
                         collapsed: true,
@@ -943,39 +978,7 @@ export default class SearchField extends React.Component {
                         }
                     };
                 }, () => {
-                    animationPromises = component.animate({
-                        refName: `animated-box-view`,
-                        transitions: Array.isArray(transitions) ? transitions : [{
-                            to: {
-                                width: Theme.field.size.search.input[themedSize] + 6
-                            },
-                            option: {
-                                duration: DEFAULT_ANIMATION_DURATION_MS,
-                                delay: 0,
-                                easing: `linear`
-                            }
-                        }],
-                        onTransitionBegin,
-                        onTransitionEnd,
-                        onAnimationBegin,
-                        onAnimationEnd
-                    });
-                    if (visibility.suggestion) {
-                        component.animate({
-                            refName: `animated-suggestion-view`,
-                            transitions: [{
-                                to: {
-                                    opacity: 0,
-                                    translateY: DEVICE_HEIGHT
-                                },
-                                option: {
-                                    duration: DEFAULT_ANIMATION_DURATION_MS,
-                                    delay: 0,
-                                    easing: `linear`
-                                }
-                            }]
-                        });
-                    }
+                    component.blur();
                     onCollapse();
                     onClear();
                 });
@@ -1025,16 +1028,15 @@ export default class SearchField extends React.Component {
                     onTransitionBegin,
                     onTransitionEnd,
                     onAnimationBegin,
-                    onAnimationEnd: () => {
-                        onAnimationEnd();
-                        component.setState(() => {
-                            return {
-                                collapsed: false
-                            };
-                        }, () => {
-                            onExpand();
-                        });
-                    }
+                    onAnimationEnd
+                });
+
+                component.setState(() => {
+                    return {
+                        collapsed: false
+                    };
+                }, () => {
+                    onExpand();
                 });
 
                 return animationPromises;
@@ -1097,6 +1099,125 @@ export default class SearchField extends React.Component {
                 });
                 return animationPromises;
             }
+        }
+    }
+    showSuggestion = (animation = {
+        transitions: null,
+        onTransitionBegin: () => null,
+        onTransitionEnd: () => null,
+        onAnimationBegin: () => null,
+        onAnimationEnd: () => null
+    }) => {
+        const component = this;
+        const {
+            onShowSuggestion
+        } = component.props;
+        const {
+            visibility
+        } = component.state;
+
+        if (typeof animation === `object`) {
+            const {
+                transitions,
+                onTransitionBegin,
+                onTransitionEnd,
+                onAnimationBegin,
+                onAnimationEnd
+            } = animation;
+            let animationPromises = [];
+
+            if (visibility.box && !visibility.suggestion) {
+                animationPromises = component.animate({
+                    refName: `animated-suggestion-view`,
+                    transitions: Array.isArray(transitions) ? transitions : [{
+                        to: {
+                            opacity: 1,
+                            translateY: 0
+                        },
+                        option: {
+                            duration: DEFAULT_ANIMATION_DURATION_MS,
+                            delay: 0,
+                            easing: `linear`
+                        }
+                    }],
+                    onTransitionBegin,
+                    onTransitionEnd,
+                    onAnimationBegin,
+                    onAnimationEnd
+                });
+            }
+
+            component.setState((prevState) => {
+                return {
+                    visibility: {
+                        ...prevState.visibility,
+                        suggestion: true
+                    }
+                };
+            }, () => {
+                onShowSuggestion();
+            });
+            return animationPromises;
+        }
+    }
+    hideSuggestion = (animation = {
+        transitions: null,
+        onTransitionBegin: () => null,
+        onTransitionEnd: () => null,
+        onAnimationBegin: () => null,
+        onAnimationEnd: () => null
+    }) => {
+        const component = this;
+        const {
+            onHideSuggestion
+        } = component.props;
+        const {
+            visibility
+        } = component.state;
+
+        if (typeof animation === `object`) {
+            const {
+                transitions,
+                onTransitionBegin,
+                onTransitionEnd,
+                onAnimationBegin,
+                onAnimationEnd
+            } = animation;
+            let animationPromises = [];
+
+            if (visibility.box && visibility.suggestion) {
+                animationPromises = component.animate({
+                    refName: `animated-suggestion-view`,
+                    transitions: Array.isArray(transitions) ? transitions : [{
+                        to: {
+                            opacity: 0,
+                            translateY: DEVICE_HEIGHT
+                        },
+                        option: {
+                            duration: DEFAULT_ANIMATION_DURATION_MS,
+                            delay: 0,
+                            easing: `linear`
+                        }
+                    }],
+                    onTransitionBegin,
+                    onTransitionEnd,
+                    onAnimationBegin,
+                    onAnimationEnd
+                });
+            }
+
+            component.setState((prevState) => {
+                return {
+                    visibility: {
+                        ...prevState.visibility,
+                        suggestion: false
+                    }
+                };
+            }, () => {
+                component.blur();
+                onHideSuggestion();
+            });
+            return animationPromises;
         }
     }
     hide = (animation = {
@@ -1168,6 +1289,7 @@ export default class SearchField extends React.Component {
                         }
                     };
                 }, () => {
+                    component.blur();
                     onHide();
                 });
                 return animationPromises;
@@ -1313,10 +1435,12 @@ export default class SearchField extends React.Component {
         const {
             visibility,
             collapsed,
-            input
+            input,
+            suggestion
         } = component.state;
 
-        if (suggestive && !collapsed && visibility.box && visibility.suggestion && isEmptyInputValue(input.value) && pinnedSuggestionValues.length === 0) {
+        if (suggestive && !collapsed && visibility.box && visibility.suggestion &&
+            isEmptyInputValue(input.value) && pinnedSuggestionValues.length === 0 && suggestion.historyItems.length === 0) {
             component.animate({
                 refName: `animated-suggestion-view`,
                 transitions: [{
@@ -1948,6 +2072,22 @@ export default class SearchField extends React.Component {
                                 });
                             }
                             return null;
+                        case `blur`:
+                            if (!collapsed && visibility.box) {
+                                return React.cloneElement(child, {
+                                    ...inheritedProps,
+                                    onPress: () => component.blur(...actionArgs)
+                                });
+                            }
+                            return null;
+                        case `focus`:
+                            if (!collapsed && visibility.box) {
+                                return React.cloneElement(child, {
+                                    ...inheritedProps,
+                                    onPress: () => component.focus(...actionArgs)
+                                });
+                            }
+                            return null;
                         case `clear`:
                             if (!isEmptyInputValue(input.value) && !collapsed && visibility.box) {
                                 return React.cloneElement(child, {
@@ -1980,11 +2120,27 @@ export default class SearchField extends React.Component {
                                 });
                             }
                             return null;
+                        case `show-suggestion`:
+                            if (!collapsed && !visibility.box) {
+                                return React.cloneElement(child, {
+                                    ...inheritedProps,
+                                    onPress: () => component.showSuggestion(...actionArgs)
+                                });
+                            }
+                            return null;
                         case `hide`:
                             if (visibility.box) {
                                 return React.cloneElement(child, {
                                     ...inheritedProps,
                                     onPress: () => component.hide(...actionArgs)
+                                });
+                            }
+                            return null;
+                        case `hide-suggestion`:
+                            if (!collapsed && visibility.box) {
+                                return React.cloneElement(child, {
+                                    ...inheritedProps,
+                                    onPress: () => component.hideSuggestion(...actionArgs)
                                 });
                             }
                             return null;
