@@ -66,7 +66,7 @@ const Font = {
 };
 
 const Ht = {
-    VERSION: `0.2.1`,
+    VERSION: `0.2.2`,
     FlatButton,
     RaisedButton,
     AreaButton,

@@ -1,6 +1,6 @@
 {
     "name": "hypertoxin",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "registry": "github",
     "description": "A themeable ReactNative component library for developing native apps",
     "authors": [

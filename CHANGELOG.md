@@ -2,6 +2,16 @@
 ## A themeable ReactNative component library for developing native apps.
 
 ----
+**Development Version 0.2.2 (08/20/2019)**
+```
+Notes:
+New Features:
+Breaking Changes:
+Improvements:
+    - Added blur and focus actions to TextField.
+    - Added blur, focus, show-suggestion, and hide-suggestion actions to SearchField.
+Bug fixes:
+```
 **Development Version 0.2.1 (06/27/2019)**
 ```
 Notes:

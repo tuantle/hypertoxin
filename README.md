@@ -661,10 +661,14 @@ Search field available actions:
 
 -   `search`
 -   `clear`
+-   `blur`
+-   `focus`
 -   `expand`
 -   `collapse`
 -   `show`
+-   `show-suggestion`
 -   `hide`
+-   `hide-suggestion`
 
 Search field methods & callbacks:
 
@@ -693,7 +697,15 @@ Search field methods & callbacks:
     *   arguments:
         -   `animation` (object) - Show animation object. See [Animation API](#animation-api) for details
     *   return: None
+-   `showSuggestion`
+    *   arguments:
+        -   `animation` (object) - Show animation object. See [Animation API](#animation-api) for details
+    *   return: None
 -   `hide`
+    *   arguments:
+        -   `animation` (object) - Hide animation object. See [Animation API](#animation-api) for details
+    *   return: None
+-   `hideSuggestion`
     *   arguments:
         -   `animation` (object) - Hide animation object. See [Animation API](#animation-api) for details
     *   return: None
@@ -786,9 +798,11 @@ Text field animated internal view composition reference names. See [Animation AP
 
 Text field available actions:
 
--   clear
--   show-selection
--   hide-selection
+-   `clear`
+-   `blur`
+-   `focus`
+-   `show-selection`
+-   `hide-selection`
 
 Text field methods & callbacks:
 
