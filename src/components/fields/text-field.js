@@ -2405,6 +2405,16 @@ export default class TextField extends React.Component {
                         }
 
                         switch (actionName) { // eslint-disable-line
+                        case `blur`:
+                            return React.cloneElement(child, {
+                                ...inheritedProps,
+                                onPress: () => component.blur(...actionArgs)
+                            });
+                        case `focus`:
+                            return React.cloneElement(child, {
+                                ...inheritedProps,
+                                onPress: () => component.focus(...actionArgs)
+                            });
                         case `clear`:
                             if (!isEmptyInputValue(input.value)) {
                                 return React.cloneElement(child, {
