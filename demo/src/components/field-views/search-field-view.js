@@ -33,14 +33,21 @@ export default class SearchFieldView extends React.Component {
     }
     constructor (props) {
         super(props);
-        this.searchField1Ref = null;
-        this.searchField2Ref = null;
+        this.searchFieldRef = null;
+        this.searchFieldLeftIconRef = null;
+        this.state = {
+            searchSuggestionVisible: false
+        }
     }
     render () {
         const component = this;
         const {
             shade
         } = component.props;
+        const {
+            searchSuggestionVisible
+        } = component.state;
+
         return (
             <RowLayout
                 shade = { shade }
@@ -55,13 +62,31 @@ export default class SearchFieldView extends React.Component {
                 <CaptionText room = 'content-middle' size = 'large' > With pins, history & autocompletion suggestion </CaptionText>
                 <SearchField
                     ref = {(componentRef) => {
-                        component.searchField2Ref = componentRef;
+                        component.searchFieldRef = componentRef;
                     }}
                     room = 'content-middle'
                     hint = 'Search...'
                     size = 'normal'
                     dropShadowed = { false }
                     pinnedSuggestionValues = {[ `Hypertoxin`, `React Native` ]}
+                    onShowSuggestion = {() => {
+                        if (component.searchFieldRef !== null) {
+                            component.setState(() => {
+                                return {
+                                    searchSuggestionVisible: true
+                                }
+                            });
+                        }
+                    }}
+                    onHideSuggestion = {() => {
+                        if (component.searchFieldRef !== null) {
+                            component.setState(() => {
+                                return {
+                                    searchSuggestionVisible: false
+                                }
+                            });
+                        }
+                    }}
                     onGetAutocompletionValues = {async (text) => {
                         if (text) {
                             const response = await fetch(`http://suggestqueries.google.com/complete/search?client=firefox&q=${text}`, {
@@ -141,24 +166,16 @@ export default class SearchFieldView extends React.Component {
                 >
                     <FlatButton
                         room = 'content-left'
-                        action = 'expand'
+                        action = 'hide-suggestion'
                         overlay = 'transparent'
                         corner = 'circular'
                     >
                         <IconImage
+                            ref = {(componentRef) => {
+                                component.searchFieldLeftIconRef = componentRef;
+                            }}
                             room = 'content-middle'
-                            source = 'search'
-                        />
-                    </FlatButton>
-                    <FlatButton
-                        room = 'content-left'
-                        action = 'collapse'
-                        overlay = 'transparent'
-                        corner = 'circular'
-                    >
-                        <IconImage
-                            room = 'content-middle'
-                            source = 'go-back'
+                            source = { searchSuggestionVisible ? 'go-back' : 'search' }
                         />
                     </FlatButton>
                     <FlatButton

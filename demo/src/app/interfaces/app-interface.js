@@ -449,7 +449,7 @@ const AppInterface = Hf.Interface.augment({
                 },
                 navigationOptions: () => {
                     return {
-                        drawerLabel: `GITHUB`,
+                        drawerLabel: `HYPERTOXIN v${Ht.VERSION}`,
                         drawerIcon: ({ tintColor }) => {
                             return (
                                 <IconImage

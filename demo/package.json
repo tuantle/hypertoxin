@@ -8,7 +8,7 @@
 	},
 	"dependencies": {
 		"hyperflow": "^0.2.1",
-		"hypertoxin": "file:../hypertoxin-0.2.1.tgz",
+		"hypertoxin": "^0.2.1",
 		"prop-types": "^15.7.2",
 		"react-native-gesture-handler": "^1.3.0",
 		"react-native-svg": "^9.5.1",
